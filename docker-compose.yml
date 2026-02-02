@@ -27,7 +27,7 @@ services:
       - "5000:5000"
     environment:
       DATABASE_URL: mysql+pymysql://absensi_user:absensi_pass@db/absensi_db
-      SECRET_KEY: your-secret-key-change-in-production
+      SECRET_KEY: your-secret-key-change-in-production  # IMPORTANT: Change in production, use Docker secrets
     depends_on:
       db:
         condition: service_healthy

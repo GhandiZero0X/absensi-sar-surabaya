@@ -329,3 +329,4 @@ For issues and questions, please create an issue in the repository.
 - Configure proper database backups
 - Set up HTTPS in production
 - Review and adjust security settings for production use
+- Update dependencies to latest secure versions

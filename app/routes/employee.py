@@ -45,13 +45,13 @@ def check_in():
     
     # Create or update attendance record
     if existing:
-        existing.check_in_time = datetime.now()
+        existing.check_in_time = datetime.utcnow()
         existing.status = 'present'
     else:
         attendance = Attendance(
             user_id=current_user.id,
             date=today,
-            check_in_time=datetime.now(),
+            check_in_time=datetime.utcnow(),
             status='present'
         )
         db.session.add(attendance)
@@ -79,7 +79,7 @@ def check_out():
         flash('Anda sudah check-out hari ini.', 'warning')
         return redirect(url_for('employee.dashboard'))
     
-    attendance.check_out_time = datetime.now()
+    attendance.check_out_time = datetime.utcnow()
     db.session.commit()
     
     flash('Check-out berhasil!', 'success')
