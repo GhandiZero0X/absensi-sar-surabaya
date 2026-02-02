@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Admin - SAR Surabaya{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h2>Dashboard Admin</h2>
+        <p>Selamat datang, {{ current_user.full_name }}</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-info">
+                <h3>{{ total_employees }}</h3>
+                <p>Total Karyawan</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">✓</div>
+            <div class="stat-info">
+                <h3>{{ today_attendance }}</h3>
+                <p>Absen Hari Ini</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Absensi Terkini</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Karyawan</th>
+                        <th>Tanggal</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attendance in recent_attendances %}
+                    <tr>
+                        <td>{{ attendance.user.full_name }}</td>
+                        <td>{{ attendance.date.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ attendance.check_in_time.strftime('%H:%M') if attendance.check_in_time else '-' }}</td>
+                        <td>{{ attendance.check_out_time.strftime('%H:%M') if attendance.check_out_time else '-' }}</td>
+                        <td><span class="badge badge-{{ attendance.status }}">{{ attendance.status }}</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Belum ada data absensi</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

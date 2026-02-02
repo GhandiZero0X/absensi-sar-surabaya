@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Karyawan - SAR Surabaya{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h2>Dashboard Karyawan</h2>
+        <p>Selamat datang, {{ current_user.full_name }}</p>
+    </div>
+
+    <div class="attendance-card">
+        <h3>Absensi Hari Ini</h3>
+        
+        {% if today_attendance %}
+            <div class="attendance-status">
+                <div class="status-item">
+                    <label>Check In:</label>
+                    <span class="time">{{ today_attendance.check_in_time.strftime('%H:%M:%S') if today_attendance.check_in_time else '-' }}</span>
+                </div>
+                <div class="status-item">
+                    <label>Check Out:</label>
+                    <span class="time">{{ today_attendance.check_out_time.strftime('%H:%M:%S') if today_attendance.check_out_time else '-' }}</span>
+                </div>
+                {% if today_attendance.check_in_time and today_attendance.check_out_time %}
+                <div class="status-item">
+                    <label>Durasi:</label>
+                    <span class="time">{{ today_attendance.get_work_duration() }} jam</span>
+                </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="text-muted">Anda belum melakukan absensi hari ini.</p>
+        {% endif %}
+
+        <div class="attendance-actions">
+            {% if not today_attendance or not today_attendance.check_in_time %}
+            <form method="POST" action="{{ url_for('employee.check_in') }}">
+                <button type="submit" class="btn btn-success btn-lg">Check In</button>
+            </form>
+            {% elif today_attendance.check_in_time and not today_attendance.check_out_time %}
+            <form method="POST" action="{{ url_for('employee.check_out') }}">
+                <button type="submit" class="btn btn-danger btn-lg">Check Out</button>
+            </form>
+            {% else %}
+            <p class="text-success">✓ Anda sudah menyelesaikan absensi hari ini</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Riwayat Absensi Terkini</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Durasi</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attendance in recent_attendances %}
+                    <tr>
+                        <td>{{ attendance.date.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ attendance.check_in_time.strftime('%H:%M') if attendance.check_in_time else '-' }}</td>
+                        <td>{{ attendance.check_out_time.strftime('%H:%M') if attendance.check_out_time else '-' }}</td>
+                        <td>{{ attendance.get_work_duration() }} jam</td>
+                        <td><span class="badge badge-{{ attendance.status }}">{{ attendance.status }}</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Belum ada riwayat absensi</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ url_for('employee.history') }}" class="btn btn-secondary">Lihat Semua Riwayat</a>
+    </div>
+</div>
+{% endblock %}
