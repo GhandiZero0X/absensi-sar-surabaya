@@ -1,14 +1,46 @@
-# Sistem Manajemen dan Absensi SAR Surabaya
+# Sistem Informasi Manajemen Kepegawaian dan Operasional SAR Surabaya
+Website untuk pengelelolaan pegawai yang akan digunakan oleh SAR Surabaya yang akan memiliki fitur Utama yaitu Homepage Informasi, Pengelolaan Pegawai (pencatatan absensi kehadiran, kegiatan dinas, izin (sakit dan cuti)), Rekapitulasi Laporan (Rekap absensi, izin, pelanggaran, tunjangan, lembur, dsb), Media Informasi Pengumuman, Pengeloaan Jadwal Petugas Siaga, dan Arsip Data Diri Personal.
 
-Web-based Employee Attendance and Management System for SAR Surabaya built with Flask python and MySQL
+## Background
+
+Sistem ini dikembangkan untuk membantu digitalisasi proses administrasi dan operasional di lingkungan SAR Surabaya, yang sebelumnya masih dilakukan secara manual atau semi-digital.
+
 ## Features
 
+- 📊 Dashboard informasi
+- 👥 Manajemen data pegawai
+- ⏱️ Sistem absensi (check-in / check-out)
+- 📅 Pengelolaan jadwal petugas siaga
+- 📝 Manajemen izin (sakit, cuti)
+- 📈 Rekapitulasi laporan (absensi, lembur, tunjangan, pelanggaran)
+- 📢 Sistem pengumuman internal
+- 📂 Arsip data personal pegawai
 
 ## Technology Stack
 
-- **Backend**: Flask (Python)
-- **Database**: MySQL with SQLAlchemy ORM
-- **Frontend**: HTML5, CSS3, JavaScript with Jinja2 templating
+- **Backend**: Python
+- **Database**: MySQL
+- **Frontend**: HTML5, CSS3, JavaScript, Jinja2 templating
+- **Framework**: Flask
+
+## Architecture
+
+Flask-based MVC pattern:
+- Models: Database layer
+- Routes: Controller logic
+- Templates: View layer
+
+## User Roles
+
+### Admin
+- Mengelola data pegawai
+- Melihat laporan
+- Mengatur jadwal
+
+### Employee
+- Melakukan absensi
+- Melihat riwayat
+- Mengajukan izin
 
 ## Project Structure
 
@@ -50,11 +82,26 @@ absensi-sar-surabaya/
 ```
 
 ## Installation & Setup
+### Clone repository
+git clone https://github.com/username/absensi-sar-surabaya.git
 
+### Masuk folder
+cd absensi-sar-surabaya
+
+### Install dependency
+pip install -r requirements.txt
+
+### Database Setup
+- Create database: `sar_surabaya`
+- Schema database ada di dalam folder development
+- Configure connection di `config.py`
+
+### Run app
+python app.py
 
 ## Database Models
 
-### User Model
+<!-- ### User Model
 - `id`: Primary key
 - `username`: Unique username
 - `email`: Unique email address
@@ -76,34 +123,33 @@ absensi-sar-surabaya/
 - `notes`: Additional notes
 - `status`: 'present', 'absent', 'late', 'leave'
 - `created_at`: Record creation timestamp
-- `updated_at`: Last update timestamp
+- `updated_at`: Last update timestamp -->
 
 ## API Endpoints
 
 ### Authentication
-- `GET /` - Redirect to login
+<!-- - `GET /` - Redirect to login
 - `GET /login` - Login page
 - `POST /login` - Login handler
-- `GET /logout` - Logout handler
+- `GET /logout` - Logout handler -->
 
 ### Admin Routes (require admin role)
-- `GET /admin/dashboard` - Admin dashboard
+<!-- - `GET /admin/dashboard` - Admin dashboard
 - `GET /admin/employees` - List all employees
 - `GET /admin/employees/add` - Add employee form
 - `POST /admin/employees/add` - Create employee
 - `GET /admin/employees/<id>/edit` - Edit employee form
 - `POST /admin/employees/<id>/edit` - Update employee
 - `POST /admin/employees/<id>/delete` - Delete employee
-- `GET /admin/attendance` - View attendance records
+- `GET /admin/attendance` - View attendance records -->
 
-### Employee Routes (require authentication)
-- `GET /employee/dashboard` - Employee dashboard
+### Employee Routes
+<!-- - `GET /employee/dashboard` - Employee dashboard
 - `POST /employee/check-in` - Record check-in
 - `POST /employee/check-out` - Record check-out
-- `GET /employee/history` - View attendance history
+- `GET /employee/history` - View attendance history -->
 
 ## Security Features
-
 - Password hashing using Werkzeug
 - Session-based authentication with Flask-Login
 - CSRF protection (Flask default)
