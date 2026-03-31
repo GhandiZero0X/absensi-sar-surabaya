@@ -277,3 +277,140 @@
     background: var(--primary);
     transform: skew(40deg);
 }
+
+
+/* tambahan untuk css */
+.search-box {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+}
+
+.search-input {
+    padding-right: 45px; /* ruang untuk icon */
+    height: 48px;
+}
+
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.pengumuman-section{
+    padding: 60px 20px;
+}
+
+.judul-pengumuman{
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+.garis{
+    width: 80%;
+    margin: 30px auto 40px auto;
+    border-top: 2px solid #cfcfcf;
+}
+
+.status-online{
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #EB6831;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-size: 20px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.status-online .jumlah{
+    margin-left: 20px;
+}
+
+.closing-absensi{
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.running-wrapper {
+    width: 80%;
+    margin: 25px auto 40px auto;
+    border-top: 2px solid #cfcfcf;
+    border-bottom: 2px solid #cfcfcf;
+    overflow: hidden;
+    height: 55px;
+    display: flex;
+    align-items: center;
+}
+
+.running-text {
+    font-weight: 800;
+    letter-spacing: 1px;
+    font-size: 22px;   /* ukuran tulisan lebih besar */
+    color: #000;       /* warna hitam */
+    white-space: nowrap;
+    animation: jalan 40s linear infinite;
+}
+
+/* Animasi teks berjalan dari kanan ke kiri */
+@keyframes jalan {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.portal-title{
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.portal-image{
+    position: relative;
+}
+
+.main-img{
+    width: 85%;
+}
+
+.overlay-img{
+    position: absolute;
+    top: 50%;              /* posisi tengah vertikal */
+    right: 0;              /* menempel sisi kanan */
+    transform: translateY(-50%); /* benar-benar di tengah */
+    width: 50%;
+    border: 10px solid white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.portal-text p{
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.card img {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.card {
+    border-radius: 6px;
+}
+
+.footer-custom {
+    background-color: #EB6831;
+    color: white;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
