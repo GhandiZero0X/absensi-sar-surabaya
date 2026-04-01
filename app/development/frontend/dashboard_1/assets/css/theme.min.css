@@ -1796,7 +1796,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
 
 .nxl-header .header-wrapper .nxl-lavel-mega-menu-toggle a,
 .nxl-header .header-wrapper .nxl-navigation-toggle a {
-    color: #283c50
+    color: #fff
 }
 
 .nxl-header .header-wrapper .nxl-lavel-mega-menu-toggle i,
@@ -1983,7 +1983,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
     color: #283c50;
     font-size: .84rem;
     font-weight: 700;
-    background-color: #fff;
+    background-color: #EB6831;
     border-radius: 5px;
     transition: all .3s ease;
     display: flex;
@@ -1992,7 +1992,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
 
 .nxl-header .header-wrapper .nxl-mega-menu .nxl-h-dropdown .nxl-mega-menu-tabs .nav-link.active {
     color: #001327;
-    background-color: #eaebef;
+    background-color: #EB6831;
     transition: all .3s ease
 }
 
@@ -2026,7 +2026,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
 .nxl-header .header-wrapper .nxl-mega-menu .nxl-h-dropdown .nxl-mega-menu-tabs-content {
     width: 100%;
     padding: 30px 30px;
-    border-left: 1px solid #e5e7eb
+    border-left: 1px solid #EB6831
 }
 
 .nxl-header .header-wrapper .nxl-mega-menu .nxl-h-dropdown .nxl-mega-menu-tabs-content .dropdown-item-title {
@@ -2046,7 +2046,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
     margin: auto auto;
     text-align: center;
     border-radius: 15px;
-    background-color: #eaebef
+    background-color: #EB6831
 }
 
 .nxl-header .header-wrapper .nxl-mega-menu .nxl-h-dropdown .nxl-mega-menu-tabs-content .nxl-mega-menu-image img {
@@ -2065,7 +2065,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
-    border: 1px dashed #e5e7eb;
+    border: 1px dashed #EB6831;
     transition: all .3s ease
 }
 
@@ -2116,11 +2116,11 @@ body.full-screen-helper .full-screen-switcher a .minimize {
 }
 
 .nxl-header .header-wrapper .nxl-mega-menu .nxl-h-dropdown .nxl-mega-menu-tabs-content .nxl-mega-menu-resources .carousel-inner .carousel-item .carousel-caption .carousel-caption-title {
-    color: #fff
+    color: #EB6831
 }
 
 .nxl-header .header-wrapper .nxl-mega-menu .nxl-h-dropdown .nxl-mega-menu-tabs-content .nxl-mega-menu-resources .carousel-inner .carousel-item .carousel-caption .carousel-caption-desc {
-    color: #fff;
+    color: #EB6831;
     font-size: 12px
 }
 
@@ -2143,8 +2143,8 @@ body.full-screen-helper .full-screen-switcher a .minimize {
     font-weight: 700;
     padding: 15px 25px;
     border-radius: 0;
-    border-right: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
+    border-right: 1px solid #EB6831;
+    border-bottom: 1px solid #EB6831;
     transition: all .3s ease;
     display: flex;
     align-items: center
@@ -2364,8 +2364,9 @@ body.full-screen-helper .full-screen-switcher a .minimize {
 
 .nxl-header .header-wrapper .user-avtar {
     width: 40px;
-    margin-right: 15px;
-    border-radius: 50%
+    margin-top: 15px;
+    transform: translateX(-100px);
+    border-radius: 50%;
 }
 
 html.minimenu .nxl-header {
@@ -2414,14 +2415,16 @@ html.minimenu .nxl-header {
 }
 
 .nxl-navigation .navbar-content .nxl-caption {
-    display: block;
-    color: #7587a7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* biar kiri-kanan */
+    color: #fff;
     background: #EB6831;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: .07em;
-    padding: 15px 20px 10px;
-    text-transform: uppercase
+    padding: 15px 25px 10px;
+    text-transform: uppercase;
 }
 
 .nxl-navigation .navbar-content .nxl-caption label {
@@ -2430,7 +2433,7 @@ html.minimenu .nxl-header {
 
 .nxl-navigation .navbar-content .nxl-caption span:not(.badge) {
     display: block;
-    color: #67758a;
+    color: #fff;
     text-transform: capitalize;
     font-size: 10px;
     font-weight: 500
@@ -2482,7 +2485,7 @@ html.minimenu .nxl-header {
 .nxl-navigation .navbar-content .nxl-submenu .nxl-link {
     font-size: .8rem;
     padding: 10px 20px;
-    margin-left: 35px !important;
+    margin-left: 5px !important;
     margin-right: 5px !important
 }
 
@@ -2619,6 +2622,14 @@ html.minimenu .nxl-navigation .navbar-content .nxl-caption:before {
     font-family: feather !important
 }
 
+.nxl-caption::after,
+.nxl-caption::before {
+    display: none !important;
+    content: none !important;
+
+}
+
+
 html.minimenu .nxl-navigation .navbar-content .nxl-caption label {
     display: none
 }
@@ -2626,7 +2637,7 @@ html.minimenu .nxl-navigation .navbar-content .nxl-caption label {
 html.minimenu .nxl-navigation:hover .navbar-content {
     position: absolute !important;
     width: 280px;
-    background-color: #fff;
+    background-color: #EB6831;
     border-right: 1px solid #e5e7eb;
     transition: all .3s ease
 }
@@ -2650,6 +2661,14 @@ html.minimenu .nxl-navigation:hover .navbar-content .nxl-submenu .nxl-link {
     padding-left: 20px;
     margin-left: 50px !important;
     margin-right: 15px !important
+}
+
+.nxl-submenu {
+    padding-left: 0 !important;
+}
+
+.nxl-submenu .nxl-link {
+    padding-left: 16px !important;
 }
 
 html.minimenu .nxl-navigation:hover .navbar-content .nxl-submenu .nxl-submenu .nxl-link {
@@ -4728,7 +4747,6 @@ body.modal-open .page-header {
 .img-group .avatar-image,
 .img-group .avatar-text {
     overflow: hidden;
-    margin-left: -10px;
     align-items: center;
     display: inline-flex;
     justify-content: center;
@@ -7901,15 +7919,15 @@ html.app-skin-dark .nxl-header .header-wrapper .header-left .nxl-mega-menu .nxl-
 
 html.app-skin-dark .nxl-header .header-wrapper .header-left .nxl-lavel-mega-menu {
     border-color: #1b2436;
-    background-color: #121a2d
+    background-color: #EB6831
 }
 
 html.app-skin-dark .nxl-header .header-wrapper .header-left .nxl-lavel-mega-menu .nxl-lavel-mega-menu-toggle a#nxl-lavel-mega-menu-hide {
-    border-color: #1b2436
+    border-color: #EB6831
 }
 
 html.app-skin-dark .nxl-header .header-wrapper .header-left .nxl-lavel-mega-menu .nxl-lavel-mega-menu-wrapper .nxl-mega-menu .nxl-h-dropdown .nxl-mega-menu-tabs-content {
-    border-color: #1b2436
+    border-color: #EB6831
 }
 
 html.app-skin-dark .nxl-header .header-wrapper .header-right .nxl-header-language .nxl-h-dropdown.nxl-search-dropdown .avatar-text,
