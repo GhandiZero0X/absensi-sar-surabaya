@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2-theme.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendors/css/jquery.time-to.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <!--! END: Vendors CSS-->
     <!--! BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="assets/css/theme.min.css">
@@ -62,11 +63,23 @@
                     </li>   
                      <li class="nxl-item nxl-hasmenu">
                         <a href="javascript:void(0);" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-grid"></i></span>
+                           <span class="nxl-micon">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                width="20" height="20" 
+                                viewBox="0 0 24 24" 
+                                fill="currentColor">
+                                <path d="M4 4h6v6h-6zM14 4h6v4h-6zM14 10h6v10h-6zM4 14h6v6h-6z"/>
+                            </svg>
+                            </span>
                             <span class="nxl-mtext">Dashboards</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
                         </a>
                         <ul class="nxl-submenu">
-                            <li class="nxl-item"><a class="nxl-link" href="index.html">Dashboards</a></li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="reports-sales.html">
+                                    <span class="nxl-micon"><i class="ti ti-layout-dashboard"></i></span>
+                                    <span class="nxl-mtext">Dashboard</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
@@ -74,100 +87,172 @@
                             <span class="nxl-micon"><i class="feather-layers"></i></span>
                             <span class="nxl-mtext">Master File</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
                         </a>
-                        <ul class="nxl-submenu">
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-sales.html">
-                                    <span class="nxl-micon"><i class="feather-calendar"></i></span>
-                                    <span class="nxl-mtext">Master Kalendar</span>
-                                </a>
-                            </li>
+                       <ul class="nxl-submenu">
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-leads.html">
-                                    <span class="nxl-micon"><i class="feather-scissors"></i></span>
-                                    <span class="nxl-mtext">Master Potongan</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-sales.html">
+                                <span class="nxl-micon"><i class="feather-calendar"></i></span>
+                                <span class="nxl-mtext">Master Kalender</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-project.html">
-                                    <span class="nxl-micon"><i class="feather-briefcase"></i></span>
-                                    <span class="nxl-mtext">Master Unit Kerja</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-leads.html">
+                                <span class="nxl-micon"><i class="feather-tag"></i></span>
+                                <span class="nxl-mtext">Master Potongan</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-timesheets.html">
-                                    <span class="nxl-micon"><i class="feather-grid"></i></span>
-                                    <span class="nxl-mtext">Master Tunkin/Class</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-project.html">
+                                <span class="nxl-micon"><i class="ti ti-home-cog"></i></span>
+                                <span class="nxl-mtext">Master Unit Kerja</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-timesheets.html">
-                                    <span class="nxl-micon"><i class="feather-clock"></i></span>
-                                    <span class="nxl-mtext">Master Jam Kerja</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-timesheets.html">
+                                <span class="nxl-micon"><i class="ti ti-file-like"></i></span>
+                                <span class="nxl-mtext">Master Tunkin/Class</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-timesheets.html">
-                                    <span class="nxl-micon"><i class="feather-watch"></i></span>
-                                    <span class="nxl-mtext">Master Jam Finger</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-timesheets.html">
+                                <span class="nxl-micon"><i class="ti ti-clock-edit"></i></span>
+                                <span class="nxl-mtext">Master Jam Kerja</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-timesheets.html">
-                                    <span class="nxl-micon"><i class="feather-user-check"></i></span>
-                                    <span class="nxl-mtext">Master Jabatan</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-timesheets.html">
+                                <span class="nxl-micon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2a7 7 0 0 0-7 7v3a5 5 0 0 0 10 0v-3a3 3 0 0 0-6 0v3a1 1 0 0 0 2 0v-3a1 1 0 0 1 2 0v3a3 3 0 0 1-6 0v-3a5 5 0 0 1 10 0v3a7 7 0 0 1-14 0v-3a9 9 0 0 1 18 0v3c0 5-4 9-9 9"/>
+                                    </svg>
+                                </span>
+                                <span class="nxl-mtext">Master Jam Finger</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-timesheets.html">
-                                    <span class="nxl-micon"><i class="feather-gift"></i></span>
-                                    <span class="nxl-mtext">Master THR</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-timesheets.html">
+                                <span class="nxl-micon"><i class="feather-award"></i></span>
+                                <span class="nxl-mtext">Master Jabatan</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="reports-timesheets.html">
-                                    <span class="nxl-micon"><i class="feather-users"></i></span>
-                                    <span class="nxl-mtext">User Account</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-timesheets.html">
+                                <span class="nxl-micon"><i class="ti ti-tools-kitchen-2"></i></span>
+                                <span class="nxl-mtext">Master Uang Makan</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="customers.html">
-                                    <span class="nxl-micon"><i class="feather-star"></i></span>
-                                    <span class="nxl-mtext">VIP List</span>
-                                </a>
-                            </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-timesheets.html">
+                                <span class="nxl-micon"><i class="ti ti-cash"></i></span>
+                                <span class="nxl-mtext">Master THR</span>
+                            </a>
+                        </li>
 
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="customers-view.html">
-                                    <span class="nxl-micon"><i class="feather-file-text"></i></span>
-                                    <span class="nxl-mtext">Master Butir Kegiatan</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="reports-timesheets.html">
+                                <span class="nxl-micon"><i class="feather-user"></i></span>
+                                <span class="nxl-mtext">User Account</span>
+                            </a>
+                        </li>
+
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="customers.html">
+                                <span class="nxl-micon"><i class="ti ti-vip"></i></span>
+                                <span class="nxl-mtext">VIP List</span>
+                            </a>
+                        </li>
+
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="customers-view.html">
+                                <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                                <span class="nxl-mtext">Master Butir Kegiatan</span>
+                            </a>
+                        </li>
+
+                    </ul>
                     <li class="nxl-item nxl-hasmenu">
                         <a href="javascript:void(0);" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-edit"></i></span>
+                            <span class="nxl-micon"><i class="ti ti-edit"></i></span>
                             <span class="nxl-mtext">Kepegawaian</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
                         </a>
                         <ul class="nxl-submenu">
-                            <li class="nxl-item"><a class="nxl-link" href="apps-chat.html">Data Pegawai</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-email.html">Dinas Luar Umum</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-tasks.html">Dinas Luar OPS</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-notes.html">Dinas Luar SD</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-storage.html">Pegawai Cuti</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-calendar.html">Pegawai Sakit</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-calendar.html">Pegawai Tidak Hadir</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-calendar.html">Update Pendukung</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-calendar.html">Pegawai Mutasi</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="apps-calendar.html">WFH</a></li>
+                            <li class="nxl-item">
+    <a class="nxl-link" href="apps-chat.html">
+        <span class="nxl-micon"><i class="feather-users"></i></span>
+        <span class="nxl-mtext">Data Pegawai</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-email.html">
+        <span class="nxl-micon"><i class="feather-briefcase"></i></span>
+        <span class="nxl-mtext">Dinas Luar Umum</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-tasks.html">
+        <span class="nxl-micon"><i class="feather-activity"></i></span>
+        <span class="nxl-mtext">Dinas Luar OPS</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-notes.html">
+        <span class="nxl-micon"><i class="feather-file-text"></i></span>
+        <span class="nxl-mtext">Dinas Luar SD</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-storage.html">
+        <span class="nxl-micon"><i class="feather-user-x"></i></span>
+        <span class="nxl-mtext">Pegawai Cuti</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-calendar.html">
+        <span class="nxl-micon"><i class="feather-heart"></i></span>
+        <span class="nxl-mtext">Pegawai Sakit</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-calendar.html">
+        <span class="nxl-micon"><i class="feather-user-minus"></i></span>
+        <span class="nxl-mtext">Pegawai Tidak Hadir</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-calendar.html">
+        <span class="nxl-micon"><i class="feather-upload"></i></span>
+        <span class="nxl-mtext">Update Pendukung</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-calendar.html">
+        <span class="nxl-micon"><i class="feather-repeat"></i></span>
+        <span class="nxl-mtext">Pegawai Mutasi</span>
+    </a>
+</li>
+
+<li class="nxl-item">
+    <a class="nxl-link" href="apps-calendar.html">
+        <span class="nxl-micon"><i class="feather-home"></i></span>
+        <span class="nxl-mtext">WFH</span>
+    </a>
+</li>
                         </ul>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
@@ -176,12 +261,47 @@
                             <span class="nxl-mtext">Data Absensi</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
                         </a>
                         <ul class="nxl-submenu">
-                            <li class="nxl-item"><a class="nxl-link" href="proposal.html">Normalisasi Absensi Finger</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="proposal-view.html">Absensi Non Finger</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="proposal-edit.html">Detail Absensi</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="proposal-create.html">Detail Tunkin</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="proposal-create.html">Absensi Manual</a></li>
-                            <li class="nxl-item"><a class="nxl-link" href="proposal-create.html">Lembur Manual</a></li>
+                            <li class="nxl-item">
+                            <a class="nxl-link" href="#">
+                                <span class="nxl-micon"><i class="ti ti-fingerprint"></i></span>
+                                <span class="nxl-mtext">Absensi Finger</span>
+                            </a>
+                        </li>
+
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="#">
+                                <span class="nxl-micon"><i class="ti ti-user-check"></i></span>
+                                <span class="nxl-mtext">Absensi Non Finger</span>
+                            </a>
+                        </li>
+
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="#">
+                                <span class="nxl-micon"><i class="ti ti-file-text"></i></span>
+                                <span class="nxl-mtext">Detail Absensi</span>
+                            </a>
+                        </li>
+
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="#">
+                                <span class="nxl-micon"><i class="ti ti-cash"></i></span>
+                                <span class="nxl-mtext">Detail Tunkin</span>
+                            </a>
+                        </li>
+
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="#">
+                                <span class="nxl-micon"><i class="ti ti-edit"></i></span>
+                                <span class="nxl-mtext">Absensi Manual</span>
+                            </a>
+                        </li>
+
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="#">
+                                <span class="nxl-micon"><i class="ti ti-clock"></i></span>
+                                <span class="nxl-mtext">Lembur Manual</span>
+                            </a>
+                        </li>
                         </ul>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
@@ -207,7 +327,12 @@
                             <span class="nxl-mtext">Media Informasi</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
                         </a>
                         <ul class="nxl-submenu">
-                            <li class="nxl-item"><a class="nxl-link" href="#!">Inp Pengumuman</a></li>
+                           <li class="nxl-item">
+                            <a class="nxl-link" href="#">
+                                <span class="nxl-micon"><i class="ti ti-file-export"></i></span>
+                                <span class="nxl-mtext">Inp Pengumuman</span>
+                            </a>
+                        </li>
                         </ul>
                     </li>
                     <li class="nxl-item nxl-hasmenu">

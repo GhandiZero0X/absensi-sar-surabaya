@@ -2417,7 +2417,7 @@ html.minimenu .nxl-header {
 .nxl-navigation .navbar-content .nxl-caption {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* biar kiri-kanan */
+    justify-content: space-between; 
     color: #fff;
     background: #EB6831;
     font-size: 10px;
@@ -2636,7 +2636,7 @@ html.minimenu .nxl-navigation .navbar-content .nxl-caption label {
 
 html.minimenu .nxl-navigation:hover .navbar-content {
     position: absolute !important;
-    width: 280px;
+    width: 250px;
     background-color: #EB6831;
     border-right: 1px solid #e5e7eb;
     transition: all .3s ease
@@ -8326,7 +8326,7 @@ html.app-font-family-roboto-slab body {
         right: 0;
         z-index: 99;
         height: 100%;
-        width: 280px;
+        width: 250px;
         position: fixed;
         background-color: #fff;
         border-top: 1px solid #e5e7eb;
@@ -8678,7 +8678,7 @@ html.app-font-family-roboto-slab body {
     }
 
     .nxl-navigation {
-        left: -280px;
+        left: -250px;
         box-shadow: none;
         transition: all .15s ease-in-out
     }
@@ -8756,6 +8756,12 @@ html.app-font-family-roboto-slab body {
     .auth-creative-wrapper .auth-creative-inner .creative-card-wrapper {
         max-width: calc(100% - 60px)
     }
+}
+
+.nxl-micon {
+    width: 25px;
+    display: inline-flex;
+    justify-content: center;
 }
 
 /*# sourceMappingURL=theme.min.css.map */
