@@ -9716,12 +9716,6 @@ html.app-font-family-roboto-slab body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.card-header-custom {
-    padding: 10px 15px;
-    background: #fff;
-    border-bottom: 1px solid #eee;
-}
-
 .filter-label-wide {
     width: 80px;
     font-weight: bold;
@@ -9938,4 +9932,53 @@ html.app-font-family-roboto-slab body {
     cursor: pointer;
     transform: rotate(-20deg);
     display: inline-block;
+}
+
+.header-icons-wrapper {
+    background: transparent;
+    box-shadow: none;
+}
+
+@media (max-width: 767.98px) {
+    .header-actions {
+        position: relative;
+    }
+    
+    #headerIconsCollapse {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        z-index: 1050;
+    }
+
+    .header-icons-wrapper {
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+        border-radius: 8px;
+        padding: 10px 15px !important;
+        border: 1px solid #eee;
+    }
+}
+
+.card-body label {
+    color: #000000 !important;
+    font-weight: bold; 
+}
+
+.card-header-custom {
+    padding: 10px 15px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.card-header-customm {
+    background-color: #EB6831 !important;
+    color: #FFFFFF !important;
+    padding: 12px 15px; /* Sesuaikan padding agar terlihat rapi */
+    border-radius: 4px 4px 0 0; /* Memberikan lekukan di sudut atas */
+}
+
+.card-header-customm h6 {
+    color: #FFFFFF !important;
+    font-weight: bold;
 }

@@ -207,7 +207,7 @@
                         <h5 class="m-b-10">Master Data</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Tim Siaga</a></li>
+                        <li class="breadcrumb-item"><a href="Master_Data_Tim_Siaga.html">Tim Siaga</a></li>
                         <li class="breadcrumb-item">Edit</li>
                     </ul>
                 </div>
@@ -215,188 +215,184 @@
 
             <div class="main-content master-siaga">
                 <div class="container-fluid">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="mb-0">
-                                    <i class="bi bi-people"></i> Master Data Siaga
-                                </h5>
-                                <div class="d-flex align-items-center page-action">
-                                    <input type="text" class="form-control form-control-sm me-3 input-small" placeholder="Search">
-                                    <button class="btn btn-light action-btn me-2">
-                                        <i class="bi bi-file-earmark-plus"></i>
-                                    </button>
-                                    <button class="btn btn-success action-btn me-2">
-                                        <i class="bi bi-save"></i>
-                                    </button>
-                                    <button class="btn btn-danger action-btn">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">
+                                <i class="bi bi-people me-2"></i> Master Data Siaga
+                            </h6>
 
-                            <div class="row align-items-center mb-7">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">
-                                    <label class="form-label label-master">Periode</label>
-                                </div>
-                                <div class="col-md-7 d-flex">
-                                    <input type="text" class="form-control input-small">
-                                    <button class="btn btn-outline-secondary btn-calendar-small ms-2">
-                                        <i class="bi bi-calendar"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            <div class="header-actions">
+                                <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
+                                    <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                                </button>
 
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">
-                                    <label class="form-label label-master">Shift</label>
-                                </div>
-                                <div class="col-md-7 d-flex">
-                                    <select class="form-select form-select-sm custom-select">
-                                        <option value="">Pilih Shift</option>
-                                        <option>Shift 1</option>
-                                        <option>Shift 2</option>
-                                    </select>
-                                </div>
-                            </div>
+                                <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
+                                    <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                        <a href="Cari_Data_Tim_Siaga.html" class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                        </a>
 
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">
-                                    <label class="form-label label-master">Fungsional</label>
-                                </div>
-                                <div class="col-md-7 d-flex">
-                                    <select class="form-select form-select-sm custom-select">
-                                        <option value="">Pilih Fungsional</option>
-                                        <option>Kom</option>
-                                        <option>Kom_(P)</option>
-                                        <option>Medis</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">
-                                    <label class="form-label label-master">No Urut</label>
-                                </div>
-                                <div class="col-md-7 d-flex">
-                                    <input type="text" class="form-control input-small">
-                                </div>
-                            </div>
-
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">
-                                    <label class="form-label label-master">Nama TIM</label>
-                                </div>
-                                <div class="col-md-7 d-flex">
-                                    <input type="text" class="form-control input-small">
-                                </div>
-                            </div>
-
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">
-                                    <label class="form-label label-master">Unit Kerja</label>
-                                </div>
-                                <div class="col-md-7 d-flex">
-                                    <select class="form-select form-select-sm custom-select">
-                                        <option value="">Pilih Unit Kerja</option>
-                                        <option>Surabaya</option>
-                                        <option>Jember</option>
-                                        <option>Trenggalek</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-3"></div>
-                                <div class="col-md-7">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-master">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width:40%">NIP</th>
-                                                    <th>Nama</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="2" class="">
-                                                        No records to display.
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                        </button>
+                                        
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                                        </button>
+                                        
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                                        </button>
                                     </div>
                                 </div>
-                            </div>                       
-                        </div>
-                    </div>
-
-                    <!-- CARD 2 -->
-                    <div class="card mb-4">
-                        <div class="card-header header-tim text-white">
-                            Add Anggota TIM
+                            </div>
                         </div>
 
                         <div class="card-body">
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-3">
-                                    <label class="form-label label-master">Pegawai</label>
+                            <div class="row g-3">
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">Periode</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-7">
-                                    <input type="text" class="form-control input-small">
-                                </div>
-                            </div>
 
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-3">
-                                    <label class="form-label label-master">Peg. lintas TIM</label>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <select class="form-select-sm border custom-select w-100">
+                                            <option value="">Pilih Shift</option>
+                                            <option>Shift 1</option>
+                                            <option>Shift 2</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-md-7">
-                                    <input type="checkbox" style="transform: scale(1.3);">
-                                </div>
-                            </div>
 
-                            <div class="d-flex justify-content-center">
-                                <button class="btn btn-primary px-4">
-                                    Insert Pegawai to table
-                                </button>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">Fungsional</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <select class="form-select-sm border custom-select w-100">
+                                            <option value="">Pilih Fungsional</option>
+                                            <option>Kom</option>
+                                            <option>Medis</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">No Urut</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control-sm border w-100">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">Nama TIM</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control-sm border w-100">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 d-md-flex align-items-center mb-2">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">Unit Kerja</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <select class="form-select-sm border custom-select w-100">
+                                            <option value="">Pilih Unit Kerja</option>
+                                            <option>Surabaya</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 d-md-flex">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-7">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm w-100">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th style="width:40%">NIP</th>
+                                                        <th>Nama</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="2" class="text-center py-4 text-muted">No records to display.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-customm">
+                            <h6 class="mb-0">Add Anggota TIM</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">Pegawai</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">Peg. lintas TIM</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="lintasTim">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-primary w-100 py-2"><i class="bi bi-plus-circle me-2"></i> Insert Pegawai to table</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- CARD 3 -->
-                    <div class="card">
-                        <div class="card-header header-tim text-white">
-                            Save As Tim Siaga
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-customm">
+                            <h6 class="mb-0">Save As Tim Siaga</h6>
                         </div>
-
                         <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-3">
-                                    <label class="form-label label-master">ke Periode</label>
+                            <div class="row g-3">
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <label class="col-md-2 text-md-end pe-md-4 fw-bold mb-1 mb-md-0">ke Periode</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="col-md-6 d-flex">
-                                    <input type="text" class="form-control input-small">
-                                    <button class="btn btn-outline-secondary btn-calendar-small ms-2">
-                                        <i class="bi bi-calendar"></i>
-                                    </button>
+                                <div class="col-12 d-md-flex">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-primary w-100 py-2"><i class="bi bi-save me-2"></i> Save</button>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="d-flex justify-content-center">
-                                <button class="btn btn-primary px-4">
-                                    Save
-                                </button>
                             </div>
                         </div>
                     </div>
