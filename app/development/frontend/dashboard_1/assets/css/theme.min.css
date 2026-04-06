@@ -8,7 +8,8 @@
  * Author: WRAPCODERS
  * Version: 1.0.0
  * File: theme.min.css
-<--!----------------------------------------------------------------!-->
+<--!--------------------------------------------------
+--------------!-->
 <--!----------------------------------------------------------------!-->
 */
 @import url(https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Maven+Pro:wght@400;500;600;700;800;900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300;400;500;600;700&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap);
@@ -2415,7 +2416,7 @@ html.minimenu .nxl-header {
 }
 
 .nxl-navigation .navbar-content .nxl-caption {
-    display: flex;
+    display: block !important;
     align-items: center;
     justify-content: space-between; 
     color: #fff;
@@ -2423,7 +2424,7 @@ html.minimenu .nxl-header {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: .07em;
-    padding: 15px 25px 10px;
+    padding: 15px 30px 10px;
     text-transform: uppercase;
 }
 
@@ -2482,19 +2483,25 @@ html.minimenu .nxl-header {
     margin-left: 8px
 }
 
+/*submenu besar*/
 .nxl-navigation .navbar-content .nxl-submenu .nxl-link {
-    font-size: .8rem;
-    padding: 10px 20px;
-    margin-left: 5px !important;
-    margin-right: 5px !important
+   font-size: .8rem; /* Ukuran font disamakan dengan menu utama */
+    padding: 10px 20px; /* Sesuaikan padding agar tingginya sama dengan hasmenu */
+    margin-left: 0 !important;  /* Hapus margin agar lebarnya penuh */
+    margin-right: 0 !important; /* Hapus margin agar lebarnya penuh */
+    display: flex;
+    align-items: center;
+    border-radius: 5px; /* Biasanya menu utama kotak atau punya radius tertentu, sesuaikan di sini */
+    width: 100%;
+    gap: 5px
 }
 
 .nxl-navigation .navbar-content .nxl-submenu .nxl-submenu .nxl-link {
-    margin-left: 45px !important
+    margin-left: 60px !important
 }
 
 .nxl-navigation .navbar-content .nxl-submenu .nxl-submenu .nxl-submenu .nxl-link {
-    margin-left: 55px !important
+    margin-left: 60px !important
 }
 
 .nxl-navigation .navbar-content .nxl-item.disabled a {
@@ -2559,7 +2566,7 @@ html:not(.minimenu) .nxl-navigation .nxl-submenu {
 }
 
 html:not(.minimenu) .nxl-navigation .nxl-submenu .nxl-item {
-    margin: 3px 10px;
+    margin: 3px 15px;
     border-radius: 5px
 }
 
@@ -2568,7 +2575,7 @@ html:not(.minimenu) .nxl-navigation .nxl-submenu .nxl-submenu>.nxl-item:before {
 }
 
 html:not(.minimenu) .nxl-navigation .nxl-submenu .nxl-submenu .nxl-submenu>.nxl-item:before {
-    left: 80px
+    left: 60px
 }
 
 html.minimenu .nxl-navigation {
@@ -2595,12 +2602,48 @@ html.minimenu .nxl-navigation .navbar-content {
     transition: all .3s ease
 }
 
-html.minimenu .nxl-navigation .navbar-content .nxl-link {
-    margin: 0 20px;
-    padding: 12px 20px;
-    border-radius: 6px 6px
+/* 1. KASIH GAP DI PEMBUNGKUSNYA (li) */
+html.minimenu .nxl-navigation .nxl-item {
+    /* Ini yang bikin ada jarak antar kotak putih */
+    margin-bottom: 5px !important; 
+    /* Pastikan tidak ada tinggi paksaan dari tema */
+    height: auto !important; 
+    display: block !important;
 }
 
+/* 2. REVISI KOTAK PUTIH (nxl-link) */
+html.minimenu .nxl-navigation .navbar-content .nxl-link {
+    /* Matikan padding agar tinggi murni dari height */
+    padding: 0 !important;
+
+    /* Ukuran kotak (Ceper & Proporsional) */
+    height: 40px !important; 
+    width: 40px !important;
+
+    /* Pusatkan kotak secara horizontal */
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+
+    /* Pusatkan ikon di dalam kotak */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    border-radius: 5px;
+}
+
+/* 3. RESET IKON (Sudah benar) */
+html.minimenu .nxl-navigation .nxl-link .nxl-micon,
+html.minimenu .nxl-navigation .nxl-link i {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important; /* Pakai flex juga biar konsisten di tengah */
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
 html.minimenu .nxl-navigation .navbar-content .nxl-hasmenu.nxl-trigger>.nxl-submenu {
     display: none
 }
@@ -2629,17 +2672,17 @@ html.minimenu .nxl-navigation .navbar-content .nxl-caption:before {
 
 }
 
-
 html.minimenu .nxl-navigation .navbar-content .nxl-caption label {
     display: none
 }
 
-html.minimenu .nxl-navigation:hover .navbar-content {
+/* html.minimenu .nxl-navigation:hover .navbar-content {
     position: absolute !important;
     width: 250px;
     background-color: #EB6831;
     border-right: 1px solid #e5e7eb;
     transition: all .3s ease
+    
 }
 
 html.minimenu .nxl-navigation:hover .navbar-content .card,
@@ -2653,43 +2696,40 @@ html.minimenu .nxl-navigation:hover .navbar-content .nxl-mtext {
 html.minimenu .nxl-navigation:hover .navbar-content .nxl-link {
     margin: 0 15px;
     margin-bottom: 3px;
-    padding: 10px 20px
+    padding: 10px 15px;
+    gap: 10px !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important; 
+    
+    /* Pastikan width tidak dipaksa 100% agar margin kanan bisa muncul */
+
+html.minimenu .navbar-content .nxl-submenu .nxl-link {
+    margin: 5px auto !important; 
+    width: 60px; 
+    height: 40px; 
+    
+    /* Penting supaya ikon tetap di tengah meski kotak diceperkan */
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    border-radius: 5px;
 }
 
-html.minimenu .nxl-navigation:hover .navbar-content .nxl-submenu .nxl-link {
-    margin-bottom: 3px;
-    padding-left: 20px;
-    margin-left: 50px !important;
-    margin-right: 15px !important
+/* Tambahan: Paksa ikonnya biar gak punya jarak aneh-aneh */
+html.minimenu .navbar-content .nxl-submenu .nxl-link .nxl-micon,
+html.minimenu .navbar-content .nxl-submenu .nxl-link i {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-block;
+    line-height: 1; /* Biar gak ada sisa ruang di atas/bawah ikon */
 }
 
 .nxl-submenu {
     padding-left: 0 !important;
 }
 
-.nxl-submenu .nxl-link {
-    padding-left: 16px !important;
-}
-
-html.minimenu .nxl-navigation:hover .navbar-content .nxl-submenu .nxl-submenu .nxl-link {
-    margin-left: 65px !important
-}
-
-html.minimenu .nxl-navigation:hover .navbar-content .nxl-submenu .nxl-submenu .nxl-submenu .nxl-link {
-    margin-left: 80px !important
-}
-
-html.minimenu .nxl-navigation:hover .navbar-content .nxl-hasmenu.nxl-trigger>.nxl-submenu {
-    display: block
-}
-
-html.minimenu .nxl-navigation:hover .navbar-content .nxl-caption:before {
-    content: none
-}
-
-html.minimenu .nxl-navigation:hover .navbar-content .nxl-caption label {
-    display: block
-}
 
 .main-content .content-sidebar.content-sidebar-md {
     max-width: 300px
@@ -8758,10 +8798,6 @@ html.app-font-family-roboto-slab body {
     }
 }
 
-.nxl-micon {
-    width: 25px;
-    display: inline-flex;
-    justify-content: center;
-}
+
 
 /*# sourceMappingURL=theme.min.css.map */
