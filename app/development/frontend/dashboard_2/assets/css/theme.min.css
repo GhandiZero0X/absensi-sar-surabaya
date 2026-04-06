@@ -9466,14 +9466,12 @@ html.app-font-family-roboto-slab body {
     padding: 30px;
 }
 
-/* Besarkan tulisan label */
 .master-siaga label {
     font-size: 15px !important;
     font-weight: 600;
     color: #EB6831;
 }
 
-/* Besarkan input */
 .master-siaga .form-control,
 .master-siaga .form-select {
     height: 52px;
@@ -9481,14 +9479,12 @@ html.app-font-family-roboto-slab body {
     border-radius: 8px;
 }
 
-/* Tombol kalender */
 .master-siaga .btn-calendar {
     height: 52px;
     width: 60px;
     border-radius: 8px;
 }
 
-/* Table */
 .master-siaga table {
     margin-top: 20px;
 }
@@ -9502,12 +9498,10 @@ html.app-font-family-roboto-slab body {
     font-size: 15px;
 }
 
-/* Jarak antar form */
 .master-siaga .row {
     margin-bottom: 10px;
 }
 
-/* Card styling */
 .master-siaga .card {
     border-radius: 15px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -9579,14 +9573,12 @@ html.app-font-family-roboto-slab body {
     padding: 20px;
 }
 
-/* CARD */
 .master-siaga .card {
     border-radius: 12px;
     border: none;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
-/* HEADER */
 .header-title {
     display: flex;
     align-items: center;
@@ -9596,7 +9588,6 @@ html.app-font-family-roboto-slab body {
     margin-bottom: 25px;
 }
 
-/* FILTER */
 .filter-row {
     display: flex;
     align-items: end;
@@ -9621,7 +9612,6 @@ html.app-font-family-roboto-slab body {
     border-radius: 6px;
 }
 
-/* DATE */
 .date-group {
     position: relative;
 }
@@ -9633,7 +9623,6 @@ html.app-font-family-roboto-slab body {
     color: #555;
 }
 
-/* BUTTON */
 .filter-button {
     margin-left: auto;
 }
@@ -9646,7 +9635,6 @@ html.app-font-family-roboto-slab body {
     border-radius: 20px;
 }
 
-/* TABLE */
 .table-wrapper {
     margin-top: 10px;
 }
@@ -9678,21 +9666,18 @@ html.app-font-family-roboto-slab body {
     color: #777;
 }
 
-/* GROUP (label + input sejajar) */
 .filter-group {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-/* LABEL */
 .filter-label {
     font-weight: 600;
     font-size: 18px;
     white-space: nowrap;
 }
 
-/* INPUT */
 .filter-input {
     height: 50px;
     border-radius: 14px;
@@ -9701,7 +9686,6 @@ html.app-font-family-roboto-slab body {
     border: 1px solid #ccc;
 }
 
-/* DATE */
 .filter-date {
     position: relative;
     display: flex;
@@ -9715,7 +9699,6 @@ html.app-font-family-roboto-slab body {
     color: #555;
 }
 
-/* BUTTON */
 .btn-proses {
     height: 50px;
     padding: 0 35px;
@@ -9724,4 +9707,235 @@ html.app-font-family-roboto-slab body {
     color: white;
     border: none;
     font-weight: 700;
+}
+
+.filter-card {
+    border: 1px solid #ddd;
+    border-top: 3px solid #48a34d;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card-header-custom {
+    padding: 10px 15px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-label-wide {
+    width: 80px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #000000 !important;
+}
+
+.input-group-custom {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.input-group-custom input {
+    border: none !important;
+    padding: 4px 8px;
+    outline: none;
+    width: 150px;
+}
+
+.icon-append {
+    padding: 4px 8px;
+    background: #f8f9fa;
+    border-left: 1px solid #ccc;
+    color: #666;
+    font-size: 12px;
+}
+
+.custom-select {
+    width: 180px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fcfcfc;
+}
+
+.btn-refresh-custom {
+    background-color: #337ab7;
+    color: white;
+    border: 1px solid #2e6da4;
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-refresh-custom:hover {
+    background-color: #286090;
+}
+
+.btn-close-custom {
+    background-color: transparent;
+    color: #000;
+    border: none;
+    padding: 2px 4px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+@media (max-width: 767.98px) {
+    .filter-label-wide {
+        width: auto;
+        margin-bottom: 2px;
+    }
+
+    .w-mobile-100 {
+        width: 100% !important;
+        display: flex;
+    }
+
+    .input-group-custom input {
+        width: 100% !important;
+        flex-grow: 1;
+    }
+
+    .custom-select {
+        width: 100% !important;
+    }
+
+    .text-dan {
+        margin: 5px 0;
+        display: block;
+    }
+
+    .btn-refresh-custom {
+        margin-top: 10px;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.pagination-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background-color: #f1f3f5;
+    font-family: Arial, sans-serif;
+}
+
+.left-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.custom-btn-group {
+    display: inline-flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.custom-btn-group .page-item {
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+    border-right: 1px solid #ccc;
+    line-height: 22px;
+    min-width: 30px;
+    text-align: center;
+    background: #fff;
+}
+
+.custom-btn-group .page-item:last-child {
+    border-right: none;
+}
+
+.custom-btn-group .page-item:hover {
+    background-color: #f8f9fa;
+}
+
+.page-size-label {
+    font-size: 12px;
+    color: #666;
+    margin-right: 5px;
+}
+
+.small-select {
+    font-size: 12px;
+    padding: 0 5px;
+    height: 28px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    color: #333;
+    background: #fff;
+}
+
+.item-info {
+    font-size: 12px;
+    color: #666;
+}
+
+.item-info strong {
+    color: #333;
+}
+
+.table-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 15px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-bottom: none;}
+
+.divider-vertical {
+    color: #ccc;
+    margin-right: 5px;
+}
+
+.bi-file-earmark-excel-fill {
+    color: #1f7244;
+    font-size: 1.2rem;
+}
+
+.bi-file-earmark-pdf-fill {
+    color: #dc3545;
+    font-size: 1.2rem;
+}
+
+.table-custom-v2 thead th {
+    background-color: #EB6831; 
+    color: #ffffff !important;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #d35400;
+    font-size: 0.85rem;
+    padding: 10px;
+    text-transform: uppercase; 
+}
+
+.table-custom-v2 td { 
+    border: 1px solid #dee2e6; 
+    vertical-align: middle; 
+    font-size: 0.85rem; 
+    padding: 8px;}
+    
+.icon-view {
+    color: #007bff;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.icon-send {
+    color: #333;
+    cursor: pointer;
+    transform: rotate(-20deg);
+    display: inline-block;
 }
