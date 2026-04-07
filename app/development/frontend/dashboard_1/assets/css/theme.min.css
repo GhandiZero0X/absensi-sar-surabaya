@@ -1970,8 +1970,8 @@ body.full-screen-helper .full-screen-switcher a .minimize {
 }
 
 .nxl-header .header-wrapper .nxl-mega-menu .nxl-h-dropdown .nxl-mega-menu-tabs {
-    width: 250px;
-    min-width: 250px;
+    width: 280px;
+    min-width: 280px;
     max-width: 100%;
     padding: 25px 25px
 }
@@ -2380,7 +2380,7 @@ html.minimenu .nxl-header {
     z-index: 1026;
     position: fixed;
     background: #fff;
-    width: 250px;
+    width: 280px;
     transition: all .3s ease
 }
 
@@ -2393,7 +2393,7 @@ html.minimenu .nxl-header {
     gap: 15px;
     align-items: center;
     height: 80px;
-    width: 250px;
+    width: 280px;
     background: #EB6831;
 }
 
@@ -2486,7 +2486,7 @@ html.minimenu .nxl-header {
 /*submenu besar*/
 .nxl-navigation .navbar-content .nxl-submenu .nxl-link {
    font-size: .8rem; /* Ukuran font disamakan dengan menu utama */
-    padding: 10px 20px; /* Sesuaikan padding agar tingginya sama dengan hasmenu */
+    padding: 10px 20px 10px 15px; /* Sesuaikan padding agar tingginya sama dengan hasmenu */
     margin-left: 0 !important;  /* Hapus margin agar lebarnya penuh */
     margin-right: 0 !important; /* Hapus margin agar lebarnya penuh */
     display: flex;
@@ -8366,7 +8366,7 @@ html.app-font-family-roboto-slab body {
         right: 0;
         z-index: 99;
         height: 100%;
-        width: 250px;
+        width: 280px;
         position: fixed;
         background-color: #fff;
         border-top: 1px solid #e5e7eb;
@@ -8419,7 +8419,7 @@ html.app-font-family-roboto-slab body {
         top: 80px;
         z-index: 98;
         height: 100%;
-        width: 250px;
+        width: 280px;
         display: block;
         position: fixed;
         background: #fff;
@@ -8452,7 +8452,7 @@ html.app-font-family-roboto-slab body {
         top: 80px;
         z-index: 98;
         height: 100%;
-        width: 250px;
+        width: 280px;
         display: block;
         position: fixed;
         background: #fff;
@@ -8798,6 +8798,27 @@ html.app-font-family-roboto-slab body {
     }
 }
 
+/* Geser ke kiri (atur angka sesuai selera) */
+.user-profile {
+    margin-right: 80px;
+}
 
+/* Foto */
+.user-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+/* Jarak foto & teks */
+.user-name {
+    margin-left: 12px;
+    font-weight: 600;
+}
+
+.table th, .table td {
+        vertical-align: middle !important;
+        text-align: center;
+    }
 
 /*# sourceMappingURL=theme.min.css.map */
