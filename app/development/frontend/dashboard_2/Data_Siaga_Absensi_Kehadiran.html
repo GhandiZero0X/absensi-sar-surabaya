@@ -169,7 +169,7 @@
         </div>
     </nav>
     <!-- Sidebar End -->
-    3
+    
     <!-- Header Start -->
     <header class="nxl-header">
         <div class="header-wrapper d-flex justify-content-between align-items-center px-4">
@@ -207,7 +207,7 @@
                         <h5 class="m-b-10">Data Siaga</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html"> Absensi Kehadiran</a></li>
+                        <li class="breadcrumb-item"><a href="Data_Siaga_Absensi_Kehadiran.html"> Absensi Kehadiran</a></li>
                         <li class="breadcrumb-item">Edit</li>
                     </ul>
                 </div>
@@ -216,65 +216,64 @@
             <div class="main-content master-siaga">
                 <div class="container-fluid">
                     <div class="card mb-4">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">
+                                <i class="bi bi-people me-2"></i>Absensi Kehadiran Piket Siaga
+                            </h6>
+                        </div>
+
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="mb-0">
-                                    <i class="bi bi-people"></i> Absensi Kehadiran Piket Siaga
-                                </h5>
-                            </div>
-
-                            <div class="filter-row">
-                                <div class="filter-group">
-                                    <span class="filter-label">Unit</span>
-                                    <select class="filter-input">
-                                        <option>Pilih Unit</option>
+                            <div class="row g-3">
+                                <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                    <span class="mx-md-2 fw-bold text-dan">Unit</span>
+                                    <select class="form-select-sm border custom-select w-mobile-100">
+                                        <option>- Pilih Unit -</option>
                                         <option>Surabaya</option>
-                                        <option>Jember</option>
                                     </select>
-                                </div>
 
-                                <div class="filter-group">
-                                    <span class="filter-label">Tanggal</span>
-                                    <div class="filter-date">
-                                        <input type="text" class="filter-input">
-                                        <i class="bi bi-calendar"></i>
+                                    <span class="mx-md-2 fw-bold text-dan">Tanggal</span>
+                                    <div class="input-group-custom w-mobile-100">
+                                        <input type="text" class="form-control-sm border">
+                                        <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                     </div>
-                                </div>
 
-                                <div class="filter-group">
-                                    <span class="filter-label">Shift</span>
-                                    <select class="filter-input">
-                                        <option>Pilih Shift</option>
+                                    <span class="mx-md-2 fw-bold text-dan">Shift</span>
+                                    <select class="form-select-sm border custom-select w-mobile-100">
+                                        <option>- Pilih Shift -</option>
                                         <option>Shift 1</option>
                                         <option>Shift 2</option>
+                                        <option>Shift 3</option>
                                     </select>
+
+                                    <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                                        <i class="bi bi-arrow-clockwise"></i>Refresh
+                                    </button>
                                 </div>
 
-                                <button class="btn-proses">Refresh</button>
-                            </div>
-                            
-                            <div class="table-wrapper">
-                                <table class="table-custom">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>Status</th>
-                                            <th>Shift</th>
-                                            <th>Hadir?</th>
-                                            <th>Fungsional</th>
-                                            <th>Unit</th>
-                                            <th>UpdateBy</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="8" class="no-data">
-                                                No records to display.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="col-12 d-md-flex">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm w-100">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Nama</th>
+                                                        <th>Shift</th>
+                                                        <th>Hadir?</th>
+                                                        <th>Fungsional</th>
+                                                        <th>Unit</th>
+                                                        <th>UpdateBy</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="7" class="text-center py-4">No records to display.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
