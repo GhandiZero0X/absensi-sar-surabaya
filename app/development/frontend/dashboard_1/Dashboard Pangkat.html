@@ -81,7 +81,7 @@
                         </a>
                         <ul class="nxl-submenu">
                             <li class="nxl-item">
-                               <a class="nxl-link" href="Dashboard Pelanggaran.html">
+                               <a class="nxl-link" href="Dashboard Pangkat.html">
                                     <span class="nxl-micon"><i class="ti ti-layout-dashboard"></i></span>
                                     <span class="nxl-mtext">Dashboard</span>
                                 </a>
@@ -375,31 +375,36 @@
     </nav>
     <!--! ================================================================ !-->
     <!--! [End]  Navigation Manu !-->
-    <!--! ================================================================ !-->
-
-
-
-    <!--! ================================================================ !-->
-    <!--! [Start] Header !-->
+   
+        <!--! [Start] Header !-->
         <header class="nxl-header">
             <div class="header-wrapper d-flex justify-content-end align-items-center">
 
                 <!-- User Profile -->
-                <div class="dropdown user-profile">
-                    <a href="#" data-bs-toggle="dropdown" class="d-flex align-items-center text-decoration-none">
-                        
-                        <img src="assets/images/avatar/1.png" 
-                            class="rounded-circle user-img">
-
-                        <span class="user-name text-white">Auditor</span>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                        <img src="assets/images/avatar/1.png" class="rounded-circle me-2" width="35" height="35">
+                        <span>Auditor</span>
                     </a>
 
-                    <!-- Dropdown Logout -->
-                    <div class="dropdown-menu dropdown-menu-end shadow rounded-3 p-2">
-                        <a href="./auth-login-minimal.html" class="dropdown-item d-flex align-items-center gap-2">
-                            <i class="feather-log-out"></i>
-                            <span>Logout</span>
-                        </a>
+                    <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 custom-profile-dropdown">
+                        <div class="card-body p-4 text-center">
+                            <div class="avatar-big mb-3">
+                                <i class="bi bi-person-circle text-orange" style="font-size: 50px;"></i>
+                            </div>
+                            <h6 class="fw-bold mb-1 color-primary">414386 - Auditor</h6>
+                            <p class="text-muted small mb-0">1 - Operator</p>
+                            
+                            <hr class="my-4">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-start" style="padding-left: 15px;">
+                                    <i class="bi bi-display me-2" style="color: #EB6831; font-size: 1.1rem; padding-left: 30px;"></i>
+                                    <div class="small text-muted" >192.168.100.5</div>
+                                </div>
+                                <button class="btn btn-orange-figma px-4">Sign Out</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -420,7 +425,7 @@
                         <h5 class="m-b-10">Dashboard</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="../../frontend/home/index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="Dashboard Pangkat.html">Pangkat</a></li>
                     </ul>
                 </div>
                 

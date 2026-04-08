@@ -2602,44 +2602,31 @@ html.minimenu .nxl-navigation .navbar-content {
     transition: all .3s ease
 }
 
-/* 1. KASIH GAP DI PEMBUNGKUSNYA (li) */
 html.minimenu .nxl-navigation .nxl-item {
-    /* Ini yang bikin ada jarak antar kotak putih */
     margin-bottom: 5px !important; 
-    /* Pastikan tidak ada tinggi paksaan dari tema */
     height: auto !important; 
     display: block !important;
 }
 
-/* 2. REVISI KOTAK PUTIH (nxl-link) */
 html.minimenu .nxl-navigation .navbar-content .nxl-link {
-    /* Matikan padding agar tinggi murni dari height */
     padding: 0 !important;
-
-    /* Ukuran kotak (Ceper & Proporsional) */
     height: 40px !important; 
     width: 40px !important;
-
-    /* Pusatkan kotak secara horizontal */
     margin-left: auto !important;
     margin-right: auto !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-
-    /* Pusatkan ikon di dalam kotak */
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    
     border-radius: 5px;
 }
 
-/* 3. RESET IKON (Sudah benar) */
 html.minimenu .nxl-navigation .nxl-link .nxl-micon,
 html.minimenu .nxl-navigation .nxl-link i {
     margin: 0 !important;
     padding: 0 !important;
-    display: flex !important; /* Pakai flex juga biar konsisten di tengah */
+    display: flex !important;
     align-items: center;
     justify-content: center;
     line-height: 1;
@@ -2707,29 +2694,24 @@ html.minimenu .navbar-content .nxl-submenu .nxl-link {
     margin: 5px auto !important; 
     width: 60px; 
     height: 40px; 
-    
-    /* Penting supaya ikon tetap di tengah meski kotak diceperkan */
     padding: 0 !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    
     border-radius: 5px;
 }
 
-/* Tambahan: Paksa ikonnya biar gak punya jarak aneh-aneh */
 html.minimenu .navbar-content .nxl-submenu .nxl-link .nxl-micon,
 html.minimenu .navbar-content .nxl-submenu .nxl-link i {
     margin: 0 !important;
     padding: 0 !important;
     display: inline-block;
-    line-height: 1; /* Biar gak ada sisa ruang di atas/bawah ikon */
+    line-height: 1; 
 }
 
 .nxl-submenu {
     padding-left: 0 !important;
 }
-
 
 .main-content .content-sidebar.content-sidebar-md {
     max-width: 300px
@@ -8798,19 +8780,56 @@ html.app-font-family-roboto-slab body {
     }
 }
 
-/* Geser ke kiri (atur angka sesuai selera) */
 .user-profile {
-    margin-right: 80px;
+    margin-right: 20px;
 }
 
-/* Foto */
 .user-img {
     width: 40px;
     height: 40px;
     object-fit: cover;
 }
 
-/* Jarak foto & teks */
+.custom-profile-dropdown {
+    width: 320px !important; 
+    min-width: 320px !important;
+    border-radius: 12px !important;
+    margin-top: 10px !important; /* Jarak dari atas */
+    margin-right: -10px !important; /* Geser posisi agar pas di bawah user */
+    position: absolute;
+    right: 10px !important; /* Jarak dari pinggir layar kanan */
+    left: auto !important;
+}
+
+.custom-profile-dropdown::before {
+    content: "";
+    position: absolute;
+    top: -10px; /* Posisi di atas kartu */
+    right: 35px; /* Sesuaikan posisi horizontal segitiga agar pas di bawah nama */
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white; /* Warna segitiga putih sesuai kartu */
+    filter: drop-shadow(0 -2px 1px rgba(0,0,0,0.05));
+}
+
+.text-orange { color: #EB6831;}
+.color-primary { color: #EB6831;}
+
+.btn-orange-figma {
+    background-color: #EB6831;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 16px 20px;
+    font-weight: 600;
+    margin-right: 15px;
+}
+
+.btn-orange-figma:hover {
+    background-color: #d65a28;
+    color: white;
+}
+
 .user-name {
     margin-left: 12px;
     font-weight: 600;
@@ -8820,5 +8839,61 @@ html.app-font-family-roboto-slab body {
         vertical-align: middle !important;
         text-align: center;
     }
+
+.custom-nav-header {
+    width: 100%;
+    background: transparent !important;
+    margin-bottom: 0; 
+    display: flex;
+    flex-direction: column;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    padding-left: 31px !important; /* Jarak pas menu besar */
+    transition: all 0.3s ease;
+}
+
+.nxl-mini-sidebar .header-container {
+    padding-left: 42px !important;
+    justify-content: center !important; 
+}
+
+.toggle-btn-action {
+    color: #fff !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.0rem;
+}
+
+.nav-text-label {
+    color: #fff !important;
+    font-size: 13px !important; 
+    font-weight: 500 !important; 
+    margin-left: 16px !important; 
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.nav-separator {
+    height: 1.8px; 
+    background-color: #fff ;
+    margin: -7px 20px 15px 25px !important; 
+}
+
+.nxl-mini-sidebar .nav-text-label,
+.nxl-mini-sidebar .nav-separator {
+    display: none !important;
+}
+
+.custom-nav-header:hover, .header-container:hover,.toggle-btn-action:hover {
+    background: transparent !important;
+    box-shadow: none !important;
+}
 
 /*# sourceMappingURL=theme.min.css.map */
