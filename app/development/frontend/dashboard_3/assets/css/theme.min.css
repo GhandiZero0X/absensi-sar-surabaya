@@ -9983,21 +9983,39 @@ html.app-font-family-roboto-slab body {
     font-weight: bold;
 }
 
-.nav-tabs .nav-link.active {
-        font-weight: bold;
-    }
-    
-    .table thead th {
-        font-weight: normal;
-        border-color: #4cae4c !important;
-    }
-    
-    .table-bordered td {
-        border-color: #dee2e6;
+    /* Gaya Dasar Link Tab - Lebih Kecil */
+    .nav-tabs .nav-link {
+        border: none !important;
+        color: white !important;
+        background: transparent !important;
+        font-size: 0.95rem; /* Ukuran teks dikecilkan dari 1.2rem */
+        transition: all 0.2s ease;
+        margin: 0 5px; /* Jarak antar tab */
     }
 
-    /* Memastikan link tab tidak ada outline biru saat diklik */
-    .nav-link:focus {
-        outline: none;
-        box-shadow: none;
+    /* Gaya Tab Saat Aktif - Bentuk Kotak Lebih Pas */
+    .nav-tabs .nav-link.active {
+        background-color: #FFA883 !important; /* Warna oranye muda terang */
+        color: white !important;
+        border-radius: 8px !important; /* Radius sedikit dikecilkan agar tajam tapi tetap soft */
+        padding-top: 6px !important;  /* Padding atas dikurangi */
+        padding-bottom: 6px !important; /* Padding bawah dikurangi */
     }
+
+    /* Hover effect */
+    .nav-tabs .nav-link:hover:not(.active) {
+        opacity: 0.8;
+    }
+
+    @media (min-width: 768px) {
+    .w-md-auto {
+        width: auto !important;
+    }
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 576px) {
+    .w-mobile-100 {
+        width: 100% !important;
+    }
+}
