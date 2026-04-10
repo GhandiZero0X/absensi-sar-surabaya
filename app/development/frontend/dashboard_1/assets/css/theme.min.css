@@ -4670,13 +4670,13 @@ body.modal-open .page-header {
 
 .table-responsive .table tfoot th:first-child,
 .table-responsive .table thead th:first-child {
-    padding-left: 30px
+    padding-left: 20px
 }
 
 .table-responsive .table tfoot th:last-child,
 .table-responsive .table thead th:last-child {
-    padding-right: 30px
-}
+    padding-right: 20px
+} 
 
 .table-responsive .table tbody tr:last-child * {
     border-bottom: transparent
@@ -8853,13 +8853,18 @@ html.app-font-family-roboto-slab body {
     align-items: center;
     width: 100%;
     height: 50px;
-    padding-left: 31px !important; /* Jarak pas menu besar */
+    padding-left: 32px;
     transition: all 0.3s ease;
 }
 
-.nxl-mini-sidebar .header-container {
-    padding-left: 42px !important;
-    justify-content: center !important; 
+#menu-mini-button {
+    padding-left: 0px;
+    /* Tambahkan style unik di sini */
+}
+
+#menu-expend-button {
+    display: none;
+    padding-left: 10px;
 }
 
 .toggle-btn-action {
@@ -8896,6 +8901,7 @@ html.app-font-family-roboto-slab body {
     box-shadow: none !important;
 }
 
+/*egi*/
 .master-siaga {
     background: #f5f6fa;
     padding: 20px;
@@ -9236,4 +9242,12 @@ html.app-font-family-roboto-slab body {
     outline: none;
     box-shadow: none;
 }
+  
+    /* Mengubah semua isi body tabel jadi 12px */
+    .table tbody td {
+        font-size: 13px !important;
+        text-align: center !important; /* Memastikan semua center */
+        vertical-align: middle !important;
+        padding: 8px !important;
+    }
 /*# sourceMappingURL=theme.min.css.map */
