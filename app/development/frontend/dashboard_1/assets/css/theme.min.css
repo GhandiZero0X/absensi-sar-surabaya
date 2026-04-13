@@ -9251,3 +9251,19 @@ html.app-font-family-roboto-slab body {
         padding: 8px !important;
     }
 /*# sourceMappingURL=theme.min.css.map */
+/* Menghilangkan icon kalender bawaan chrome supaya tidak double */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+.input-group-custom {
+    position: relative;
+}
