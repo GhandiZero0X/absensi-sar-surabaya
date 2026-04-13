@@ -10,7 +10,7 @@
     <meta name="author" content="theme_ocean">
     <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
     <!--! BEGIN: Apps Title-->
-    <title>Cari Kalender</title>
+    <title>Cari Master User Account</title>
     <!--! END:  Apps Title-->
     <!--! BEGIN: Favicon-->
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo-full.png">
@@ -95,6 +95,20 @@
                         </a>
                         <ul class="nxl-submenu">
 
+                              <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master User.html">
+                                    <span class="nxl-micon"><i class="feather-user"></i></span>
+                                    <span class="nxl-mtext">User Account</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Pegawai VIP.html">
+                                    <span class="nxl-micon"><i class="ti ti-vip"></i></span>
+                                    <span class="nxl-mtext">VIP List</span>
+                                </a>
+                            </li>
+
                             <li class="nxl-item">
                                 <a class="nxl-link" href="Master File Master Kalender.html">
                                     <span class="nxl-micon"><i class="feather-calendar"></i></span>
@@ -144,6 +158,13 @@
                             </li>
 
                             <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Butir Kegiatan.html">
+                                    <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                                    <span class="nxl-mtext">Master Butir Kegiatan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
                                 <a class="nxl-link" href="Master File Master Jabatan.html">
                                     <span class="nxl-micon"><i class="feather-award"></i></span>
                                     <span class="nxl-mtext">Master Jabatan</span>
@@ -160,28 +181,7 @@
                             <li class="nxl-item">
                                 <a class="nxl-link" href="Master File Master THR.html">
                                     <span class="nxl-micon"><i class="ti ti-cash"></i></span>
-                                    <span class="nxl-mtext">Master THR</span>
-                                </a>
-                            </li>
-
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="Master File Master User HRIS.html">
-                                    <span class="nxl-micon"><i class="feather-user"></i></span>
-                                    <span class="nxl-mtext">User Account</span>
-                                </a>
-                            </li>
-
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="Master File Master Pegawai VIP.html">
-                                    <span class="nxl-micon"><i class="ti ti-vip"></i></span>
-                                    <span class="nxl-mtext">VIP List</span>
-                                </a>
-                            </li>
-
-                            <li class="nxl-item">
-                                <a class="nxl-link" href="Master File Butir Kegiatan.html">
-                                    <span class="nxl-micon"><i class="feather-file-text"></i></span>
-                                    <span class="nxl-mtext">Master Butir Kegiatan</span>
+                                    <span class="nxl-mtext">Master TRT</span>
                                 </a>
                             </li>
 
@@ -440,9 +440,7 @@
     <!--! [End] Header !-->
 
     
-    <!--! [Start] Main Content !-->
-    <!--! ================================================================ !-->
-   <!-- Main Start -->
+<!-- Main Start -->
     <main class="nxl-container">
         <div class="nxl-content">
             <div class="page-header">
@@ -451,8 +449,8 @@
                         <h5 class="m-b-10">Master File</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="Master File Master Kalender.html">Create Master Kalender</a></li>
-                        <li class="breadcrumb-item">Cari Master Kalender</li>
+                        <li class="breadcrumb-item"><a href="Master File Master Potongan.html">User Account</a></li>
+                        <li class="breadcrumb-item">Cari User</li>
                     </ul>
                 </div>
             </div>
@@ -460,56 +458,94 @@
             <div class="main-content master-siaga">
                 <div class="container-fluid">
                     <div class="card mb-4 filter-card">
-                        <div class="card-header-custom d-flex justify-content-between align-items-center" style="border-radius: 10px;">
-                          <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Kalender</h6>
-                            <a href="Master File Master Kalender.html" class="btn-close-custom">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari User</h6>
+                            <a href="Master File Master User.html" class="btn-close-custom">
                                 <i class="bi bi-x-lg"></i>
                             </a>
                         </div>
-
+                        
                         <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-12 d-md-flex align-items-center">
-                                    <div class="col-md-1"></div>
-                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Bulan - Tahun</label>
-                                    <div class="col-md-7">
-                                        <div class="input-group-custom w-100">
-                                            <input type="text" class="form-control-sm border w-100">
+                            <div class="row">
+                                <div class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                                    <label class="filter-label-wide">Periode</label>
+                                    <div class="input-group-custom w-mobile-100">
+                                        <input type="date" class="form-control-sm border w-100" style="outline: none;">
                                             <span class="icon-append"><i class="bi bi-calendar3"></i></span>
-                                        </div>
                                     </div>
-                                      <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                                </div>
+
+                                <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                    <label class="filter-label-wide">Filter</label>
+                                    
+                                    <select class="form-select-sm border custom-select w-mobile-100">
+                                        <option>- Pilih Field -</option>
+                                        <option>Gol</option>
+                                        <option>Jabatan</option>
+                                        <option>Jenis Kelamin</option>
+                                        <option>Nama Peg</option>
+                                        <option>NIP</option>
+                                        <option>No Finger</option>
+                                        <option>Unit Kerja</option>
+                                    </select>
+
+                                    <div class="input-group-custom w-mobile-100">
+                                        <input type="text" class="form-control-sm border">
+                                        <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                    </div>
+
+                                    <span class="mx-md-2 fw-bold text-dan">Dan</span>
+
+                                    <select class="form-select-sm border custom-select w-mobile-100">
+                                        <option>- Pilih Field -</option>
+                                        <option>Gol</option>
+                                        <option>Jabatan</option>
+                                        <option>Jenis Kelamin</option>
+                                        <option>Nama Peg</option>
+                                        <option>NIP</option>
+                                        <option>No Finger</option>
+                                        <option>Unit Kerja</option>
+                                    </select>
+
+                                    <div class="input-group-custom w-mobile-100">
+                                        <input type="text" class="form-control-sm border">
+                                        <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                    </div>
+
+                                    <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
                                         <i class="bi bi-arrow-clockwise"></i> Refresh
                                     </button>
                                 </div>
-                                <!-- TABLE -->
-                            <div class="table-responsive">
+                                 <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
+                                ㅤ
+                                </p> 
+                                <div class="table-responsive">
                                 <table class="table table-bordered table-striped text-center align-middle">
                                     <thead style="background:#EB6831;">
                                         <tr>
                                             <th style="color:white; vertical-align: middle;">No</th>
-                                            <th style="color:white; vertical-align: middle;">Tanggal</th>
-                                            <th style="color:white; vertical-align: middle;">Isi Libur</th>
-                                            <th style="color:white; vertical-align: middle;">Keterangan</th>
-                                            <th style="color:white; vertical-align: middle;">Updated</th>
+                                            <th style="color:white; vertical-align: middle;">User ID</th>
+                                            <th style="color:white; vertical-align: middle;">Nama</th>
+                                            <th style="color:white; vertical-align: middle;">Jabatan</th>
+                                            <th style="color:white; vertical-align: middle;">Level</th>
+                                            <th style="color:white; vertical-align: middle;">UpdateBy</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                          <tr>
-                                         <td colspan="4" style="vertical-align: middle; padding: 20px;">No records to display.</td>
+                                         <td colspan="6" style="vertical-align: middle; padding: 20px;">No records to display.</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            </div>
+                        </div>
+                    </div>                
                 </div>
-            </div>        
+            </div>   
         </div>
     </main>
     <!-- Main End -->
-    <!--! ================================================================ !-->
-    <!--! [End] Main Content !-->
-    <!--! ================================================================ !-->
-    <!--! ================================================================ !-->
    
    
     <!--! ================================================================ !-->
