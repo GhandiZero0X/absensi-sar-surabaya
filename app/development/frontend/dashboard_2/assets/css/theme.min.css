@@ -1313,11 +1313,11 @@ body.full-screen-helper .full-screen-switcher a .minimize {
   height: 20px;
 }
 .hamburger.is-active .hamburger-inner {
-  background-color: #000;
+  background-color: #fff;
 }
 .hamburger.is-active .hamburger-inner::after,
 .hamburger.is-active .hamburger-inner::before {
-  background-color: #000;
+  background-color: #fff;
 }
 .hamburger-inner {
   display: block;
@@ -1325,7 +1325,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
   margin-top: -2px;
   width: 18px;
   height: 2px;
-  background-color: #2c3344;
+  background-color: #fff;
   border-radius: 4px;
   position: absolute;
   transition: transform 0.15s ease;
@@ -1334,7 +1334,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
 .hamburger-inner::before {
   width: 18px;
   height: 2px;
-  background-color: #2c3344;
+  background-color: #fff;
   border-radius: 4px;
   position: absolute;
   transition: transform 0.15s ease;
@@ -1480,9 +1480,9 @@ body.full-screen-helper .full-screen-switcher a .minimize {
   position: fixed;
   left: 280px;
   color: #eaebef;
-  background: #fff;
+  background: #EB6831;
   min-height: 80px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #EB6831;
 }
 .nxl-header .header-wrapper {
   display: flex;
@@ -1498,7 +1498,7 @@ body.full-screen-helper .full-screen-switcher a .minimize {
 }
 .nxl-header .header-wrapper .nxl-lavel-mega-menu-toggle a,
 .nxl-header .header-wrapper .nxl-navigation-toggle a {
-  color: #283c50;
+  color: #fff;
 }
 .nxl-header .header-wrapper .nxl-lavel-mega-menu-toggle i,
 .nxl-header .header-wrapper .nxl-navigation-toggle i {
@@ -2399,7 +2399,7 @@ html.minimenu .nxl-header {
   bottom: 0;
   z-index: 1026;
   position: fixed;
-  background: #fff;
+  background: #EB6831;
   width: 280px;
   transition: all 0.3s ease;
 }
@@ -2411,9 +2411,9 @@ html.minimenu .nxl-header {
   padding: 15px 30px;
   align-items: center;
   height: 80px;
-  background: #fff;
-  border-right: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
+  background: #EB6831;
+  border-right: 1px solid #EB6831;
+  border-bottom: 1px solid #EB6831;
 }
 .nxl-navigation .m-header .logo-sm {
   display: none;
@@ -2421,7 +2421,7 @@ html.minimenu .nxl-header {
 .nxl-navigation .navbar-content {
   padding: 10px 0;
   position: relative;
-  border-right: 1px solid #e5e7eb;
+  border-right: 1px solid #EB6831;
   height: calc(100vh - 80px);
 }
 .nxl-navigation .navbar-content ul {
@@ -2431,7 +2431,7 @@ html.minimenu .nxl-header {
 }
 .nxl-navigation .navbar-content .nxl-caption {
   display: block;
-  color: #7587a7;
+  color: #fff;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.07em;
@@ -2443,7 +2443,7 @@ html.minimenu .nxl-header {
 }
 .nxl-navigation .navbar-content .nxl-caption span:not(.badge) {
   display: block;
-  color: #67758a;
+  color: #fff;
   text-transform: capitalize;
   font-size: 10px;
   font-weight: 500;
@@ -2461,19 +2461,19 @@ html.minimenu .nxl-header {
   line-height: 1.2;
   padding: 10px 15px;
   font-size: 13px;
-  color: #283c50;
+  color: #fff;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 .nxl-navigation .navbar-content .nxl-link.active,
 .nxl-navigation .navbar-content .nxl-link:hover {
   text-decoration: none;
-  color: #283c50;
+  color: #fff;
   transition: all 0.3s ease;
 }
 .nxl-navigation .navbar-content .nxl-link.active .nxl-micon i,
 .nxl-navigation .navbar-content .nxl-link:hover .nxl-micon i {
-  color: #283c50;
+  color: #fff;
   transition: all 0.3s ease;
 }
 .nxl-navigation .navbar-content .nxl-arrow {
@@ -2486,7 +2486,7 @@ html.minimenu .nxl-header {
 .nxl-navigation .navbar-content .nxl-submenu .nxl-link {
   font-size: 0.8rem;
   padding: 10px 20px;
-  margin-left: 35px !important;
+  margin-left: 5px !important;
   margin-right: 5px !important;
 }
 .nxl-navigation .navbar-content .nxl-submenu .nxl-submenu .nxl-link {
@@ -2508,18 +2508,18 @@ html.minimenu .nxl-header {
 }
 .nxl-navigation .navbar-content .nxl-item.active > .nxl-link,
 .nxl-navigation .navbar-content .nxl-item:hover > .nxl-link {
-  color: #001327;
+  color: #EB6831;
   background-color: #eaebef;
   transition: all 0.3s ease;
 }
 .nxl-navigation .navbar-content .nxl-item.active > .nxl-link .nxl-micon i,
 .nxl-navigation .navbar-content .nxl-item:hover > .nxl-link .nxl-micon i {
-  color: #001327;
+  color: #EB6831;
   transition: all 0.3s ease;
 }
 .nxl-navigation .navbar-content .nxl-navbar > .nxl-item.active > .nxl-link,
 .nxl-navigation .navbar-content .nxl-navbar > .nxl-item:hover > .nxl-link {
-  color: #001327;
+  color: #EB6831;
   background-color: #eaebef;
   transition: all 0.3s ease;
 }
@@ -2649,6 +2649,7 @@ html.minimenu .nxl-navigation:hover .navbar-content .nxl-submenu .nxl-link {
   margin-left: 50px !important;
   margin-right: 15px !important;
 }
+
 html.minimenu
   .nxl-navigation:hover
   .navbar-content
@@ -2679,6 +2680,7 @@ html.minimenu .nxl-navigation:hover .navbar-content .nxl-caption:before {
 html.minimenu .nxl-navigation:hover .navbar-content .nxl-caption label {
   display: block;
 }
+
 .main-content .content-sidebar.content-sidebar-md {
   max-width: 300px;
 }
@@ -10001,3 +10003,5 @@ html.app-font-family-roboto-slab body {
         outline: none;
         box-shadow: none;
     }
+
+    
