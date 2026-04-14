@@ -1,0 +1,2331 @@
+492 queries executed, 301 success, 191 errors, 103 warnings
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_ABSENSI_DATA_BACK_ABSENSI_') then alter table ABSENSI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_ABSENSI_DATA_BACK_ABSENSI_
+end if' at line 9
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_ABSENSI_DATA_TEMP_ABSENSI_') then alter table ABSENSI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_ABSENSI_DATA_TEMP_ABSENSI_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_ABSENSI_DITERAPKA_MF_POT') then alter table ABSENSI delete foreign key ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_ABSENSI_DITERAPKA_MF_POT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_ABSENSI_MENJADI_S_TIME_REC') then alter table ABSENSI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_ABSENSI_MENJADI_S_TIME_REC
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_ABSENSI_TERJADI_P_KALENDER') then alter table ABSENSI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_ABSENSI_TERJADI_P_KALENDER
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_ABSENSI__DATA_BACK_ABSENSI') then alter table ABSENSI_BACKUP delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_ABSENSI__DATA_BACK_ABSENSI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_ABSENSI__DATA_TEMP_ABSENSI') then alter table ABSENSI_TEMP delete forei...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_ABSENSI__DATA_TEMP_ABSENSI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_BUKU_HAR_DIBUAT_OL_PEGAWAI') then alter table BUKU_HARIAN_HEAD delete f...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_BUKU_HAR_DIBUAT_OL_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_BUKU_HAR_TERKAIT_D_SKP_PEGA') then alter table BUKU_HARIAN_HEAD delete ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_BUKU_HAR_TERKAIT_D_SKP_PEGA
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_BUKU_HAR_TERKAIT_J_MF_JABAT2') then alter table BUKU_HARIAN_HEAD delete...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_BUKU_HAR_TERKAIT_J_MF_JABAT2
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_BUKU_HAR_TERKAIT_J_MF_JABAT') then alter table BUKU_HARIAN_HEAD delete ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_BUKU_HAR_TERKAIT_J_MF_JABAT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_DINAS_LU_BERDASARK_SPRIN_HE') then alter table DINAS_LUAR delete foreig...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_DINAS_LU_BERDASARK_SPRIN_HE
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_DINAS_LU_MELAKUKAN_PEGAWAI') then alter table DINAS_LUAR delete foreign...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_DINAS_LU_MELAKUKAN_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_DRH_JABATAN_D_MF_JABAT') then alter table DRH delete foreign key FK_DRH...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_DRH_JABATAN_D_MF_JABAT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_DRH_MEREKAM_D_LOG_TRAN') then alter table DRH delete foreign key FK_DRH...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_DRH_MEREKAM_D_LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_DRH_PEGAWAI_D_PEGAWAI') then alter table DRH delete foreign key FK_DRH_...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_DRH_PEGAWAI_D_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_HAK_AKSE_DIBERIKAN_PEGAWAI') then alter table HAK_AKSES_FORM delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_HAK_AKSE_DIBERIKAN_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_HAK_AKSE_UNTUK_FOR_MF_FORM') then alter table HAK_AKSES_FORM delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_HAK_AKSE_UNTUK_FOR_MF_FORM
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_HAK_AKSE_AKSES_SPR_MF_TYPE_') then alter table HAK_AKSES_TYPE_SPRIN del...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_HAK_AKSE_AKSES_SPR_MF_TYPE_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_HAK_AKSE_USER_SPRI_PEGAWAI') then alter table HAK_AKSES_TYPE_SPRIN dele...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_HAK_AKSE_USER_SPRI_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LEMBUR_DILAKUKAN_PEGAWAI') then alter table LEMBUR delete foreign key F...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LEMBUR_DILAKUKAN_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LEMBUR_TERJADI_T_KALENDER') then alter table LEMBUR delete foreign key ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LEMBUR_TERJADI_T_KALENDER
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_ACTI_DILAKUKAN_PEGAWAI') then alter table LOG_ACTIVITIY delete fore...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_ACTI_DILAKUKAN_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_ACTI_DILAKUKAN_MF_TIM_S') then alter table LOG_ACTIVITIY delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_ACTI_DILAKUKAN_MF_TIM_S
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_ACTI_MEMBACKUP_LOG_ACTI') then alter table LOG_ACTIVITIY delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_ACTI_MEMBACKUP_LOG_ACTI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_ACTI_MEMILIKI__MF_STATU') then alter table LOG_ACTIVITIY delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_ACTI_MEMILIKI__MF_STATU
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_ACTI_TRANSAKSI_LOG_TRAN') then alter table LOG_ACTIVITIY delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_ACTI_TRANSAKSI_LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_ACTI_UNIT_MELA_MF_UNIT_') then alter table LOG_ACTIVITIY delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_ACTI_UNIT_MELA_MF_UNIT_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_ACTI_MEMBACKUP_LOG_ACTI') then alter table LOG_ACTIVITIY_BACKUP del...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_ACTI_MEMBACKUP_LOG_ACTI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_TRAN_DATA_BACK_LOG_TRAN') then alter table LOG_TRANSAKSI delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_TRAN_DATA_BACK_LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_TRAN_TRANSAKSI_PEGAWAI') then alter table LOG_TRANSAKSI delete fore...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_TRAN_TRANSAKSI_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_LOG_TRAN_DATA_BACK_LOG_TRAN') then alter table LOG_TRANSAKSI_BACKUP del...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_LOG_TRAN_DATA_BACK_LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_CONFI_MENCATAT__LOG_TRAN') then alter table MF_CONFIG delete foreign...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_CONFI_MENCATAT__LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_FIELD_MENCATAT__LOG_TRAN') then alter table MF_FIELD_CARI delete for...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_FIELD_MENCATAT__LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_HOST__HOST_DARI_MF_UNIT_') then alter table MF_HOST_NAME_FP delete f...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_HOST__HOST_DARI_MF_UNIT_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_JABAT_MERUBAH_J_PERUBAHA') then alter table MF_JABATAN delete foreig...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_JABAT_MERUBAH_J_PERUBAHA
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_JABAT_TERMASUK__MF_GROUP') then alter table MF_JABATAN delete foreig...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_JABAT_TERMASUK__MF_GROUP
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_JABAT_TERMASUK__MF__SUB_') then alter table MF_JABATAN delete foreig...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_JABAT_TERMASUK__MF__SUB_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_JABAT_DIBUAT_UN_MF_JABAT') then alter table MF_JABATAN_KEGIATAN dele...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_JABAT_DIBUAT_UN_MF_JABAT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_JOBLI_MEMILIKI__MF_GROUP') then alter table MF_JOBLIST delete foreig...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_JOBLI_MEMILIKI__MF_GROUP
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_JOBLI_MENGACU_K_MF_JABAT') then alter table MF_JOBLIST delete foreig...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_JOBLI_MENGACU_K_MF_JABAT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_KLASI_MENGAKLSI_MF_TYPE_') then alter table MF_KLASIFIKASI_SURAT del...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_KLASI_MENGAKLSI_MF_TYPE_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_LOAD__MENCATAT__LOG_TRAN') then alter table MF_LOAD_FINGER delete fo...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_LOAD__MENCATAT__LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_SHIFT_MENCATAT__LOG_TRAN') then alter table MF_SHIFT delete foreign ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_SHIFT_MENCATAT__LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_SU_MENYIMPAN_PEGAWAI') then alter table MF_SU delete foreign key FK_...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_SU_MENYIMPAN_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_TIM_S_BERANGGOT_MF_TIM_S') then alter table MF_TIM_SIAGA_ANGGOTA del...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_TIM_S_BERANGGOT_MF_TIM_S
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_TIM_S_DIISI_OLE_PEGAWAI') then alter table MF_TIM_SIAGA_ANGGOTA dele...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_TIM_S_DIISI_OLE_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MF_TR_MENCATAT__LOG_TRAN') then alter table MF_TR delete foreign key FK...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MF_TR_MENCATAT__LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_MONITORI_MENCATAT__LOG_TRAN') then alter table MONITORING_APP delete fo...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_MONITORI_MENCATAT__LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_OTORISAS_DIAJUKAN__PEGAWAI') then alter table OTORISASI delete foreign ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_OTORISAS_DIAJUKAN__PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_OTORISAS_OTORISASI_MF_UNIT_') then alter table OTORISASI_HISTORY delete...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_OTORISAS_OTORISASI_MF_UNIT_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_OTORISAS_OTORISASI_OTORISAS') then alter table OTORISASI_HISTORY delete...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_OTORISAS_OTORISASI_OTORISAS
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_OTORISAS_USER_OTOR_PEGAWAI') then alter table OTORISASI_HISTORY delete ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_OTORISAS_USER_OTOR_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEGAWAI_BEKERJA_D_MF_UNIT_') then alter table PEGAWAI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEGAWAI_BEKERJA_D_MF_UNIT_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEGAWAI_DILAKUKAN_ABSENSI') then alter table PEGAWAI delete foreign key...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEGAWAI_DILAKUKAN_ABSENSI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEGAWAI_MEMILIKI__MF_ESELO') then alter table PEGAWAI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEGAWAI_MEMILIKI__MF_ESELO
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEGAWAI_MEMILIKI__MF_GOL') then alter table PEGAWAI delete foreign key ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEGAWAI_MEMILIKI__MF_GOL
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEGAWAI_MENDUDUKI_MF_JABAT') then alter table PEGAWAI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEGAWAI_MENDUDUKI_MF_JABAT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEGAWAI_TERMASUK__MF_CLASS') then alter table PEGAWAI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEGAWAI_TERMASUK__MF_CLASS
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEGAWAI_UNTUK_STA_MF_TUNJA') then alter table PEGAWAI delete foreign ke...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEGAWAI_UNTUK_STA_MF_TUNJA
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEG_MUTA_MENCATAT__LOG_TRAN') then alter table PEG_MUTASI_UNIT delete f...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEG_MUTA_MENCATAT__LOG_TRAN
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PEG_MUTA_USER_PIND_PEGAWAI') then alter table PEG_MUTASI_UNIT delete fo...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PEG_MUTA_USER_PIND_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_PERUBAHA_MERUBAH_J_MF_JABAT') then alter table PERUBAHAN_JABATAN delete...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_PERUBAHA_MERUBAH_J_MF_JABAT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_SARAN_MENYAMPAI_PEGAWAI') then alter table SARAN delete foreign key FK_...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_SARAN_MENYAMPAI_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_SKP_PEGA_DILAKSANA_MF_JABAT') then alter table SKP_PEGAWAI delete forei...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_SKP_PEGA_DILAKSANA_MF_JABAT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_SKP_PEGA_TERKAIT_O_PEGAWAI') then alter table SKP_PEGAWAI delete foreig...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_SKP_PEGA_TERKAIT_O_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_SKP_PEGA_BAWAHAN_S_SKP_PEGA') then alter table SKP_PEGAWAI_HEAD delete ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_SKP_PEGA_BAWAHAN_S_SKP_PEGA
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_SKP_PEGA_GOL_PEGAW_MF_GOL') then alter table SKP_PEGAWAI_HEAD delete fo...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_SKP_PEGA_GOL_PEGAW_MF_GOL
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_SKP_PEGA_JABATAN_P_MF_JABAT') then alter table SKP_PEGAWAI_HEAD delete ...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_SKP_PEGA_JABATAN_P_MF_JABAT
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_SKP_PEGA_USER_HEAD_PEGAWAI') then alter table SKP_PEGAWAI_HEAD delete f...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_SKP_PEGA_USER_HEAD_PEGAWAI
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_SPRIN_HE_BERTIPE_MF_TYPE_') then alter table SPRIN_HEADER delete foreig...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_SPRIN_HE_BERTIPE_MF_TYPE_
+end if' at line 3
+
+Query: if exists(select 1 from sys.sysforeignkey where role='FK_USER_ACC_DIMILIKI__PEGAWAI') then alter table USER_ACCOUNT delete forei...
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'delete foreign key FK_USER_ACC_DIMILIKI__PEGAWAI
+end if' at line 3
+
+Query: drop index if exists ABSENSI.DATA_TEMP_ABSENSI_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DATA_TEMP_ABSENSI_FK' at line 1
+
+Query: drop index if exists ABSENSI.DATA_BACKUP_ABSENSI_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DATA_BACKUP_ABSENSI_FK' at line 1
+
+Query: drop index if exists ABSENSI.DITERAPKAN_PADA_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DITERAPKAN_PADA_FK' at line 1
+
+Query: drop index if exists ABSENSI.TERJADI_PADA_TANGGAL_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TERJADI_PADA_TANGGAL_FK' at line 1
+
+Query: drop index if exists ABSENSI.MENJADI_SUMBER_DATA_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENJADI_SUMBER_DATA_FK' at line 1
+
+Query: drop index if exists ABSENSI.ABSENSI_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.ABSENSI_PK' at line 1
+
+Query: drop table if exists ABSENSI
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists ABSENSI_BACKUP.DATA_BACKUP_ABSENSI2_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DATA_BACKUP_ABSENSI2_FK' at line 1
+
+Query: drop index if exists ABSENSI_BACKUP.ABSENSI_BACKUP_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.ABSENSI_BACKUP_PK' at line 1
+
+Query: drop table if exists ABSENSI_BACKUP
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists ABSENSI_TEMP.DATA_TEMP_ABSENSI2_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DATA_TEMP_ABSENSI2_FK' at line 1
+
+Query: drop index if exists ABSENSI_TEMP.ABSENSI_TEMP_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.ABSENSI_TEMP_PK' at line 1
+
+Query: drop table if exists ABSENSI_TEMP
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists BUKU_HARIAN_HEAD.TERKAIT_JABATAN_KEGIATAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TERKAIT_JABATAN_KEGIATAN_FK' at line 1
+
+Query: drop index if exists BUKU_HARIAN_HEAD.TERKAIT_DENGAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TERKAIT_DENGAN_FK' at line 1
+
+Query: drop index if exists BUKU_HARIAN_HEAD.TERKAIT_JABATAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TERKAIT_JABATAN_FK' at line 1
+
+Query: drop index if exists BUKU_HARIAN_HEAD.DIBUAT_OLEH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DIBUAT_OLEH_FK' at line 1
+
+Query: drop index if exists BUKU_HARIAN_HEAD.BUKU_HARIAN_HEAD_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.BUKU_HARIAN_HEAD_PK' at line 1
+
+Query: drop table if exists BUKU_HARIAN_HEAD
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists DINAS_LUAR.BERDASARKAN_SPRIN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.BERDASARKAN_SPRIN_FK' at line 1
+
+Query: drop index if exists DINAS_LUAR.DINAS_LUAR_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DINAS_LUAR_PK' at line 1
+
+Query: drop table if exists DINAS_LUAR
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists DRH.PEGAWAI_DRH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.PEGAWAI_DRH_FK' at line 1
+
+Query: drop index if exists DRH.MEREKAM_DRH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MEREKAM_DRH_FK' at line 1
+
+Query: drop index if exists DRH.JABATAN_DRH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.JABATAN_DRH_FK' at line 1
+
+Query: drop table if exists DRH
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists HAK_AKSES_FORM.UNTUK_FORM_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.UNTUK_FORM_FK' at line 1
+
+Query: drop index if exists HAK_AKSES_FORM.DIBERIKAN_KEPADA_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DIBERIKAN_KEPADA_FK' at line 1
+
+Query: drop table if exists HAK_AKSES_FORM
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists HAK_AKSES_TYPE_SPRIN.AKSES_SPRIN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.AKSES_SPRIN_FK' at line 1
+
+Query: drop index if exists HAK_AKSES_TYPE_SPRIN.USER_SPRIN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.USER_SPRIN_FK' at line 1
+
+Query: drop table if exists HAK_AKSES_TYPE_SPRIN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists KALENDER.KALENDER_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.KALENDER_PK' at line 1
+
+Query: drop table if exists KALENDER
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists LEMBUR.DILAKUKAN_LEMBUR_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DILAKUKAN_LEMBUR_FK' at line 1
+
+Query: drop index if exists LEMBUR.TERJADI_TANGGAL_LEMBUR_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TERJADI_TANGGAL_LEMBUR_FK' at line 1
+
+Query: drop table if exists LEMBUR
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists LOG_ACTIVITIY.MEMBACKUP_LOG_ACTIVITIY_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MEMBACKUP_LOG_ACTIVITIY_FK' at line 1
+
+Query: drop index if exists LOG_ACTIVITIY.TRANSAKSI_TEREKAM_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TRANSAKSI_TEREKAM_FK' at line 1
+
+Query: drop index if exists LOG_ACTIVITIY.UNIT_MELAKUKAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.UNIT_MELAKUKAN_FK' at line 1
+
+Query: drop index if exists LOG_ACTIVITIY.DILAKUKAN_TIM_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DILAKUKAN_TIM_FK' at line 1
+
+Query: drop index if exists LOG_ACTIVITIY.MEMILIKI_STATUS_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MEMILIKI_STATUS_FK' at line 1
+
+Query: drop index if exists LOG_ACTIVITIY.DILAKUKAN_OLEH_USER_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DILAKUKAN_OLEH_USER_FK' at line 1
+
+Query: drop index if exists LOG_ACTIVITIY.LOG_ACTIVITIY_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.LOG_ACTIVITIY_PK' at line 1
+
+Query: drop table if exists LOG_ACTIVITIY
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists LOG_ACTIVITIY_BACKUP.MEMBACKUP_LOG_ACTIVITIY2_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MEMBACKUP_LOG_ACTIVITIY2_FK' at line 1
+
+Query: drop index if exists LOG_ACTIVITIY_BACKUP.LOG_ACTIVITIY_BACKUP_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.LOG_ACTIVITIY_BACKUP_PK' at line 1
+
+Query: drop table if exists LOG_ACTIVITIY_BACKUP
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists LOG_TRANSAKSI.DATA_BACKUP_TRANSAKSI_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DATA_BACKUP_TRANSAKSI_FK' at line 1
+
+Query: drop index if exists LOG_TRANSAKSI.TRANSAKSI_DILAKUKAN_OLEH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TRANSAKSI_DILAKUKAN_OLEH_FK' at line 1
+
+Query: drop index if exists LOG_TRANSAKSI.LOG_TRANSAKSI_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.LOG_TRANSAKSI_PK' at line 1
+
+Query: drop table if exists LOG_TRANSAKSI
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists LOG_TRANSAKSI_BACKUP.DATA_BACKUP_TRANSAKSI2_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DATA_BACKUP_TRANSAKSI2_FK' at line 1
+
+Query: drop index if exists LOG_TRANSAKSI_BACKUP.LOG_TRANSAKSI_BACKUP_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.LOG_TRANSAKSI_BACKUP_PK' at line 1
+
+Query: drop table if exists LOG_TRANSAKSI_BACKUP
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MEDIA_INFORMASI.MEDIA_INFORMASI_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MEDIA_INFORMASI_PK' at line 1
+
+Query: drop table if exists MEDIA_INFORMASI
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_CLASS.MF_CLASS_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_CLASS_PK' at line 1
+
+Query: drop table if exists MF_CLASS
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_CONFIG.MENCATAT_CONFIG_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENCATAT_CONFIG_FK' at line 1
+
+Query: drop table if exists MF_CONFIG
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop table if exists MF_EMAIL_SEND
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_ESELON.MF_ESELON_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_ESELON_PK' at line 1
+
+Query: drop table if exists MF_ESELON
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_FIELD_CARI.MENCATAT_PENCARIAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENCATAT_PENCARIAN_FK' at line 1
+
+Query: drop index if exists MF_FIELD_CARI.MF_FIELD_CARI_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_FIELD_CARI_PK' at line 1
+
+Query: drop table if exists MF_FIELD_CARI
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_FORM.MF_FORM_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_FORM_PK' at line 1
+
+Query: drop table if exists MF_FORM
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_FORM_NEW.MF_FORM_NEW_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_FORM_NEW_PK' at line 1
+
+Query: drop table if exists MF_FORM_NEW
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_GOL.MF_GOL_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_GOL_PK' at line 1
+
+Query: drop table if exists MF_GOL
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_GROUP_JABATAN.MF_GROUP_JABATAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_GROUP_JABATAN_PK' at line 1
+
+Query: drop table if exists MF_GROUP_JABATAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_HOST_NAME_FP.HOST_DARI_UNIT_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.HOST_DARI_UNIT_FK' at line 1
+
+Query: drop table if exists MF_HOST_NAME_FP
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_JABATAN.MERUBAH_JABATAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MERUBAH_JABATAN_FK' at line 1
+
+Query: drop index if exists MF_JABATAN.RELATIONSHIP_2_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.RELATIONSHIP_2_FK' at line 1
+
+Query: drop index if exists MF_JABATAN.RELATIONSHIP_1_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.RELATIONSHIP_1_FK' at line 1
+
+Query: drop index if exists MF_JABATAN.MF_JABATAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_JABATAN_PK' at line 1
+
+Query: drop table if exists MF_JABATAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_JABATAN_KEGIATAN.DIBUAT_UNTUK_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DIBUAT_UNTUK_FK' at line 1
+
+Query: drop index if exists MF_JABATAN_KEGIATAN.MF_JABATAN_KEGIATAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_JABATAN_KEGIATAN_PK' at line 1
+
+Query: drop table if exists MF_JABATAN_KEGIATAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_JAM_KERJA.MF_JAM_KERJA_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_JAM_KERJA_PK' at line 1
+
+Query: drop table if exists MF_JAM_KERJA
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_JOBLIST.MENGACU_KE_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENGACU_KE_FK' at line 1
+
+Query: drop index if exists MF_JOBLIST.MEMILIKI_JOB_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MEMILIKI_JOB_FK' at line 1
+
+Query: drop index if exists MF_JOBLIST.MF_JOBLIST_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_JOBLIST_PK' at line 1
+
+Query: drop table if exists MF_JOBLIST
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_KLASIFIKASI_SURAT.MENGAKLSIFIKASI_SURAT_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENGAKLSIFIKASI_SURAT_FK' at line 1
+
+Query: drop index if exists MF_KLASIFIKASI_SURAT.MF_KLASIFIKASI_SURAT_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_KLASIFIKASI_SURAT_PK' at line 1
+
+Query: drop table if exists MF_KLASIFIKASI_SURAT
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_LOAD_FINGER.MENCATAT_FINGER_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENCATAT_FINGER_FK' at line 1
+
+Query: drop table if exists MF_LOAD_FINGER
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_ORGZ_SIAGA.MF_ORGZ_SIAGA_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_ORGZ_SIAGA_PK' at line 1
+
+Query: drop table if exists MF_ORGZ_SIAGA
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_POT.MF_POTONGAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_POTONGAN_PK' at line 1
+
+Query: drop table if exists MF_POT
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_POTONGAN.MF_POTONGAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_POTONGAN_PK' at line 1
+
+Query: drop table if exists MF_POTONGAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop table if exists MF_PRIORITY_TRANSAKSI
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_SATUAN.MF_SATUAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_SATUAN_PK' at line 1
+
+Query: drop table if exists MF_SATUAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_SHIFT.MENCATAT_SHIFT_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENCATAT_SHIFT_FK' at line 1
+
+Query: drop index if exists MF_SHIFT.MF_SHIFT_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_SHIFT_PK' at line 1
+
+Query: drop table if exists MF_SHIFT
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_STATUS.MF_STATUS_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_STATUS_PK' at line 1
+
+Query: drop table if exists MF_STATUS
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_SU.MENYIMPAN_USER_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENYIMPAN_USER_FK' at line 1
+
+Query: drop table if exists MF_SU
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_TIM_SIAGA.MF_TIM_SIAGA_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_TIM_SIAGA_PK' at line 1
+
+Query: drop table if exists MF_TIM_SIAGA
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_TIM_SIAGA_ANGGOTA.DIISI_OLEH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DIISI_OLEH_FK' at line 1
+
+Query: drop index if exists MF_TIM_SIAGA_ANGGOTA.BERANGGOTAKAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.BERANGGOTAKAN_FK' at line 1
+
+Query: drop table if exists MF_TIM_SIAGA_ANGGOTA
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_TR.MENCATAT_TR_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENCATAT_TR_FK' at line 1
+
+Query: drop table if exists MF_TR
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_TUNJANGAN.MF_TUNJANGAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_TUNJANGAN_PK' at line 1
+
+Query: drop table if exists MF_TUNJANGAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_TYPE_SPRIN.MF_TYPE_SPRIN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_TYPE_SPRIN_PK' at line 1
+
+Query: drop table if exists MF_TYPE_SPRIN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_UNIT_KERJA.MF_UNIT_KERJA_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_UNIT_KERJA_PK' at line 1
+
+Query: drop table if exists MF_UNIT_KERJA
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF_UNSUR_KEGIATAN.MF_UNSUR_KEGIATAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF_UNSUR_KEGIATAN_PK' at line 1
+
+Query: drop table if exists MF_UNSUR_KEGIATAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MF__SUB_GROUP_JABATAN.MF__SUB_GROUP_JABATAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MF__SUB_GROUP_JABATAN_PK' at line 1
+
+Query: drop table if exists MF__SUB_GROUP_JABATAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists MONITORING_APP.MENCATAT_LOG_APP_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENCATAT_LOG_APP_FK' at line 1
+
+Query: drop table if exists MONITORING_APP
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists OTORISASI.DIAJUKAN_OLEH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DIAJUKAN_OLEH_FK' at line 1
+
+Query: drop index if exists OTORISASI.OTORISASI_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.OTORISASI_PK' at line 1
+
+Query: drop table if exists OTORISASI
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists OTORISASI_HISTORY.OTORISASI_SEBELUMNYA_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.OTORISASI_SEBELUMNYA_FK' at line 1
+
+Query: drop index if exists OTORISASI_HISTORY.OTORISASI_HISTORY_UNIT_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.OTORISASI_HISTORY_UNIT_FK' at line 1
+
+Query: drop index if exists OTORISASI_HISTORY.USER_OTORISASI_HISTORY_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.USER_OTORISASI_HISTORY_FK' at line 1
+
+Query: drop index if exists OTORISASI_HISTORY.OTORISASI_HISTORY_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.OTORISASI_HISTORY_PK' at line 1
+
+Query: drop table if exists OTORISASI_HISTORY
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists PEGAWAI.UNTUK_STATUS_TUNJANGAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.UNTUK_STATUS_TUNJANGAN_FK' at line 1
+
+Query: drop index if exists PEGAWAI.MEMILIKI_ESELON_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MEMILIKI_ESELON_FK' at line 1
+
+Query: drop index if exists PEGAWAI.DILAKUKAN_OLEH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DILAKUKAN_OLEH_FK' at line 1
+
+Query: drop index if exists PEGAWAI.TERMASUK_KELAS_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TERMASUK_KELAS_FK' at line 1
+
+Query: drop index if exists PEGAWAI.BEKERJA_DI_UNIT_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.BEKERJA_DI_UNIT_FK' at line 1
+
+Query: drop index if exists PEGAWAI.MEMILIKI_GOLONGAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MEMILIKI_GOLONGAN_FK' at line 1
+
+Query: drop index if exists PEGAWAI.MENDUDUKI_JABATAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENDUDUKI_JABATAN_FK' at line 1
+
+Query: drop index if exists PEGAWAI.PEGAWAI_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.PEGAWAI_PK' at line 1
+
+Query: drop table if exists PEGAWAI
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists PEG_MUTASI_UNIT.MENCATAT_MUTASI_UNIT_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENCATAT_MUTASI_UNIT_FK' at line 1
+
+Query: drop index if exists PEG_MUTASI_UNIT.USER_PINDAH_UNIT_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.USER_PINDAH_UNIT_FK' at line 1
+
+Query: drop table if exists PEG_MUTASI_UNIT
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists PERUBAHAN_JABATAN.MERUBAH_JABATAN2_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MERUBAH_JABATAN2_FK' at line 1
+
+Query: drop index if exists PERUBAHAN_JABATAN.PERUBAHAN_JABATAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.PERUBAHAN_JABATAN_PK' at line 1
+
+Query: drop table if exists PERUBAHAN_JABATAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists SARAN.MENYAMPAIKAN_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.MENYAMPAIKAN_FK' at line 1
+
+Query: drop index if exists SARAN.SARAN_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.SARAN_PK' at line 1
+
+Query: drop table if exists SARAN
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists SKP_PEGAWAI.DIMILIKI_OLEH_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DIMILIKI_OLEH_FK' at line 1
+
+Query: drop index if exists SKP_PEGAWAI.DILAKSANAKAN_DI_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DILAKSANAKAN_DI_FK' at line 1
+
+Query: drop index if exists SKP_PEGAWAI.SKP_PEGAWAI_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.SKP_PEGAWAI_PK' at line 1
+
+Query: drop table if exists SKP_PEGAWAI
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists SKP_PEGAWAI_HEAD.GOL_PEGAWAI_HEAD_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.GOL_PEGAWAI_HEAD_FK' at line 1
+
+Query: drop index if exists SKP_PEGAWAI_HEAD.BAWAHAN_USER_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.BAWAHAN_USER_FK' at line 1
+
+Query: drop index if exists SKP_PEGAWAI_HEAD.USER_HEAD_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.USER_HEAD_FK' at line 1
+
+Query: drop index if exists SKP_PEGAWAI_HEAD.JABATAN_PEGAWAI_HEAD_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.JABATAN_PEGAWAI_HEAD_FK' at line 1
+
+Query: drop index if exists SKP_PEGAWAI_HEAD.SKP_PEGAWAI_HEAD_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.SKP_PEGAWAI_HEAD_PK' at line 1
+
+Query: drop table if exists SKP_PEGAWAI_HEAD
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists SPRIN_HEADER.BERTIPE_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.BERTIPE_FK' at line 1
+
+Query: drop index if exists SPRIN_HEADER.SPRIN_HEADER_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.SPRIN_HEADER_PK' at line 1
+
+Query: drop table if exists SPRIN_HEADER
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists TIME_RECORDER.TIME_RECORDER_PK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.TIME_RECORDER_PK' at line 1
+
+Query: drop table if exists TIME_RECORDER
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: drop index if exists USER_ACCOUNT.DIMILIKI_OLEH_USER_FK
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.DIMILIKI_OLEH_USER_FK' at line 1
+
+Query: drop table if exists USER_ACCOUNT
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create table ABSENSI ( ABSENSI_ID integer not null, ATTRIBUTE_186 integer not null, TGL_KERJA timestamp not null, ABSENSI_ID2 in...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index ABSENSI_PK on ABSENSI ( ABSENSI_ID ASC )
+
+0 row(s) affected
+
+Query: create index MENJADI_SUMBER_DATA_FK on ABSENSI ( FINGER_ID ASC )
+
+0 row(s) affected
+
+Query: create index TERJADI_PADA_TANGGAL_FK on ABSENSI ( TGL_KERJA ASC )
+
+0 row(s) affected
+
+Query: create index DITERAPKAN_PADA_FK on ABSENSI ( ATTRIBUTE_186 ASC )
+
+0 row(s) affected
+
+Query: create index DATA_BACKUP_ABSENSI_FK on ABSENSI ( ABSENSI_ID2 ASC )
+
+0 row(s) affected
+
+Query: create index DATA_TEMP_ABSENSI_FK on ABSENSI ( ABSENSI_ID3 ASC )
+
+0 row(s) affected
+
+Query: create table ABSENSI_BACKUP ( ABSENSI_ID2 integer not null, ABSENSI_ID integer null, TGL_JAM_IN timestamp null, TGL_JAM_OUT time...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index ABSENSI_BACKUP_PK on ABSENSI_BACKUP ( ABSENSI_ID2 ASC )
+
+0 row(s) affected
+
+Query: create index DATA_BACKUP_ABSENSI2_FK on ABSENSI_BACKUP ( ABSENSI_ID ASC )
+
+0 row(s) affected
+
+Query: create table ABSENSI_TEMP ( ABSENSI_ID3 integer not null, ABSENSI_ID integer null, TGL_JAM_IN timestamp null, TGL_JAM_OUT timest...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index ABSENSI_TEMP_PK on ABSENSI_TEMP ( ABSENSI_ID3 ASC )
+
+0 row(s) affected
+
+Query: create index DATA_TEMP_ABSENSI2_FK on ABSENSI_TEMP ( ABSENSI_ID ASC )
+
+0 row(s) affected
+
+Query: create table BUKU_HARIAN_HEAD ( ATTRIBUTE_266 varchar(100) not null, JABATAN_ID integer null, NIP varchar(50) not null, ITEM_ID ...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index BUKU_HARIAN_HEAD_PK on BUKU_HARIAN_HEAD ( ATTRIBUTE_266 ASC )
+
+0 row(s) affected
+
+Query: create index DIBUAT_OLEH_FK on BUKU_HARIAN_HEAD ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index TERKAIT_JABATAN_FK on BUKU_HARIAN_HEAD ( JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index TERKAIT_DENGAN_FK on BUKU_HARIAN_HEAD ( JABATAN_ID ASC, NIP ASC, GUID_SKP_PEG ASC )
+
+0 row(s) affected
+
+Query: create index TERKAIT_JABATAN_KEGIATAN_FK on BUKU_HARIAN_HEAD ( ITEM_ID ASC )
+
+0 row(s) affected
+
+Query: create table DINAS_LUAR ( DINAS_TRANSAKSI_ID varchar(50) not null, GUID_SPRIN varchar(50) not null, NIP varchar(50) not null, TG...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index DINAS_LUAR_PK on DINAS_LUAR ( DINAS_TRANSAKSI_ID ASC )
+
+0 row(s) affected
+
+Query: create index BERDASARKAN_SPRIN_FK on DINAS_LUAR ( GUID_SPRIN ASC )
+
+0 row(s) affected
+
+Query: create table DRH ( NIP varchar(50) not null, JABATAN_ID integer not null, ATTRIBUTE_247 integer not null, ATTRIBUTE_414 varchar(...
+
+0 row(s) affected
+
+Query: create index JABATAN_DRH_FK on DRH ( JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index MEREKAM_DRH_FK on DRH ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create index PEGAWAI_DRH_FK on DRH ( NIP ASC )
+
+0 row(s) affected
+
+Query: create table HAK_AKSES_FORM ( ATTRIBUTE_252 varchar(50) not null, NIP varchar(50) not null, ATTRIBUTE_283 varchar(5) null, ATTRI...
+
+0 row(s) affected
+
+Query: create index DIBERIKAN_KEPADA_FK on HAK_AKSES_FORM ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index UNTUK_FORM_FK on HAK_AKSES_FORM ( ATTRIBUTE_252 ASC )
+
+0 row(s) affected
+
+Query: create table HAK_AKSES_TYPE_SPRIN ( TYPE_SPRIN_ID char(20) not null, NIP varchar(50) not null, ATTRIBUTE_417 char(10) null, ATTR...
+
+0 row(s) affected
+
+Query: create index USER_SPRIN_FK on HAK_AKSES_TYPE_SPRIN ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index AKSES_SPRIN_FK on HAK_AKSES_TYPE_SPRIN ( TYPE_SPRIN_ID ASC )
+
+0 row(s) affected
+
+Query: create table KALENDER ( TGL_KERJA timestamp not null, IS_LIBUR varchar(1) null, KET varchar(50) null, UPDATE_BY varchar(50) null...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index KALENDER_PK on KALENDER ( TGL_KERJA ASC )
+
+0 row(s) affected
+
+Query: create table LEMBUR ( NIP varchar(50) null, TGL_KERJA timestamp null, JAM_IN timestamp null, JAM_OUT timestamp null, UPDATE_BY v...
+
+0 row(s) affected
+
+Query: create index TERJADI_TANGGAL_LEMBUR_FK on LEMBUR ( TGL_KERJA ASC )
+
+0 row(s) affected
+
+Query: create index DILAKUKAN_LEMBUR_FK on LEMBUR ( NIP ASC )
+
+0 row(s) affected
+
+Query: create table LOG_ACTIVITIY ( ATTRIBUTE_210 varchar(50) not null, ATTRIBUTE_247 integer not null, UNIT_KERJA_ID integer not null,...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index LOG_ACTIVITIY_PK on LOG_ACTIVITIY ( ATTRIBUTE_210 ASC )
+
+0 row(s) affected
+
+Query: create index DILAKUKAN_OLEH_USER_FK on LOG_ACTIVITIY ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index MEMILIKI_STATUS_FK on LOG_ACTIVITIY ( ATTRIBUTE_221 ASC )
+
+0 row(s) affected
+
+Query: create index DILAKUKAN_TIM_FK on LOG_ACTIVITIY ( GUID_TIM ASC )
+
+0 row(s) affected
+
+Query: create index UNIT_MELAKUKAN_FK on LOG_ACTIVITIY ( UNIT_KERJA_ID ASC )
+
+0 row(s) affected
+
+Query: create index TRANSAKSI_TEREKAM_FK on LOG_ACTIVITIY ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create index MEMBACKUP_LOG_ACTIVITIY_FK on LOG_ACTIVITIY ( ATTRIBUTE_290 ASC )
+
+0 row(s) affected
+
+Query: create table LOG_ACTIVITIY_BACKUP ( ATTRIBUTE_290 varchar(50) not null, ATTRIBUTE_210 varchar(50) null, ATTRIBUTE_211 varchar(50...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index LOG_ACTIVITIY_BACKUP_PK on LOG_ACTIVITIY_BACKUP ( ATTRIBUTE_290 ASC )
+
+0 row(s) affected
+
+Query: create index MEMBACKUP_LOG_ACTIVITIY2_FK on LOG_ACTIVITIY_BACKUP ( ATTRIBUTE_210 ASC )
+
+0 row(s) affected
+
+Query: create table LOG_TRANSAKSI ( ATTRIBUTE_247 integer not null, NIP varchar(50) not null, ATTRIBUTE_401 integer not null, ATTRIBUTE...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index LOG_TRANSAKSI_PK on LOG_TRANSAKSI ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create index TRANSAKSI_DILAKUKAN_OLEH_FK on LOG_TRANSAKSI ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index DATA_BACKUP_TRANSAKSI_FK on LOG_TRANSAKSI ( ATTRIBUTE_401 ASC )
+
+0 row(s) affected
+
+Query: create table LOG_TRANSAKSI_BACKUP ( ATTRIBUTE_401 integer not null, ATTRIBUTE_247 integer null, ATTRIBUTE_251 varchar(100) null,...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index LOG_TRANSAKSI_BACKUP_PK on LOG_TRANSAKSI_BACKUP ( ATTRIBUTE_401 ASC )
+
+0 row(s) affected
+
+Query: create index DATA_BACKUP_TRANSAKSI2_FK on LOG_TRANSAKSI_BACKUP ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create table MEDIA_INFORMASI ( ATTRIBUTE_402 integer not null, ATTRIBUTE_403 timestamp null, ATTRIBUTE_404 varchar(50) null, ATT...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MEDIA_INFORMASI_PK on MEDIA_INFORMASI ( ATTRIBUTE_402 ASC )
+
+0 row(s) affected
+
+Query: create table MF_CLASS ( CLASS_ID integer not null, TUNJANGAN float null, ID integer null, TGL_MULAI timestamp null, UPDATE_IN_BY...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_CLASS_PK on MF_CLASS ( CLASS_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_CONFIG ( ATTRIBUTE_247 integer not null, ATTRIBUTE_361 varchar(50) null, ATTRIBUTE_362 timestamp null, ATTRIBUTE...
+
+0 row(s) affected
+
+Query: create index MENCATAT_CONFIG_FK on MF_CONFIG ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create table MF_EMAIL_SEND ( ATTRIBUTE_364 varchar(50) null, ATTRIBUTE_365 varchar(50) null, ATTRIBUTE_366 varchar(50) null, ATT...
+
+0 row(s) affected
+
+Query: create table MF_ESELON ( ESELON varchar(50) not null, URUT_ESELON integer null, constraint PK_MF_ESELON primary key (ESELON) )
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_ESELON_PK on MF_ESELON ( ESELON ASC )
+
+0 row(s) affected
+
+Query: create table MF_FIELD_CARI ( ATTRIBUTE_353 varchar(50) not null, ATTRIBUTE_247 integer not null, ATTRIBUTE_354 varchar(50) null,...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_FIELD_CARI_PK on MF_FIELD_CARI ( ATTRIBUTE_353 ASC )
+
+0 row(s) affected
+
+Query: create index MENCATAT_PENCARIAN_FK on MF_FIELD_CARI ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create table MF_FORM ( ATTRIBUTE_252 varchar(50) not null, ATTRIBUTE_253 varchar(70) null, ATTRIBUTE_254 varchar(20) null, ATTRI...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_FORM_PK on MF_FORM ( ATTRIBUTE_252 ASC )
+
+0 row(s) affected
+
+Query: create table MF_FORM_NEW ( ATTRIBUTE_371 varchar(50) not null, ATTRIBUTE_372 varchar(70) null, ATTRIBUTE_383 varchar(20) null, A...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_FORM_NEW_PK on MF_FORM_NEW ( ATTRIBUTE_371 ASC )
+
+0 row(s) affected
+
+Query: create table MF_GOL ( GOL_ID integer not null, NAMA_GOL varchar(50) null, PANGKAT_GOL varchar(50) null, URUT_GOL integer null, T...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_GOL_PK on MF_GOL ( GOL_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_GROUP_JABATAN ( GROUP_JABATAN_ID integer not null, NAMA_GROUP_JABATAN varchar(50) not null, constraint PK_MF_GRO...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_GROUP_JABATAN_PK on MF_GROUP_JABATAN ( GROUP_JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_HOST_NAME_FP ( UNIT_KERJA_ID integer not null, ATTRIBUTE_370 varchar(50) null )
+
+0 row(s) affected
+
+Query: create index HOST_DARI_UNIT_FK on MF_HOST_NAME_FP ( UNIT_KERJA_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_JABATAN ( JABATAN_ID integer not null, ATTRIBUTE_413 integer not null, GROUP_JABATAN_ID integer not null, SUB_GR...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_JABATAN_PK on MF_JABATAN ( JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index RELATIONSHIP_1_FK on MF_JABATAN ( GROUP_JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index RELATIONSHIP_2_FK on MF_JABATAN ( SUB_GROUP_JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index MERUBAH_JABATAN_FK on MF_JABATAN ( ATTRIBUTE_413 ASC )
+
+0 row(s) affected
+
+Query: create table MF_JABATAN_KEGIATAN ( ITEM_ID varchar(50) not null, JABATAN_ID integer not null, DESKRIPSI varchar(500) null, AK fl...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_JABATAN_KEGIATAN_PK on MF_JABATAN_KEGIATAN ( ITEM_ID ASC )
+
+0 row(s) affected
+
+Query: create index DIBUAT_UNTUK_FK on MF_JABATAN_KEGIATAN ( JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_JAM_KERJA ( ATTRIBUTE_323 integer not null, ATTRIBUTE_324 timestamp null, ATTRIBUTE_325 timestamp null, ATTRIBUT...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_JAM_KERJA_PK on MF_JAM_KERJA ( ATTRIBUTE_323 ASC )
+
+0 row(s) affected
+
+Query: create table MF_JOBLIST ( GROUP_JABATAN_ID integer not null, ITEM_ID varchar(50) not null, DESKRIPSI varchar(500) null, AK float...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique clustered index MF_JOBLIST_PK on MF_JOBLIST ( GROUP_JABATAN_ID ASC, ITEM_ID ASC )
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'clustered index MF_JOBLIST_PK on MF_JOBLIST (
+GROUP_JABATAN_ID ASC,
+ITEM_ID...' at line 4
+
+Query: create index MEMILIKI_JOB_FK on MF_JOBLIST ( GROUP_JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index MENGACU_KE_FK on MF_JOBLIST ( ITEM_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_KLASIFIKASI_SURAT ( ATTRIBUTE_333 varchar(5) not null, TYPE_SPRIN_ID char(20) not null, ATTRIBUTE_334 varchar(50...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_KLASIFIKASI_SURAT_PK on MF_KLASIFIKASI_SURAT ( ATTRIBUTE_333 ASC )
+
+0 row(s) affected
+
+Query: create index MENGAKLSIFIKASI_SURAT_FK on MF_KLASIFIKASI_SURAT ( TYPE_SPRIN_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_LOAD_FINGER ( ATTRIBUTE_247 integer not null, ATTRIBUTE_393 timestamp null, ATTRIBUTE_394 timestamp null, ATTRIB...
+
+0 row(s) affected
+
+Query: create index MENCATAT_FINGER_FK on MF_LOAD_FINGER ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create table MF_ORGZ_SIAGA ( ATTRIBUTE_335 integer not null, ATTRIBUTE_336 varchar(50) null, ATTRIBUTE_337 integer null, ATTRIBU...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_ORGZ_SIAGA_PK on MF_ORGZ_SIAGA ( ATTRIBUTE_335 ASC )
+
+0 row(s) affected
+
+Query: create table MF_POT ( ATTRIBUTE_186 integer not null, ATTRIBUTE_187 varchar(50) null, ATTRIBUTE_188 varchar(50) null, ATTRIBUTE_...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_POTONGAN_PK on MF_POT ( ATTRIBUTE_186 ASC )
+
+0 row(s) affected
+
+Query: create table MF_POTONGAN ( ATTRIBUTE_342 integer not null, ATTRIBUTE_343 varchar(50) null, ATTRIBUTE_344 varchar(50) null, ATTRI...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_POTONGAN_PK on MF_POTONGAN ( ATTRIBUTE_342 ASC )
+
+0 row(s) affected
+
+Query: create table MF_PRIORITY_TRANSAKSI ( ATTRIBUTE_319 varchar(50) null, ATTRIBUTE_320 integer null, ATTRIBUTE_321 varchar(50) null,...
+
+0 row(s) affected
+
+Query: create table MF_SATUAN ( ATTRIBUTE_314 integer not null, ATTRIBUTE_315 varchar(50) null, ATTRIBUTE_316 varchar(50) null, ATTRIBU...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_SATUAN_PK on MF_SATUAN ( ATTRIBUTE_314 ASC )
+
+0 row(s) affected
+
+Query: create table MF_SHIFT ( ATTRIBUTE_308 varchar(10) not null, ATTRIBUTE_247 integer not null, ATTRIBUTE_309 varchar(50) null, ATTR...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_SHIFT_PK on MF_SHIFT ( ATTRIBUTE_308 ASC )
+
+0 row(s) affected
+
+Query: create index MENCATAT_SHIFT_FK on MF_SHIFT ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create table MF_STATUS ( ATTRIBUTE_221 integer not null, ATTRIBUTE_222 varchar(50) null, ATTRIBUTE_223 varchar(50) null, ATTRIBU...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_STATUS_PK on MF_STATUS ( ATTRIBUTE_221 ASC )
+
+0 row(s) affected
+
+Query: create table MF_SU ( NIP varchar(50) not null, ATTRIBUTE_391 varchar(50) null, ATTRIBUTE_392 varchar(50) null )
+
+0 row(s) affected
+
+Query: create index MENYIMPAN_USER_FK on MF_SU ( NIP ASC )
+
+0 row(s) affected
+
+Query: create table MF_TIM_SIAGA ( GUID_TIM varchar(50) not null, NO_URUT_TIM integer null, NAMA_TIM varchar(50) null, ID_UNIT_KERJA va...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_TIM_SIAGA_PK on MF_TIM_SIAGA ( GUID_TIM ASC )
+
+0 row(s) affected
+
+Query: create table MF_TIM_SIAGA_ANGGOTA ( NIP varchar(50) not null, GUID_TIM varchar(50) not null, FUNGSIONAL varchar(50) null, IS_AKT...
+
+0 row(s) affected
+
+Query: create index BERANGGOTAKAN_FK on MF_TIM_SIAGA_ANGGOTA ( GUID_TIM ASC )
+
+0 row(s) affected
+
+Query: create index DIISI_OLEH_FK on MF_TIM_SIAGA_ANGGOTA ( NIP ASC )
+
+0 row(s) affected
+
+Query: create table MF_TR ( ATTRIBUTE_247 integer not null, ATTRIBUTE_390 timestamp null )
+
+0 row(s) affected
+
+Query: create index MENCATAT_TR_FK on MF_TR ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create table MF_TUNJANGAN ( TUNJANGAN_ID integer not null, ATTRIBUTE_198 varchar(50) null, ATTRIBUTE_199 varchar(50) null, ATTRI...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_TUNJANGAN_PK on MF_TUNJANGAN ( TUNJANGAN_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_TYPE_SPRIN ( TYPE_SPRIN_ID char(20) not null, TYPE_SPRIN_NAME varchar(50) null, constraint PK_MF_TYPE_SPRIN prim...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_TYPE_SPRIN_PK on MF_TYPE_SPRIN ( TYPE_SPRIN_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_UNIT_KERJA ( UNIT_KERJA_ID integer not null, NAMA_UNIT_KERJA varchar(50) null, URUT_REPORT integer null, IS_PUSA...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_UNIT_KERJA_PK on MF_UNIT_KERJA ( UNIT_KERJA_ID ASC )
+
+0 row(s) affected
+
+Query: create table MF_UNSUR_KEGIATAN ( ATTRIBUTE_359 integer not null, ATTRIBUTE_360 varchar(50) null, constraint PK_MF_UNSUR_KEGIATAN...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF_UNSUR_KEGIATAN_PK on MF_UNSUR_KEGIATAN ( ATTRIBUTE_359 ASC )
+
+0 row(s) affected
+
+Query: create table MF__SUB_GROUP_JABATAN ( SUB_GROUP_JABATAN_ID integer not null, NAMA_SUB_GROUP_JABATAN varchar(150) not null, constr...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index MF__SUB_GROUP_JABATAN_PK on MF__SUB_GROUP_JABATAN ( SUB_GROUP_JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create table MONITORING_APP ( ATTRIBUTE_247 integer not null, ATTRIBUTE_384 varchar(50) null, ATTRIBUTE_385 varchar(50) null, AT...
+
+0 row(s) affected
+
+Query: create index MENCATAT_LOG_APP_FK on MONITORING_APP ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create table OTORISASI ( ATTRIBUTE_293 varchar(100) not null, NIP varchar(50) null, ATTRIBUTE_294 varchar(50) null, ATTRIBUTE_29...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index OTORISASI_PK on OTORISASI ( ATTRIBUTE_293 ASC )
+
+0 row(s) affected
+
+Query: create index DIAJUKAN_OLEH_FK on OTORISASI ( NIP ASC )
+
+0 row(s) affected
+
+Query: create table OTORISASI_HISTORY ( ATTRIBUTE_420 integer not null, ATTRIBUTE_293 varchar(100) not null, NIP varchar(50) not null, ...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index OTORISASI_HISTORY_PK on OTORISASI_HISTORY ( ATTRIBUTE_420 ASC )
+
+0 row(s) affected
+
+Query: create index USER_OTORISASI_HISTORY_FK on OTORISASI_HISTORY ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index OTORISASI_HISTORY_UNIT_FK on OTORISASI_HISTORY ( UNIT_KERJA_ID ASC )
+
+0 row(s) affected
+
+Query: create index OTORISASI_SEBELUMNYA_FK on OTORISASI_HISTORY ( ATTRIBUTE_293 ASC )
+
+0 row(s) affected
+
+Query: create table PEGAWAI ( NIP varchar(50) not null, ABSENSI_ID integer not null, ESELON varchar(50) not null, TUNJANGAN_ID integer ...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index PEGAWAI_PK on PEGAWAI ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index MENDUDUKI_JABATAN_FK on PEGAWAI ( JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index MEMILIKI_GOLONGAN_FK on PEGAWAI ( GOL_ID ASC )
+
+0 row(s) affected
+
+Query: create index BEKERJA_DI_UNIT_FK on PEGAWAI ( UNIT_KERJA_ID ASC )
+
+0 row(s) affected
+
+Query: create index TERMASUK_KELAS_FK on PEGAWAI ( CLASS_ID ASC )
+
+0 row(s) affected
+
+Query: create index DILAKUKAN_OLEH_FK on PEGAWAI ( ABSENSI_ID ASC )
+
+0 row(s) affected
+
+Query: create index MEMILIKI_ESELON_FK on PEGAWAI ( ESELON ASC )
+
+0 row(s) affected
+
+Query: create index UNTUK_STATUS_TUNJANGAN_FK on PEGAWAI ( TUNJANGAN_ID ASC )
+
+0 row(s) affected
+
+Query: create table PEG_MUTASI_UNIT ( ATTRIBUTE_247 integer not null, NIP varchar(50) not null, ATTRIBUTE_435 date null, ATTRIBUTE_436 ...
+
+0 row(s) affected
+
+Query: create index USER_PINDAH_UNIT_FK on PEG_MUTASI_UNIT ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index MENCATAT_MUTASI_UNIT_FK on PEG_MUTASI_UNIT ( ATTRIBUTE_247 ASC )
+
+0 row(s) affected
+
+Query: create table PERUBAHAN_JABATAN ( ATTRIBUTE_413 integer not null, JABATAN_ID integer null, constraint PK_PERUBAHAN_JABATAN primar...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index PERUBAHAN_JABATAN_PK on PERUBAHAN_JABATAN ( ATTRIBUTE_413 ASC )
+
+0 row(s) affected
+
+Query: create index MERUBAH_JABATAN2_FK on PERUBAHAN_JABATAN ( JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create table SARAN ( ID_SARAN integer not null, NIP varchar(50) not null, SARAN varchar(350) not null, INSTANSI varchar(100) not...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index SARAN_PK on SARAN ( ID_SARAN ASC )
+
+0 row(s) affected
+
+Query: create index MENYAMPAIKAN_FK on SARAN ( NIP ASC )
+
+0 row(s) affected
+
+Query: create table SKP_PEGAWAI ( JABATAN_ID integer not null, NIP varchar(50) not null, GUID_SKP_PEG varchar(100) not null, DESKRIPSI ...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique clustered index SKP_PEGAWAI_PK on SKP_PEGAWAI ( JABATAN_ID ASC, NIP ASC, GUID_SKP_PEG ASC )
+
+Error Code: 1064
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'clustered index SKP_PEGAWAI_PK on SKP_PEGAWAI (
+JABATAN_ID ASC,
+NIP ASC,
+G...' at line 4
+
+Query: create index DILAKSANAKAN_DI_FK on SKP_PEGAWAI ( JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index DIMILIKI_OLEH_FK on SKP_PEGAWAI ( NIP ASC )
+
+0 row(s) affected
+
+Query: create table SKP_PEGAWAI_HEAD ( SKP_PEGAWAI_HEAD_ID integer not null, GUID_SKP_PEG varchar(100) not null, NIP varchar(50) not nu...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index SKP_PEGAWAI_HEAD_PK on SKP_PEGAWAI_HEAD ( SKP_PEGAWAI_HEAD_ID ASC )
+
+0 row(s) affected
+
+Query: create index JABATAN_PEGAWAI_HEAD_FK on SKP_PEGAWAI_HEAD ( JABATAN_ID ASC )
+
+0 row(s) affected
+
+Query: create index USER_HEAD_FK on SKP_PEGAWAI_HEAD ( NIP ASC )
+
+0 row(s) affected
+
+Query: create index BAWAHAN_USER_FK on SKP_PEGAWAI_HEAD ( JABATAN_ID ASC, NIP ASC, GUID_SKP_PEG ASC )
+
+0 row(s) affected
+
+Query: create index GOL_PEGAWAI_HEAD_FK on SKP_PEGAWAI_HEAD ( GOL_ID ASC )
+
+0 row(s) affected
+
+Query: create table SPRIN_HEADER ( GUID_SPRIN varchar(50) not null, TYPE_SPRIN_ID char(20) not null, UPDATE_BY varchar(50) null, UPDATE...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index SPRIN_HEADER_PK on SPRIN_HEADER ( GUID_SPRIN ASC )
+
+0 row(s) affected
+
+Query: create index BERTIPE_FK on SPRIN_HEADER ( TYPE_SPRIN_ID ASC )
+
+0 row(s) affected
+
+Query: create table TIME_RECORDER ( FINGER_ID integer not null, WAKTU timestamp null, STATUS varchar(3) null, MESIN varchar(100) null, ...
+
+0 row(s) affected, 1 warning(s)
+plete list of warning(s), enable Tools -> Preferences -> General -> Show Warning(s) in Messages T
+
+Query: create unique index TIME_RECORDER_PK on TIME_RECORDER ( FINGER_ID ASC )
+
+0 row(s) affected
+
+Query: create table USER_ACCOUNT ( NIP varchar(50) not null, ATTRIBUTE_288 integer null, ATTRIBUTE_289 varchar(50) null, ATTRIBUTE_291 ...
+
+0 row(s) affected
+
+Query: create index DIMILIKI_OLEH_USER_FK on USER_ACCOUNT ( NIP ASC )
+
+0 row(s) affected
+
+Query: alter table ABSENSI add constraint FK_ABSENSI_DATA_BACK_ABSENSI_ foreign key (ABSENSI_ID2) references ABSENSI_BACKUP (ABSENSI_ID...
+
+0 row(s) affected
+
+Query: alter table ABSENSI add constraint FK_ABSENSI_DATA_TEMP_ABSENSI_ foreign key (ABSENSI_ID3) references ABSENSI_TEMP (ABSENSI_ID3)...
+
+0 row(s) affected
+
+Query: alter table ABSENSI add constraint FK_ABSENSI_DITERAPKA_MF_POT foreign key (ATTRIBUTE_186) references MF_POT (ATTRIBUTE_186) on ...
+
+0 row(s) affected
+
+Query: alter table ABSENSI add constraint FK_ABSENSI_MENJADI_S_TIME_REC foreign key (FINGER_ID) references TIME_RECORDER (FINGER_ID) on...
+
+0 row(s) affected
+
+Query: alter table ABSENSI add constraint FK_ABSENSI_TERJADI_P_KALENDER foreign key (TGL_KERJA) references KALENDER (TGL_KERJA) on upda...
+
+0 row(s) affected
+
+Query: alter table ABSENSI_BACKUP add constraint FK_ABSENSI__DATA_BACK_ABSENSI foreign key (ABSENSI_ID) references ABSENSI (ABSENSI_ID)...
+
+0 row(s) affected
+
+Query: alter table ABSENSI_TEMP add constraint FK_ABSENSI__DATA_TEMP_ABSENSI foreign key (ABSENSI_ID) references ABSENSI (ABSENSI_ID) o...
+
+0 row(s) affected
+
+Query: alter table BUKU_HARIAN_HEAD add constraint FK_BUKU_HAR_DIBUAT_OL_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update r...
+
+0 row(s) affected
+
+Query: alter table BUKU_HARIAN_HEAD add constraint FK_BUKU_HAR_TERKAIT_D_SKP_PEGA foreign key (JABATAN_ID, NIP, GUID_SKP_PEG) reference...
+
+0 row(s) affected
+
+Query: alter table BUKU_HARIAN_HEAD add constraint FK_BUKU_HAR_TERKAIT_J_MF_JABAT2 foreign key (JABATAN_ID) references MF_JABATAN (JABA...
+
+0 row(s) affected
+
+Query: alter table BUKU_HARIAN_HEAD add constraint FK_BUKU_HAR_TERKAIT_J_MF_JABAT foreign key (ITEM_ID) references MF_JABATAN_KEGIATAN ...
+
+0 row(s) affected
+
+Query: alter table DINAS_LUAR add constraint FK_DINAS_LU_BERDASARK_SPRIN_HE foreign key (GUID_SPRIN) references SPRIN_HEADER (GUID_SPRI...
+
+0 row(s) affected
+
+Query: alter table DINAS_LUAR add constraint FK_DINAS_LU_MELAKUKAN_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update restric...
+
+0 row(s) affected
+
+Query: alter table DRH add constraint FK_DRH_JABATAN_D_MF_JABAT foreign key (JABATAN_ID) references MF_JABATAN (JABATAN_ID) on update r...
+
+0 row(s) affected
+
+Query: alter table DRH add constraint FK_DRH_MEREKAM_D_LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (ATTRIBUTE_247) on...
+
+0 row(s) affected
+
+Query: alter table DRH add constraint FK_DRH_PEGAWAI_D_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update restrict on delete ...
+
+0 row(s) affected
+
+Query: alter table HAK_AKSES_FORM add constraint FK_HAK_AKSE_DIBERIKAN_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update res...
+
+0 row(s) affected
+
+Query: alter table HAK_AKSES_FORM add constraint FK_HAK_AKSE_UNTUK_FOR_MF_FORM foreign key (ATTRIBUTE_252) references MF_FORM (ATTRIBUT...
+
+0 row(s) affected
+
+Query: alter table HAK_AKSES_TYPE_SPRIN add constraint FK_HAK_AKSE_AKSES_SPR_MF_TYPE_ foreign key (TYPE_SPRIN_ID) references MF_TYPE_SP...
+
+0 row(s) affected
+
+Query: alter table HAK_AKSES_TYPE_SPRIN add constraint FK_HAK_AKSE_USER_SPRI_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on upda...
+
+0 row(s) affected
+
+Query: alter table LEMBUR add constraint FK_LEMBUR_DILAKUKAN_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update restrict on d...
+
+0 row(s) affected
+
+Query: alter table LEMBUR add constraint FK_LEMBUR_TERJADI_T_KALENDER foreign key (TGL_KERJA) references KALENDER (TGL_KERJA) on update...
+
+0 row(s) affected
+
+Query: alter table LOG_ACTIVITIY add constraint FK_LOG_ACTI_DILAKUKAN_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update rest...
+
+0 row(s) affected
+
+Query: alter table LOG_ACTIVITIY add constraint FK_LOG_ACTI_DILAKUKAN_MF_TIM_S foreign key (GUID_TIM) references MF_TIM_SIAGA (GUID_TIM...
+
+0 row(s) affected
+
+Query: alter table LOG_ACTIVITIY add constraint FK_LOG_ACTI_MEMBACKUP_LOG_ACTI foreign key (ATTRIBUTE_290) references LOG_ACTIVITIY_BAC...
+
+0 row(s) affected
+
+Query: alter table LOG_ACTIVITIY add constraint FK_LOG_ACTI_MEMILIKI__MF_STATU foreign key (ATTRIBUTE_221) references MF_STATUS (ATTRIB...
+
+0 row(s) affected
+
+Query: alter table LOG_ACTIVITIY add constraint FK_LOG_ACTI_TRANSAKSI_LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (AT...
+
+0 row(s) affected
+
+Query: alter table LOG_ACTIVITIY add constraint FK_LOG_ACTI_UNIT_MELA_MF_UNIT_ foreign key (UNIT_KERJA_ID) references MF_UNIT_KERJA (UN...
+
+0 row(s) affected
+
+Query: alter table LOG_ACTIVITIY_BACKUP add constraint FK_LOG_ACTI_MEMBACKUP_LOG_ACTI foreign key (ATTRIBUTE_210) references LOG_ACTIVI...
+
+Error Code: 1005
+Can't create table `basarnas_db`.`log_activitiy_backup` (errno: 121 "Duplicate key on write or update")
+
+Query: alter table LOG_TRANSAKSI add constraint FK_LOG_TRAN_DATA_BACK_LOG_TRAN foreign key (ATTRIBUTE_401) references LOG_TRANSAKSI_BAC...
+
+0 row(s) affected
+
+Query: alter table LOG_TRANSAKSI add constraint FK_LOG_TRAN_TRANSAKSI_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update rest...
+
+0 row(s) affected
+
+Query: alter table LOG_TRANSAKSI_BACKUP add constraint FK_LOG_TRAN_DATA_BACK_LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSA...
+
+Error Code: 1005
+Can't create table `basarnas_db`.`log_transaksi_backup` (errno: 121 "Duplicate key on write or update")
+
+Query: alter table MF_CONFIG add constraint FK_MF_CONFI_MENCATAT__LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (ATTRIB...
+
+0 row(s) affected
+
+Query: alter table MF_FIELD_CARI add constraint FK_MF_FIELD_MENCATAT__LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (AT...
+
+0 row(s) affected
+
+Query: alter table MF_HOST_NAME_FP add constraint FK_MF_HOST__HOST_DARI_MF_UNIT_ foreign key (UNIT_KERJA_ID) references MF_UNIT_KERJA (...
+
+0 row(s) affected
+
+Query: alter table MF_JABATAN add constraint FK_MF_JABAT_MERUBAH_J_PERUBAHA foreign key (ATTRIBUTE_413) references PERUBAHAN_JABATAN (A...
+
+0 row(s) affected
+
+Query: alter table MF_JABATAN add constraint FK_MF_JABAT_TERMASUK__MF_GROUP foreign key (GROUP_JABATAN_ID) references MF_GROUP_JABATAN ...
+
+0 row(s) affected
+
+Query: alter table MF_JABATAN add constraint FK_MF_JABAT_TERMASUK__MF__SUB_ foreign key (SUB_GROUP_JABATAN_ID) references MF__SUB_GROUP...
+
+0 row(s) affected
+
+Query: alter table MF_JABATAN_KEGIATAN add constraint FK_MF_JABAT_DIBUAT_UN_MF_JABAT foreign key (JABATAN_ID) references MF_JABATAN (JA...
+
+0 row(s) affected
+
+Query: alter table MF_JOBLIST add constraint FK_MF_JOBLI_MEMILIKI__MF_GROUP foreign key (GROUP_JABATAN_ID) references MF_GROUP_JABATAN ...
+
+0 row(s) affected
+
+Query: alter table MF_JOBLIST add constraint FK_MF_JOBLI_MENGACU_K_MF_JABAT foreign key (ITEM_ID) references MF_JABATAN_KEGIATAN (ITEM_...
+
+0 row(s) affected
+
+Query: alter table MF_KLASIFIKASI_SURAT add constraint FK_MF_KLASI_MENGAKLSI_MF_TYPE_ foreign key (TYPE_SPRIN_ID) references MF_TYPE_SP...
+
+0 row(s) affected
+
+Query: alter table MF_LOAD_FINGER add constraint FK_MF_LOAD__MENCATAT__LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (A...
+
+0 row(s) affected
+
+Query: alter table MF_SHIFT add constraint FK_MF_SHIFT_MENCATAT__LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (ATTRIBU...
+
+0 row(s) affected
+
+Query: alter table MF_SU add constraint FK_MF_SU_MENYIMPAN_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update restrict on del...
+
+0 row(s) affected
+
+Query: alter table MF_TIM_SIAGA_ANGGOTA add constraint FK_MF_TIM_S_BERANGGOT_MF_TIM_S foreign key (GUID_TIM) references MF_TIM_SIAGA (G...
+
+0 row(s) affected
+
+Query: alter table MF_TIM_SIAGA_ANGGOTA add constraint FK_MF_TIM_S_DIISI_OLE_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on upda...
+
+0 row(s) affected
+
+Query: alter table MF_TR add constraint FK_MF_TR_MENCATAT__LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (ATTRIBUTE_247...
+
+0 row(s) affected
+
+Query: alter table MONITORING_APP add constraint FK_MONITORI_MENCATAT__LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (A...
+
+0 row(s) affected
+
+Query: alter table OTORISASI add constraint FK_OTORISAS_DIAJUKAN__PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update restrict...
+
+0 row(s) affected
+
+Query: alter table OTORISASI_HISTORY add constraint FK_OTORISAS_OTORISASI_MF_UNIT_ foreign key (UNIT_KERJA_ID) references MF_UNIT_KERJA...
+
+0 row(s) affected
+
+Query: alter table OTORISASI_HISTORY add constraint FK_OTORISAS_OTORISASI_OTORISAS foreign key (ATTRIBUTE_293) references OTORISASI (AT...
+
+0 row(s) affected
+
+Query: alter table OTORISASI_HISTORY add constraint FK_OTORISAS_USER_OTOR_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update ...
+
+0 row(s) affected
+
+Query: alter table PEGAWAI add constraint FK_PEGAWAI_BEKERJA_D_MF_UNIT_ foreign key (UNIT_KERJA_ID) references MF_UNIT_KERJA (UNIT_KERJ...
+
+0 row(s) affected
+
+Query: alter table PEGAWAI add constraint FK_PEGAWAI_DILAKUKAN_ABSENSI foreign key (ABSENSI_ID) references ABSENSI (ABSENSI_ID) on upda...
+
+0 row(s) affected
+
+Query: alter table PEGAWAI add constraint FK_PEGAWAI_MEMILIKI__MF_ESELO foreign key (ESELON) references MF_ESELON (ESELON) on update re...
+
+0 row(s) affected
+
+Query: alter table PEGAWAI add constraint FK_PEGAWAI_MEMILIKI__MF_GOL foreign key (GOL_ID) references MF_GOL (GOL_ID) on update restric...
+
+0 row(s) affected
+
+Query: alter table PEGAWAI add constraint FK_PEGAWAI_MENDUDUKI_MF_JABAT foreign key (JABATAN_ID) references MF_JABATAN (JABATAN_ID) on ...
+
+0 row(s) affected
+
+Query: alter table PEGAWAI add constraint FK_PEGAWAI_TERMASUK__MF_CLASS foreign key (CLASS_ID) references MF_CLASS (CLASS_ID) on update...
+
+0 row(s) affected
+
+Query: alter table PEGAWAI add constraint FK_PEGAWAI_UNTUK_STA_MF_TUNJA foreign key (TUNJANGAN_ID) references MF_TUNJANGAN (TUNJANGAN_I...
+
+0 row(s) affected
+
+Query: alter table PEG_MUTASI_UNIT add constraint FK_PEG_MUTA_MENCATAT__LOG_TRAN foreign key (ATTRIBUTE_247) references LOG_TRANSAKSI (...
+
+0 row(s) affected
+
+Query: alter table PEG_MUTASI_UNIT add constraint FK_PEG_MUTA_USER_PIND_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update re...
+
+0 row(s) affected
+
+Query: alter table PERUBAHAN_JABATAN add constraint FK_PERUBAHA_MERUBAH_J_MF_JABAT foreign key (JABATAN_ID) references MF_JABATAN (JABA...
+
+0 row(s) affected
+
+Query: alter table SARAN add constraint FK_SARAN_MENYAMPAI_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update restrict on del...
+
+0 row(s) affected
+
+Query: alter table SKP_PEGAWAI add constraint FK_SKP_PEGA_DILAKSANA_MF_JABAT foreign key (JABATAN_ID) references MF_JABATAN (JABATAN_ID...
+
+0 row(s) affected
+
+Query: alter table SKP_PEGAWAI add constraint FK_SKP_PEGA_TERKAIT_O_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update restri...
+
+Query: alter table SKP_PEGAWAI_HEAD add constraint FK_SKP_PEGA_BAWAHAN_S_SKP_PEGA foreign key (JABATAN_ID, NIP, GUID_SKP_PEG) reference..
+
+Query: alter table SKP_PEGAWAI_HEAD add constraint FK_SKP_PEGA_GOL_PEGAW_MF_GOL foreign key (GOL_ID) references MF_GOL (GOL_ID) on upda..
+
+Query: alter table SKP_PEGAWAI_HEAD add constraint FK_SKP_PEGA_JABATAN_P_MF_JABAT foreign key (JABATAN_ID) references MF_JABATAN (JABAT..
+
+Query: alter table SKP_PEGAWAI_HEAD add constraint FK_SKP_PEGA_USER_HEAD_PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update r..
+
+Query: alter table SPRIN_HEADER add constraint FK_SPRIN_HE_BERTIPE_MF_TYPE_ foreign key (TYPE_SPRIN_ID) references MF_TYPE_SPRIN (TYPE_..
+
+Query: alter table USER_ACCOUNT add constraint FK_USER_ACC_DIMILIKI__PEGAWAI foreign key (NIP) references PEGAWAI (NIP) on update restr...
+
+
+fix isi filenya karena 191 errors dari hasilnya ini yaitu 492 queries executed, 301 success, 191 errors, 103 warnings
+
+sebelumnya sudah melakukan fix sekarang kamu buatkan aku code insert untuk memasukkan data yang ada di file script_schema_data.sql ini di bagian bawah sendiri dari isi file fix_basarnas_db.sql lakukan penyesuaian agar dapat di masukkan kedalam tabel dari file fix_basarnas_db.sql karena urutan memasukkannya belum aku urutkan untuk urutan 
