@@ -256,10 +256,39 @@
                                         <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                     </div>
 
-                                    <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                                    <button id="btn-refresh" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
                                         <i class="bi bi-arrow-clockwise"></i> Refresh
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade show active" id="table-content" role="tabpanel" style="display: none;">
+                            <div class="table-toolbar">
+                                <span class="divider-vertical">|</span>
+                                <a href="#" class="icon-download"><i class="bi bi-file-earmark-excel-fill"></i></a>
+                                <a href="#" class="icon-download"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Periode</th>
+                                            <th>No Urut</th>
+                                            <th>Shift</th>
+                                            <th>Unit</th>
+                                            <th>Nama</th>
+                                            <th>Edit</th>
+                                            <th>UpdateBy</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>                
@@ -276,6 +305,20 @@
     <script src="assets/vendors/js/select2-active.min.js"></script>
     <script src="assets/js/common-init.min.js"></script>
     <script src="assets/js/theme-customizer-init.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('btn-refresh');
+            const tableContent = document.getElementById('table-content');
+
+            refreshBtn.addEventListener('click', function() {
+                // Menampilkan tabel saat tombol diklik
+                tableContent.style.display = 'block';
+                
+                // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+                console.log("Memuat data...");
+            });
+        });
+    </script>
 </body>
 
 </html>

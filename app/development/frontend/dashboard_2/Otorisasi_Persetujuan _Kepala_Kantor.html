@@ -222,8 +222,117 @@
                             </h6>
                         </div>
                     </div>
+
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header p-0" style="background-color: #EB6831; border-top-left-radius: 12px; border-top-right-radius: 12px; min-height: 50px; display: flex; align-items: center;">
+                            <ul class="nav nav-tabs border-0 ps-2" id="skpTab" role="tablist">
+                                
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="belum-tab" data-bs-toggle="tab" data-bs-target="#belum-content" 
+                                            type="button" role="tab">Belum Persetujuan</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="sudah-tab" data-bs-toggle="tab" data-bs-target="#sudah-content" 
+                                            type="button" role="tab">Sudah Persetujuan</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="tab-content" id="skpTabContent">
+                                <div class="tab-pane fade show active" id="belum-content" role="tabpanel">
+                                    <div class="table-toolbar">
+                                        <span class="divider-vertical">|</span>
+                                        <a href="#" class="icon-download"><i class="bi bi-file-earmark-excel-fill"></i></a>
+                                        <a href="#" class="icon-download"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered align-middle text-center">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>View</th>
+                                                    <th>Perihal</th>
+                                                    <th>Keterangan</th>
+                                                    <th>Action</th>
+                                                    <th>Execute</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="sudah-content" role="tabpanel">
+                                    <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                        <label class="filter-label-wide">Filter</label>
+                                        
+                                        <select class="form-select-sm border custom-select w-mobile-100">
+                                            <option>- Pilih Field -</option>
+                                        </select>
+
+                                        <div class="input-group-custom w-mobile-100">
+                                            <input type="text" class="form-control-sm border">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+
+                                        <span class="mx-md-2 fw-bold text-dan">Dan</span>
+
+                                        <select class="form-select-sm border custom-select w-mobile-100">
+                                            <option>- Pilih Field -</option>
+                                        </select>
+
+                                        <div class="input-group-custom w-mobile-100">
+                                            <input type="text" class="form-control-sm border">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+
+                                        <button id="btn-refresh" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                                            <i class="bi bi-arrow-clockwise"></i> Refresh
+                                        </button>
+                                    </div>
+
+                                    <div class="tab-pane fade show active mt-4" id="table-content" role="tabpanel" style="display: none;">
+                                        <div class="table-toolbar">
+                                            <span class="divider-vertical">|</span>
+                                            <a href="#" class="icon-download"><i class="bi bi-file-earmark-excel-fill"></i></a>
+                                            <a href="#" class="icon-download"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle text-center">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>View</th>
+                                                        <th>Perihal</th>
+                                                        <th>Keterangan</th>
+                                                        <th>Action</th>
+                                                        <th>Execute</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>        
+            </div>    
         </div>
     </main>
     <!-- Main End -->
@@ -235,6 +344,20 @@
     <script src="assets/vendors/js/select2-active.min.js"></script>
     <script src="assets/js/common-init.min.js"></script>
     <script src="assets/js/theme-customizer-init.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('btn-refresh');
+            const tableContent = document.getElementById('table-content');
+
+            refreshBtn.addEventListener('click', function() {
+                // Menampilkan tabel saat tombol diklik
+                tableContent.style.display = 'block';
+                
+                // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+                console.log("Memuat data...");
+            });
+        });
+    </script>
 </body>
 
 </html>
