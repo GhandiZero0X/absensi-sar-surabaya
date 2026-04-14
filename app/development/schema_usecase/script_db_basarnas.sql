@@ -2,7 +2,7 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 /*==============================================================*/
-/* DBMS name:      basarnas_db		                        */
+/* DBMS name:      Sybase SQL Anywhere 12                       */
 /* Created on:     14/04/2026 13:43:17                          */
 /*==============================================================*/
 
@@ -99,7 +99,7 @@ DROP TABLE IF EXISTS MF_UNIT_KERJA;
 
 DROP TABLE IF EXISTS MF_UNSUR_KEGIATAN;
 
-DROP TABLE IF EXISTS MF__SUB_GROUP_JABATAN;
+DROP TABLE IF EXISTS MF_SUB_GROUP_JABATAN;
 
 DROP TABLE IF EXISTS MONITORING_APP;
 
@@ -1527,19 +1527,19 @@ UNSUR_ID ASC
 );
 
 /*==============================================================*/
-/* Table: MF__SUB_GROUP_JABATAN                                 */
+/* Table: MF_SUB_GROUP_JABATAN                                 */
 /*==============================================================*/
-CREATE TABLE MF__SUB_GROUP_JABATAN 
+CREATE TABLE MF_SUB_GROUP_JABATAN 
 (
    SUB_GROUP_JABATAN_ID INTEGER                        NOT NULL,
    NAMA_SUB_GROUP_JABATAN VARCHAR(150)                   NOT NULL,
-   CONSTRAINT PK_MF__SUB_GROUP_JABATAN PRIMARY KEY (SUB_GROUP_JABATAN_ID)
+   CONSTRAINT PK_MF_SUB_GROUP_JABATAN PRIMARY KEY (SUB_GROUP_JABATAN_ID)
 );
 
 /*==============================================================*/
-/* Index: MF__SUB_GROUP_JABATAN_PK                              */
+/* Index: MF_SUB_GROUP_JABATAN_PK                              */
 /*==============================================================*/
-CREATE UNIQUE INDEX MF__SUB_GROUP_JABATAN_PK ON MF__SUB_GROUP_JABATAN (
+CREATE UNIQUE INDEX MF_SUB_GROUP_JABATAN_PK ON MF_SUB_GROUP_JABATAN (
 SUB_GROUP_JABATAN_ID ASC
 );
 
@@ -2254,7 +2254,7 @@ ALTER TABLE MF_JABATAN
 
 ALTER TABLE MF_JABATAN
    ADD CONSTRAINT FK_MF_JABAT_TERMASUK__MF__SUB_ FOREIGN KEY (SUB_GROUP_JABATAN_ID)
-      REFERENCES MF__SUB_GROUP_JABATAN (SUB_GROUP_JABATAN_ID)
+      REFERENCES MF_SUB_GROUP_JABATAN (SUB_GROUP_JABATAN_ID)
       ON UPDATE RESTRICT
       ON DELETE RESTRICT;
 
@@ -2459,7 +2459,7 @@ ALTER TABLE SPRIN_HEADER
 ALTER TABLE USER_ACCOUNT
    ADD CONSTRAINT FK_USER_ACC_DIMILIKI__PEGAWAI FOREIGN KEY (NIP)
       REFERENCES PEGAWAI (NIP)
-     `mf_config` ON UPDATE RESTRICT
+      ON UPDATE RESTRICT
       ON DELETE RESTRICT;
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -2468,5 +2468,15 @@ SELECT COUNT(*) AS jumlah_tabel
 FROM information_schema.tables 
 WHERE table_schema = 'basarnas_db';
 
--- Section Insert data
+-- =============================================================
+-- INSERT DATA DUMMY UNTUK SEMUA TABEL
+-- =============================================================
+
+-- Nonaktifkan foreign key check sementara agar bisa insert dengan urutan bebas
+SET FOREIGN_KEY_CHECKS = 0;
+
+
+
+-- Aktifkan kembali foreign key check
+SET FOREIGN_KEY_CHECKS = 1;
 
