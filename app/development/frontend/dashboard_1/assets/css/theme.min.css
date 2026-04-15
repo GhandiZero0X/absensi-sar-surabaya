@@ -9253,6 +9253,16 @@ html.app-font-family-roboto-slab body {
     border-bottom: 1px solid #eee;
 }
 
+.card-header-customm {
+    background-color: #EB6831 !important;
+    color: #FFFFFF !important;
+    padding: 12px 15px; /* Sesuaikan padding agar terlihat rapi */
+    border-radius: 8px 8px 0 0; /* Memberikan lekukan di sudut atas */
+}
+.card-header-customm h6 {
+    color: #FFFFFF !important;
+    font-weight: bold;
+}
 /* NAV FIX */
 .nav-tabs .nav-link.active {
     font-weight: bold;

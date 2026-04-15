@@ -39,34 +39,33 @@
 </head>
 
 <body>
-    <!--! ================================================================ !-->
-    <!--! [Start] Navigation Menu !-->
+<!--! [Start] Navigation Menu !-->
     <!--! ================================================================ !-->
     <nav class="nxl-navigation">
         <div class="navbar-wrapper">
-            <div class="m-header">
-                <a href="index.html" class="b-brand">
-                    <!-- ========   change your logo hear   ============ -->
-                    <img src="assets/images/logo-full.png" alt="" width="50" height:auto;>
-                </a>
-                <label style="color: white;">HRIS KanSAR</label>
-            </div>
             <div class="navbar-content">
                 <ul class="nxl-navbar">
                     <div class="custom-nav-header">
                     <div class="header-container">
+                          <img src="assets/images/logo-full.png" alt="" width="40" height:auto ;>
+                        <div class="nxl-navigation-toggle toggle-btn-action">
+                        </div>
+                        <span class="nav-text-label nxl-mtext">HRIS Kansar</span>
+                    </div>
+                    <div class="header-container">
                         <div class="nxl-navigation-toggle toggle-btn-action">
                             <div id="menu-mini-button" class="btn-mini-style" style="cursor: pointer; ...">
-                                <i class="feather-menu"></i>
-                            </div>
-                            <div id="menu-expend-button" class="btn-expand-style" style="display: none;">
-                                <i class="feather-menu"></i>
-                            </div>
+                            <i class="feather-menu"></i>
+                        </div>
+                        <div id="menu-expend-button" class="btn-expand-style" style="display: none;">
+                            <i class="feather-menu"></i>
+                        </div>
                         </div>
                         <span class="nav-text-label nxl-mtext">Navigation</span>
                     </div>
                     <div class="nav-separator"></div>
-                </div>
+                    </div>
+
                     <li class="nxl-item nxl-hasmenu">
                         <a href="javascript:void(0);" class="nxl-link">
                             <span class="nxl-micon">
@@ -87,7 +86,7 @@
                             </li>
                         </ul>
                     </li>
-                     <li class="nxl-item nxl-hasmenu">
+                    <li class="nxl-item nxl-hasmenu">
                         <a href="javascript:void(0);" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-layers"></i></span>
                             <span class="nxl-mtext">Master File</span><span class="nxl-arrow"><i
@@ -179,7 +178,7 @@
                             </li>
 
                             <li class="nxl-item">
-                                <a class="nxl-link" href="Master File Master THR.html">
+                                <a class="nxl-link" href="Master File Master TRT.html">
                                     <span class="nxl-micon"><i class="ti ti-cash"></i></span>
                                     <span class="nxl-mtext">Master TRT</span>
                                 </a>
@@ -401,12 +400,20 @@
     </nav>
     <!--! ================================================================ !-->
     <!--! [End]  Navigation Manu !-->
-
     <!--! [Start] Header !-->
         <header class="nxl-header">
-            <div class="header-wrapper d-flex justify-content-end align-items-center">
+        <div class="header-wrapper d-flex justify-content-between align-items-center px-4">
+            <div class="header-left d-flex align-items-center gap-2">
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+                    <div class="hamburger hamburger--arrowturn">
+                        <div class="hamburger-box">
+                            <div class="hamburger-inner"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
-                <!-- User Profile -->
+            <!-- User Profile -->
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                         <img src="assets/images/avatar/1.png" class="rounded-circle me-2" width="35" height="35">
@@ -428,14 +435,15 @@
                                     <i class="bi bi-display me-2" style="color: #EB6831; font-size: 1.1rem; padding-left: 30px;"></i>
                                     <div class="small text-muted" >192.168.100.5</div>
                                 </div>
+                                <a href="signout.html">
                                 <button class="btn btn-orange-figma px-4">Sign Out</button>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-            </div>
-        </header>
+        </div>
+    </header> 
     <!--! ================================================================ !-->
     <!--! [End] Header !-->
 

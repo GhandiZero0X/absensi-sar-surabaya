@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zxx">
 
 <head>
@@ -10,16 +11,22 @@
     <meta name="author" content="theme_ocean">
     <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
     <!--! BEGIN: Apps Title-->
-    <title>Duralux || Verify Creative</title>
+    <title>Master File Master Jabatan</title>
     <!--! END:  Apps Title-->
     <!--! BEGIN: Favicon-->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo-full.png">
     <!--! END: Favicon-->
     <!--! BEGIN: Bootstrap CSS-->
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
     <!--! END: Bootstrap CSS-->
     <!--! BEGIN: Vendors CSS-->
     <link rel="stylesheet" type="text/css" href="assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/daterangepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/jquery-jvectormap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/jquery.time-to.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <!--! END: Vendors CSS-->
     <!--! BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="assets/css/theme.min.css">
@@ -33,236 +40,1227 @@
 </head>
 
 <body>
+    <!--! [Start] Navigation Menu !-->
     <!--! ================================================================ !-->
-    <!--! [Start] Main Content !-->
-    <!--! ================================================================ !-->
-    <main class="auth-creative-wrapper">
-        <div class="auth-creative-inner">
-            <div class="creative-card-wrapper">
-                <div class="card my-4 overflow-hidden" style="z-index: 1">
-                    <div class="row flex-1 g-0">
-                        <div class="col-lg-6 h-100 my-auto">
-                            <div class="wd-50 bg-white p-2 rounded-circle shadow-lg position-absolute translate-middle top-50 start-50">
-                                <img src="assets/images/logo-abbr.png" alt="" class="img-fluid">
+    <nav class="nxl-navigation">
+        <div class="navbar-wrapper">
+            <div class="navbar-content">
+                <ul class="nxl-navbar">
+                    <div class="custom-nav-header">
+                        <div class="header-container">
+                            <img src="assets/images/logo-full.png" alt="" width="40" height:auto ;>
+                            <div class="nxl-navigation-toggle toggle-btn-action">
                             </div>
-                            <div class="creative-card-body card-body p-sm-5">
-                                <h2 class="fs-20 fw-bolder mb-4">Verify <a href="javascript:void(0);" class="float-end fs-12 text-primary">Change Methord</a></h2>
-                                <h4 class="fs-13 fw-bold mb-2">Please enter th e code generated one time password to verify your account.</h4>
-                                <p class="fs-12 fw-medium text-muted"><span>A code has been sent to</span> <strong>*******9897</strong></p>
-                                <form action="index.html" class="w-100 mt-4 pt-2">
-                                    <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
-                                        <input class="m-2 text-center form-control rounded" type="text" id="first" maxlength="1" required>
-                                        <input class="m-2 text-center form-control rounded" type="text" id="second" maxlength="1" required>
-                                        <input class="m-2 text-center form-control rounded" type="text" id="third" maxlength="1" required>
-                                        <input class="m-2 text-center form-control rounded" type="text" id="fourth" maxlength="1" required>
-                                        <input class="m-2 text-center form-control rounded" type="text" id="fifth" maxlength="1" required>
-                                        <input class="m-2 text-center form-control rounded" type="text" id="sixth" maxlength="1" required>
-                                    </div>
-                                    <div class="mt-5">
-                                        <button type="submit" class="btn btn-lg btn-primary w-100">Validate</button>
-                                    </div>
-                                    <div class="mt-5 text-muted">
-                                        <span>Didn't get the code</span>
-                                        <a href="javascript:void(0);">Resend(1/3)</a>
-                                    </div>
-                                </form>
-                            </div>
+                            <span class="nav-text-label nxl-mtext">HRIS Kansar</span>
                         </div>
-                        <div class="col-lg-6 bg-primary">
-                            <div class="h-100 d-flex align-items-center justify-content-center">
-                                <img src="assets/images/auth/auth-user.png" alt="" class="img-fluid">
+                        <div class="header-container">
+                            <div class="nxl-navigation-toggle toggle-btn-action">
+                                <div id="menu-mini-button" class="btn-mini-style" style="cursor: pointer; ...">
+                                    <i class="feather-menu"></i>
+                                </div>
+                                <div id="menu-expend-button" class="btn-expand-style" style="display: none;">
+                                    <i class="feather-menu"></i>
+                                </div>
                             </div>
+                            <span class="nav-text-label nxl-mtext">Navigation</span>
+                        </div>
+                        <div class="nav-separator"></div>
+                    </div>
+
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path d="M4 4h6v6h-6zM14 4h6v4h-6zM14 10h6v10h-6zM4 14h6v6h-6z" />
+                                </svg>
+                            </span>
+                            <span class="nxl-mtext">Dashboard</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Dashboard Pelanggaran.html">
+                                    <span class="nxl-micon"><i class="ti ti-layout-dashboard"></i></span>
+                                    <span class="nxl-mtext">Dashboard</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-layers"></i></span>
+                            <span class="nxl-mtext">Master File</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master User.html">
+                                    <span class="nxl-micon"><i class="feather-user"></i></span>
+                                    <span class="nxl-mtext">User Account</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Pegawai VIP.html">
+                                    <span class="nxl-micon"><i class="ti ti-vip"></i></span>
+                                    <span class="nxl-mtext">VIP List</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Kalender.html">
+                                    <span class="nxl-micon"><i class="feather-calendar"></i></span>
+                                    <span class="nxl-mtext">Master Kalender</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Potongan.html">
+                                    <span class="nxl-micon"><i class="feather-tag"></i></span>
+                                    <span class="nxl-mtext">Master Potongan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Unit Kerja.html">
+                                    <span class="nxl-micon"><i class="ti ti-building"></i></span>
+                                    <span class="nxl-mtext">Master Unit Kerja</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Tunkin Class .html">
+                                    <span class="nxl-micon"><i class="ti ti-brand-redhat"></i></span>
+                                    <span class="nxl-mtext">Master Tunkin/Class</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Jam Kerja.html">
+                                    <span class="nxl-micon"><i class="ti ti-clock-edit"></i></span>
+                                    <span class="nxl-mtext">Master Jam Kerja</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Jam Finger.html">
+                                    <span class="nxl-micon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 2a7 7 0 0 0-7 7v3a5 5 0 0 0 10 0v-3a3 3 0 0 0-6 0v3a1 1 0 0 0 2 0v-3a1 1 0 0 1 2 0v3a3 3 0 0 1-6 0v-3a5 5 0 0 1 10 0v3a7 7 0 0 1-14 0v-3a9 9 0 0 1 18 0v3c0 5-4 9-9 9" />
+                                        </svg>
+                                    </span>
+                                    <span class="nxl-mtext">Master Jam Finger</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Butir Kegiatan.html">
+                                    <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                                    <span class="nxl-mtext">Master Butir Kegiatan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Jabatan.html">
+                                    <span class="nxl-micon"><i class="feather-award"></i></span>
+                                    <span class="nxl-mtext">Master Jabatan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Uang Makan.html">
+                                    <span class="nxl-micon"><i class="ti ti-tools-kitchen-2"></i></span>
+                                    <span class="nxl-mtext">Master Uang Makan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master TRT.html">
+                                    <span class="nxl-micon"><i class="ti ti-cash"></i></span>
+                                    <span class="nxl-mtext">Master TRT</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="ti ti-edit"></i></span>
+                            <span class="nxl-mtext">Kepegawaian</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Data Pegawai.html">
+                                    <span class="nxl-micon"><i class="feather-users"></i></span>
+                                    <span class="nxl-mtext">Data Pegawai</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Dinas Luar Umum.html">
+                                    <span class="nxl-micon"><i class="feather-briefcase"></i></span>
+                                    <span class="nxl-mtext">Dinas Luar Umum</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Dinas Luar Operasi.html">
+                                    <span class="nxl-micon"><i class="feather-activity"></i></span>
+                                    <span class="nxl-mtext">Dinas Luar OPS</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Dinas Luar Pelatihan.html">
+                                    <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                                    <span class="nxl-mtext">Dinas Luar SD</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Pegawai Cuti.html">
+                                    <span class="nxl-micon"><i class="feather-user-x"></i></span>
+                                    <span class="nxl-mtext">Pegawai Cuti</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Pegawai Sakit.html">
+                                    <span class="nxl-micon"><i class="feather-heart"></i></span>
+                                    <span class="nxl-mtext">Pegawai Sakit</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Pegawai Tidak Hadir.html">
+                                    <span class="nxl-micon"><i class="feather-user-minus"></i></span>
+                                    <span class="nxl-mtext">Pegawai Tidak Hadir</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Update Pendukung.html">
+                                    <span class="nxl-micon"><i class="feather-upload"></i></span>
+                                    <span class="nxl-mtext">Update Pendukung</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Mutasi Penempatan Pegawai.html">
+                                    <span class="nxl-micon"><i class="feather-repeat"></i></span>
+                                    <span class="nxl-mtext">Pegawai Mutasi</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Work From Home.html">
+                                    <span class="nxl-micon"><i class="feather-home"></i></span>
+                                    <span class="nxl-mtext">WFH</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-settings"></i></span>
+                            <span class="nxl-mtext">Data Absensi</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Normalisasi Absensi Finger.html">
+                                    <span class="nxl-micon"><i class="ti ti-fingerprint"></i></span>
+                                    <span class="nxl-mtext">Absensi Finger</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Non Finger.html">
+                                    <span class="nxl-micon"><i class="ti ti-user-check"></i></span>
+                                    <span class="nxl-mtext">Absensi Non Finger</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Trace.html">
+                                    <span class="nxl-micon"><i class="ti ti-file-text"></i></span>
+                                    <span class="nxl-mtext">Detail Absensi</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Trace Tunjangan.html">
+                                    <span class="nxl-micon"><i class="ti ti-cash"></i></span>
+                                    <span class="nxl-mtext">Detail Tunkin</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Pegawai Absensi Manual.html">
+                                    <span class="nxl-micon"><i class="ti ti-edit"></i></span>
+                                    <span class="nxl-mtext">Absensi Manual</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Pegawai Lembur Manual.html">
+                                    <span class="nxl-micon"><i class="ti ti-clock"></i></span>
+                                    <span class="nxl-mtext">Lembur Manual</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                            <span class="nxl-mtext">Laporan</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Report Absensi All.html">
+                                    <i class="ti ti-checkbox me-2"></i>Rekap Absensi All
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Report Absensi Per Personal.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Absensi Person
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Report Absensi Log Finger.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap History Log Finger
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Rekap Exception Clock.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Bulanan Absensi
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan DL, SAKIT, IJIN, CUTI.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap DL, S, I CUTI
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Rekap, U.Makan (by Absensi).html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Uang Makan
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Rekap Pelanggaran Disiplin.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Pelanggaran Disiplin
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Rincian Pembayaran Tunjangan.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Tunjangan Kinerja
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Cetak Daftar Lembar Umum.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Daftar Lembur
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-monitor"></i></span>
+                            <span class="nxl-mtext">Media Informasi</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Media Informasi.html">
+                                    <span class="nxl-micon"><i class="ti ti-file-export"></i></span>
+                                    <span class="nxl-mtext">Inp Pengumuman</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="../../frontend/home/index.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-house-fill"></i></span>
+                            <span class="nxl-mtext">Portal</span>
+                        </a>
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="Update Password.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-key-fill"></i></span>
+                            <span class="nxl-mtext">Update Password</span>
+                        </a>
+                    </li>
+            </div>
+        </div>
+    </nav>
+    <!--! ================================================================ !-->
+    <!--! [End]  Navigation Manu !-->
+    <!--! [Start] Header !-->
+    <header class="nxl-header">
+        <div class="header-wrapper d-flex justify-content-between align-items-center px-4">
+            <div class="header-left d-flex align-items-center gap-2">
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+                    <div class="hamburger hamburger--arrowturn">
+                        <div class="hamburger-box">
+                            <div class="hamburger-inner"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- User Profile -->
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown">
+                    <img src="assets/images/avatar/1.png" class="rounded-circle me-2" width="35" height="35">
+                    <span>Auditor</span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 custom-profile-dropdown">
+                    <div class="card-body p-4 text-center">
+                        <div class="avatar-big mb-3">
+                            <i class="bi bi-person-circle text-orange" style="font-size: 50px;"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1 color-primary">414386 - Auditor</h6>
+                        <p class="text-muted small mb-0">1 - Operator</p>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-start" style="padding-left: 15px;">
+                                <i class="bi bi-display me-2"
+                                    style="color: #EB6831; font-size: 1.1rem; padding-left: 30px;"></i>
+                                <div class="small text-muted">192.168.100.5</div>
+                            </div>
+                            <a href="signout.html">
+                                <button class="btn btn-orange-figma px-4">Sign Out</button>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </header>
+    <!--! ================================================================ !-->
+    <!--! [End] Header !-->
+
+
+    <!--! [Start] Main Content !-->
+    <!--! ================================================================ !-->
+    <!-- Main Start -->
+    <main class="nxl-container">
+        <div class="nxl-content">
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Master File</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="Master File Master Unit Kerja.html">Master Jabatan</a></li>
+                        <li class="breadcrumb-item">Edit</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content master-siaga">
+                <div class="container-fluid">
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center"
+                            style="border-radius: 10px;">
+                            <h6 class="mb-0">
+                                <i class="feather-award me-2"></i> Master Jabatan
+                            </h6>
+
+                            <div class="header-actions">
+                                <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
+                                    <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                                </button>
+
+                                <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
+                                    <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                        <a href="Cari Master Jabatan.html"
+                                            class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                        </a>
+
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-file-earmark-plus"
+                                                style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                        </button>
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                                        </button>
+
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12 d-md-flex align-items-center mb-3">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Group
+                                        jabatan</label>
+                                    <div class="col-md-7">
+                                        <div class="dropdown custom-combogrid">
+                                            <div class="form-select-sm border d-flex justify-content-between align-items-center bg-white"
+                                                data-bs-toggle="dropdown" style="cursor: pointer; height: 31px;">
+                                                <span class="ps-2"></span>
+                                                <div
+                                                    style="background: #3fb1c5; width: 30px; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="bi bi-caret-down-fill text-white"
+                                                        style="font-size: 12px;"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="dropdown-menu p-0 shadow-sm border-secondary w-100"
+                                                style="min-width: 400px; font-family: sans-serif;">
+                                                <div class="d-flex fw-bold text-dark border-bottom"
+                                                    style="background: #e9e9e9; font-size: 14px;">
+                                                    <div style="width: 80px;" class="p-1 ps-2">ID</div>
+                                                    <div class="flex-grow-1 p-1 text-center">Group</div>
+                                                </div>
+
+                                                <div style="max-height: 250px; overflow-y: auto;">
+
+                                                    <div class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom"
+                                                        style="background: #e0f4f9;">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">0</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">-</span>
+                                                    </div>
+
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">10</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Kepala
+                                                            Kantor</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">1010</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Kasubag
+                                                            Umum</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">1020</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Kasi
+                                                            Ops dan Siaga</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">1030</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Kasi
+                                                            Sumber Daya</span>
+                                                    </div>
+
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101010</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Perencanaan</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101011</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                            BMN</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101012</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Penata
+                                                            Lap SAI</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101013</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                            Keuangan</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101014</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                            Urusan Dalam</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101015</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                            Kepegawaian</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101016</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Arsiparis</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101017</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pranata
+                                                            Komputer</span>
+                                                    </div>
+
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101021</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Perawat</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">101022</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Humas</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">102010</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                            SAR</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">102011</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Opr
+                                                            Kom</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">102012</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Teknisi
+                                                            Alkom</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">102013</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Rescuer</span>
+                                                    </div>
+
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103010</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Instruktur
+                                                            SAR</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103011</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                            Alat Logistik</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103012</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                            Kendaraan</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103013</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pengemudi</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103014</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Nahkoda</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103015</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Mualim</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103016</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Markonis</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103017</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Serang
+                                                            Bosun</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103018</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                            Mudi</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103019</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Jenang
+                                                            Kelas</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103020</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                            Masak</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103021</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">KKM</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103022</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Masinis</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103023</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Teknisi
+                                                            Listrik Kapal</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103024</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Mandor
+                                                            Mesin</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">103025</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                            Minyak</span>
+                                                    </div>
+
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">900000</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Bendahara</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">900001</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Adm
+                                                            Umum</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">900003</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Verifikator</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 70px;">900004</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Adm
+                                                            Kepegawaian</span>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="p-1 ps-2 border-top"
+                                                    style="background: #e9e9e9; font-size: 12px; color: #666;">
+                                                    Total 39 items
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center mb-3">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">SubGroup
+                                        Jabatan</label>
+                                    <div class="col-md-7">
+                                        <div class="dropdown custom-combogrid">
+                                            <div class="form-select-sm border d-flex justify-content-between align-items-center bg-white"
+                                                data-bs-toggle="dropdown" style="cursor: pointer; height: 31px;">
+                                                <span class="ps-2"></span>
+                                                <div
+                                                    style="background: #3fb1c5; width: 30px; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="bi bi-caret-down-fill text-white"
+                                                        style="font-size: 12px;"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="dropdown-menu p-0 shadow-sm border-secondary w-100"
+                                                style="min-width: 400px; font-family: sans-serif;">
+                                                <div class="d-flex fw-bold text-dark border-bottom"
+                                                    style="background: #e9e9e9; font-size: 14px;">
+                                                    <div style="width: 100px;" class="p-1 ps-2">ID</div>
+                                                    <div class="flex-grow-1 p-1 text-center">Sub Group</div>
+                                                </div>
+
+                                                <div style="max-height: 250px; overflow-y: auto;">
+
+                                                    <div class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom"
+                                                        style="background: #e0f4f9;">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">0</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">-</span>
+                                                    </div>
+
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101010</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Perencanaan</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101110</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                            BMN</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101210</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Penata
+                                                            Lap SAI</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101310</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                            Keuangan</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101410</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                            Urusan Dalam</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101510</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                            Kepegawaian</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101610</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Arsiparis
+                                                            Terampil</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101620</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Arsiparis
+                                                            Ahli</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10101710</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pranata
+                                                            Komputer</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10102110</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Perawat</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10102210</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pranata
+                                                            Humas</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10201010</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                            SAR</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10201110</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Opr
+                                                            Kom</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10201210</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Teknisi
+                                                            Alkom</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10201310</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Recuer</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301010</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Instruktur
+                                                            SAR</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301110</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                            Alat Logistik</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301210</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                            Kendaraan</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301310</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Pengemudi</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301410</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Nahkoda</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301510</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Mualim</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301610</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Markonis</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301710</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Serang
+                                                            Bosun</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301810</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                            Mudi</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10301910</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Kelas</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10302010</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                            Masak</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10302110</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">KKM</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10302210</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Masinis</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10302310</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Teknisi
+                                                            Listrik</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10302410</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Mandor
+                                                            Mesin</span>
+                                                    </div>
+                                                    <div
+                                                        class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                        <span class="badge rounded-pill bg-secondary me-3"
+                                                            style="width: 85px;">10302510</span>
+                                                        <span
+                                                            class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                            Minyak</span>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="p-1 ps-2 border-top"
+                                                    style="background: #e9e9e9; font-size: 12px; color: #666;">
+                                                    Total 32 items
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jabatan
+                                        ID</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="number" class="form-control-sm border w-100 text-end" min="0"
+                                                step="1" value="0">
+                                            <span class="icon-append">
+                                                <i class="bi bi-sort-numeric-down"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Nama
+                                        Jabatan</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Parent Jabatan
+                                        ID</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="number" class="form-control-sm border w-100 text-end" min="0"
+                                                step="1" value="0">
+                                            <span class="icon-append">
+                                                <i class="bi bi-sort-numeric-down"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Level
+                                        Jabatan</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="number" class="form-control-sm border w-100 text-end" min="0"
+                                                step="1" value="0">
+                                            <span class="icon-append">
+                                                <i class="bi bi-sort-numeric-down"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Type</label>
+                                    <div class="col-md-7">
+                                        <select class="form-select-sm border custom-select w-100">
+                                            <option value="">Pilih</option>
+                                            <option>FT</option>
+                                            <option>FU</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Isi Aktif</label>
+                                    <div class="col-md-7">
+                                        <select class="form-select-sm border custom-select w-100">
+                                            <option value="">Pilih</option>
+                                            <option>Aktif</option>
+                                            <option>Non Aktif</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-customm">
+                            <h6 class="mb-0">Item Kegiatan</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped text-center align-middle">
+                                        <thead style="background:#EB6831;">
+                                            <tr>
+                                                <th style="color:white; vertical-align: middle;">ID Job</th>
+                                                <th style="color:white; vertical-align: middle;">Item ID</th>
+                                                <th style="color:white; vertical-align: middle;">Deskripsi</th>
+                                                <th style="color:white; vertical-align: middle;">AK</th>
+                                                <th style="color:white; vertical-align: middle;">Type</th>
+                                                <th style="color:white; vertical-align: middle;">Unsur</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6" style="vertical-align: middle; padding: 20px;">No
+                                                    records to display.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
     </main>
+    <!-- Main End -->
     <!--! ================================================================ !-->
     <!--! [End] Main Content !-->
     <!--! ================================================================ !-->
     <!--! ================================================================ !-->
-    <!--! BEGIN: Theme Customizer !-->
-    <!--! ================================================================ !-->
-    <div class="theme-customizer">
-        <div class="customizer-handle">
-            <a href="javascript:void(0);" class="cutomizer-open-trigger bg-primary">
-                <i class="feather-settings"></i>
-            </a>
-        </div>
-        <div class="customizer-sidebar-wrapper">
-            <div class="customizer-sidebar-header px-4 ht-80 border-bottom d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Theme Settings</h5>
-                <a href="javascript:void(0);" class="cutomizer-close-trigger d-flex">
-                    <i class="feather-x"></i>
-                </a>
-            </div>
-            <div class="customizer-sidebar-body position-relative p-4" data-scrollbar-target="#psScrollbarInit">
-                <!--! BEGIN: [Skins] !-->
-                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
-                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">Skins</label>
-                    <div class="row g-2 theme-options-items app-skin" id="appSkinList">
-                        <div class="col-6 text-center position-relative single-option light-button active">
-                            <input type="radio" class="btn-check" id="app-skin-light" name="app-skin" value="1" data-app-skin="app-skin-light">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-light">Light</label>
-                        </div>
-                        <div class="col-6 text-center position-relative single-option dark-button">
-                            <input type="radio" class="btn-check" id="app-skin-dark" name="app-skin" value="2" data-app-skin="app-skin-dark">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-dark">Dark</label>
-                        </div>
-                    </div>
-                </div>
-                <!--! END: [Skins] !-->
-                <!--! BEGIN: [Typography] !-->
-                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-0 border border-gray-2 theme-options-set">
-                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">Typography</label>
-                    <div class="row g-2 theme-options-items font-family" id="fontFamilyList">
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-lato" name="font-family" value="1" data-font-family="app-font-family-lato">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-lato">Lato</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-rubik" name="font-family" value="2" data-font-family="app-font-family-rubik">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-rubik">Rubik</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-inter" name="font-family" value="3" data-font-family="app-font-family-inter" checked>
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-inter">Inter</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-cinzel" name="font-family" value="4" data-font-family="app-font-family-cinzel">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-cinzel">Cinzel</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-nunito" name="font-family" value="6" data-font-family="app-font-family-nunito">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-nunito">Nunito</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-roboto" name="font-family" value="7" data-font-family="app-font-family-roboto">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto">Roboto</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-ubuntu" name="font-family" value="8" data-font-family="app-font-family-ubuntu">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ubuntu">Ubuntu</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-poppins" name="font-family" value="9" data-font-family="app-font-family-poppins">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-poppins">Poppins</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-raleway" name="font-family" value="10" data-font-family="app-font-family-raleway">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-raleway">Raleway</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-system-ui" name="font-family" value="11" data-font-family="app-font-family-system-ui">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-system-ui">System UI</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-noto-sans" name="font-family" value="12" data-font-family="app-font-family-noto-sans">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-noto-sans">Noto Sans</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-fira-sans" name="font-family" value="13" data-font-family="app-font-family-fira-sans">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-fira-sans">Fira Sans</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-work-sans" name="font-family" value="14" data-font-family="app-font-family-work-sans">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-work-sans">Work Sans</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-open-sans" name="font-family" value="15" data-font-family="app-font-family-open-sans">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-open-sans">Open Sans</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-maven-pro" name="font-family" value="16" data-font-family="app-font-family-maven-pro">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-maven-pro">Maven Pro</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-quicksand" name="font-family" value="17" data-font-family="app-font-family-quicksand">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-quicksand">Quicksand</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-montserrat" name="font-family" value="18" data-font-family="app-font-family-montserrat">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat">Montserrat</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-josefin-sans" name="font-family" value="19" data-font-family="app-font-family-josefin-sans">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-josefin-sans">Josefin Sans</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-ibm-plex-sans" name="font-family" value="20" data-font-family="app-font-family-ibm-plex-sans">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-ibm-plex-sans">IBM Plex Sans</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-source-sans-pro" name="font-family" value="5" data-font-family="app-font-family-source-sans-pro">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-source-sans-pro">Source Sans Pro</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-montserrat-alt" name="font-family" value="21" data-font-family="app-font-family-montserrat-alt">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-montserrat-alt">Montserrat Alt</label>
-                        </div>
-                        <div class="col-6 text-center single-option">
-                            <input type="radio" class="btn-check" id="app-font-family-roboto-slab" name="font-family" value="22" data-font-family="app-font-family-roboto-slab">
-                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-font-family-roboto-slab">Roboto Slab</label>
-                        </div>
-                    </div>
-                </div>
-                <!--! END: [Typography] !-->
-            </div>
-            <div class="customizer-sidebar-footer px-4 ht-60 border-top d-flex align-items-center gap-2">
-                <div class="flex-fill w-50">
-                    <a href="javascript:void(0);" class="btn btn-danger" data-style="reset-all-common-style">Reset</a>
-                </div>
-                <div class="flex-fill w-50">
-                    <a href="https://www.themewagon.com/themes/Duralux-admin" target="_blank" class="btn btn-primary">Download</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--! ================================================================ !-->
-    <!--! [End] Theme Customizer !-->
-    <!--! ================================================================ !-->
-    <!--! ================================================================ !-->
-    <!--! Footer Script !-->
+
+
     <!--! ================================================================ !-->
     <!--! BEGIN: Vendors JS !-->
     <script src="assets/vendors/js/vendors.min.js"></script>
     <!-- vendors.min.js {always must need to be top} -->
+    <script src="assets/vendors/js/daterangepicker.min.js"></script>
+    <script src="assets/vendors/js/apexcharts.min.js"></script>
+    <script src="assets/vendors/js/jquery.time-to.min.js "></script>
+    <script src="assets/vendors/js/circle-progress.min.js"></script>
     <!--! END: Vendors JS !-->
     <!--! BEGIN: Apps Init  !-->
     <script src="assets/js/common-init.min.js"></script>
+    <script src="assets/js/analytics-init.min.js"></script>
     <!--! END: Apps Init !-->
-    <!--! BEGIN: Theme Customizer  !-->
-    <script src="assets/js/theme-customizer-init.min.js"></script>
-    <!--! END: Theme Customizer !-->
-    <script>
-        document.addEventListener("DOMContentLoaded", function(event) {
-            function OTPInput() {
-                const inputs = document.querySelectorAll("#otp > *[id]");
-                for (let i = 0; i < inputs.length; i++) {
-                    inputs[i].addEventListener("keydown", function(event) {
-                        if (event.key === "Backspace") {
-                            inputs[i].value = "";
-                            if (i !== 0) inputs[i - 1].focus();
-                        } else {
-                            if (i === inputs.length - 1 && inputs[i].value !== "") {
-                                return true;
-                            } else if (event.keyCode > 47 && event.keyCode < 58) {
-                                inputs[i].value = event.key;
-                                if (i !== inputs.length - 1) inputs[i + 1].focus();
-                                event.preventDefault();
-                            } else if (event.keyCode > 64 && event.keyCode < 91) {
-                                inputs[i].value = String.fromCharCode(event.keyCode);
-                                if (i !== inputs.length - 1) inputs[i + 1].focus();
-                                event.preventDefault();
-                            }
-                        }
-                    });
-                }
-            }
-            OTPInput();
-        });
-    </script>
 </body>
 
 </html>
