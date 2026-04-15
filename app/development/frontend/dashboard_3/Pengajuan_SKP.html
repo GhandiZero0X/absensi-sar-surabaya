@@ -314,16 +314,17 @@
                                                 </div>
                                             </div>
                                             
-                                            <button class="btn-refresh-custom ms-md-3 mt-2 mt-md-0 w-100 w-md-auto">
+                                            <button id="btn-refresh" class="btn-refresh-custom w-mobile-100">
                                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                                             </button>
                                         </div>
                                     </div>
 
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered align-middle text-center">
-                                            <thead class="table-light">
-                                                <tr>
+                                    <div class="tab-pane fade show active" id="table-content" role="tabpanel" style="display: none;">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle text-center">
+                                                <thead class="table-light">
+                                                    <tr>
                                                     <th rowspan="2" class="align-middle">Periode</th>
                                                     <th colspan="4">Pejabat Penilai</th>
                                                     <th colspan="4">Pegawai Negeri Sipil Yang Dinilai</th>
@@ -339,13 +340,14 @@
                                                     <th>Pangkat, GOLRU</th>
                                                     <th>Jabatan</th>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="10" class="py-4 text-start">No records to display.</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -408,39 +410,39 @@
                                         </div>
 
                                         <div class="col-md-5">
-    <div class="border border-dark">
-        <div class="p-2 border-bottom border-dark fw-bold" style="background-color: #fff; font-size: 1.1rem; color: #495057;">
-            Atasan
-        </div>
-        
-        <div class="p-2 text-white" style="background-color: #EB6831;">
-            <div class="mb-1">
-                <div class="fw-bold" style="font-size: 0.9rem;">Nama</div>
-                <div style="font-size: 0.85rem;">MUHAMMAD ZAENAL ARIFIN, S.Pd., M.Si.</div>
-            </div>
-            <div class="mb-1">
-                <div class="fw-bold" style="font-size: 0.9rem;">NIP</div>
-                <div style="font-size: 0.85rem;">198109152002121003</div>
-            </div>
-            <div class="mb-1">
-                <div class="fw-bold" style="font-size: 0.9rem;">Jabatan</div>
-                <div style="font-size: 0.85rem;">Kepala Subbagian Umum</div>
-            </div>
-            <div class="mb-1">
-                <div class="fw-bold" style="font-size: 0.9rem;">Jabatan ID</div>
-                <div style="font-size: 0.85rem;">1010</div>
-            </div>
-            <div class="mb-1">
-                <div class="fw-bold" style="font-size: 0.9rem;">Gol</div>
-                <div style="font-size: 0.85rem;">III/d</div>
-            </div>
-            <div class="mb-0">
-                <div class="fw-bold" style="font-size: 0.9rem;">Catatan Pejabat Penilai</div>
-                <div style="font-size: 0.85rem;">-</div>
-            </div>
-        </div>
-    </div>
-</div>
+                                            <div class="border border-dark">
+                                                <div class="p-2 border-bottom border-dark fw-bold" style="background-color: #fff; font-size: 1.1rem; color: #495057;">
+                                                    Atasan
+                                                </div>
+                                                
+                                                <div class="p-2 text-white" style="background-color: #EB6831;">
+                                                    <div class="mb-1">
+                                                        <div class="fw-bold" style="font-size: 0.9rem;">Nama</div>
+                                                        <div style="font-size: 0.85rem;">MUHAMMAD ZAENAL ARIFIN, S.Pd., M.Si.</div>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <div class="fw-bold" style="font-size: 0.9rem;">NIP</div>
+                                                        <div style="font-size: 0.85rem;">198109152002121003</div>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <div class="fw-bold" style="font-size: 0.9rem;">Jabatan</div>
+                                                        <div style="font-size: 0.85rem;">Kepala Subbagian Umum</div>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <div class="fw-bold" style="font-size: 0.9rem;">Jabatan ID</div>
+                                                        <div style="font-size: 0.85rem;">1010</div>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <div class="fw-bold" style="font-size: 0.9rem;">Gol</div>
+                                                        <div style="font-size: 0.85rem;">III/d</div>
+                                                    </div>
+                                                    <div class="mb-0">
+                                                        <div class="fw-bold" style="font-size: 0.9rem;">Catatan Pejabat Penilai</div>
+                                                        <div style="font-size: 0.85rem;">-</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -461,56 +463,18 @@
     <script src="assets/js/invoice-create-init.min.js"></script>
     <script src="assets/js/theme-customizer-init.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var i = 1;
-            $("#add_row").click(function() {
-                b = i - 1;
-                $("#addr" + i)
-                    .html($("#addr" + b).html())
-                    .find("td:first-child")
-                    .html(i + 1);
-                $("#tab_logic").append('<tr id="addr' + (i + 1) + '"></tr>');
-                i++;
-            });
-            $("#delete_row").click(function() {
-                if (i > 1) {
-                    $("#addr" + (i - 1)).html("");
-                    i--;
-                }
-                calc();
-            });
-            $("#tab_logic tbody").on("keyup change", function() {
-                calc();
-            });
-            $("#tax").on("keyup change", function() {
-                calc_total();
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('btn-refresh');
+            const tableContent = document.getElementById('table-content');
+
+            refreshBtn.addEventListener('click', function() {
+                // Menampilkan tabel saat tombol diklik
+                tableContent.style.display = 'block';
+                
+                // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+                console.log("Memuat data...");
             });
         });
-
-        function calc() {
-            $("#tab_logic tbody tr").each(function(i, element) {
-                var html = $(this).html();
-                if (html != "") {
-                    var qty = $(this).find(".qty").val();
-                    var price = $(this).find(".price").val();
-                    $(this)
-                        .find(".total")
-                        .val(qty * price);
-                    calc_total();
-                }
-            });
-        }
-
-        function calc_total() {
-            total = 0;
-            $(".total").each(function() {
-                total += parseInt($(this).val());
-            });
-            $("#sub_total").val(total.toFixed(2));
-            tax_sum = (total / 100) * $("#tax").val();
-            $("#tax_amount").val(tax_sum.toFixed(2));
-            $("#total_amount").val((tax_sum + total).toFixed(2));
-        }
     </script>
 </body>
 

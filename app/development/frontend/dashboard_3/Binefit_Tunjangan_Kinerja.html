@@ -296,7 +296,7 @@
                                     <div class="col-12 d-md-flex">
                                         <div class="col-md-3"></div>
                                         <div class="col-md-1">
-                                            <button class="btn btn-primary w-100 py-2"><i class="bi bi-arrow-clockwise me-2"></i>Refresh</button>
+                                            <button id="btn-refresh" class="btn btn-primary w-100 py-2"><i class="bi bi-arrow-clockwise me-2"></i>Refresh</button>
                                         </div>
                                     </div>
                                 </div>
@@ -350,6 +350,49 @@
                                         </table>
                                     </div>
                                 </div>
+
+                                <div class="container-fluid mt-4">
+                                    <div class="table-responsive" id="table-content" style="display: none;">
+                                        <table class="table table-bordered text-center align-middle">
+                                            <thead class="table-header-custom">
+                                                <tr>
+                                                    <th rowspan="2">NO</th>
+                                                    <th rowspan="2">TGL</th>
+                                                    <th rowspan="2">TA</th>
+                                                    <th colspan="2">TLM</th>
+                                                    <th colspan="2">PSW</th>
+                                                    <th rowspan="2">DINAS LUAR</th>
+                                                    <th colspan="6">CUTI</th>
+                                                    <th colspan="5">SAKIT</th>
+                                                    <th rowspan="2">IJIN</th>
+                                                    <th rowspan="2">KET.</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>POT.%</th>
+                                                    <th>TINGKAT</th>
+                                                    <th>POT.%</th>
+                                                    <th>TINGKAT</th>
+                                                    <th>THN</th>
+                                                    <th>CB-1</th>
+                                                    <th>CB-2</th>
+                                                    <th>CB-3</th>
+                                                    <th>CAP-M2</th>
+                                                    <th>CAP</th>
+                                                    <th>S-1</th>
+                                                    <th>S-2</th>
+                                                    <th>S-3</th>
+                                                    <th>S-4</th>
+                                                    <th>S-5</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="21" class="py-4 text-muted">No records to display.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -366,6 +409,20 @@
     <script src="assets/vendors/js/select2-active.min.js"></script>
     <script src="assets/js/common-init.min.js"></script>
     <script src="assets/js/theme-customizer-init.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('btn-refresh');
+            const tableContent = document.getElementById('table-content');
+
+            refreshBtn.addEventListener('click', function() {
+                // Menampilkan tabel saat tombol diklik
+                tableContent.style.display = 'block';
+                
+                // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+                console.log("Memuat data...");
+            });
+        });
+    </script>
 </body>
 
 </html>

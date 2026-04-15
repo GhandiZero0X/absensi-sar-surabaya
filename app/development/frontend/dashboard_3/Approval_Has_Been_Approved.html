@@ -406,7 +406,28 @@
                                         <div class="col-12 d-md-flex">
                                             <div class="col-md-3"></div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-primary w-100 py-2"><i class="bi bi-arrow-clockwise me-2"></i>Refresh</button>
+                                                <button id="btn-refresh" class="btn btn-primary w-100 py-2"><i class="bi bi-arrow-clockwise me-2"></i>Refresh</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade show active" id="table-content" role="tabpanel" style="display: none;">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered align-middle text-center">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Tgl Pengajuan</th>
+                                                            <th>Perihal</th>
+                                                            <th>Aksi</th>
+                                                            <th>Keterangan aksi</th>
+                                                            <th>Otorisasi</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div> 
@@ -428,6 +449,20 @@
     <script src="assets/js/common-init.min.js"></script>
     <script src="assets/js/invoice-create-init.min.js"></script>
     <script src="assets/js/theme-customizer-init.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('btn-refresh');
+            const tableContent = document.getElementById('table-content');
+
+            refreshBtn.addEventListener('click', function() {
+                // Menampilkan tabel saat tombol diklik
+                tableContent.style.display = 'block';
+                
+                // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+                console.log("Memuat data...");
+            });
+        });
+    </script>
 </body>
 
 </html>
