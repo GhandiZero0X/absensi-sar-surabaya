@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zxx">
 
 <head>
@@ -10,7 +11,7 @@
     <meta name="author" content="theme_ocean">
     <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
     <!--! BEGIN: Apps Title-->
-    <title>Dashboard Pelanggaran</title>
+    <title>Media Informasi Slide JPG</title>
     <!--! END:  Apps Title-->
     <!--! BEGIN: Favicon-->
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo-full.png">
@@ -39,7 +40,6 @@
 </head>
 
 <body>
-    <!--! ================================================================ !-->
     <!--! [Start] Navigation Menu !-->
     <!--! ================================================================ !-->
     <nav class="nxl-navigation">
@@ -179,7 +179,7 @@
                             </li>
 
                             <li class="nxl-item">
-                                <a class="nxl-link" href="Master File Master THR.html">
+                                <a class="nxl-link" href="Master File Master TRT.html">
                                     <span class="nxl-micon"><i class="ti ti-cash"></i></span>
                                     <span class="nxl-mtext">Master TRT</span>
                                 </a>
@@ -450,40 +450,36 @@
     <!--! ================================================================ !-->
     <!--! [End] Header !-->
 
+
     <!--! [Start] Main Content !-->
     <!--! ================================================================ !-->
+    <!-- Main Start -->
     <main class="nxl-container">
         <div class="nxl-content">
-            <!-- [ page-header ] start -->
             <div class="page-header">
                 <div class="page-header-left d-flex align-items-center">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Dashboard</h5>
+                        <h5 class="m-b-10">Media Informasi</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="Dashboard Pelanggaran.html">Pelanggaran</a></li>
-                        <li class="breadcrumb-item">Edit</li>
+                        <li class="breadcrumb-item"><a href="Media Informasi.html">Inp Pengumuman</a></li>
+                        <li class="breadcrumb-item">Slide JPG</li>
                     </ul>
                 </div>
             </div>
-            <!-- [ page-header ] end -->
-            <!-- [ Main Content ] start -->
+
             <div class="main-content master-siaga">
                 <div class="container-fluid">
                     <div class="card mb-4 filter-card">
-                        <div class="card-header-custom d-flex justify-content-start align-items-center gap-3"
-                            style="border-radius: 10px; padding: 10px 15px;">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center"
+                            style="border-radius: 10px;">
                             <h6 class="mb-0">
-                                <i class="ti ti-speakerphone me-2"></i> Reminder
+                                <i class="ti ti-file-export me-2"></i>Media Informasi
                             </h6>
-
-                            <input type="month" class="form-control form-control-sm" value="2026-02"
-                                style="width: auto; min-height: 30px; font-size: 12px; border-radius: 8px; height: 15px;">
                         </div>
 
                         <div class="card-body">
-                            <div class="row g-3"></div>
-                            <div class="row border-0">
+                            <div class="row g-3">
                                 <div class="col-12 mt-2">
                                     <style>
                                         .btn-orange {
@@ -514,109 +510,129 @@
                                     <div class="button-responsive-wrapper"
                                         style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
                                         <div class="btn-group d-inline-flex">
-                                            <a href="Dashboard Pelanggaran.html"
-                                                class="btn btn-sm btn-orange">Pelanggaran</a>
-                                            <a href="Dashboard Pensiun.html"
-                                                class="btn btn-sm btn-orange-outline">Pensiun</a>
-                                            <a href="Dashboard Pangkat.html"
-                                                class="btn btn-sm btn-orange-outline">Pangkat</a>
-                                            <a href="Dashboard KGB.html" class="btn btn-sm btn-orange-outline">KGB</a>
-                                            <a href="Dashboard TRT.html" class="btn btn-sm btn-orange-outline">TRT</a>
+                                            <a href="Media Informasi.html" class="btn btn-sm btn-orange-outline">Runing
+                                                Text</a>
+                                            <a href="Media Informasi Slide JPG.html" class="btn btn-sm btn-orange">Slide
+                                                JPG</a>
                                         </div>
                                     </div>
 
                                 </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Upload
+                                        (.jpg)</label>
+                                    <div class="col-md-7">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="input-group-custom w-100">
+                                                <input type="text" id="fileName" class="form-control-sm border w-100"
+                                                    readonly placeholder="" style="background: #fff;">
+                                            </div>
 
-                                <!-- TITLE TABLE -->
-                                <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
-                                    Hukuman Disiplin Pegawai Berdasarkan Jumlah Ketidakhadiran Hari Kerja
-                                </p>
+                                            <button type="button" class="btn btn-sm border fw-bold"
+                                                style="font-size: 10px; background-color: #eee; color: #333; height: 31px; padding: 0 15px;"
+                                                onclick="document.getElementById('fileInput').click()">
+                                                SELECT
+                                            </button>
 
-                                <!-- TABLE -->
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped text-center align-middle">
-                                        <thead style="background:#EB6831;">
-                                            <tr>
-                                                <th style="color:white;">No</th>
-                                                <th style="color:white;">Nama</th>
-                                                <th style="color:white;">Jumlah Hari</th>
-                                                <th style="color:white;">Kategori Hukuman</th>
-                                                <th style="color:white;">Jenis Hukuman</th>
-                                                <th style="color:white;">Potongan (%)</th>
-                                                <th style="color:white;">Lama Pot</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>EBTARIO DWI PRAKOSO</td>
-                                                <td>14</td>
-                                                <td>Kosong</td>
-                                                <td>Kosong</td>
-                                                <td>0</td>
-                                                <td>0 Bulan</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>ONE RIZQI KURNIAWAN</td>
-                                                <td>12</td>
-                                                <td>Kosong</td>
-                                                <td>Kosong</td>
-                                                <td>0</td>
-                                                <td>0 Bulan</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>ANDI IRAWAN</td>
-                                                <td>11</td>
-                                                <td>Kosong</td>
-                                                <td>Kosong</td>
-                                                <td>0</td>
-                                                <td>0 Bulan</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>ALFIYAN ADI SETIAWAN</td>
-                                                <td>9</td>
-                                                <td>Hukuman Disiplin Ringan</td>
-                                                <td>Pernyataan Tidak Puas Secara Tertulis</td>
-                                                <td>0</td>
-                                                <td>0 Bulan</td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>NURHOLIS MAJID</td>
-                                                <td>8</td>
-                                                <td>Hukuman Disiplin Ringan</td>
-                                                <td>Pernyataan Tidak Puas Secara Tertulis</td>
-                                                <td>0</td>
-                                                <td>0 Bulan</td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>RISKY PUTRA BUANA</td>
-                                                <td>6</td>
-                                                <td>Hukuman Disiplin Ringan</td>
-                                                <td>Pernyataan Tidak Puas Secara Tertulis</td>
-                                                <td>0</td>
-                                                <td>0 Bulan</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                            <input type="file" id="fileInput" accept=".jpg,.jpeg" style="display: none;"
+                                                onchange="document.getElementById('fileName').value = this.files[0].name">
+                                        </div>
+                                    </div>
                                 </div>
-
-
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tgl Mulai</label>
+                                    <div class="col-md-3">
+                                        <div class="input-group-custom w-100">
+                                            <input type="date" class="form-control-sm border w-100"
+                                                style="outline: none;">
+                                            <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                        </div>
+                                    </div>
+                                    <label class="col-md-1 text-md-center fw-bold mb-1 mb-md-0">Tgl Akhir</label>
+                                    <div class="col-md-3">
+                                        <div class="input-group-custom w-100">
+                                            <input type="date" class="form-control-sm border w-100"
+                                                style="outline: none;">
+                                            <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Isi Aktif</label>
+                                    <div class="col-md-7">
+                                        <select class="form-select-sm border custom-select w-100">
+                                            <option value="">Pilih</option>
+                                            <option>Y</option>
+                                            <option>N</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-9 d-flex align-items-center gap-2">
+                                        <button class="btn-refresh-custom mt-0 w-auto"
+                                            style="background-color: #198754 !important;">
+                                            <i class="ti ti-brand-telegram me-2"></i> Send
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- [ Main Content ] end -->
                     </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="card mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden; border: none;">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Transaksi</h6>
+                            <a href="Master File Master Potongan.html" class="btn-close-custom">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        </div>
 
+                        <div class="card-body">
+                            <div class="row">
+                                <div
+                                    class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                    <label class="filter-label-wide">Filter</label>
+
+                                    <select class="form-select-sm border custom-select w-mobile-100">
+                                        <option>- Pilih Field -</option>
+                                    </select>
+
+                                    <div class="input-group-custom w-mobile-100">
+                                        <input type="text" class="form-control-sm border">
+                                        <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                    </div>
+
+                                    <span class="mx-md-2 fw-bold text-dan">Dan</span>
+
+                                    <select class="form-select-sm border custom-select w-mobile-100">
+                                        <option>- Pilih Field -</option>
+                                    </select>
+
+                                    <div class="input-group-custom w-mobile-100">
+                                        <input type="text" class="form-control-sm border">
+                                        <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                    </div>
+
+                                    <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
     </main>
+
+    <!-- Main End -->
     <!--! ================================================================ !-->
-    <!--! [End] Main Content !-->
-
-
 
     <!--! ================================================================ !-->
     <!--! BEGIN: Vendors JS !-->
