@@ -8,12 +8,13 @@
     <meta name="description" content="">
     <meta name="keyword" content="">
     <meta name="author" content="theme_ocean">
-    <title>Duralux || KnowledgeBase</title>
+    <title>Duralux || Invoice Create</title>
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/datepicker.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/theme.min.css">
     <!--[if lt IE 9]>
 			<script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -240,8 +241,6 @@
     </header>  
     <!-- Header End -->
 
-
-    <!-- Main Start -->
     <main class="nxl-container">
         <div class="nxl-content">
             <div class="page-header">
@@ -250,85 +249,226 @@
                         <h5 class="m-b-10">Aktifitasku</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="Aktifitasku_Update_Pendukung.html">Update Pendukung</a></li>
-                        <li class="breadcrumb-item">Edit</li>
+                        <li class="breadcrumb-item"><a href="Aktifitasku_Buku_Harian.html">Buku Harian</a></li>
+                        <li class="breadcrumb-item">Butir Kegiatan Tambahan</li>
                     </ul>
                 </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="d-md-none d-flex align-items-center">
+                        <a href="javascript:void(0)" class="page-header-right-open-toggle">
+                            <i class="feather-align-right fs-20"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-
             <div class="main-content master-siaga">
                 <div class="container-fluid">
-                    <div class="card mb-4 filter-card">
+                    <div class="card mb-4">
                         <div class="card-header-custom d-flex justify-content-between align-items-center">
                             <h6 class="mb-0">
-                                <i class="bi bi-hammer me-2"></i>Update Pendukung
+                                <i class="bi bi-people me-2"></i>Butir Kegiatan Tambahan
                             </h6>
                         </div>
 
                         <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
-                                    <label class="mx-md-2 fw-bold text-dan">Periode</label>
-                                    <div class="input-group-custom w-mobile-100">
-                                        <input type="text" class="form-control-sm border">
-                                        <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row mb-2">
+                                        <label class="col-sm-4">JabatanID</label>
+                                        <div class="col-sm-2">101024</div>
+                                        <div class="col-sm-2 text-end">Verifikator</div>
                                     </div>
-
-                                    <label class="mx-md-2 fw-bold text-dan">Bukti Pendukung</label>
-                                    <select class="form-select-sm border custom-select w-mobile-100">
-                                        <option>- Pilih Bukti -</option>
-                                        <option>Tidak Ada</option>
-                                        <option>Ada</option>
-                                    </select>
-
-                                    <button class="btn-refresh-custom w-mobile-100">
-                                        <i class="bi bi-arrow-clockwise me-2"></i>Refresh
-                                    </button>
-
-                                    <button class="btn-refresh-custom w-mobile-100">
-                                        <i class="bi bi-arrow-clockwise me-2"></i>Update
-                                    </button>
+                                    <div class="row mb-2">
+                                        <label class="col-sm-4">Gol</label>
+                                        <div class="col-sm-8">-</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 fw-bold">Tanggal</label>
+                                        <div class="col-md-5">
+                                            <div class="input-group-custom w-100">
+                                                <input type="text" class="form-control-sm border w-100">
+                                                <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 fw-bold">Kegiatan</label>
+                                        <div class="col-md-5">
+                                            <div class="input-group-custom w-100">
+                                                <input type="text" class="form-control-sm border w-100">
+                                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <h3 class="fw-bold mb-3 mt-5">Reff SKP</h3>
+                                    <div class="row mb-1">
+                                        <label class="col-sm-4">Id Reff SKP</label>
+                                        <div class="col-sm-8">-2</div>
+                                    </div>
                                 </div>
 
-                                <div class="col-12 d-md-flex">
-                                    <div class="col-md-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-sm w-100">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Tgl</th>
-                                                        <th>Ada Pendukung</th>
-                                                        <th>Status</th>
-                                                        <th>FingerID</th>
-                                                        <th>Nama</th>
-                                                        <th>keterangan</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="7" class="text-center py-4">No records to display.</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                <div class="col-md-5">
+                                    <div class="border border-dark shadow-sm">
+                                        <div class="p-2 border-bottom border-dark fw-bold bg-white" style="font-size: 1.1rem;">
+                                            Atasan
+                                        </div>
+                                        <div class="p-3 text-white" style="background-color: #EB6831; min-height: 200px;">
+                                            <div class="mb-3">
+                                                <div class="fw-bold text-uppercase" style="font-size: 0.95rem;">Nama</div>
+                                                <div style="font-size: 0.9rem;">DYAH SULISTYORINI, S.E.</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="fw-bold text-uppercase" style="font-size: 0.95rem;">Jabatan</div>
+                                                <div style="font-size: 0.9rem;">Kepala Subbagian Umum</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="fw-bold text-uppercase" style="font-size: 0.95rem;">Jabatan ID</div>
+                                                <div style="font-size: 0.9rem;">1010</div>
+                                            </div>
+                                            <div class="mb-0">
+                                                <div class="fw-bold text-uppercase" style="font-size: 0.95rem;">Gol</div>
+                                                <div style="font-size: 0.9rem;">III/d</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-customm">
+                            <h6 class="mb-0">Isi Aktifitas Buku Harian</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                    <div class="col-12 d-md-flex align-items-center">
+                                        <div class="col-md-1"></div>
+                                        <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tgl Mulai</label>
+                                        <div class="col-md-2">
+                                            <div class="input-group-custom w-100 d-flex align-items-center">
+                                                <input type="text" class="form-control-sm border w-100" placeholder="dd/mm/yyyy">
+                                                <span class="icon-append border-start p-1"><i class="bi bi-calendar3"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            <label class="fw-bold mb-0">Tgl Akhir</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="input-group-custom w-100 d-flex align-items-center">
+                                                <input type="text" class="form-control-sm border w-100" placeholder="dd/mm/yyyy">
+                                                <span class="icon-append border-start p-1"><i class="bi bi-calendar3"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-md-flex align-items-center">
+                                        <div class="col-md-1"></div>
+                                        <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Diskripsi Aktifitas</label>
+                                        <div class="col-md-7">
+                                            <div class="input-group-custom w-100">
+                                                <input type="text" class="form-control-sm border w-100">
+                                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-md-flex align-items-center">
+                                        <div class="col-md-1"></div>
+                                        <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Upload File Eviden</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <input type="file" class="form-control-sm border w-100" id="fileInput" accept=".pdf" style="display: none;">
+                                                <button class="btn btn-outline-secondary px-4 py-2" type="button" onclick="document.getElementById('fileInput').click();" style="border-color: #ced4da; color: #333; background-color: #f8f9fa;">
+                                                    Select
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        document.getElementById('fileInput').addEventListener('change', function() {
+                                            var fileName = this.files[0] ? this.files[0].name : "";
+                                            document.getElementById('fileName').value = fileName;
+                                        });
+                                    </script>
+
+                                    <div class="col-12 d-md-flex">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-1">
+                                            <button id="btn-refresh" class="btn btn-primary w-100 py-2"><i class="bi bi-save me-2"></i>Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered align-middle text-center">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Download</th>
+                                                <th>Tgl Mulai</th>
+                                                <th>Diskripsi</th>
+                                                <th>Tgl Selesai</th>
+                                                <th>Durasi (hk)</th>
+                                                <th>Status</th>
+                                                <th>Finish</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-customm">
+                            <h6 class="mb-0">Pengajuan Buku Harian</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Note Pengajuan</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary w-100 py-2"><i class="bi bi-send-fill me-2"></i>Pengajuan</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>        
+            </div>
         </div>
     </main>
-    <!-- Main End -->
 
-    <!-- Main Start -->
     <script src="assets/vendors/js/vendors.min.js"></script>
     <!-- vendors.min.js {always must need to be top} -->
     <script src="assets/vendors/js/select2.min.js"></script>
     <script src="assets/vendors/js/select2-active.min.js"></script>
+    <script src="assets/vendors/js/datepicker.min.js"></script>
+    <script src="assets/vendors/js/cleave.min.js"></script>
     <script src="assets/js/common-init.min.js"></script>
+    <script src="assets/js/invoice-create-init.min.js"></script>
     <script src="assets/js/theme-customizer-init.min.js"></script>
 </body>
 

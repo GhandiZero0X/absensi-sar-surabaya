@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <meta name="author" content="theme_ocean">
+    <title>Duralux || Invoice Create</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/datepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/theme.min.css">
+    <!--[if lt IE 9]>
+			<script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https:oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+    <!-- Sidebar Start -->
+    <nav class="nxl-navigation">
+        <div class="navbar-wrapper">
+            <div class="m-header">
+                <a href="index.html" class="b-brand">
+                    <!-- ========   change your logo hear   ============ -->
+                    <img src="assets/images/logo.png" alt="" class="logo logo-lg" />
+                    <img src="assets/images/logo1.png" alt="" class="logo logo-sm" />
+                </a>
+            </div>
+            <div class="navbar-content">
+                <ul class="nxl-navbar">
+                    <li class="nxl-item nxl-caption">
+                        <label>Navigation</label>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-microsoft"></i></span>
+                            <span class="nxl-mtext">Dashboards</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="index.html">
+                                    <span class="nxl-micon"><i class="bi bi-layout-text-window-reverse"></i></span>
+                                    <span class="nxl-mtext">Dashboard Kinerja</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-bar-chart-line-fill"></i></span>
+                            <span class="nxl-mtext">Pengajuan</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Pengajuan_SKP.html">
+                                    <span class="nxl-micon"><i class="bi bi-star-fill"></i></span>
+                                    <span class="nxl-mtext">SKP</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Pengajuan_Absensi.html">
+                                    <span class="nxl-micon"><i class="bi bi-file-earmark-break-fill"></i></span>
+                                    <span class="nxl-mtext">Absensi</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                            <span class="nxl-mtext">Aktifitasku</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Aktifitasku_Dashboard.html">
+                                    <span class="nxl-micon"><i class="bi bi-layout-text-window-reverse"></i></span>
+                                    <span class="nxl-mtext">Dashboard</span></a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Aktifitasku_Buku_Harian.html">
+                                    <span class="nxl-micon"><i class="bi bi-journal-text"></i></span>
+                                    <span class="nxl-mtext">Buku Harian</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Aktifitasku_Dupak.html">
+                                    <span class="nxl-micon"><i class="bi bi-search"></i></span>
+                                    <span class="nxl-mtext">Dupak</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Aktifitasku_SKP.html">
+                                    <span class="nxl-micon"><i class="bi bi-star-fill"></i></span>
+                                    <span class="nxl-mtext">SKP</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Aktifitasku_Jadwal_Piket.html">
+                                    <span class="nxl-micon"><i class="bi bi-calendar"></i></span>
+                                    <span class="nxl-mtext">Jadwal Siaga</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Aktifitasku_Dinas_Luar.html">
+                                    <span class="nxl-micon"><i class="bi bi-box-arrow-right"></i></span>
+                                    <span class="nxl-mtext">Dinas Luar</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Aktifitasku_Update_Pendukung.html">
+                                    <span class="nxl-micon"><i class="bi bi-cloud-upload-fill"></i></span>
+                                    <span class="nxl-mtext">Update Pendukung</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-currency-dollar"></i></span>
+                            <span class="nxl-mtext">Benefit</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Binefit_Tunjangan_Kinerja.html">
+                                    <span class="nxl-micon"><i class="bi bi-coin"></i></span>
+                                    <span class="nxl-mtext">Tunjangan Kinerja</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Binefit_Rekap_U.Makan.html">
+                                    <span class="nxl-micon"><i class="bi bi-cash-stack"></i></span>
+                                    <span class="nxl-mtext">Uang Makan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-pencil-square"></i></span>
+                            <span class="nxl-mtext">Approval</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Approval_Need_Approved.html">
+                                    <span class="nxl-micon"><i class="bi bi-unlock"></i></span>
+                                    <span class="nxl-mtext">Need Approval</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Approval_Has_Been_Approved.html">
+                                    <span class="nxl-micon"><i class="bi bi-lock"></i></span>
+                                    <span class="nxl-mtext">Has Been Approved</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-person-square"></i></span>
+                            <span class="nxl-mtext">Profile</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Profileku.html">
+                                    <span class="nxl-micon"><i class="bi bi-person"></i></span>
+                                    <span class="nxl-mtext">Pribadi</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-send"></i></span>
+                            <span class="nxl-mtext">Kirim</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kirim_Kritik_Saran.html">
+                                    <span class="nxl-micon"><i class="bi bi-pencil-fill"></i></span>
+                                    <span class="nxl-mtext">Kritik & Saran</span>
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kirim_Forum_Media_Informasi.html">
+                                    <span class="nxl-micon"><i class="bi bi-info-circle"></i></span>
+                                    <span class="nxl-mtext">FJB</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-house-fill"></i></span>
+                            <span class="nxl-mtext">Portal</span>
+                        </a>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-key-fill"></i></span>
+                            <span class="nxl-mtext">Update Password</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Sidebar End -->
+    
+    <!-- Header Start -->
+    <header class="nxl-header">
+        <div class="header-wrapper d-flex justify-content-between align-items-center px-4">
+            <div class="header-left d-flex align-items-center gap-2">
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+                    <div class="hamburger hamburger--arrowturn">
+                        <div class="hamburger-box">
+                            <div class="hamburger-inner"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="header-right ms-auto">
+                <div class="d-flex align-items-center">
+                    <div class="dropdown nxl-h-item position-relative">
+                        <a href="#" data-bs-toggle="dropdown" data-bs-display="static">
+                            <img src="assets/images/avatar/1.png"
+                                class="img-fluid rounded-circle"
+                                style="width:40px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>  
+    <!-- Header End -->
+
+    <main class="nxl-container">
+        <div class="nxl-content">
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Aktifitasku</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="Aktifitasku_Buku_Harian.html">Buku Harian</a></li>
+                        <li class="breadcrumb-item">Butir Kegiatan Utama</li>
+                    </ul>
+                </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="d-md-none d-flex align-items-center">
+                        <a href="javascript:void(0)" class="page-header-right-open-toggle">
+                            <i class="feather-align-right fs-20"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="main-content master-siaga">
+                <div class="container-fluid">
+                    <div class="card mb-4">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">
+                                <i class="bi bi-people me-2"></i>Butir Kegiatan Utama
+                            </h6>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row mb-2">
+                                        <label class="col-sm-4">JabatanID</label>
+                                        <div class="col-sm-2">101024</div>
+                                        <div class="col-sm-2 text-end">Verifikator</div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <label class="col-sm-4">Gol</label>
+                                        <div class="col-sm-8">-</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 fw-bold">Tanggal</label>
+                                        <div class="col-md-5">
+                                            <div class="input-group-custom w-100">
+                                                <input type="text" class="form-control-sm border w-100">
+                                                <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 fw-bold">Butir Kegiatan</label>
+                                        <div class="col-sm-5">
+                                            <select class="form-select-sm border custom-select w-100">
+                                        <option>- Pilih Bukti -</option>
+                                        <option>Tidak Ada</option>
+                                        <option>Ada</option>
+                                    </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 fw-bold">Kuan</label>
+                                        <div class="col-md-5">
+                                            <div class="input-group-custom w-100">
+                                                <input type="text" class="form-control-sm border w-100">
+                                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 fw-bold">Biaya</label>
+                                        <div class="col-md-5">
+                                            <div class="input-group-custom w-100">
+                                                <input type="text" class="form-control-sm border w-100">
+                                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="fw-bold mb-3 mt-5">Detail Butir Kegiatan Utama</h3>
+                                    <div class="row mb-1">
+                                        <label class="col-sm-4">AK</label>
+                                        <div class="col-sm-8">0</div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label class="col-sm-4">Kuant</label>
+                                        <div class="col-sm-2">0</div>
+                                        <label class="col-sm-2">Sisa</label>
+                                        <div class="col-sm-4">0</div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label class="col-sm-4">Biaya</label>
+                                        <div class="col-sm-2">0</div>
+                                        <label class="col-sm-2">Sisa</label>
+                                        <div class="col-sm-4">0</div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label class="col-sm-4">Item ID</label>
+                                        <div class="col-sm-2"></div>
+                                        <label class="col-sm-2">Unsur</label>
+                                        <div class="col-sm-4"></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label class="col-sm-4">Kegiatan</label>
+                                        <div class="col-sm-8"></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label class="col-sm-4">Id Reff SKP</label>
+                                        <div class="col-sm-8">-</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="border border-dark shadow-sm">
+                                        <div class="p-2 border-bottom border-dark fw-bold bg-white" style="font-size: 1.1rem;">
+                                            Atasan
+                                        </div>
+                                        <div class="p-3 text-white" style="background-color: #EB6831; min-height: 200px;">
+                                            <div class="mb-3">
+                                                <div class="fw-bold text-uppercase" style="font-size: 0.95rem;">Nama</div>
+                                                <div style="font-size: 0.9rem;">DYAH SULISTYORINI, S.E.</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="fw-bold text-uppercase" style="font-size: 0.95rem;">Jabatan</div>
+                                                <div style="font-size: 0.9rem;">Kepala Subbagian Umum</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="fw-bold text-uppercase" style="font-size: 0.95rem;">Jabatan ID</div>
+                                                <div style="font-size: 0.9rem;">1010</div>
+                                            </div>
+                                            <div class="mb-0">
+                                                <div class="fw-bold text-uppercase" style="font-size: 0.95rem;">Gol</div>
+                                                <div style="font-size: 0.9rem;">III/d</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-customm">
+                            <h6 class="mb-0">Isi Aktifitas Buku Harian</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                    <div class="col-12 d-md-flex align-items-center">
+                                        <div class="col-md-1"></div>
+                                        <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tgl Mulai</label>
+                                        <div class="col-md-2">
+                                            <div class="input-group-custom w-100 d-flex align-items-center">
+                                                <input type="text" class="form-control-sm border w-100" placeholder="dd/mm/yyyy">
+                                                <span class="icon-append border-start p-1"><i class="bi bi-calendar3"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            <label class="fw-bold mb-0">Tgl Akhir</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="input-group-custom w-100 d-flex align-items-center">
+                                                <input type="text" class="form-control-sm border w-100" placeholder="dd/mm/yyyy">
+                                                <span class="icon-append border-start p-1"><i class="bi bi-calendar3"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-md-flex align-items-center">
+                                        <div class="col-md-1"></div>
+                                        <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Diskripsi Aktifitas</label>
+                                        <div class="col-md-7">
+                                            <div class="input-group-custom w-100">
+                                                <input type="text" class="form-control-sm border w-100">
+                                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-md-flex align-items-center">
+                                        <div class="col-md-1"></div>
+                                        <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Upload File Eviden</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <input type="file" class="form-control-sm border w-100" id="fileInput" accept=".pdf" style="display: none;">
+                                                <button class="btn btn-outline-secondary px-4 py-2" type="button" onclick="document.getElementById('fileInput').click();" style="border-color: #ced4da; color: #333; background-color: #f8f9fa;">
+                                                    Select
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        document.getElementById('fileInput').addEventListener('change', function() {
+                                            var fileName = this.files[0] ? this.files[0].name : "";
+                                            document.getElementById('fileName').value = fileName;
+                                        });
+                                    </script>
+
+                                    <div class="col-12 d-md-flex">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-1">
+                                            <button id="btn-refresh" class="btn btn-primary w-100 py-2"><i class="bi bi-save me-2"></i>Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered align-middle text-center">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Download</th>
+                                                <th>Tgl Mulai</th>
+                                                <th>Diskripsi</th>
+                                                <th>Tgl Selesai</th>
+                                                <th>Durasi (hk)</th>
+                                                <th>Status</th>
+                                                <th>Finish</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-customm">
+                            <h6 class="mb-0">Pengajuan Buku Harian</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Note Pengajuan</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary w-100 py-2"><i class="bi bi-send-fill me-2"></i>Pengajuan</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/vendors/js/vendors.min.js"></script>
+    <!-- vendors.min.js {always must need to be top} -->
+    <script src="assets/vendors/js/select2.min.js"></script>
+    <script src="assets/vendors/js/select2-active.min.js"></script>
+    <script src="assets/vendors/js/datepicker.min.js"></script>
+    <script src="assets/vendors/js/cleave.min.js"></script>
+    <script src="assets/js/common-init.min.js"></script>
+    <script src="assets/js/invoice-create-init.min.js"></script>
+    <script src="assets/js/theme-customizer-init.min.js"></script>
+</body>
+
+</html>
