@@ -10019,3 +10019,19 @@ html.app-font-family-roboto-slab body {
         width: 100% !important;
     }
 }
+
+.profile-image-container {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+        }
+        .profile-image-placeholder {
+            font-size: 50px;
+            color: #bdc3c7;
+        }

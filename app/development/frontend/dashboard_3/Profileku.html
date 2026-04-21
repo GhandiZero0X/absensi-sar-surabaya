@@ -246,10 +246,10 @@
             <div class="page-header">
                 <div class="page-header-left d-flex align-items-center">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Pengajuan</h5>
+                        <h5 class="m-b-10">Profile</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="Pengajuan_SKP.html">SKP</a></li>
+                        <li class="breadcrumb-item"><a href="Profileku.html">Pribadi</a></li>
                         <li class="breadcrumb-item">Edit</li>
                     </ul>
                 </div>
@@ -269,13 +269,457 @@
                     </div>
                 </div>
             </div>
+            
             <div class="main-content master-siaga">
                 <div class="container-fluid">
                     <div class="card mb-4">
                         <div class="card-header-custom d-flex justify-content-between align-items-center">
                             <h6 class="mb-0">
-                                <i class="bi bi-people me-2"></i>Pengajuan SKP
+                                <i class="bi bi-people me-2"></i>Auditor
                             </h6>
+                        </div>
+
+                        <div class="profile-image-container mb-2 mt-3">
+                            <i class="bi bi-person-fill profile-image-placeholder"></i>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">No HP</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">e-Mail</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Password</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group-custom w-100">
+                                            <input type="text" class="form-control-sm border w-100">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Upload Foto Profile</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <input type="file" class="form-control-sm border w-100" id="fileInput" accept=".jpg" style="display: none;">
+                                                <button class="btn btn-outline-secondary px-4 py-2" type="button" onclick="document.getElementById('fileInput').click();" style="border-color: #ced4da; color: #333; background-color: #f8f9fa;">
+                                                    Select
+                                                </button>
+                                            </div>
+                                        </div>
+                                </div>
+                                <script>
+                                    document.getElementById('fileInput').addEventListener('change', function() {
+                                        var fileName = this.files[0] ? this.files[0].name : "";
+                                        document.getElementById('fileName').value = fileName;
+                                    });
+                                </script>
+                                <div class="col-12 d-md-flex">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-primary w-100 py-2"><i class="bi bi-send-fill me-2"></i>Update</button>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">
+                                Barcode NIP
+                            </h6>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=414386" 
+                                    alt="QR Code" 
+                                    class="img-fluid center" style="width: 80px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header p-0" style="background-color: #EB6831; border-top-left-radius: 12px; border-top-right-radius: 12px; min-height: 50px; display: flex; align-items: center;">
+                            <ul class="nav nav-tabs border-0 ps-2" id="skpTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="data-tab" data-bs-toggle="tab" data-bs-target="#data-content" 
+                                            type="button" role="tab">Data Kepegawaian</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="riwayat-tab" data-bs-toggle="tab" data-bs-target="#riwayat-content" 
+                                            type="button" role="tab">Riwayat Pangkat</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="jabatan-tab" data-bs-toggle="tab" data-bs-target="#jabatan-content" 
+                                            type="button" role="tab">Riwayat Jabatan</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="pendidikan-tab" data-bs-toggle="tab" data-bs-target="#pendidikan-content" 
+                                            type="button" role="tab">Riwayat Pendidikan & Pelatihan</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="pengalaman-tab" data-bs-toggle="tab" data-bs-target="#pengalaman-content" 
+                                            type="button" role="tab">Pengalaman</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="prestasi-tab" data-bs-toggle="tab" data-bs-target="#prestasi-content" 
+                                            type="button" role="tab">Prestasi</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="kesehatan-tab" data-bs-toggle="tab" data-bs-target="#kesehatan-content" 
+                                            type="button" role="tab">Riwayat Kesehatan</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="keterangan-tab" data-bs-toggle="tab" data-bs-target="#keterangan-content" 
+                                            type="button" role="tab">Keterangan Kesehatan</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                            id="berkas-tab" data-bs-toggle="tab" data-bs-target="#berkas-content" 
+                                            type="button" role="tab">Berkas Pribadi</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="tab-content" id="skpTabContent">
+                                <div class="tab-pane fade show active" id="data-content" role="tabpanel">
+                                    <div class="row g-3">
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Nama lengkap</label>
+                                            <div class="col-md-7">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">NIP</label>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <label class="fw-bold mb-0">Finger ID</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tempat Lahir</label>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <label class="fw-bold mb-0">Tgl Lahir</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jenis Kelamin</label>
+                                            <div class="col-md-2">
+                                                <select class="form-select-sm custom-select w-100">
+                                                    <option value="">Pilih Jenis Kelamin</option>
+                                                    <option>Laki-laki</option>
+                                                    <option>Perempuan</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <label class="fw-bold mb-0">Unit Kerja</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Pangkat,Gol.Ruang</label>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <label class="fw-bold mb-0">TMT Pangkat</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">TMT CPNS</label>
+                                            <div class="col-md-7">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jabatan Terakhir</label>
+                                            <div class="col-md-7">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Status Perkawinan</label>
+                                            <div class="col-md-2">
+                                                <select class="form-select-sm custom-select w-100">
+                                                    <option value="">Pilih Status</option>
+                                                    <option>Menikah</option>
+                                                    <option>Belum Menikah</option>
+                                                    <option>Cerai</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <label class="fw-bold mb-0">Agama</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Alamat Rumah</label>
+                                            <div class="col-md-7">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Kelurahan</label>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <label class="fw-bold mb-0">Kecamatan</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Kota</label>
+                                            <div class="col-md-7">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">No KTP</label>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <label class="fw-bold mb-0">No NPWP</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Hobi</label>
+                                            <div class="col-md-7">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-md-flex">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-primary w-100 py-2"><i class="bi bi-save me-2"></i>Update Data</button>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="tab-pane fade" id="riwayat-content" role="tabpanel">
+                                </div>
+
+                                <div class="tab-pane fade" id="jabatan-content" role="tabpanel">
+                                </div>
+
+                                <div class="tab-pane fade" id="pendidikan-content" role="tabpanel">
+                                </div>
+
+                                <div class="tab-pane fade" id="pengalaman-content" role="tabpanel">
+                                </div>
+
+                                <div class="tab-pane fade" id="kesehatan-content" role="tabpanel">
+                                </div>
+                                
+                                <div class="tab-pane fade" id="keterangan-content" role="tabpanel">
+                                </div>
+
+                                <div class="tab-pane fade" id="berkas-content" role="tabpanel">
+                                    <div class="row g-3">
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Nama Berkas</label>
+                                            <div class="col-md-7">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="text" class="form-control-sm border w-100">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <div class="col-md-1"></div>
+                                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Upload File*</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="file" class="form-control-sm border w-100" id="fileInput" accept=".jpg" style="display: none;">
+                                                        <button class="btn btn-outline-secondary px-4 py-2" type="button" onclick="document.getElementById('fileInput').click();" style="border-color: #ced4da; color: #333; background-color: #f8f9fa;">
+                                                            Select
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <script>
+                                            document.getElementById('fileInput').addEventListener('change', function() {
+                                                var fileName = this.files[0] ? this.files[0].name : "";
+                                                document.getElementById('fileName').value = fileName;
+                                            });
+                                        </script>
+
+                                        <div class="col-12 d-md-flex">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-1">
+                                                <button class="btn btn-primary w-100 py-2"><i class="bi bi-save me-2"></i>Save</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade show" role="tabpanel">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered align-middle text-center">
+                                                    <thead class="table-light">
+                                                    <tr>
+                                                        <th>Download</th>
+                                                        <th>No</th>
+                                                        <th>Nama Berkas</th>
+                                                        <th>Tgl Upload</th>
+                                                        <th>Hapus Berkas</th>
+                                                        <th>Edit Nama Berkas</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -293,56 +737,18 @@
     <script src="assets/js/invoice-create-init.min.js"></script>
     <script src="assets/js/theme-customizer-init.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var i = 1;
-            $("#add_row").click(function() {
-                b = i - 1;
-                $("#addr" + i)
-                    .html($("#addr" + b).html())
-                    .find("td:first-child")
-                    .html(i + 1);
-                $("#tab_logic").append('<tr id="addr' + (i + 1) + '"></tr>');
-                i++;
-            });
-            $("#delete_row").click(function() {
-                if (i > 1) {
-                    $("#addr" + (i - 1)).html("");
-                    i--;
-                }
-                calc();
-            });
-            $("#tab_logic tbody").on("keyup change", function() {
-                calc();
-            });
-            $("#tax").on("keyup change", function() {
-                calc_total();
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('btn-refresh');
+            const tableContent = document.getElementById('table-content');
+
+            refreshBtn.addEventListener('click', function() {
+                // Menampilkan tabel saat tombol diklik
+                tableContent.style.display = 'block';
+                
+                // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+                console.log("Memuat data...");
             });
         });
-
-        function calc() {
-            $("#tab_logic tbody tr").each(function(i, element) {
-                var html = $(this).html();
-                if (html != "") {
-                    var qty = $(this).find(".qty").val();
-                    var price = $(this).find(".price").val();
-                    $(this)
-                        .find(".total")
-                        .val(qty * price);
-                    calc_total();
-                }
-            });
-        }
-
-        function calc_total() {
-            total = 0;
-            $(".total").each(function() {
-                total += parseInt($(this).val());
-            });
-            $("#sub_total").val(total.toFixed(2));
-            tax_sum = (total / 100) * $("#tax").val();
-            $("#tax_amount").val(tax_sum.toFixed(2));
-            $("#total_amount").val((tax_sum + total).toFixed(2));
-        }
     </script>
 </body>
 
