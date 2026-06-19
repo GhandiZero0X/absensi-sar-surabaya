@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Basarnas Surabaya | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Basarnas, Basarnas Surabaya, Portal Internal, Kepegawaian, Operasional SAR">
+    <meta name="description"
+        content="Portal Internal Basarnas Surabaya untuk mendukung administrasi, kepegawaian, operasional, dan layanan internal pegawai.">
+
+    <!-- Icon Website -->
+    <link  href="{{ url_for('static', filename='static_home/img/logo.png') }}" rel="icon" type="image/png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='static_home/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='static_home/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='static_home/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='static_home/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='static_home/css/style.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid sticky-top bg-primary shadow-sm px-5">
+        <nav class="navbar navbar-expand-lg navbar-dark py-3">
+            <a href="index.html" class="navbar-brand d-flex align-items-center">
+                <img src="{{ url_for('static', filename='static_home/img/logo.png') }}" alt="logo" width="60" class="me-3">
+                <div class="">
+                    <h4 class="m-0 text-white">Basarnas</h4>
+                    <h4 class="m-0 text-white">Surabaya</h4>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto align-items-cente">
+                    <a class="nav-link text-white d-flex align-items-center">HOME</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                            data-bs-toggle="dropdown">
+                            UMUM
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">Kepegawaian</a>
+                            <a href="#" class="dropdown-item">Buku Telp</a>
+                            <a href="#" class="dropdown-item">Sprin</a>
+                            <a href="#" class="dropdown-item">Surat Masuk/Keluar</a>
+                            <a href="#" class="dropdown-item">Rumta</a>
+                            <a href="#" class="dropdown-item">Koperasi</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                            data-bs-toggle="dropdown">
+                            OPERASI
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">Piket Siaga</a>
+                            <a href="#" class="dropdown-item">Kesiapsiagaan</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                            data-bs-toggle="dropdown">
+                            POTENSI
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">Pemeliharaan</a>
+                            <a href="#" class="dropdown-item">Gudang</a>
+                        </div>
+                    </div>
+                    <a href="#"
+                        class="nav-link text-white d-flex align-items-center">DATA PRIBADI
+                    </a>
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center profile-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-fill fs-3"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" data-bs-display="static">
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Modal Login Start -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+
+                <!-- Header pakai warna primary biar nyambung sama navbar -->
+                <div class="modal-header" style="background-color: var(--primary); border-bottom: none;">
+                    <h5 class="modal-title text-white" id="loginModalLabel">
+                        <i class="bi bi-shield-lock-fill me-2"></i>Masuk Sistem
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Tutup"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <form id="formLogin" novalidate>
+                        <!-- Input NIP -->
+                        <div class="mb-3">
+                            <label for="inputNip" class="form-label fw-semibold">NIP</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-person-badge"></i></span>
+                                <input type="text" class="form-control" id="inputNip" name="nip"
+                                    placeholder="Masukkan NIP" required autocomplete="username">
+                                <div class="invalid-feedback">NIP wajib diisi.</div>
+                            </div>
+                        </div>
+
+                        <!-- Input Password + toggle show/hide -->
+                        <div class="mb-3">
+                            <label for="inputPassword" class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" id="inputPassword" name="password"
+                                    placeholder="Masukkan Password" required autocomplete="current-password">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword"
+                                    tabindex="-1">
+                                    <i class="bi bi-eye-fill" id="iconTogglePassword"></i>
+                                </button>
+                                <div class="invalid-feedback">Password wajib diisi.</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Ingat saya</label>
+                            </div>
+                            <a href="#" class="small text-decoration-none" style="color: var(--primary);">Lupa
+                                password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal Login End -->
+
+    <!-- Hero Start -->
+    <div class="container-fluid p-0">
+        <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <!-- Carousel Indicators (opsional - titik kecil di bawah carousel) -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="3"
+                    aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="4"
+                    aria-label="Slide 5"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                    <img class="w-100" src="{{ url_for('static', filename='static_home/img/hero_1.jpg') }}" alt="Image 1">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 1600px;">
+                            <h3 class="display-2 text-uppercase text-white mb-md-4">BADAN NASIONAL PENCARIAN DAN
+                                PERTOLONGAN</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <img class="w-100" src="{{ url_for('static', filename='static_home/img/hero_2.jpg') }}" alt="Image 2">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 1600px;">
+                            <h3 class="display-2 text-uppercase text-white mb-md-4">SIAP SIAGA 24 JAM</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="carousel-item">
+                    <img class="w-100" src="{{ url_for('static', filename='static_home/img/hero_3.jpg') }}" alt="Image 3">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 1600px;">
+                            <h3 class="display-2 text-uppercase text-white mb-md-4">RESPON CEPAT, TEPAT, DAN TERPADU
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="carousel-item">
+                    <img class="w-100" src="{{ url_for('static', filename='static_home/img/hero_4.jpg') }}" alt="Image 4">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 1600px;">
+                            <h3 class="display-2 text-uppercase text-white mb-md-4">MELAYANI DALAM OPERASI PENCARIAN DAN
+                                PERTOLONGAN
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="carousel-item">
+                    <img class="w-100" src="{{ url_for('static', filename='static_home/img/hero_5.jpg') }}" alt="Image 5">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 1600px;">
+                            <h3 class="display-2 text-uppercase text-white mb-md-4">PENGABDIAN UNTUK KESELAMATAN BANGSA
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Controls (Next/Prev buttons - opsional) -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Hero End -->
+
+    <!-- Konten Pengumuman Start-->
+    <div class="pengumuman-section text-center">
+        <h2 class="judul-pengumuman">Pengumuman</h2>
+
+        <div class="running-wrapper">
+            <div class="running-text">
+                Selamat Datang Anak Magang Tahun 2026 di Basarnas Surabaya
+            </div>
+        </div>
+
+        <div class="status-online">
+            <i class="bi bi-bar-chart"></i>
+            <span>online</span>
+            <span class="jumlah">50</span>
+        </div>
+
+        <p class="closing-absensi">
+            Tanggal closing absensi 30-Nov-2025
+        </p>
+    </div>
+    <!-- Konten Pengumuman End -->
+
+    <!-- Konten Pencarian Telephone Start -->
+    <div class="container-fluid bg-light py-6 px-5">
+        <div class="row g-5">
+            <div class="col-lg-7">
+                <h1 class="mb-4">Buku Telephone Kantor</h1>
+
+                <div class="search-box mb-4">
+                    <input type="text" class="form-control search-input" placeholder="Cari nomor Telephone">
+                    <i class="bi bi-search search-icon"></i>
+                </div>
+
+                <div class="table-responsive mb-5">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nama</th>
+                                <th>Instansi</th>
+                                <th>No. Telp</th>
+                                <th>Alamat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="text-start">No records to display.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Kantor Pencarian dan Pertolongan Surabaya</h2>
+
+                <p>
+                    Jl. Raya Bandara Juanda <br>
+                    Surabaya 61253-A <br>
+                    INDONESIA <br>
+                    Badan Nasional Pencarian dan Pertolongan <br>
+                    Email : sar.surabaya@basarnas.go.id
+                </p>
+
+                <a href="https://wa.me/6285852725967" class="btn btn-wa mt-3">
+                    WhatsApp Petugas Siaga: 085852725967
+                </a>
+
+            </div>
+            <div class="col-lg-5 pb-5" style="min-height: 400px;">
+                <div class="position-relative bg-dark-radial h-100 ms-5">
+                    <img class="position-absolute w-100 h-100 mt-5 ms-n5" src="{{ url_for('static', filename='static_home/img/konten1.jpg') }}"
+                        style="object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Konten Pencarian Telephone End -->
+
+    <!-- Konten Portal Kantor Start -->
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="portal-title">PORTAL KANTOR PENCARIAN DAN PERTOLONGAN SURABAYA</h1>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-lg-6 position-relative portal-image">
+                <img src="{{ url_for('static', filename='static_home/img/konten3.jpg') }}" class="img-fluid main-img">
+                <img src="{{ url_for('static', filename='static_home/img/konten2.jpg') }}" class="img-fluid center overlay-img">
+            </div>
+
+            <div class="col-lg-6 portal-text">
+                <p>Copyright (c) 2024 (Creative Tim)</p>
+                <p>
+                    Delapan penjuru mata angin dengan warna merah putih mengandung arti dan makna bahwa
+                    Badan Nasional Pencarian dan Pertolongan dalam mengemban tugas di bidang kemanusiaan
+                    senantiasa menitikberatkan pada kecepatan dan ketepatan serta dilaksanakan dengan penuh
+                    ketulusan (warna putih) dan keberanian (warna merah).
+                </p>
+                <p>
+                    Awan, gunung dan 5 ombak di laut mengandung arti dan makna bahwa dalam menjalankan
+                    tugasnya Badan Nasional Pencarian dan Pertolongan melingkupi segala medan tugas;
+                    Awan menggambarkan lingkup medan tugas udara, gunung menggambarkan lingkup medan
+                    tugas darat, ombak di laut menggambarkan lingkup medan tugas di air yang dilandasi
+                    dengan kelima sila dalam Pancasila.
+                </p>
+                <p>
+                    Pita bertuliskan "INDONESIA" mempunyai arti bahwa Badan Nasional Pencarian dan
+                    Pertolongan merupakan lembaga pemerintah Indonesia yang melaksanakan tugas
+                    pencarian dan pertolongan. Profile
+                </p>
+                <h5 class="mt-5">SARAN MASUK KE KANTOR PENCARIAN DAN PERTOLONGAN SURABAYA</h5>
+                <p>Periode 2026.01.01 s.d 2026.02.10</p>
+            </div>
+        </div>
+    </div>
+    <!-- Konten Portal Kantor End -->
+
+    <!-- Konten Profil Basarnas Start -->
+    <div class="container-fluid bg-light py-6 px-5">
+        <div class="text-center mb-5">
+            <h2 class="text-uppercase">Profil Basarnas</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <img src="{{ url_for('static', filename='static_home/img/profil_1.jpg') }}" class="card-img-top" alt="Profile">
+                    <div class="card-body">
+                        <h4 class="card-title">Profil Basarnas</h4>
+                        <p class="card-text">
+                            Badan Nasional Pencarian dan Pertolongan bertanggung jawab terhadap
+                            penyelenggaraan SAR di Region Pencarian dan Pertolongan Indonesia.
+                            Region ini meliputi wilayah teritorial Indonesia dan wilayah Flight Information Region
+                            (FIR).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <img src="{{ url_for('static', filename='static_home/img/profil_2.jpg') }}" class="card-img-top" alt="Visi dan Misi">
+                    <div class="card-body">
+                        <h4 class="card-title">Visi dan Misi</h4>
+                        <p class="card-text">
+                            Visi :
+                        </p>
+                        <p class="card-text">
+                            Mewujudkan penyelenggaraan pencarian dan pertolongan yang andal dan efektif menuju Indonesia
+                            Emas 2045.
+                        </p>
+                        <p class="card-text">
+                            Misi :
+                        </p>
+                        <ul class="card-text">
+                            <li>Menyelenggarakan pencarian dan pertolongan yang andal, efektif, terintegrasi dan
+                            terkoordinir antar lembaga secara efisien, berstandar internasional, serta mitigasi,
+                            kesiapsiagaan dan operasi pada kecelakaan, bencana maupun kondisi membahayakan manusia.</li>
+                            <li>Meningkatkan manajemen penyelenggaraan pencarian dan pertolongan melalui pemenuhan
+                            kebutuhan tenaga dan potensi pencarian pertolongan yang terlatih dan berpengalaman,
+                            pendanaan yang cukup serta kelembagaan yang kuat.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <img src="{{ url_for('static', filename='static_home/img/profil_3.jpg') }}" class="card-img-top" alt="JDIH Basarnas">
+                    <div class="card-body">
+                        <h4 class="card-title">JDIH Basarnas</h4>
+                        <p class="card-text">
+                            Akses seluruh peraturan, keputusan, dan produk hukum yang berlaku di lingkungan Basarnas
+                            melalui Jaringan Dokumentasi dan Informasi Hukum dapat diunduh melalui website:
+                            <br>
+                            <a href="https://jdih.basarnas.go.id" target="_blank">
+                                www.jdih.basarnas.go.id
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <img src="{{ url_for('static', filename='static_home/img/profil_4.jpg') }}" class="card-img-top" alt="Kontak Darurat">
+
+                    <div class="card-body d-flex flex-column">
+                        <h4 class="card-title">
+                            Kontak Darurat
+                        </h4>
+
+                        <p class="card-text">
+                            Layanan siaga pencarian dan pertolongan tersedia selama 24 jam untuk mendukung penanganan
+                            kondisi darurat dan operasi SAR.
+                        </p>
+
+
+                        <a href="tel:115" class="btn btn-primary w-100">
+                            Hubungi 115
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Konten Profil Basarnas End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid text-white text-center py-4" style="background-color: #EB6831;">
+        <p class="mb-1">
+            © 2026 Kantor Pencarian dan Pertolongan Surabaya
+        </p>
+        <small>
+            Badan Nasional Pencarian dan Pertolongan Republik Indonesia. Seluruh Hak Cipta Dilindungi.
+        </small>
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='static_home/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='static_home/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='static_home/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='static_home/lib/tempusdominus/js/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='static_home/lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='static_home/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='static_home/lib/isotope/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='static_home/lib/lightbox/js/lightbox.min.js') }}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='static_home/js/main.js') }}"></script>
+</body>
+
+</html>
