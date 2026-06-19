@@ -66,3 +66,40 @@
     
 })(jQuery);
 
+
+// Modal login Toggle lihat/sembunyikan password
+document.getElementById('togglePassword').addEventListener('click', function () {
+    const passwordInput = document.getElementById('inputPassword');
+    const icon = document.getElementById('iconTogglePassword');
+    const isPassword = passwordInput.getAttribute('type') === 'password';
+
+    passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+    icon.classList.toggle('bi-eye-fill');
+    icon.classList.toggle('bi-eye-slash-fill');
+});
+
+// Validasi dasar pakai Bootstrap validation classes
+const formLogin = document.getElementById('formLogin');
+formLogin.addEventListener('submit', function (e) {
+    if (!formLogin.checkValidity()) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    formLogin.classList.add('was-validated');
+
+    // ganti baris di bawah dengan fetch() ke endpoint Flask, misal POST /login
+    // Lihat catatan integrasi backend di bawah.
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+        const carouselElement = document.getElementById('header-carousel');
+        
+        // Inisialisasi Bootstrap Carousel dengan interval 15 detik
+        const carousel = new bootstrap.Carousel(carouselElement, {
+            interval: 5000,  // 15 detik
+            ride: 'carousel',
+            pause: false      // Jangan pause saat hover (opsional)
+        });
+    });
+
+

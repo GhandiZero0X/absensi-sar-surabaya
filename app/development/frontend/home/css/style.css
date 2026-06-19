@@ -414,3 +414,96 @@
     font-size: 15px;
     letter-spacing: 0.5px;
 }
+/* Dropdown login */
+/* Hilangkan caret bawaan Bootstrap di toggle ikon profil — cukup ikon saja, lebih bersih */
+.profile-toggle::after {
+    display: none;
+}
+
+/* Dropdown item profil & menu lain saat hover, samakan dgn warna sekunder tema */
+.navbar-nav .dropdown-menu .dropdown-item:hover,
+.navbar-nav .dropdown-menu .dropdown-item:focus {
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+/* Modal login: warna fokus input ikut warna primary (oranye), bukan biru default Bootstrap */
+#loginModal .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem #EB6831;
+}
+
+/* Pastikan tombol "Masuk" pakai warna primary tema, jaga-jaga kalau .btn-primary
+   global belum di-override (bg-primary/.btn-primary Bootstrap defaultnya biru) */
+#loginModal .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* ===================================================
+   NAVBAR ALIGNMENT FIX - Desktop vs Mobile
+   ===================================================== */
+
+/* DESKTOP: align items ke center supaya semua sejajar */
+@media (min-width: 992px) {
+    .navbar-nav {
+        align-items: center !important;
+    }
+}
+
+/* MOBILE: remove center alignment, biar accordion normal */
+@media (max-width: 991.98px) {
+    .navbar-nav {
+        align-items: flex-start !important;
+    }
+}
+
+/* ===================================================
+   Carousel Styling - Smooth fade transition (5 detik)
+   ===================================================== */
+
+/* Fade transition - disesuaikan untuk interval 5 detik */
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;  /* Dari 1.2s jadi 0.6s */
+}
+
+.carousel-fade .carousel-item.active {
+    opacity: 1;
+}
+
+/* Carousel image cover full width */
+#header-carousel img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+}
+
+/* Caption styling */
+.carousel-caption {
+    background: rgba(4, 15, 40, 0.7);
+    padding: 40px 20px;
+}
+
+/* Responsive carousel height di mobile */
+@media (max-width: 768px) {
+    #header-carousel img {
+        height: 350px;
+    }
+    
+    .carousel-caption h3 {
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    #header-carousel img {
+        height: 250px;
+    }
+    
+    .carousel-caption h3 {
+        font-size: 1.2rem !important;
+    }
+}
+
+
