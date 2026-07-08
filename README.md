@@ -47,38 +47,69 @@ Flask-based MVC pattern:
 ```
 absensi-sar-surabaya/
 ├── app/
-│   ├── __init__.py           # Application factory
+│   ├── __init__.py                 # Application factory
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├── user.py           # User model
-│   │   └── attendance.py     # Attendance model
+│   │   └── homeController.py       # Home User Controller
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py                 # User model
+│   │   └── attendance.py           # Attendance model
 │   ├── routes/
 │   │   ├── __init__.py
-│   │   ├── auth.py           # Authentication routes
-│   │   ├── admin.py          # Admin routes
-│   │   └── employee.py       # Employee routes
+│   │   └── routes.py               # all routes
 │   ├── templates/
-│   │   ├── base.html         # Base template
-│   │   ├── login.html        # Login page
-│   │   ├── admin/            # Admin templates
-│   │   │   ├── dashboard.html
-│   │   │   ├── employees.html
-│   │   │   ├── add_employee.html
-│   │   │   ├── edit_employee.html
-│   │   │   └── attendance.html
-│   │   └── employee/         # Employee templates
-│   │       ├── dashboard.html
-│   │       └── history.html
-│   └── static/
-│       ├── css/
-│       │   └── style.css     # Main stylesheet
-│       └── js/
-│           └── main.js       # JavaScript functionality
-├── config.py                 # Configuration
-├── app.py                    # Application entry point
-├── requirements.txt          # Python dependencies
-├── .gitignore               # Git ignore rules
-└── README.md                # This file
+│   │   ├── index.html              # home user pages
+│   │   ├── layout/                 # layouts templates
+│   │   │   ├── dashboard_1.html
+│   │   │   ├── dashboard_1.html
+│   │   │   └── dashboard_1.html
+│   │   ├── pages/                  # pages
+│   │   │   ├── dashboard_1/
+│   │   │   │   └── dashboard.html
+│   │   │   ├── dashboard_2/
+│   │   │   │   └── dashboard.html
+│   │   │   └── dashboard_3/
+│   │   │       └── dashboard.html
+│   │   └── partials/ 
+│   └── static/                     # static style pages
+│       ├── static_dashboard_1/
+│       │   ├── images/
+│       │   ├── css/
+│       │   ├── img/
+│       │   ├── js/
+│       │   ├── lib/
+│       │   └── scss/
+│       ├── static_dashboard_2/
+│       │   ├── images/
+│       │   ├── css/
+│       │   ├── img/
+│       │   ├── js/
+│       │   ├── lib/
+│       │   └── scss/
+│       ├── static_dashboard_3/
+│       │   ├── images/
+│       │   ├── css/
+│       │   ├── img/
+│       │   ├── js/
+│       │   ├── lib/
+│       │   └── scss/
+│       └── static_home/
+│       │   ├── images/
+│       │   ├── css/
+│       │   ├── img/
+│       │   ├── js/
+│       │   ├── lib/
+│       │   └── scss/
+├── testing/
+│   └──test_connection.py           # testing conect
+├── .env                            # env lokal
+├── .env.example                    # contoh env
+├── config.py                       # Configuration
+├── app.py                          # Application entry point
+├── requirements.txt                # Python dependencies
+├── .gitignore                      # Git ignore rules
+└── README.md                       # This file
 ```
 
 ## Installation & Setup
