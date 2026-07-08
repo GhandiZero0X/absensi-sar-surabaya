@@ -48,7 +48,7 @@ Flask-based MVC pattern:
 absensi-sar-surabaya/
 ├── app/
 │   ├── __init__.py                 # Application factory
-│   ├── models/
+│   ├── controllers/
 │   │   ├── __init__.py
 │   │   └── homeController.py       # Home User Controller
 │   ├── models/
