@@ -53,8 +53,7 @@ absensi-sar-surabaya/
 │   │   └── homeController.py       # Home User Controller
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├── user.py                 # User model
-│   │   └── attendance.py           # Attendance model
+│   │   └── usermodel.py                 # User model
 │   ├── routes/
 │   │   ├── __init__.py
 │   │   └── routes.py               # all routes
