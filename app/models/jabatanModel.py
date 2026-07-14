@@ -2,7 +2,7 @@
 from app import db
 
 
-class Jabatan(db.Model):
+class MfJabatan(db.Model):
     """
     Model untuk tabel MF_JABATAN.
     Tabel master jabatan pegawai.

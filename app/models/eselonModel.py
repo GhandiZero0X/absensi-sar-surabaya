@@ -2,7 +2,7 @@
 from app import db
 
 
-class Eselon(db.Model):
+class MfEselon(db.Model):
     """
     Model untuk tabel MF_ESELON.
     Tabel master eselon jabatan pegawai.

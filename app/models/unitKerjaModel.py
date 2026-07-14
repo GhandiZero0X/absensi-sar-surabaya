@@ -2,7 +2,7 @@
 from app import db
 
 
-class UnitKerja(db.Model):
+class MfUnitKerja(db.Model):
     """
     Model untuk tabel MF_UNIT_KERJA.
     Tabel master/referensi unit kerja, dipakai oleh banyak tabel lain

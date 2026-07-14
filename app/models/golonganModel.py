@@ -2,7 +2,7 @@
 from app import db
 
 
-class Golongan(db.Model):
+class MfGolongan(db.Model):
     """
     Model untuk tabel MF_GOL.
     Tabel master golongan/pangkat pegawai.

@@ -2,7 +2,7 @@
 from app import db
 
 
-class Kalender(db.Model):
+class MfKalender(db.Model):
     """
     Model untuk tabel KALENDER.
     Merepresentasikan data kalender kerja termasuk penanda hari libur.
