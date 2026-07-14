@@ -46,6 +46,22 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto align-items-cente">
                     <a class="nav-link text-white d-flex align-items-center">HOME</a>
+                    <!-- Dropdown INFORMASI (tampil setelah login) -->
+                    <div class="nav-item dropdown d-none" id="informasiDropdown">
+                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                            data-bs-toggle="dropdown">
+                            INFORMASI
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item info-item" href="#" data-info="piket-siaga">Piket Siaga</a>
+                            <a class="dropdown-item info-item" href="#" data-info="pelanggaran-disiplin">Pelanggaran Disiplin</a>
+                            <a class="dropdown-item info-item" href="#" data-info="absensi-kantor">Absensi Kantor</a>
+                            <a class="dropdown-item info-item" href="#" data-info="rekapitulasi-dinas-luar-operasi">Rekapitulasi Dinas Luar Operasi</a>
+                            <a class="dropdown-item info-item" href="#" data-info="rekapitulasi-dinas-luar-pelatihan">Rekapitulasi Dinas Luar Pelatihan</a>
+                            <a class="dropdown-item info-item" href="#" data-info="resume-pembuatan-skp">Resume Pembuatan SKP</a>
+                            <a class="dropdown-item info-item" href="#" data-info="pegawai-login-portal">Pegawai Login Portal</a>
+                        </div>
+                    </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
                             data-bs-toggle="dropdown">
@@ -100,6 +116,23 @@
         </nav>
     </div>
     <!-- Navbar End -->
+    
+    <!-- Modal Informasi Start -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header" style="background-color: var(--primary); border-bottom: none;">
+                    <h5 class="modal-title text-white" id="infoModalLabel">Informasi</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body p-4" id="infoModalBody">
+                    <!-- Konten akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Informasi End -->
 
     <!-- Modal Login Start -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -480,6 +513,199 @@
 
     <!-- Template Javascript -->
     <script src="{{ url_for('static', filename='static_home/js/main.js') }}"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // =============================================
+        // 1. Pencarian buku telepon (tidak berubah)
+        // =============================================
+        const searchInput = document.querySelector('.search-input');
+        const tableBody = document.querySelector('.table tbody');
+
+        function renderTable(data) {
+            tableBody.innerHTML = '';
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-start">No records to display.</td></tr>`;
+                return;
+            }
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${escapeHtml(item.nama)}</td>
+                    <td>${escapeHtml(item.instansi)}</td>
+                    <td>${escapeHtml(item.no_telp)}</td>
+                    <td>${escapeHtml(item.alamat)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        async function fetchData(query) {
+            try {
+                const url = `/api/search_pegawai?q=${encodeURIComponent(query)}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                renderTable(data);
+            } catch (err) {
+                console.error('Gagal memuat data:', err);
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-start text-danger">Gagal memuat data.</td></tr>`;
+            }
+        }
+
+        searchInput.addEventListener('keyup', function() {
+            const query = this.value.trim();
+            fetchData(query);
+        });
+
+        // =============================================
+        // 2. Login & Logout
+        // =============================================
+        const formLogin = document.getElementById('formLogin');
+        if (formLogin) {
+            formLogin.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const nip = document.getElementById('inputNip').value.trim();
+                const password = document.getElementById('inputPassword').value.trim();
+
+                if (!nip || !password) {
+                    alert('NIP dan Password wajib diisi.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nip, password })
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        alert(result.message || 'Login gagal.');
+                        return;
+                    }
+
+                    alert(`Selamat datang, ${result.data.nama}!`);
+
+                    // Tutup modal login
+                    const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    loginModal.hide();
+
+                    // Update navbar
+                    updateNavbarAfterLogin(result.data.nama);
+
+                    // Reset form
+                    formLogin.reset();
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan koneksi.');
+                }
+            });
+        }
+
+        function updateNavbarAfterLogin(nama) {
+            // Tampilkan dropdown INFORMASI
+            const infoDropdown = document.getElementById('informasiDropdown');
+            if (infoDropdown) infoDropdown.classList.remove('d-none');
+
+            // Ubah tampilan profil
+            const profileToggle = document.querySelector('.profile-toggle');
+            if (profileToggle) {
+                profileToggle.innerHTML = `<span class="text-white">${nama}</span>`;
+            }
+
+            // Ubah dropdown profil
+            const dropdownMenu = document.querySelector('.profile-toggle + .dropdown-menu');
+            if (dropdownMenu) {
+                dropdownMenu.innerHTML = `
+                    <a class="dropdown-item" href="/profile"><i class="bi bi-person"></i> Profil</a>
+                    <a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                `;
+
+                // Event logout
+                document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    await fetch('/api/logout', { method: 'POST' });
+                    location.reload();
+                });
+            }
+
+            // Event listener untuk item INFORMASI
+            document.querySelectorAll('.info-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const info = this.dataset.info;
+                    showInfoModal(info);
+                });
+            });
+        }
+
+        // =============================================
+        // 3. Modal Informasi
+        // =============================================
+        const infoContent = {
+            'piket-siaga': {
+                title: 'Piket Siaga',
+                body: `<p>Informasi jadwal dan personel piket siaga.</p>
+                    <p>Silakan cek menu <strong>OPERASI > Piket Siaga</strong> untuk detail lebih lanjut.</p>`
+            },
+            'pelanggaran-disiplin': {
+                title: 'Pelanggaran Disiplin',
+                body: `<p>Data pelanggaran disiplin pegawai.</p>
+                    <p>Fitur ini masih dalam pengembangan.</p>`
+            },
+            'absensi-kantor': {
+                title: 'Absensi Kantor',
+                body: `<p>Rekapitulasi kehadiran pegawai.</p>
+                    <p>Anda dapat melihat detail absensi di menu DATA PRIBADI.</p>`
+            },
+            'rekapitulasi-dinas-luar-operasi': {
+                title: 'Rekapitulasi Dinas Luar Operasi',
+                body: `<p>Data dinas luar untuk kegiatan operasi SAR.</p>
+                    <p>Gunakan menu SPRIN untuk melihat surat perintah terkait.</p>`
+            },
+            'rekapitulasi-dinas-luar-pelatihan': {
+                title: 'Rekapitulasi Dinas Luar Pelatihan',
+                body: `<p>Data dinas luar untuk kegiatan pelatihan.</p>
+                    <p>Gunakan menu SPRIN untuk melihat surat perintah terkait.</p>`
+            },
+            'resume-pembuatan-skp': {
+                title: 'Resume Pembuatan SKP',
+                body: `<p>Ringkasan Sasaran Kerja Pegawai (SKP) yang telah dibuat.</p>
+                    <p>Anda dapat mengakses detailnya di menu DATA PRIBADI.</p>`
+            },
+            'pegawai-login-portal': {
+                title: 'Pegawai Login Portal',
+                body: `<p>Daftar pegawai yang sedang atau pernah login ke portal.</p>
+                    <p>Fitur ini masih dalam pengembangan.</p>`
+            }
+        };
+
+        function showInfoModal(info) {
+            const data = infoContent[info] || { title: 'Informasi', body: '<p>Konten belum tersedia.</p>' };
+            document.getElementById('infoModalLabel').textContent = data.title;
+            document.getElementById('infoModalBody').innerHTML = data.body;
+
+            const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+            infoModal.show();
+        }
+    });
+    </script>
 </body>
 
 </html>
