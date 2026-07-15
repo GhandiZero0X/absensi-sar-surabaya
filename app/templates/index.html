@@ -46,6 +46,23 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto align-items-cente">
                     <a class="nav-link text-white d-flex align-items-center">HOME</a>
+                    <!-- Dropdown INFORMASI (muncul hanya jika session login aktif) -->
+                    <div class="nav-item dropdown {% if not session.get('logged_in') %}d-none{% endif %}" id="informasiDropdown">
+                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                            data-bs-toggle="dropdown">
+                            INFORMASI
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item info-item" href="#" data-info="piket-siaga">Piket Siaga</a>
+                            <a class="dropdown-item info-item" href="#" data-info="pelanggaran-disiplin">Pelanggaran Disiplin</a>
+                            <a class="dropdown-item info-item" href="#" data-info="absensi-kantor">Absensi Kantor</a>
+                            <a class="dropdown-item info-item" href="#" data-info="rekapitulasi-dinas-luar-operasi">Rekapitulasi Dinas Luar Operasi</a>
+                            <a class="dropdown-item info-item" href="#" data-info="rekapitulasi-dinas-luar-pelatihan">Rekapitulasi Dinas Luar Pelatihan</a>
+                            <a class="dropdown-item info-item" href="#" data-info="resume-pembuatan-skp">Resume Pembuatan SKP</a>
+                            <a class="dropdown-item info-item" href="#" data-info="pegawai-login-portal">Pegawai Login Portal</a>
+                        </div>
+                    </div>
+
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
                             data-bs-toggle="dropdown">
@@ -87,12 +104,21 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center profile-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-fill fs-3"></i>
+                            {% if session.get('logged_in') %}
+                                <span class="text-white">{{ session.get('nama') }}</span>
+                            {% else %}
+                                <i class="bi bi-person-fill fs-3"></i>
+                            {% endif %}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" data-bs-display="static">
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
-                            </a>
+                            {% if session.get('logged_in') %}
+                                <a class="dropdown-item" href="/profile"><i class="bi bi-person"></i> Profil</a>
+                                <a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                            {% else %}
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -100,6 +126,23 @@
         </nav>
     </div>
     <!-- Navbar End -->
+    
+    <!-- Modal Informasi Start -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header" style="background-color: var(--primary); border-bottom: none;">
+                    <h5 class="modal-title text-white" id="infoModalLabel">Informasi</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body p-4" id="infoModalBody">
+                    <!-- Konten akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Informasi End -->
 
     <!-- Modal Login Start -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -148,8 +191,6 @@
                                 <input class="form-check-input" type="checkbox" id="rememberMe">
                                 <label class="form-check-label" for="rememberMe">Ingat saya</label>
                             </div>
-                            <a href="#" class="small text-decoration-none" style="color: var(--primary);">Lupa
-                                password?</a>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">Sign In</button>
@@ -480,6 +521,295 @@
 
     <!-- Template Javascript -->
     <script src="{{ url_for('static', filename='static_home/js/main.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // =============================================
+        // 1. Pencarian Buku Telepon
+        // =============================================
+        const searchInput = document.querySelector('.search-input');
+        const tableBody = document.querySelector('.table tbody');
+
+        function renderTable(data) {
+            tableBody.innerHTML = '';
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-start">No records to display.</td></tr>`;
+                return;
+            }
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${escapeHtml(item.nama)}</td>
+                    <td>${escapeHtml(item.instansi)}</td>
+                    <td>${escapeHtml(item.no_telp)}</td>
+                    <td>${escapeHtml(item.alamat)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        async function fetchData(query) {
+            try {
+                const url = `/api/search_pegawai?q=${encodeURIComponent(query)}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                renderTable(data);
+            } catch (err) {
+                console.error('Gagal memuat data:', err);
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-start text-danger">Gagal memuat data.</td></tr>`;
+            }
+        }
+
+        searchInput.addEventListener('keyup', function() {
+            const query = this.value.trim();
+            fetchData(query);
+        });
+
+        // =============================================
+        // 2. Login & Logout
+        // =============================================
+        const formLogin = document.getElementById('formLogin');
+        if (formLogin) {
+            formLogin.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const nip = document.getElementById('inputNip').value.trim();
+                const password = document.getElementById('inputPassword').value.trim();
+
+                if (!nip || !password) {
+                    alert('NIP dan Password wajib diisi.');
+                    return;
+                }
+
+                try {
+                    const remember = document.getElementById('rememberMe').checked;  // ambil status checkbox
+
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nip, password, remember })  // kirimkan juga flag remember
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        alert(result.message || 'Login gagal.');
+                        return;
+                    }
+
+                    alert(`Selamat datang, ${result.data.nama}!`);
+
+                    const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    loginModal.hide();
+
+                    updateNavbarAfterLogin(result.data.nama);
+                    formLogin.reset();
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan koneksi.');
+                }
+            });
+        }
+
+        function updateNavbarAfterLogin(nama) {
+            const infoDropdown = document.getElementById('informasiDropdown');
+            if (infoDropdown) infoDropdown.classList.remove('d-none');
+
+            const profileToggle = document.querySelector('.profile-toggle');
+            if (profileToggle) {
+                profileToggle.innerHTML = `<span class="text-white">${nama}</span>`;
+            }
+
+            const dropdownMenu = document.querySelector('.profile-toggle + .dropdown-menu');
+            if (dropdownMenu) {
+                dropdownMenu.innerHTML = `
+                    <a class="dropdown-item" href="/profile"><i class="bi bi-person"></i> Profil</a>
+                    <a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                `;
+
+                document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    await fetch('/api/logout', { method: 'POST' });
+                    location.reload();
+                });
+            }
+
+            document.querySelectorAll('.info-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const info = this.dataset.info;
+                    showInfoModal(info);
+                });
+            });
+        }
+
+        // =============================================
+        // 3. Inisialisasi jika session sudah ada saat halaman dimuat
+        // =============================================
+        const infoDropdown = document.getElementById('informasiDropdown');
+        if (infoDropdown && !infoDropdown.classList.contains('d-none')) {
+            // Pasang event listener untuk item INFORMASI
+            document.querySelectorAll('.info-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const info = this.dataset.info;
+                    showInfoModal(info);
+                });
+            });
+
+            // Pasang event listener untuk tombol logout yang sudah dirender Jinja
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    await fetch('/api/logout', { method: 'POST' });
+                    location.reload();
+                });
+            }
+        }
+
+        // =============================================
+        // 4. Modal Informasi (termasuk Piket Siaga)
+        // =============================================
+        const infoContent = {
+            'pelanggaran-disiplin': {
+                title: 'Pelanggaran Disiplin',
+                body: '<p>Data pelanggaran disiplin pegawai.</p>'
+            },
+            'absensi-kantor': {
+                title: 'Absensi Kantor',
+                body: '<p>Rekapitulasi kehadiran pegawai.</p>'
+            },
+            'rekapitulasi-dinas-luar-operasi': {
+                title: 'Rekap Dinas Luar Operasi',
+                body: '<p>Data dinas luar operasi.</p>'
+            },
+            'rekapitulasi-dinas-luar-pelatihan': {
+                title: 'Rekap Dinas Luar Pelatihan',
+                body: '<p>Data dinas luar pelatihan.</p>'
+            },
+            'resume-pembuatan-skp': {
+                title: 'Resume SKP',
+                body: '<p>Ringkasan SKP pegawai.</p>'
+            },
+            'pegawai-login-portal': {
+                title: 'Pegawai Login Portal',
+                body: '<p>Data pegawai yang login.</p>'
+            }
+        };
+
+        function showInfoModal(info) {
+            if (info === 'piket-siaga') {
+                document.getElementById('infoModalLabel').textContent = 'Piket Siaga';
+                document.getElementById('infoModalBody').innerHTML = `
+                    <div class="mb-3">
+                        <label class="form-label">Periode</label>
+                        <input type="text" id="tglPiket" class="form-control" 
+                            placeholder="YYYY-MM-DD" value="2026-07-14"
+                            pattern="\\d{4}-\\d{2}-\\d{2}" title="Format: YYYY-MM-DD">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Shift</label>
+                        <select id="shiftPiket" class="form-select">
+                            <option value="1">Shift 1</option>
+                            <option value="2" selected>Shift 2</option>
+                        </select>
+                    </div>
+                    <button id="btnTampilkan" class="btn btn-primary mb-3">Tampilkan</button>
+                    <div id="hasilPiket"></div>
+                `;
+
+                const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+                infoModal.show();
+
+                loadPiketSiaga('2026-07-14', '2');
+
+                document.getElementById('btnTampilkan').addEventListener('click', function() {
+                    const tgl = document.getElementById('tglPiket').value.trim();
+                    const shift = document.getElementById('shiftPiket').value;
+                    loadPiketSiaga(tgl, shift);
+                });
+
+            } else {
+                const data = infoContent[info] || { title: 'Informasi', body: '<p>Belum tersedia.</p>' };
+                document.getElementById('infoModalLabel').textContent = data.title;
+                document.getElementById('infoModalBody').innerHTML = data.body;
+                const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+                infoModal.show();
+            }
+        }
+
+        async function loadPiketSiaga(tanggal, shift) {
+            const container = document.getElementById('hasilPiket');
+            const regex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!regex.test(tanggal)) {
+                container.innerHTML = `<div class="alert alert-warning">Format tanggal harus YYYY-MM-DD</div>`;
+                return;
+            }
+
+            container.innerHTML = `<p class="text-muted">Memuat data...</p>`;
+
+            try {
+                const response = await fetch(`/api/piket_siaga?tanggal=${tanggal}&shift=${shift}`);
+                const result = await response.json();
+
+                if (!result.success) {
+                    container.innerHTML = `<div class="alert alert-warning">${result.message}</div>`;
+                    return;
+                }
+
+                let html = `
+                    <div class="mb-3 p-2 bg-light rounded">
+                        <strong>Periode:</strong> ${tanggal} &nbsp; | &nbsp; <strong>Shift:</strong> ${shift}
+                    </div>
+                `;
+
+                result.data.forEach(wilayah => {
+                    const unique = new Set();
+                    const anggotaUnik = wilayah.anggota.filter(a => {
+                        const key = `${a.nama.trim()}-${a.fungsional}`;
+                        if (unique.has(key)) return false;
+                        unique.add(key);
+                        return true;
+                    });
+
+                    html += `<h6 class="mt-3 text-primary fw-bold">Wilayah ${escapeHtml(wilayah.wilayah)}</h6>`;
+                    html += `<div class="table-responsive"><table class="table table-bordered table-sm table-striped">`;
+                    html += `<thead class="table-light"><tr><th>Nama</th><th>No. Telp</th><th>Fungsional</th></tr></thead><tbody>`;
+
+                    anggotaUnik.forEach(a => {
+                        html += `<tr>
+                            <td>${escapeHtml(a.nama.trim())}</td>
+                            <td>${escapeHtml(a.no_telp.trim())}</td>
+                            <td>${escapeHtml(a.fungsional)}</td>
+                        </tr>`;
+                    });
+
+                    html += `</tbody></table></div>`;
+                });
+
+                container.innerHTML = html;
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<div class="alert alert-danger">Gagal memuat data.</div>`;
+            }
+        }
+    });
+    </script>
 </body>
 
 </html>
