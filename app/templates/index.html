@@ -743,12 +743,69 @@
                     loadPiketSiaga(tgl, shift);
                 });
 
+            } else if (info === 'pelanggaran-disiplin') {
+                document.getElementById('infoModalLabel').textContent = 'Pelanggaran Disiplin';
+                document.getElementById('infoModalBody').innerHTML = `
+                    <div id="pelanggaranContainer">
+                        <p class="text-muted">Memuat data...</p>
+                    </div>
+                `;
+                const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+                infoModal.show();
+                loadPelanggaranDisiplin();
             } else {
                 const data = infoContent[info] || { title: 'Informasi', body: '<p>Belum tersedia.</p>' };
                 document.getElementById('infoModalLabel').textContent = data.title;
                 document.getElementById('infoModalBody').innerHTML = data.body;
                 const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
                 infoModal.show();
+            }
+        }
+
+        async function loadPelanggaranDisiplin() {
+            const container = document.getElementById('pelanggaranContainer');
+            try {
+                const response = await fetch('/api/pelanggaran_disiplin');
+                const result = await response.json();
+                if (!result.success) {
+                    container.innerHTML = `<div class="alert alert-warning">Gagal memuat data.</div>`;
+                    return;
+                }
+                const data = result.data;
+                let html = `
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nama</th>
+                                    <th>Jumlah Hari</th>
+                                    <th>Kategori Hukuman</th>
+                                    <th>Jenis Hukuman</th>
+                                    <th>Potongan (%)</th>
+                                    <th>Lama Pot</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                data.forEach(item => {
+                    html += `
+                        <tr>
+                            <td>${item.no}</td>
+                            <td>${escapeHtml(item.nama)}</td>
+                            <td>${item.hari}</td>
+                            <td>${escapeHtml(item.kategori)}</td>
+                            <td>${escapeHtml(item.jenis)}</td>
+                            <td>${item.potongan}</td>
+                            <td>${escapeHtml(item.lama_pot)}</td>
+                        </tr>
+                    `;
+                });
+                html += '</tbody></table></div>';
+                container.innerHTML = html;
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<div class="alert alert-danger">Gagal memuat data.</div>`;
             }
         }
 

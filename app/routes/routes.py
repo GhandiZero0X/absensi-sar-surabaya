@@ -1,7 +1,7 @@
 # app/routes/routes.py
 
 from flask import Blueprint, jsonify
-from app.controllers.homeController import get_piket_siaga, home, search_buku_telp
+from app.controllers.homeController import get_pelanggaran_disiplin, get_piket_siaga, home, search_buku_telp
 from app.controllers.loginController import login, logout
 
 from app.models.pegawaiModel import Pegawai
@@ -19,6 +19,10 @@ def api_search_pegawai():
 @main.route('/api/piket_siaga')
 def api_piket_siaga():
     return get_piket_siaga()
+
+@main.route('/api/pelanggaran_disiplin')
+def api_pelanggaran_disiplin():
+    return get_pelanggaran_disiplin()
 
 @main.route('/api/login', methods=['POST'])
 def api_login():
