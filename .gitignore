@@ -47,6 +47,9 @@ Thumbs.db
 .env
 .env.local
 
+# Ignore source code folder
+app/development/sourcecode/
+
 # Logs
 *.log
 app/development/schema_usecase/script_schema_data.sql
