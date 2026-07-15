@@ -517,7 +517,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // =============================================
-        // 1. Pencarian buku telepon (tidak berubah)
+        // 1. Pencarian Buku Telepon
         // =============================================
         const searchInput = document.querySelector('.search-input');
         const tableBody = document.querySelector('.table tbody');
@@ -601,14 +601,10 @@
 
                     alert(`Selamat datang, ${result.data.nama}!`);
 
-                    // Tutup modal login
                     const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
                     loginModal.hide();
 
-                    // Update navbar
                     updateNavbarAfterLogin(result.data.nama);
-
-                    // Reset form
                     formLogin.reset();
 
                 } catch (error) {
@@ -619,17 +615,14 @@
         }
 
         function updateNavbarAfterLogin(nama) {
-            // Tampilkan dropdown INFORMASI
             const infoDropdown = document.getElementById('informasiDropdown');
             if (infoDropdown) infoDropdown.classList.remove('d-none');
 
-            // Ubah tampilan profil
             const profileToggle = document.querySelector('.profile-toggle');
             if (profileToggle) {
                 profileToggle.innerHTML = `<span class="text-white">${nama}</span>`;
             }
 
-            // Ubah dropdown profil
             const dropdownMenu = document.querySelector('.profile-toggle + .dropdown-menu');
             if (dropdownMenu) {
                 dropdownMenu.innerHTML = `
@@ -637,7 +630,6 @@
                     <a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</a>
                 `;
 
-                // Event logout
                 document.getElementById('logoutBtn').addEventListener('click', async function(e) {
                     e.preventDefault();
                     await fetch('/api/logout', { method: 'POST' });
@@ -645,7 +637,6 @@
                 });
             }
 
-            // Event listener untuk item INFORMASI
             document.querySelectorAll('.info-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -656,53 +647,136 @@
         }
 
         // =============================================
-        // 3. Modal Informasi
+        // 3. Modal Informasi (termasuk Piket Siaga)
         // =============================================
         const infoContent = {
-            'piket-siaga': {
-                title: 'Piket Siaga',
-                body: `<p>Informasi jadwal dan personel piket siaga.</p>
-                    <p>Silakan cek menu <strong>OPERASI > Piket Siaga</strong> untuk detail lebih lanjut.</p>`
-            },
             'pelanggaran-disiplin': {
                 title: 'Pelanggaran Disiplin',
-                body: `<p>Data pelanggaran disiplin pegawai.</p>
-                    <p>Fitur ini masih dalam pengembangan.</p>`
+                body: '<p>Data pelanggaran disiplin pegawai.</p>'
             },
             'absensi-kantor': {
                 title: 'Absensi Kantor',
-                body: `<p>Rekapitulasi kehadiran pegawai.</p>
-                    <p>Anda dapat melihat detail absensi di menu DATA PRIBADI.</p>`
+                body: '<p>Rekapitulasi kehadiran pegawai.</p>'
             },
             'rekapitulasi-dinas-luar-operasi': {
-                title: 'Rekapitulasi Dinas Luar Operasi',
-                body: `<p>Data dinas luar untuk kegiatan operasi SAR.</p>
-                    <p>Gunakan menu SPRIN untuk melihat surat perintah terkait.</p>`
+                title: 'Rekap Dinas Luar Operasi',
+                body: '<p>Data dinas luar operasi.</p>'
             },
             'rekapitulasi-dinas-luar-pelatihan': {
-                title: 'Rekapitulasi Dinas Luar Pelatihan',
-                body: `<p>Data dinas luar untuk kegiatan pelatihan.</p>
-                    <p>Gunakan menu SPRIN untuk melihat surat perintah terkait.</p>`
+                title: 'Rekap Dinas Luar Pelatihan',
+                body: '<p>Data dinas luar pelatihan.</p>'
             },
             'resume-pembuatan-skp': {
-                title: 'Resume Pembuatan SKP',
-                body: `<p>Ringkasan Sasaran Kerja Pegawai (SKP) yang telah dibuat.</p>
-                    <p>Anda dapat mengakses detailnya di menu DATA PRIBADI.</p>`
+                title: 'Resume SKP',
+                body: '<p>Ringkasan SKP pegawai.</p>'
             },
             'pegawai-login-portal': {
                 title: 'Pegawai Login Portal',
-                body: `<p>Daftar pegawai yang sedang atau pernah login ke portal.</p>
-                    <p>Fitur ini masih dalam pengembangan.</p>`
+                body: '<p>Data pegawai yang login.</p>'
             }
         };
 
         function showInfoModal(info) {
-            const data = infoContent[info] || { title: 'Informasi', body: '<p>Konten belum tersedia.</p>' };
-            document.getElementById('infoModalLabel').textContent = data.title;
-            document.getElementById('infoModalBody').innerHTML = data.body;
+            if (info === 'piket-siaga') {
+                // Tampilkan form piket siaga dengan input text YYYY-MM-DD
+                document.getElementById('infoModalLabel').textContent = 'Piket Siaga';
+                document.getElementById('infoModalBody').innerHTML = `
+                    <div class="mb-3">
+                        <label class="form-label">Periode</label>
+                        <input type="text" id="tglPiket" class="form-control" 
+                            placeholder="YYYY-MM-DD" value="2026-07-14"
+                            pattern="\\d{4}-\\d{2}-\\d{2}" title="Format: YYYY-MM-DD">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Shift</label>
+                        <select id="shiftPiket" class="form-select">
+                            <option value="1">Shift 1</option>
+                            <option value="2" selected>Shift 2</option>
+                        </select>
+                    </div>
+                    <button id="btnTampilkan" class="btn btn-primary mb-3">Tampilkan</button>
+                    <div id="hasilPiket"></div>
+                `;
 
-            const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
-            infoModal.show();
+                const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+                infoModal.show();
+
+                // Muat data default
+                loadPiketSiaga('2026-07-14', '2');
+
+                document.getElementById('btnTampilkan').addEventListener('click', function() {
+                    const tgl = document.getElementById('tglPiket').value.trim();
+                    const shift = document.getElementById('shiftPiket').value;
+                    loadPiketSiaga(tgl, shift);
+                });
+
+            } else {
+                const data = infoContent[info] || { title: 'Informasi', body: '<p>Belum tersedia.</p>' };
+                document.getElementById('infoModalLabel').textContent = data.title;
+                document.getElementById('infoModalBody').innerHTML = data.body;
+                const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+                infoModal.show();
+            }
+        }
+
+        async function loadPiketSiaga(tanggal, shift) {
+            const container = document.getElementById('hasilPiket');
+
+            // Validasi format YYYY-MM-DD
+            const regex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!regex.test(tanggal)) {
+                container.innerHTML = `<div class="alert alert-warning">Format tanggal harus YYYY-MM-DD</div>`;
+                return;
+            }
+
+            container.innerHTML = `<p class="text-muted">Memuat data...</p>`;
+
+            try {
+                const response = await fetch(`/api/piket_siaga?tanggal=${tanggal}&shift=${shift}`);
+                const result = await response.json();
+
+                if (!result.success) {
+                    container.innerHTML = `<div class="alert alert-warning">${result.message}</div>`;
+                    return;
+                }
+
+                let html = `
+                    <div class="mb-3 p-2 bg-light rounded">
+                        <strong>Periode:</strong> ${tanggal} &nbsp; | &nbsp; <strong>Shift:</strong> ${shift}
+                    </div>
+                `;
+
+                result.data.forEach(wilayah => {
+                    // Hilangkan duplikasi
+                    const unique = new Set();
+                    const anggotaUnik = wilayah.anggota.filter(a => {
+                        const key = `${a.nama.trim()}-${a.fungsional}`;
+                        if (unique.has(key)) return false;
+                        unique.add(key);
+                        return true;
+                    });
+
+                    html += `<h6 class="mt-3 text-primary fw-bold">Wilayah ${escapeHtml(wilayah.wilayah)}</h6>`;
+                    html += `<div class="table-responsive"><table class="table table-bordered table-sm table-striped">`;
+                    html += `<thead class="table-light"><tr><th>Nama</th><th>No. Telp</th><th>Fungsional</th></tr></thead><tbody>`;
+
+                    anggotaUnik.forEach(a => {
+                        html += `<tr>
+                            <td>${escapeHtml(a.nama.trim())}</td>
+                            <td>${escapeHtml(a.no_telp.trim())}</td>
+                            <td>${escapeHtml(a.fungsional)}</td>
+                        </tr>`;
+                    });
+
+                    html += `</tbody></table></div>`;
+                });
+
+                container.innerHTML = html;
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<div class="alert alert-danger">Gagal memuat data.</div>`;
+            }
         }
     });
     </script>
