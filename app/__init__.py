@@ -1,9 +1,10 @@
 # app/__init__.py
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from datetime import timedelta
 from config import Config
 
-db = SQLAlchemy()  # instance db dibuat di luar, biar bisa di-import model manapun
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(
@@ -13,7 +14,11 @@ def create_app():
     )
     app.config.from_object(Config)
 
-    db.init_app(app)  # bind db ke app instance
+    # === KONFIGURASI SESSION ===
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # sesi bertahan 7 hari
+    app.config['SESSION_PERMANENT'] = True
+
+    db.init_app(app)
 
     from app.routes.routes import main
     app.register_blueprint(main)

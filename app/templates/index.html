@@ -46,8 +46,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto align-items-cente">
                     <a class="nav-link text-white d-flex align-items-center">HOME</a>
-                    <!-- Dropdown INFORMASI (tampil setelah login) -->
-                    <div class="nav-item dropdown d-none" id="informasiDropdown">
+                    <!-- Dropdown INFORMASI (muncul hanya jika session login aktif) -->
+                    <div class="nav-item dropdown {% if not session.get('logged_in') %}d-none{% endif %}" id="informasiDropdown">
                         <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
                             data-bs-toggle="dropdown">
                             INFORMASI
@@ -62,6 +62,7 @@
                             <a class="dropdown-item info-item" href="#" data-info="pegawai-login-portal">Pegawai Login Portal</a>
                         </div>
                     </div>
+
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
                             data-bs-toggle="dropdown">
@@ -103,12 +104,21 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center profile-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-fill fs-3"></i>
+                            {% if session.get('logged_in') %}
+                                <span class="text-white">{{ session.get('nama') }}</span>
+                            {% else %}
+                                <i class="bi bi-person-fill fs-3"></i>
+                            {% endif %}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" data-bs-display="static">
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
-                            </a>
+                            {% if session.get('logged_in') %}
+                                <a class="dropdown-item" href="/profile"><i class="bi bi-person"></i> Profil</a>
+                                <a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                            {% else %}
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -181,8 +191,6 @@
                                 <input class="form-check-input" type="checkbox" id="rememberMe">
                                 <label class="form-check-label" for="rememberMe">Ingat saya</label>
                             </div>
-                            <a href="#" class="small text-decoration-none" style="color: var(--primary);">Lupa
-                                password?</a>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">Sign In</button>
@@ -515,7 +523,7 @@
     <script src="{{ url_for('static', filename='static_home/js/main.js') }}"></script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
         // =============================================
         // 1. Pencarian Buku Telepon
         // =============================================
@@ -586,10 +594,12 @@
                 }
 
                 try {
+                    const remember = document.getElementById('rememberMe').checked;  // ambil status checkbox
+
                     const response = await fetch('/api/login', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ nip, password })
+                        body: JSON.stringify({ nip, password, remember })  // kirimkan juga flag remember
                     });
 
                     const result = await response.json();
@@ -647,7 +657,32 @@
         }
 
         // =============================================
-        // 3. Modal Informasi (termasuk Piket Siaga)
+        // 3. Inisialisasi jika session sudah ada saat halaman dimuat
+        // =============================================
+        const infoDropdown = document.getElementById('informasiDropdown');
+        if (infoDropdown && !infoDropdown.classList.contains('d-none')) {
+            // Pasang event listener untuk item INFORMASI
+            document.querySelectorAll('.info-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const info = this.dataset.info;
+                    showInfoModal(info);
+                });
+            });
+
+            // Pasang event listener untuk tombol logout yang sudah dirender Jinja
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    await fetch('/api/logout', { method: 'POST' });
+                    location.reload();
+                });
+            }
+        }
+
+        // =============================================
+        // 4. Modal Informasi (termasuk Piket Siaga)
         // =============================================
         const infoContent = {
             'pelanggaran-disiplin': {
@@ -678,7 +713,6 @@
 
         function showInfoModal(info) {
             if (info === 'piket-siaga') {
-                // Tampilkan form piket siaga dengan input text YYYY-MM-DD
                 document.getElementById('infoModalLabel').textContent = 'Piket Siaga';
                 document.getElementById('infoModalBody').innerHTML = `
                     <div class="mb-3">
@@ -701,7 +735,6 @@
                 const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
                 infoModal.show();
 
-                // Muat data default
                 loadPiketSiaga('2026-07-14', '2');
 
                 document.getElementById('btnTampilkan').addEventListener('click', function() {
@@ -721,8 +754,6 @@
 
         async function loadPiketSiaga(tanggal, shift) {
             const container = document.getElementById('hasilPiket');
-
-            // Validasi format YYYY-MM-DD
             const regex = /^\d{4}-\d{2}-\d{2}$/;
             if (!regex.test(tanggal)) {
                 container.innerHTML = `<div class="alert alert-warning">Format tanggal harus YYYY-MM-DD</div>`;
@@ -747,7 +778,6 @@
                 `;
 
                 result.data.forEach(wilayah => {
-                    // Hilangkan duplikasi
                     const unique = new Set();
                     const anggotaUnik = wilayah.anggota.filter(a => {
                         const key = `${a.nama.trim()}-${a.fungsional}`;
