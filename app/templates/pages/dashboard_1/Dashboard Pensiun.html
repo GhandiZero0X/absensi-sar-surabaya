@@ -1,0 +1,115 @@
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- Pensiun{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <!-- [ page-header ] start -->
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Dashboard</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Dashboard Pensiun.html">Pensiun</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+    <!-- [ page-header ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-start align-items-center gap-3"
+                    style="border-radius: 10px; padding: 10px 15px;">
+                    <h6 class="mb-0">
+                        <i class="ti ti-speakerphone me-2"></i> Reminder
+                    </h6>
+
+                    <input type="month" class="form-control form-control-sm" value="2026-02"
+                        style="width: auto; min-height: 30px; font-size: 12px; border-radius: 8px; height: 15px;">
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3"></div>
+                    <div class="row border-0">
+                        <div class="col-12 mt-2">
+                            <style>
+                                .btn-orange {
+                                    background-color: #EB6831;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+
+                                .btn-orange:hover {
+                                    background-color: #d95c28;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+
+                                .btn-orange-outline {
+                                    border: 1px solid #1E1E1E;
+                                    color: #1E1E1E;
+                                    background: transparent;
+                                }
+
+                                .btn-orange-outline:hover {
+                                    background-color: #EB6831;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+                            </style>
+
+                            <div class="button-responsive-wrapper"
+                                style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
+                                <div class="btn-group d-inline-flex">
+                                    <a href="Dashboard Pelanggaran.html"
+                                        class="btn btn-sm btn-orange-outline">Pelanggaran</a>
+                                    <a href="Dashboard Pensiun.html" class="btn btn-sm btn-orange">Pensiun</a>
+                                    <a href="Dashboard Pangkat.html" class="btn btn-sm btn-orange-outline">Pangkat</a>
+                                    <a href="Dashboard KGB.html" class="btn btn-sm btn-orange-outline">KGB</a>
+                                    <a href="Dashboard TRT.html" class="btn btn-sm btn-orange-outline">TRT</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- TITLE TABLE -->
+                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
+                            ㅤ
+                        </p>
+
+                        <!-- TABLE -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped text-center align-middle">
+                                <thead style="background:#EB6831;">
+                                    <tr>
+                                        <th style="color:white;">No</th>
+                                        <th style="color:white;">NIP</th>
+                                        <th style="color:white;">Tanggal Lahir</th>
+                                        <th style="color:white;">Umur</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4" style="vertical-align: middle; padding: 20px;">No
+                                            records to display.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

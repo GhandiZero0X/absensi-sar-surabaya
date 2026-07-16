@@ -1,0 +1,170 @@
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- Pelanggaran{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <!-- [ page-header ] start -->
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Dashboard</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Dashboard Pelanggaran.html">Pelanggaran</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+    <!-- [ page-header ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-start align-items-center gap-3"
+                    style="border-radius: 10px; padding: 10px 15px;">
+                    <h6 class="mb-0">
+                        <i class="ti ti-speakerphone me-2"></i> Reminder
+                    </h6>
+
+                    <input type="month" class="form-control form-control-sm" value="2026-02"
+                        style="width: auto; min-height: 30px; font-size: 12px; border-radius: 8px; height: 15px;">
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3"></div>
+                    <div class="row border-0">
+                        <div class="col-12 mt-2">
+                            <style>
+                                .btn-orange {
+                                    background-color: #EB6831;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+
+                                .btn-orange:hover {
+                                    background-color: #d95c28;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+
+                                .btn-orange-outline {
+                                    border: 1px solid #1E1E1E;
+                                    color: #1E1E1E;
+                                    background: transparent;
+                                }
+
+                                .btn-orange-outline:hover {
+                                    background-color: #EB6831;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+                            </style>
+
+                            <div class="button-responsive-wrapper"
+                                style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
+                                <div class="btn-group d-inline-flex">
+                                    <a href="Dashboard Pelanggaran.html" class="btn btn-sm btn-orange">Pelanggaran</a>
+                                    <a href="Dashboard Pensiun.html" class="btn btn-sm btn-orange-outline">Pensiun</a>
+                                    <a href="Dashboard Pangkat.html" class="btn btn-sm btn-orange-outline">Pangkat</a>
+                                    <a href="Dashboard KGB.html" class="btn btn-sm btn-orange-outline">KGB</a>
+                                    <a href="Dashboard TRT.html" class="btn btn-sm btn-orange-outline">TRT</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- TITLE TABLE -->
+                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
+                            Hukuman Disiplin Pegawai Berdasarkan Jumlah Ketidakhadiran Hari Kerja
+                        </p>
+
+                        <!-- TABLE -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped text-center align-middle">
+                                <thead style="background:#EB6831;">
+                                    <tr>
+                                        <th style="color:white;">No</th>
+                                        <th style="color:white;">Nama</th>
+                                        <th style="color:white;">Jumlah Hari</th>
+                                        <th style="color:white;">Kategori Hukuman</th>
+                                        <th style="color:white;">Jenis Hukuman</th>
+                                        <th style="color:white;">Potongan (%)</th>
+                                        <th style="color:white;">Lama Pot</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>EBTARIO DWI PRAKOSO</td>
+                                        <td>14</td>
+                                        <td>Kosong</td>
+                                        <td>Kosong</td>
+                                        <td>0</td>
+                                        <td>0 Bulan</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>ONE RIZQI KURNIAWAN</td>
+                                        <td>12</td>
+                                        <td>Kosong</td>
+                                        <td>Kosong</td>
+                                        <td>0</td>
+                                        <td>0 Bulan</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>ANDI IRAWAN</td>
+                                        <td>11</td>
+                                        <td>Kosong</td>
+                                        <td>Kosong</td>
+                                        <td>0</td>
+                                        <td>0 Bulan</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>ALFIYAN ADI SETIAWAN</td>
+                                        <td>9</td>
+                                        <td>Hukuman Disiplin Ringan</td>
+                                        <td>Pernyataan Tidak Puas Secara Tertulis</td>
+                                        <td>0</td>
+                                        <td>0 Bulan</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>NURHOLIS MAJID</td>
+                                        <td>8</td>
+                                        <td>Hukuman Disiplin Ringan</td>
+                                        <td>Pernyataan Tidak Puas Secara Tertulis</td>
+                                        <td>0</td>
+                                        <td>0 Bulan</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>RISKY PUTRA BUANA</td>
+                                        <td>6</td>
+                                        <td>Hukuman Disiplin Ringan</td>
+                                        <td>Pernyataan Tidak Puas Secara Tertulis</td>
+                                        <td>0</td>
+                                        <td>0 Bulan</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock %}

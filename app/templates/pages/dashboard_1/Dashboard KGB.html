@@ -1,0 +1,165 @@
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- KGB{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <!-- [ page-header ] start -->
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Dashboard</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Dashboard KGB.html">KGB</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+    <!-- [ page-header ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-start align-items-center gap-3"
+                    style="border-radius: 10px; padding: 10px 15px;">
+                    <h6 class="mb-0">
+                        <i class="ti ti-speakerphone me-2"></i> Reminder
+                    </h6>
+
+                    <input type="month" class="form-control form-control-sm" value="2026-02"
+                        style="width: auto; min-height: 30px; font-size: 12px; border-radius: 8px; height: 15px;">
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3"></div>
+                    <div class="row border-0">
+                        <div class="col-12 mt-2">
+                            <style>
+                                .btn-orange {
+                                    background-color: #EB6831;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+
+                                .btn-orange:hover {
+                                    background-color: #d95c28;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+
+                                .btn-orange-outline {
+                                    border: 1px solid #1E1E1E;
+                                    color: #1E1E1E;
+                                    background: transparent;
+                                }
+
+                                .btn-orange-outline:hover {
+                                    background-color: #EB6831;
+                                    color: white;
+                                    border: 1px solid #1E1E1E;
+                                }
+                            </style>
+
+                            <div class="button-responsive-wrapper"
+                                style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
+                                <div class="btn-group d-inline-flex">
+                                    <a href="Dashboard Pelanggaran.html"
+                                        class="btn btn-sm btn-orange-outline">Pelanggaran</a>
+                                    <a href="Dashboard Pensiun.html" class="btn btn-sm btn-orange-outline">Pensiun</a>
+                                    <a href="Dashboard Pangkat.html" class="btn btn-sm btn-orange-outline">Pangkat</a>
+                                    <a href="Dashboard KGB.html" class="btn btn-sm btn-orange">KGB</a>
+                                    <a href="Dashboard TRT.html" class="btn btn-sm btn-orange-outline">TRT</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- TITLE TABLE -->
+                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
+                            ㅤ
+                        </p>
+                        <!-- TABLE -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped text-center align-middle">
+                                <thead style="background:#EB6831;">
+                                    <tr>
+                                        <th style="color:white; vertical-align: middle;">No</th>
+                                        <th style="color:white; vertical-align: middle;">NIP</th>
+                                        <th style="color:white; vertical-align: middle;">Nama</th>
+                                        <th style="color:white; vertical-align: middle;">TMT CPNS</th>
+                                        <th style="color:white; vertical-align: middle;">TMT PNS</th>
+                                        <th style="color:white; vertical-align: middle;">Gol Recruit</th>
+                                        <th style="color:white; vertical-align: middle;">Rentang</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>197111201996021001</td>
+                                        <td class="text-start">NANANG SIGIT PH, S.IP, M.M.</td>
+                                        <td>1996.02.01</td>
+                                        <td>1997.02.01</td>
+                                        <td>II/b</td>
+                                        <td>0t, 0b, 0h</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>197211251998031001</td>
+                                        <td class="text-start">FADLY HARYANTO WASIS, S.E.</td>
+                                        <td>1998.03.01</td>
+                                        <td>1999.07.01</td>
+                                        <td>II/b</td>
+                                        <td>0t, 1b, 0h</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>198110312006041002</td>
+                                        <td class="text-start">FARID KURNIADI, S.T.</td>
+                                        <td>2006.04.01</td>
+                                        <td>2007.05.01</td>
+                                        <td>II/a</td>
+                                        <td>0t, 2b, 0h</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>197609102006041001</td>
+                                        <td class="text-start">JOHAN SAPTADI, S. E.</td>
+                                        <td>2006.04.01</td>
+                                        <td>2007.05.01</td>
+                                        <td>II/a</td>
+                                        <td>0t, 2b, 0h</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>198407312006041001</td>
+                                        <td class="text-start">AKHMAD AFANDI, S.E.</td>
+                                        <td>2006.04.01</td>
+                                        <td>2007.05.01</td>
+                                        <td>II/a</td>
+                                        <td>0t, 2b, 0h</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>199108162022031001</td>
+                                        <td class="text-start">NUR ARDHI SUKMA PRASETYO A.Md.</td>
+                                        <td>2022.03.01</td>
+                                        <td>2022.03.01</td>
+                                        <td>II/c</td>
+                                        <td>0t, 1b, 0h</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

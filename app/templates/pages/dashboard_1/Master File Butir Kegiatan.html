@@ -1,0 +1,450 @@
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- Butir Kegiatan{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Master File</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Master File Butir Kegiatan.html">Butir Kegiatan</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center"
+                    style="border-radius: 10px;">
+                    <h6 class="mb-0">
+                        <i class="feather-file-text me-2"></i>Butir Kegiatan
+                    </h6>
+
+                    <div class="header-actions">
+                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
+                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                        </button>
+
+                        <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
+                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                                </button>
+
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12 d-md-flex align-items-center mb-3">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Group
+                                jabatan</label>
+                            <div class="col-md-7">
+                                <div class="dropdown custom-combogrid">
+                                    <div class="form-select-sm border d-flex justify-content-between align-items-center bg-white"
+                                        data-bs-toggle="dropdown" style="cursor: pointer; height: 31px;">
+                                        <span class="ps-2"></span>
+                                        <div
+                                            style="background: #3fb1c5; width: 30px; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-caret-down-fill text-white" style="font-size: 12px;"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="dropdown-menu p-0 shadow-sm border-secondary w-100"
+                                        style="min-width: 400px; font-family: sans-serif;">
+                                        <div class="d-flex fw-bold text-dark border-bottom"
+                                            style="background: #e9e9e9; font-size: 14px;">
+                                            <div style="width: 80px;" class="p-1 ps-2">ID</div>
+                                            <div class="flex-grow-1 p-1 text-center">Group</div>
+                                        </div>
+
+                                        <div style="max-height: 250px; overflow-y: auto;">
+
+                                            <div class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom"
+                                                style="background: #e0f4f9;">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">0</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">-</span>
+                                            </div>
+
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">10</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Kepala
+                                                    Kantor</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">1010</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Kasubag
+                                                    Umum</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">1020</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Kasi
+                                                    Ops dan Siaga</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">1030</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Kasi
+                                                    Sumber Daya</span>
+                                            </div>
+
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101010</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Perencanaan</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101011</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                    BMN</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101012</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Penata
+                                                    Lap SAI</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101013</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                    Keuangan</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101014</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                    Urusan Dalam</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101015</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                    Kepegawaian</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101016</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Arsiparis</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101017</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Pranata
+                                                    Komputer</span>
+                                            </div>
+
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101021</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Perawat</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">101022</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Humas</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">102010</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Analis
+                                                    SAR</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">102011</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Opr
+                                                    Kom</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">102012</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Teknisi
+                                                    Alkom</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">102013</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Rescuer</span>
+                                            </div>
+
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103010</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Instruktur
+                                                    SAR</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103011</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                    Alat Logistik</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103012</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Pengelola
+                                                    Kendaraan</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103013</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Pengemudi</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103014</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Nahkoda</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103015</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Mualim</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103016</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Markonis</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103017</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Serang
+                                                    Bosun</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103018</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                    Mudi</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103019</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Jenang
+                                                    Kelas</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103020</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                    Masak</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103021</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">KKM</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103022</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Masinis</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103023</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Teknisi
+                                                    Listrik Kapal</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103024</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Mandor
+                                                    Mesin</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">103025</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Juru
+                                                    Minyak</span>
+                                            </div>
+
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">900000</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Bendahara</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">900001</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Adm
+                                                    Umum</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">900003</span>
+                                                <span
+                                                    class="badge rounded-pill bg-secondary text-white px-3">Verifikator</span>
+                                            </div>
+                                            <div
+                                                class="dropdown-item d-flex align-items-center py-1 px-2 border-bottom">
+                                                <span class="badge rounded-pill bg-secondary me-3"
+                                                    style="width: 70px;">900004</span>
+                                                <span class="badge rounded-pill bg-secondary text-white px-3">Adm
+                                                    Kepegawaian</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="p-1 ps-2 border-top"
+                                            style="background: #e9e9e9; font-size: 12px; color: #666;">
+                                            Total 39 items
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-9 d-flex align-items-center gap-2">
+                                <button class="btn-refresh-custom mt-0 w-auto"
+                                    style="background-color: #198754 !important;">
+                                    <i class="bi bi-save me-2"></i> Save
+                                </button>
+
+                                <button class="btn-refresh-custom mt-0 w-auto">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                </button>
+
+                            </div>
+                        </div>
+                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
+                            ㅤ
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped text-center align-middle">
+                                <thead style="background:#EB6831;">
+                                    <tr>
+                                        <th style="color:white; vertical-align: middle;">Item ID</th>
+                                        <th style="color:white; vertical-align: middle;">Diskripsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" style="vertical-align: middle; padding: 20px;">No
+                                            records to display.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4 filter-card">
+                <div class="card-header-customm">
+                    <h6 class="mb-0">Item Kegiatan</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">ID Kegiatan</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Deskripsi
+                                Kegiatan</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-1">
+                                <button
+                                    class="btn-refresh-custom mt-0 w-auto d-inline-flex align-items-center justify-content-center"
+                                    style="height: 33px; text-transform: none !important; gap: 8px; padding: 0 15px;">
+                                    <i class="bi bi-cursor-fill" style="font-size: 14px;"></i>
+                                    <span>Insert</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
