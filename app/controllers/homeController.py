@@ -1,11 +1,18 @@
+# app/controllers/homeController.py
+
 from flask import render_template, request, jsonify
+from app import db
 from app.models.pegawaiModel import Pegawai
 from app.models.timSiagaModel import MfTimSiaga
 from app.models.timSiagaAnggotaModel import MfTimSiagaAnggota
-from sqlalchemy import func
+from app.models.absensiModel import Absensi
+from app.models.potModel import MfPot
+from sqlalchemy import func, or_
+
 
 def home():
     return render_template('index.html')
+
 
 def search_buku_telp():
     q = request.args.get('q', '').strip()
@@ -28,6 +35,7 @@ def search_buku_telp():
 
     return jsonify(data)
 
+
 def get_piket_siaga():
     tanggal = request.args.get('tanggal')
     shift = request.args.get('shift')
@@ -37,7 +45,7 @@ def get_piket_siaga():
 
     try:
         year, month, _ = tanggal.split('-')
-        month = str(int(month))   # normalisasi: '04' -> '4', '11' -> '11'
+        month = str(int(month))
     except ValueError:
         return jsonify({'success': False, 'message': 'Format tanggal tidak valid.'}), 400
 
@@ -78,28 +86,91 @@ def get_piket_siaga():
 
 
 def get_pelanggaran_disiplin():
-    # Data contoh sementara – nanti ganti dengan query dari database
-    data = [
-        {"no": 1, "nama": "IRWAN FERI WINATA", "hari": 28, "kategori": "Hukuman Disiplin Sedang", "jenis": "Penurunan Pangkat Setingkat Lebih Rendah Selama 1 Tahun", "potongan": 50, "lama_pot": "6 Bulan"},
-        {"no": 2, "nama": "HANIF HAZMI, S. I. Kom.", "hari": 26, "kategori": "Hukuman Disiplin Berat", "jenis": "Pembebasan dari jabatannya menjadi jabatan pelaksana", "potongan": 0, "lama_pot": "12 Bulan"},
-        {"no": 3, "nama": "BISMA FIRMANSYAH A.Md.T.", "hari": 25, "kategori": "Hukuman Disiplin Sedang", "jenis": "Penundaan Kenaikan Pangkat Berkala Selama 1 Tahun", "potongan": 50, "lama_pot": "4 Bulan"},
-        {"no": 4, "nama": "YUDI LISTIYONO", "hari": 25, "kategori": "Hukuman Disiplin Sedang", "jenis": "Penundaan Kenaikan Pangkat Berkala Selama 1 Tahun", "potongan": 50, "lama_pot": "4 Bulan"},
-        {"no": 5, "nama": "NUVA WIDIYANTO", "hari": 24, "kategori": "Hukuman Disiplin Berat", "jenis": "Penurunan jabatan setingkat lebih rendah", "potongan": 0, "lama_pot": "12 Bulan"},
-        {"no": 6, "nama": "TEGUH PRIYAMBODO", "hari": 24, "kategori": "Hukuman Disiplin Berat", "jenis": "Penurunan jabatan setingkat lebih rendah", "potongan": 0, "lama_pot": "12 Bulan"},
-        {"no": 7, "nama": "YUDHI SETIAWAN", "hari": 24, "kategori": "Hukuman Disiplin Berat", "jenis": "Penurunan jabatan setingkat lebih rendah", "potongan": 0, "lama_pot": "12 Bulan"},
-        {"no": 8, "nama": "CUCUPS PUTRA IMPRIAN ROSTYA", "hari": 17, "kategori": "Hukuman Disiplin Sedang", "jenis": "Penundaan Kenaikan Gaji Berkala Selama 1 Tahun", "potongan": 50, "lama_pot": "2 Bulan"},
-        {"no": 9, "nama": "EDI SURYONO", "hari": 11, "kategori": "Hukuman Disiplin Sedang", "jenis": "Pemotongan tunjangan kinerja", "potongan": 25, "lama_pot": "6 Bulan"},
-        {"no": 10, "nama": "RIFQI IRAWAN", "hari": 11, "kategori": "Hukuman Disiplin Sedang", "jenis": "Pemotongan tunjangan kinerja", "potongan": 25, "lama_pot": "6 Bulan"},
-        {"no": 11, "nama": "RISKY PUTRA BUANA", "hari": 9, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 20, "lama_pot": "6 Bulan"},
-        {"no": 12, "nama": "KURNIADI ARIF CAHYONO", "hari": 8, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 20, "lama_pot": "6 Bulan"},
-        {"no": 13, "nama": "ADISTYA SAHDHA, S.AP., M.Sc", "hari": 7, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 20, "lama_pot": "6 Bulan"},
-        {"no": 14, "nama": "EBTARIO DWI PRAKOSO", "hari": 7, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 20, "lama_pot": "6 Bulan"},
-        {"no": 15, "nama": "DEKKY HAEROEL ROMADHON SAH", "hari": 6, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 0, "lama_pot": "0"},
-        {"no": 16, "nama": "I PT EKA AGUS SETIAWAN", "hari": 6, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 0, "lama_pot": "0"},
-        {"no": 17, "nama": "DINI NURFITRIYAH, A.Md", "hari": 5, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 0, "lama_pot": "0"},
-        {"no": 18, "nama": "I DEWA NYOMAN ARYA ASTAMAN", "hari": 5, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 0, "lama_pot": "0"},
-        {"no": 19, "nama": "KETUT DWI ARYO BISMOKO", "hari": 5, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 0, "lama_pot": "0"},
-        {"no": 20, "nama": "TAUFIQURRAHMAN", "hari": 5, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 0, "lama_pot": "0"},
-        {"no": 21, "nama": "WAHYU SETIA BUDI", "hari": 5, "kategori": "Hukuman Disiplin Ringan", "jenis": "Teguran Tertulis", "potongan": 0, "lama_pot": "0"},
-    ]
-    return jsonify({"success": True, "data": data})
+    """
+    Mengambil data pelanggaran disiplin pegawai dari database.
+    Chain query: PEGAWAI -> ABSENSI (via ABSENSI_ID) -> MF_POT (via POTONGAN_ID)
+
+    Catatan kolom:
+      - TOTAL_TLM  : total keterlambatan (satuan tergantung sistem — menit atau hari)
+      - TOTAL_PSW  : total pulang sebelum waktu
+      - TINGKAT_TLM: tingkat pelanggaran per record absensi ('RINGAN'/'SEDANG'/'BERAT')
+      - MF_POT.TINGKAT   : tingkat dari aturan master potongan
+      - MF_POT.TINDAKAN  : jenis hukuman disiplin
+      - MF_POT.PERSEN_POT: persentase potongan tunjangan
+      - MF_POT.DURASI_POT + SATUAN_DURASI: lama potongan
+    """
+    try:
+        results = db.session.query(
+            Pegawai.NAMA,
+            Absensi.TOTAL_TLM,
+            Absensi.TOTAL_PSW,
+            Absensi.TINGKAT_TLM,
+            MfPot.TINGKAT,
+            MfPot.TINDAKAN,
+            MfPot.NAMA_POT,
+            MfPot.PERSEN_POT,
+            MfPot.DURASI_POT,
+            MfPot.SATUAN_DURASI
+        ).select_from(Pegawai)\
+         .join(Absensi, Pegawai.ABSENSI_ID == Absensi.ABSENSI_ID)\
+         .join(MfPot, Absensi.POTONGAN_ID == MfPot.POTONGAN_ID)\
+         .filter(
+             MfPot.TINGKAT.isnot(None),
+             or_(
+                 Absensi.TOTAL_TLM > 0,
+                 Absensi.TOTAL_PSW > 0
+             )
+         )\
+         .order_by(Absensi.TOTAL_TLM.desc())\
+         .all()
+
+        if not results:
+            return jsonify({'success': False, 'message': 'Tidak ada data pelanggaran disiplin.'}), 404
+
+        data = []
+        for i, row in enumerate(results, 1):
+
+            # ── Kategori hukuman ─────────────────────────────────────────────
+            # Prioritas: TINGKAT dari MF_POT, fallback ke TINGKAT_TLM di ABSENSI
+            tingkat_raw = (row.TINGKAT or row.TINGKAT_TLM or '').strip().upper()
+            if 'BERAT' in tingkat_raw:
+                kategori = 'Hukuman Disiplin Berat'
+            elif 'SEDANG' in tingkat_raw:
+                kategori = 'Hukuman Disiplin Sedang'
+            else:
+                kategori = 'Hukuman Disiplin Ringan'
+
+            # ── Jumlah hari pelanggaran ───────────────────────────────────────
+            # TOTAL_TLM dan TOTAL_PSW satuannya bergantung konfigurasi sistem.
+            # Jika dalam MENIT  → bagi dengan 480 (8 jam × 60 menit)
+            # Jika dalam JAM    → bagi dengan 8
+            # Jika sudah HARI   → gunakan langsung (tidak perlu dibagi)
+            # Sesuaikan DIVISOR di bawah setelah mengecek data aktual di database.
+            DIVISOR = 1  # ganti ke 480 jika TOTAL_TLM dalam menit
+            total_tlm = row.TOTAL_TLM or 0
+            total_psw = row.TOTAL_PSW or 0
+            hari = int((total_tlm + total_psw) / DIVISOR)
+
+            # ── Lama potongan ─────────────────────────────────────────────────
+            if row.DURASI_POT and row.DURASI_POT > 0:
+                lama_pot = f"{int(row.DURASI_POT)} {(row.SATUAN_DURASI or 'Bulan').strip()}"
+            else:
+                lama_pot = "0"
+
+            data.append({
+                'no': i,
+                'nama': row.NAMA or '-',
+                'hari': hari,
+                'kategori': kategori,
+                'jenis': row.TINDAKAN or row.NAMA_POT or '-',
+                'potongan': int(row.PERSEN_POT or 0),
+                'lama_pot': lama_pot
+            })
+
+        return jsonify({'success': True, 'data': data})
+
+    # Di homeController.py, ubah bagian except sementara:
+    except Exception as e:
+        import traceback
+        traceback.print_exc()   # cetak full traceback di terminal Flask
+        return jsonify({'success': False, 'message': f'Gagal memuat data: {str(e)}'}), 500
