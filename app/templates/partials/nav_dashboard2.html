@@ -1,0 +1,164 @@
+<!-- partials/nav_dashboard2.html -->
+<nav class="nxl-navigation">
+    <div class="navbar-wrapper">
+        <div class="navbar-content">
+            <ul class="nxl-navbar">
+                <div class="custom-nav-header">
+                    <div class="header-container">
+                        <img src="{{ url_for('static', filename='static_dashboard_1/assets/images/logo-full.png') }}"
+                            alt="" width="40" height="auto">
+                        <div class="nxl-navigation-toggle toggle-btn-action">
+                        </div>
+                        <span class="nav-text-label nxl-mtext">HRIS Kansar</span>
+                    </div>
+                    <div class="header-container">
+                        <div class="nxl-navigation-toggle toggle-btn-action">
+                            <div id="menu-mini-button" class="btn-mini-style" style="cursor: pointer;">
+                                <i class="feather-menu"></i>
+                            </div>
+                            <div id="menu-expend-button" class="btn-expand-style" style="display: none;">
+                                <i class="feather-menu"></i>
+                            </div>
+                        </div>
+                        <span class="nav-text-label nxl-mtext">Navigation</span>
+                    </div>
+                    <div class="nav-separator"></div>
+                </div>
+                <li class="nxl-item nxl-caption">
+                    <label>Navigation</label>
+                </li>
+                <li class="nxl-item nxl-hasmenu">
+                    <a href="javascript:void(0);" class="nxl-link">
+                        <span class="nxl-micon"><i class="bi bi-microsoft"></i></span>
+                        <span class="nxl-mtext">Dashboards</span><span class="nxl-arrow"><i
+                                class="feather-chevron-right"></i></span>
+                    </a>
+                    <ul class="nxl-submenu">
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="index.html">
+                                <span class="nxl-micon"><i class="bi bi-layout-text-window-reverse"></i></span>
+                                <span class="nxl-mtext">Dashboard</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nxl-item nxl-hasmenu">
+                    <a href="javascript:void(0);" class="nxl-link">
+                        <span class="nxl-micon"><i class="bi bi-bar-chart-line-fill"></i></span>
+                        <span class="nxl-mtext">Master Data</span><span class="nxl-arrow"><i
+                                class="feather-chevron-right"></i></span>
+                    </a>
+                    <ul class="nxl-submenu">
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Master_Data_Tim_Siaga.html">
+                                <span class="nxl-micon"><i class="bi bi-layout-text-window-reverse"></i></span>
+                                <span class="nxl-mtext">Tim Siaga</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Master_Data_User_Account.html">
+                                <span class="nxl-micon"><i class="bi bi-person"></i></span>
+                                <span class="nxl-mtext">User Account</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Master_Data_KGR.html">
+                                <span class="nxl-micon"><i class="bi bi-layout-text-window-reverse"></i></span>
+                                <span class="nxl-mtext">KGR</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Master_Data_Email_Broadcast.html">
+                                <span class="nxl-micon"><i class="bi bi-envelope"></i></span>
+                                <span class="nxl-mtext">Email Broadcast</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Master_Data_Nominal_UT_Piket.html">
+                                <span class="nxl-micon"><i class="bi bi-currency-dollar"></i></span>
+                                <span class="nxl-mtext">Nominal UT.Piket</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nxl-item nxl-hasmenu">
+                    <a href="javascript:void(0);" class="nxl-link">
+                        <span class="nxl-micon"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                        <span class="nxl-mtext">Data Siaga</span><span class="nxl-arrow"><i
+                                class="feather-chevron-right"></i></span>
+                    </a>
+                    <ul class="nxl-submenu">
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Data_Siaga_Absensi_Kehadiran.html">
+                                <span class="nxl-micon"><i class="bi bi-layout-text-window-reverse"></i></span>
+                                <span class="nxl-mtext">Absen Kehadiran Piket</span></a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Data_Siaga_Jadwal_Ulang.html">
+                                <span class="nxl-micon"><i class="bi bi-journal-text"></i></span>
+                                <span class="nxl-mtext">Ubah Jadwal Piket</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Data_Siaga_Cetak_Uang_Siaga.html">
+                                <span class="nxl-micon"><i class="bi bi-currency-dollar"></i></span>
+                                <span class="nxl-mtext">Cetak Uang Siaga</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Data_Siaga_Membuat_Jadwal_Piket_Siaga.html">
+                                <span class="nxl-micon"><i class="bi bi-journal-text"></i></span>
+                                <span class="nxl-mtext">Membuat Jadwal Piket</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Data_Siaga_Cetak_Rekap_Siaga.html">
+                                <span class="nxl-micon"><i class="bi bi-folder"></i></span>
+                                <span class="nxl-mtext">Rekap Piket Siaga</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Data_Siaga_Cetak_Daftar_Lembur_Siaga.html">
+                                <span class="nxl-micon"><i class="bi bi-calendar"></i></span>
+                                <span class="nxl-mtext">Daftar Lembur</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nxl-item nxl-hasmenu">
+                    <a href="javascript:void(0);" class="nxl-link">
+                        <span class="nxl-micon"><i class="bi bi-pencil-square"></i></span>
+                        <span class="nxl-mtext">Otoritas</span><span class="nxl-arrow"><i
+                                class="feather-chevron-right"></i></span>
+                    </a>
+                    <ul class="nxl-submenu">
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Otorisasi_Persetujuan _Kepala_Kantor.html">
+                                <span class="nxl-micon"><i class="bi bi-person"></i></span>
+                                <span class="nxl-mtext">Otoritas Kasi OPS</span>
+                            </a>
+                        </li>
+                        <li class="nxl-item">
+                            <a class="nxl-link" href="Otorisasi_Persetujuan_Kepala_Seksi_Operasi.html">
+                                <span class="nxl-micon"><i class="bi bi-person"></i></span>
+                                <span class="nxl-mtext">Otoritas KanKanSar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nxl-item nxl-hasmenu">
+                    <a href="javascript:void(0);" class="nxl-link">
+                        <span class="nxl-micon"><i class="bi bi-house-fill"></i></span>
+                        <span class="nxl-mtext">Portal</span>
+                    </a>
+                </li>
+                <li class="nxl-item nxl-hasmenu">
+                    <a href="javascript:void(0);" class="nxl-link">
+                        <span class="nxl-micon"><i class="bi bi-key-fill"></i></span>
+                        <span class="nxl-mtext">Update Password</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

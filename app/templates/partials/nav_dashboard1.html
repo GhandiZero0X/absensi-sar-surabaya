@@ -5,7 +5,8 @@
             <ul class="nxl-navbar">
                 <div class="custom-nav-header">
                     <div class="header-container">
-                        <img src="assets/images/logo-full.png" alt="" width="40" height:auto ;>
+                        <img src="{{ url_for('static', filename='static_dashboard_1/assets/images/logo-full.png') }}"
+                            alt="" width="40" height="auto">
                         <div class="nxl-navigation-toggle toggle-btn-action">
                         </div>
                         <span class="nav-text-label nxl-mtext">HRIS Kansar</span>
@@ -353,6 +354,7 @@
                         <span class="nxl-mtext">Update Password</span>
                     </a>
                 </li>
+            </ul>
         </div>
     </div>
 </nav>
