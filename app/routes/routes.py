@@ -1,6 +1,7 @@
 # app/routes/routes.py
 
 from flask import Blueprint, jsonify
+from app.utils.decorators import login_required
 from app.controllers.dashboard_1HomeController import (
     dashboard_kgb, dashboard_pangkat, dashboard_pelanggaran, dashboard_pensiun, dashboard_trt)
 from app.controllers.dashboard_1MasterFileController import (
@@ -89,177 +90,219 @@ def preview_pegawai():
 # ---- Dashboard 1 Routes ----
 # Dasboard :
 @main.route('/dashboard/pelanggaran')
+@login_required
 def view_dashboard_pelanggaran():
     return dashboard_pelanggaran()
 
 @main.route('/dashboard/pensiun')
+@login_required
 def view_dashboard_pensiun():
     return dashboard_pensiun()
 
 @main.route('/dashboard/pangkat')
+@login_required
 def view_dashboard_pangkat():
     return dashboard_pangkat()
 
 @main.route('/dashboard/kgb')
+@login_required
 def view_dashboard_kgb():
     return dashboard_kgb()
 
 @main.route('/dashboard/trt')
+@login_required
 def view_dashboard_trt():
     return dashboard_trt()
 
 # Master File :
 @main.route('/master/butir-kegiatan')
+@login_required
 def view_master_butir_kegiatan():
     return master_butir_kegiatan()
 
 @main.route('/master/jabatan')
+@login_required
 def view_master_jabatan():
     return master_jabatan()
 
 @main.route('/master/jam-finger')
+@login_required
 def view_master_jam_finger():
     return master_jam_finger()
 
 @main.route('/master/jam-kerja')
+@login_required
 def view_master_jam_kerja():
     return master_jam_kerja()
 
 @main.route('/master/kalender')
+@login_required
 def view_master_kalender():
     return master_kalender()
 
 @main.route('/master/pegawai-vip')
+@login_required
 def view_master_pegawai_vip():
     return master_pegawai_vip()
 
 @main.route('/master/potongan')
+@login_required
 def view_master_potongan():
     return master_potongan()
 
 @main.route('/master/trt')
+@login_required
 def view_master_trt():
     return master_file_trt()
 
 @main.route('/master/tunkin-class')
+@login_required
 def view_master_tunkin_class():
     return master_tunkin_class()
 
 @main.route('/master/unit-kerja')
+@login_required
 def view_master_unit_kerja():
     return master_unit_kerja()
 
 @main.route('/master/user')
+@login_required
 def view_master_user():
     return master_user()
 
 @main.route('/master/uang-makan')
+@login_required
 def view_master_uang_makan():
     return master_uang_makan()
 
 # Cari Master :
 @main.route('/master/cari/jabatan')
+@login_required
 def view_cari_master_jabatan():
     return cari_master_jabatan()
 
 @main.route('/master/cari/jam-finger')
+@login_required
 def view_cari_master_jam_finger():
     return cari_master_jam_finger()
 
 @main.route('/master/cari/jam-kerja')
+@login_required
 def view_cari_master_jam_kerja():
     return cari_master_jam_kerja()
 
 @main.route('/master/cari/kalender')
+@login_required
 def view_cari_master_kalender():
     return cari_master_kalender()
 
 @main.route('/master/cari/potongan')
+@login_required
 def view_cari_master_potongan():
     return cari_master_potongan()
 
 @main.route('/master/cari/tunkin-class')
+@login_required
 def view_cari_master_tunkin_class():
     return cari_master_tunkin_class()
 
 @main.route('/master/cari/uang-makan')
+@login_required
 def view_cari_master_uang_makan():
     return cari_master_uang_makan()
 
 @main.route('/master/cari/unit-kerja')
+@login_required
 def view_cari_master_unit_kerja():
     return cari_master_unit_kerja()
 
 @main.route('/master/cari/user-account')
+@login_required
 def view_cari_user_account():
     return cari_user_account()
 
 # Create :
 @main.route('/master/create/kalender')
+@login_required
 def view_create_kalender():
     return create_kalender()
 
 # Media Informasi :
 @main.route('/media-informasi')
+@login_required
 def view_media_informasi():
     return media_informasi()
 
 @main.route('/media-informasi/detail')
+@login_required
 def view_media_informasi_detail():
     return media_informasi_detail()
 
 # ---- Dashboard 2 Routes ----
 # Data Siaga:
 @main.route('/siaga/absensi-kehadiran')
+@login_required
 def view_data_siaga_absensi_kehadiran():
     return data_siaga_absensi_kehadiran()
 
 @main.route('/siaga/cetak-daftar-lembur')
+@login_required
 def view_data_siaga_cetak_daftar_lembur_siaga():
     return data_siaga_cetak_daftar_lembur_siaga()
 
 @main.route('/siaga/cetak-rekap')
+@login_required
 def view_data_siaga_cetak_rekap_siaga():
     return data_siaga_cetak_rekap_siaga()
 
 @main.route('/siaga/cetak-uang-siaga')
+@login_required
 def view_data_siaga_cetak_uang_siaga():
     return data_siaga_cetak_uang_siaga()
 
 @main.route('/siaga/jadwal-ulang')
+@login_required
 def view_data_siaga_jadwal_ulang():
     return data_siaga_jadwal_ulang()
 
 @main.route('/siaga/buat-jadwal-piket')
+@login_required
 def view_data_siaga_membuat_jadwal_piket_siaga():
     return data_siaga_membuat_jadwal_piket_siaga()
 
 # Master Data:
 @main.route('/siaga/master-data/email-broadcast')
+@login_required
 def view_master_data_email_broadcast():
     return master_data_email_broadcast()
 
 @main.route('/siaga/master-data/kgr')
+@login_required
 def view_master_data_kgr():
     return master_data_kgr()
 
 @main.route('/siaga/master-data/nominal-ut-piket')
+@login_required
 def view_master_data_nominal_ut_piket():
     return master_data_nominal_ut_piket()
 
 @main.route('/siaga/master-data/tim-siaga')
+@login_required
 def view_master_data_tim_siaga():
     return master_data_tim_siaga()
 
 @main.route('/siaga/master-data/user-account')
+@login_required
 def view_master_data_user_account():
     return master_data_user_account()
 
 # Otorisasi Persetujuan:
 @main.route('/siaga/otorisasi/kepala-kantor')
+@login_required
 def view_otorisasi_persetujuan_kepala_kantor():
     return otorisasi_persetujuan_kepala_kantor()
 
 @main.route('/siaga/otorisasi/kepala-seksi-operasi')
+@login_required
 def view_otorisasi_persetujuan_kepala_seksi_operasi():
     return otorisasi_persetujuan_kepala_seksi_operasi()

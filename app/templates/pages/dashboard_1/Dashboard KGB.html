@@ -12,8 +12,7 @@
                 <h5 class="m-b-10">Dashboard</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Dashboard KGB.html">KGB</a></li>
-                <li class="breadcrumb-item">Edit</li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_dashboard_kgb') }}">KGB</a></li>
             </ul>
         </div>
     </div>
@@ -65,12 +64,11 @@
                             <div class="button-responsive-wrapper"
                                 style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
                                 <div class="btn-group d-inline-flex">
-                                    <a href="Dashboard Pelanggaran.html"
-                                        class="btn btn-sm btn-orange-outline">Pelanggaran</a>
-                                    <a href="Dashboard Pensiun.html" class="btn btn-sm btn-orange-outline">Pensiun</a>
-                                    <a href="Dashboard Pangkat.html" class="btn btn-sm btn-orange-outline">Pangkat</a>
-                                    <a href="Dashboard KGB.html" class="btn btn-sm btn-orange">KGB</a>
-                                    <a href="Dashboard TRT.html" class="btn btn-sm btn-orange-outline">TRT</a>
+                                    <a href="{{ url_for('main.view_dashboard_pelanggaran') }}" class="btn btn-sm btn-orange-outline">Pelanggaran</a>
+                                    <a href="{{ url_for('main.view_dashboard_pensiun') }}" class="btn btn-sm btn-orange-outline">Pensiun</a>
+                                    <a href="{{ url_for('main.view_dashboard_pangkat') }}" class="btn btn-sm btn-orange-outline">Pangkat</a>
+                                    <a href="{{ url_for('main.view_dashboard_kgb') }}" class="btn btn-sm btn-orange">KGB</a>
+                                    <a href="{{ url_for('main.view_dashboard_trt') }}" class="btn btn-sm btn-orange-outline">TRT</a>
                                 </div>
                             </div>
 

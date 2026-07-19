@@ -16,7 +16,7 @@
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                 data-bs-toggle="dropdown">
                 <img src="{{ url_for('static', filename='static_dashboard_1/assets/images/avatar/undefined.png') }}" class="rounded-circle me-2" width="35" height="35">
-                <span>Auditor</span>
+                <span>{{ session.get('nama', 'Guest') }}</span>
             </a>
 
             <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 custom-profile-dropdown">
@@ -24,8 +24,8 @@
                     <div class="avatar-big mb-3">
                         <i class="bi bi-person-circle text-orange" style="font-size: 50px;"></i>
                     </div>
-                    <h6 class="fw-bold mb-1 color-primary">414386 - Auditor</h6>
-                    <p class="text-muted small mb-0">1 - Operator</p>
+                    <h6 class="fw-bold mb-1 color-primary">{{ session.get('nip', '-') }} - {{ session.get('nama', 'Guest') }}</h6>
+                    <p class="text-muted small mb-0">{{ session.get('jabatan', '-') }}</p>
 
                     <hr class="my-4">
 
@@ -33,14 +33,13 @@
                         <div class="text-start" style="padding-left: 15px;">
                             <i class="bi bi-display me-2"
                                 style="color: #EB6831; font-size: 1.1rem; padding-left: 30px;"></i>
-                            <div class="small text-muted">192.168.100.5</div>
+                            <div class="small text-muted">{{ request.remote_addr }}</div>
                         </div>
-                        <a href="signout.html">
-                            <button class="btn btn-orange-figma px-4">Sign Out</button>
-                        </a>
+                        <button type="button" class="btn btn-orange-figma px-4" id="headerSignOutBtn">Sign Out</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
+

@@ -11,7 +11,7 @@
                 <h5 class="m-b-10">Media Informasi</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Media Informasi.html">Inp Pengumuman</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_media_informasi') }}">Inp Pengumuman</a></li>
                 <li class="breadcrumb-item">Runing Text</li>
             </ul>
         </div>
@@ -59,8 +59,8 @@
                             <div class="button-responsive-wrapper"
                                 style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
                                 <div class="btn-group d-inline-flex">
-                                    <a href="Media Informasi.html" class="btn btn-sm btn-orange">Runing Text</a>
-                                    <a href="Media Informasi Slide JPG.html" class="btn btn-sm btn-orange-outline">Slide
+                                    <a href="{{ url_for('main.view_media_informasi') }}" class="btn btn-sm btn-orange">Runing Text</a>
+                                    <a href="{{ url_for('main.view_media_informasi_detail') }}" class="btn btn-sm btn-orange-outline">Slide
                                         JPG</a>
                                 </div>
                             </div>

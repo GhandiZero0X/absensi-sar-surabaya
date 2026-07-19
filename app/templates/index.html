@@ -45,56 +45,56 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto align-items-cente">
-                    <a class="nav-link text-white d-flex align-items-center">HOME</a>
+                    <a href="{{ url_for('main.index') }}" class="nav-link text-white d-flex align-items-center">HOME</a>
                     <!-- Dropdown INFORMASI (muncul hanya jika session login aktif) -->
-                    <div class="nav-item dropdown {% if not session.get('logged_in') %}d-none{% endif %}" id="informasiDropdown">
-                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
-                            data-bs-toggle="dropdown">
+                    <div href="#" class="nav-item dropdown {% if not session.get('logged_in') %}d-none{% endif %}" id="informasiDropdown">
+                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                            data-bs-toggle="dropdown" style="cursor: pointer;">
                             INFORMASI
                         </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item info-item" href="#" data-info="piket-siaga">Piket Siaga</a>
-                            <a class="dropdown-item info-item" href="#" data-info="pelanggaran-disiplin">Pelanggaran Disiplin</a>
-                            <a class="dropdown-item info-item" href="#" data-info="absensi-kantor">Absensi Kantor</a>
-                            <a class="dropdown-item info-item" href="#" data-info="rekapitulasi-dinas-luar-operasi">Rekapitulasi Dinas Luar Operasi</a>
-                            <a class="dropdown-item info-item" href="#" data-info="rekapitulasi-dinas-luar-pelatihan">Rekapitulasi Dinas Luar Pelatihan</a>
-                            <a class="dropdown-item info-item" href="#" data-info="resume-pembuatan-skp">Resume Pembuatan SKP</a>
-                            <a class="dropdown-item info-item" href="#" data-info="pegawai-login-portal">Pegawai Login Portal</a>
+                        <div class="dropdown-menu" >
+                            <a class="dropdown-item info-item" data-info="piket-siaga" style="cursor: pointer;">Piket Siaga</a>
+                            <a class="dropdown-item info-item" data-info="pelanggaran-disiplin" style="cursor: pointer;">Pelanggaran Disiplin</a>
+                            <a class="dropdown-item info-item" data-info="absensi-kantor" style="cursor: pointer;">Absensi Kantor</a>
+                            <a class="dropdown-item info-item" data-info="rekapitulasi-dinas-luar-operasi" style="cursor: pointer;">Rekapitulasi Dinas Luar Operasi</a>
+                            <a class="dropdown-item info-item" data-info="rekapitulasi-dinas-luar-pelatihan" style="cursor: pointer;">Rekapitulasi Dinas Luar Pelatihan</a>
+                            <a class="dropdown-item info-item" data-info="resume-pembuatan-skp" style="cursor: pointer;">Resume Pembuatan SKP</a>
+                            <a class="dropdown-item info-item" data-info="pegawai-login-portal" style="cursor: pointer;">Pegawai Login Portal</a>
                         </div>
                     </div>
 
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
-                            data-bs-toggle="dropdown">
+                    <div href="#" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                            data-bs-toggle="dropdown" style="cursor: pointer;">
                             UMUM
                         </a>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Kepegawaian</a>
-                            <a href="#" class="dropdown-item">Buku Telp</a>
-                            <a href="#" class="dropdown-item">Sprin</a>
-                            <a href="#" class="dropdown-item">Surat Masuk/Keluar</a>
-                            <a href="#" class="dropdown-item">Rumta</a>
-                            <a href="#" class="dropdown-item">Koperasi</a>
+                            <a href="{{ url_for('main.view_dashboard_pelanggaran') }}" class="dropdown-item">Kepegawaian</a>
+                            <a href="#pencarian-telephone" class="dropdown-item">Buku Telp</a>
+                            <a href="{{ url_for('main.index') }}" class="dropdown-item">Sprin</a>
+                            <a href="{{ url_for('main.index') }}" class="dropdown-item">Surat Masuk/Keluar</a>
+                            <a href="{{ url_for('main.index') }}" class="dropdown-item">Rumta</a>
+                            <a href="{{ url_for('main.index') }}" class="dropdown-item">Koperasi</a>
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
-                            data-bs-toggle="dropdown">
+                    <div href="#" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                            data-bs-toggle="dropdown" style="cursor: pointer;">
                             OPERASI
                         </a>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Piket Siaga</a>
-                            <a href="#" class="dropdown-item">Kesiapsiagaan</a>
+                            <a href="{{ url_for('main.view_master_data_tim_siaga') }}" class="dropdown-item">Piket Siaga</a>
+                            <a href="{{ url_for('main.index') }}" class="dropdown-item">Kesiapsiagaan</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center"
-                            data-bs-toggle="dropdown">
+                            data-bs-toggle="dropdown" style="cursor: pointer;">
                             POTENSI
                         </a>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Pemeliharaan</a>
-                            <a href="#" class="dropdown-item">Gudang</a>
+                            <a href="{{ url_for('main.index') }}" class="dropdown-item">Pemeliharaan</a>
+                            <a href="" class="dropdown-item">Gudang</a>
                         </div>
                     </div>
                     <a href="#"
@@ -312,7 +312,7 @@
     <!-- Konten Pengumuman End -->
 
     <!-- Konten Pencarian Telephone Start -->
-    <div class="container-fluid bg-light py-6 px-5">
+    <div id="pencarian-telephone" class="container-fluid bg-light py-6 px-5">
         <div class="row g-5">
             <div class="col-lg-7">
                 <h1 class="mb-4">Buku Telephone Kantor</h1>

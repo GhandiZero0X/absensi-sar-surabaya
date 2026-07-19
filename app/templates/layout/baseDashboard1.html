@@ -58,6 +58,22 @@
     <script src="{{ url_for('static', filename='static_dashboard_1/assets/js/analytics-init.min.js') }}"></script>
     {% block script %}
     {% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const signOutBtn = document.getElementById('headerSignOutBtn');
+            if (signOutBtn) {
+                signOutBtn.addEventListener('click', async function () {
+                    try {
+                        await fetch('/api/logout', { method: 'POST' });
+                    } catch (err) {
+                        console.error('Gagal logout:', err);
+                    } finally {
+                        window.location.href = "{{ url_for('main.index') }}";
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
