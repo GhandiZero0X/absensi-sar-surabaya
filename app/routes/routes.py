@@ -49,7 +49,12 @@ from app.controllers.dashboard_2OtoritasPersetujuanController import (
 )
 from app.controllers.homeController import get_pelanggaran_disiplin, get_piket_siaga, home, search_buku_telp
 from app.controllers.loginController import login, logout
-from app.controllers.dashboard_1MediaInformasiController import media_informasi, media_informasi_detail
+from app.controllers.dashboard_1MediaInformasiController import (
+    media_informasi, media_informasi_detail,
+    save_media_informasi, save_media_informasi_slide,
+    get_media_informasi_list, get_media_informasi_by_id,
+    update_media_informasi, nonaktifkan_media_informasi
+)
 
 from app.models.pegawaiModel import Pegawai
 
@@ -232,6 +237,36 @@ def view_create_kalender():
 @login_required
 def view_media_informasi():
     return media_informasi()
+
+@main.route('/api/media-informasi', methods=['POST'])
+@login_required
+def api_save_media_informasi():
+    return save_media_informasi()
+
+@main.route('/api/media-informasi/slide', methods=['POST'])
+@login_required
+def api_save_media_informasi_slide():
+    return save_media_informasi_slide()
+
+@main.route('/api/media-informasi/list', methods=['GET'])
+@login_required
+def api_get_media_informasi_list():
+    return get_media_informasi_list()
+
+@main.route('/api/media-informasi/<int:med_infor_id>', methods=['GET'])
+@login_required
+def api_get_media_informasi_by_id(med_infor_id):
+    return get_media_informasi_by_id(med_infor_id)
+
+@main.route('/api/media-informasi/<int:med_infor_id>', methods=['PUT'])
+@login_required
+def api_update_media_informasi(med_infor_id):
+    return update_media_informasi(med_infor_id)
+
+@main.route('/api/media-informasi/<int:med_infor_id>/nonaktif', methods=['POST'])
+@login_required
+def api_nonaktifkan_media_informasi(med_infor_id):
+    return nonaktifkan_media_informasi(med_infor_id)
 
 @main.route('/media-informasi/detail')
 @login_required

@@ -71,7 +71,7 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Diskripsi</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
+                                    <input type="text" id="inputDeskripsi" class="form-control-sm border w-100">
                                     <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                 </div>
                             </div>
@@ -81,14 +81,14 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tgl Mulai</label>
                             <div class="col-md-3">
                                 <div class="input-group-custom w-100">
-                                    <input type="date" class="form-control-sm border w-100" style="outline: none;">
+                                    <input type="date" id="inputTglMulai" class="form-control-sm border w-100" style="outline: none;">
                                     <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                 </div>
                             </div>
                             <label class="col-md-1 text-md-center fw-bold mb-1 mb-md-0">Tgl Akhir</label>
                             <div class="col-md-3">
                                 <div class="input-group-custom w-100">
-                                    <input type="date" class="form-control-sm border w-100" style="outline: none;">
+                                    <input type="date" id="inputTglAkhir" class="form-control-sm border w-100" style="outline: none;">
                                     <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                 </div>
                             </div>
@@ -97,17 +97,17 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Isi Aktif</label>
                             <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                                <select id="inputIsAktif" class="form-select-sm border custom-select w-100">
                                     <option value="">Pilih</option>
-                                    <option>Y</option>
-                                    <option>N</option>
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-3"></div>
                             <div class="col-md-9 d-flex align-items-center gap-2">
-                                <button class="btn-refresh-custom mt-0 w-auto"
+                                <button type="button" id="btnSendMediaInfo" class="btn-refresh-custom mt-0 w-auto"
                                     style="background-color: #198754 !important;">
                                     <i class="ti ti-brand-telegram me-2"></i> Send
                                 </button>
@@ -121,9 +121,6 @@
             <div class="card mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden; border: none;">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Transaksi</h6>
-                    <a href="Master File Master Potongan.html" class="btn-close-custom">
-                        <i class="bi bi-x-lg"></i>
-                    </a>
                 </div>
 
                 <div class="card-body">
@@ -152,10 +149,32 @@
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button type="button" id="btnRefreshTransaksi" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
+                    </div>
+
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-sm table-striped text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Edit</th>
+                                    <th>No</th>
+                                    <th>Diskripsi</th>
+                                    <th>Mulai</th>
+                                    <th>s.d</th>
+                                    <th>Upload</th>
+                                    <th>Non Aktif</th>
+                                    <th>Aktif</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelTransaksiBody">
+                                <tr>
+                                    <td colspan="8">Klik Refresh untuk memuat data.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -165,5 +184,201 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputDeskripsi = document.getElementById('inputDeskripsi');
+        const inputTglMulai = document.getElementById('inputTglMulai');
+        const inputTglAkhir = document.getElementById('inputTglAkhir');
+        const inputIsAktif = document.getElementById('inputIsAktif');
+        const btnSend = document.getElementById('btnSendMediaInfo');
+        const btnRefresh = document.getElementById('btnRefreshTransaksi');
+        const tabelBody = document.getElementById('tabelTransaksiBody');
 
+        let editingId = null; // null = mode create, angka = mode edit
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function resetForm() {
+            inputDeskripsi.value = '';
+            inputTglMulai.value = '';
+            inputTglAkhir.value = '';
+            inputIsAktif.value = '';
+            editingId = null;
+            btnSend.innerHTML = '<i class="ti ti-brand-telegram me-2"></i> Send';
+        }
+
+        // =============================================
+        // Refresh: muat semua data ke tabel
+        // =============================================
+        async function loadTransaksi() {
+            tabelBody.innerHTML = `<tr><td colspan="8">Memuat data...</td></tr>`;
+            try {
+                const response = await fetch('/api/media-informasi/list');
+                const result = await response.json();
+
+                if (!result.success || !result.data || result.data.length === 0) {
+                    tabelBody.innerHTML = `<tr><td colspan="8">Tidak ada data.</td></tr>`;
+                    return;
+                }
+
+                let html = '';
+                result.data.forEach(item => {
+                    const isAktif = item.is_aktif === 'Y';
+                    html += `
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline-primary btn-edit-transaksi" data-id="${item.med_infor_id}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </td>
+                            <td>${item.no}</td>
+                            <td class="text-start">${escapeHtml(item.deskripsi)}</td>
+                            <td>${item.tgl_mulai || '-'}</td>
+                            <td>${item.tgl_akhir || '-'}</td>
+                            <td>${item.upload}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-nonaktif-transaksi"
+                                    data-id="${item.med_infor_id}" ${!isAktif ? 'disabled' : ''}>
+                                    Non Aktif
+                                </button>
+                            </td>
+                            <td>
+                                <span class="badge ${isAktif ? 'bg-success' : 'bg-secondary'}">${isAktif ? 'Y' : 'N'}</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tabelBody.innerHTML = html;
+
+                attachRowEvents();
+
+            } catch (err) {
+                console.error(err);
+                tabelBody.innerHTML = `<tr><td colspan="8" class="text-danger">Gagal memuat data.</td></tr>`;
+            }
+        }
+
+        function attachRowEvents() {
+            // Tombol Edit
+            document.querySelectorAll('.btn-edit-transaksi').forEach(btn => {
+                btn.addEventListener('click', async function () {
+                    const id = this.dataset.id;
+                    try {
+                        const response = await fetch(`/api/media-informasi/${id}`);
+                        const result = await response.json();
+
+                        if (!result.success) {
+                            alert(result.message || 'Gagal memuat data.');
+                            return;
+                        }
+
+                        const data = result.data;
+                        inputDeskripsi.value = data.deskripsi;
+                        inputTglMulai.value = data.tgl_mulai;
+                        inputTglAkhir.value = data.tgl_akhir;
+                        inputIsAktif.value = data.is_aktif;
+                        editingId = data.med_infor_id;
+                        btnSend.innerHTML = '<i class="ti ti-brand-telegram me-2"></i> Update';
+
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                    } catch (err) {
+                        console.error(err);
+                        alert('Terjadi kesalahan koneksi.');
+                    }
+                });
+            });
+
+            // Tombol Non Aktif
+            document.querySelectorAll('.btn-nonaktif-transaksi').forEach(btn => {
+                btn.addEventListener('click', async function () {
+                    if (!confirm('Nonaktifkan pengumuman ini?')) return;
+
+                    const id = this.dataset.id;
+                    try {
+                        const response = await fetch(`/api/media-informasi/${id}/nonaktif`, {
+                            method: 'POST'
+                        });
+                        const result = await response.json();
+
+                        if (!result.success) {
+                            alert(result.message || 'Gagal menonaktifkan data.');
+                            return;
+                        }
+
+                        loadTransaksi(); // refresh tabel
+
+                    } catch (err) {
+                        console.error(err);
+                        alert('Terjadi kesalahan koneksi.');
+                    }
+                });
+            });
+        }
+
+        if (btnRefresh) {
+            btnRefresh.addEventListener('click', loadTransaksi);
+        }
+
+        // Muat data otomatis saat halaman dibuka
+        loadTransaksi();
+
+        // =============================================
+        // Send: create baru ATAU update (tergantung editingId)
+        // =============================================
+        if (btnSend) {
+            btnSend.addEventListener('click', async function () {
+                const deskripsi = inputDeskripsi.value.trim();
+                const tglMulai = inputTglMulai.value;
+                const tglAkhir = inputTglAkhir.value;
+                const isAktif = inputIsAktif.value;
+
+                if (!deskripsi) {
+                    alert('Deskripsi wajib diisi.');
+                    return;
+                }
+                if (!isAktif) {
+                    alert('Isi Aktif wajib dipilih.');
+                    return;
+                }
+
+                const payload = {
+                    deskripsi: deskripsi,
+                    tgl_mulai: tglMulai,
+                    tgl_akhir: tglAkhir,
+                    is_aktif: isAktif
+                };
+
+                const url = editingId ? `/api/media-informasi/${editingId}` : '/api/media-informasi';
+                const method = editingId ? 'PUT' : 'POST';
+
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok || !result.success) {
+                        alert(result.message || 'Gagal menyimpan data.');
+                        return;
+                    }
+
+                    alert(editingId ? 'Pengumuman berhasil diperbarui.' : 'Pengumuman berhasil disimpan.');
+                    resetForm();
+                    loadTransaksi();
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan koneksi.');
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

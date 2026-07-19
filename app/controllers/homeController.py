@@ -11,8 +11,17 @@ from sqlalchemy import func, or_
 
 
 def home():
-    return render_template('index.html')
+    from app.controllers.dashboard_1MediaInformasiController import (
+        get_latest_running_text, get_hero_images
+    )
 
+    running_text = get_latest_running_text()
+    if not running_text:
+        running_text = "Selamat Datang di Portal Internal Basarnas Surabaya"
+
+    hero_images = get_hero_images()
+
+    return render_template('index.html', running_text=running_text, hero_images=hero_images)
 
 def search_buku_telp():
     q = request.args.get('q', '').strip()

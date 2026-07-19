@@ -176,5 +176,61 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const btnSend = document.querySelector('.btn-refresh-custom[style*="198754"]');
+        const fileInput = document.getElementById('fileInput');
+        const tglMulaiInputs = document.querySelectorAll('input[type="date"]');
+        const isAktifSelect = document.querySelector('select.form-select-sm.custom-select');
 
+        if (!btnSend) return;
+
+        btnSend.addEventListener('click', async function () {
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Pilih file JPG terlebih dahulu.');
+                return;
+            }
+
+            const tglMulai = tglMulaiInputs[0] ? tglMulaiInputs[0].value : '';
+            const tglAkhir = tglMulaiInputs[1] ? tglMulaiInputs[1].value : '';
+            const isAktif = isAktifSelect ? isAktifSelect.value : '';
+
+            if (!isAktif) {
+                alert('Isi Aktif wajib dipilih.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('tgl_mulai', tglMulai);
+            formData.append('tgl_akhir', tglAkhir);
+            formData.append('is_aktif', isAktif);
+
+            try {
+                const response = await fetch('/api/media-informasi/slide', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    alert(result.message || 'Gagal mengupload slide.');
+                    return;
+                }
+
+                alert('Slide berhasil diupload.');
+                document.getElementById('fileName').value = '';
+                fileInput.value = '';
+                tglMulaiInputs.forEach(el => el.value = '');
+                if (isAktifSelect) isAktifSelect.value = '';
+
+            } catch (err) {
+                console.error(err);
+                alert('Terjadi kesalahan koneksi.');
+            }
+        });
+    });
+</script>
 {% endblock %}
