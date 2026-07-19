@@ -33,21 +33,10 @@
 
                         <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
                             <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari Master Tunkin Class.html"
+                                <a href="{{ url_for('main.view_cari_master_tunkin_class') }}"
                                     class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
                                     <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
                                 </a>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </button>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -60,7 +49,7 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tanggal</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
+                                    <input type="text" id="inputTanggal" class="form-control-sm border w-100" placeholder="YYYY-MM-DD">
                                     <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                 </div>
                             </div>
@@ -70,14 +59,13 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Class</label>
                             <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                                <select id="selectClass" class="form-select-sm border custom-select w-100">
                                     <option value="">Pilih</option>
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
                                     <option>4</option>
                                     <option>5</option>
-
                                 </select>
                             </div>
                         </div>
@@ -87,7 +75,7 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tunjangan</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
+                                    <input type="text" id="inputTunjangan" class="form-control-sm border w-100">
                                     <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                 </div>
                             </div>
@@ -98,10 +86,13 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">No Surat</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
+                                    <input type="text" id="inputNoSurat" class="form-control-sm border w-100">
                                     <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                 </div>
                             </div>
+                            <button type="button" id="btnSimpanTunkinClass" class="btn btn-orange-figma px-4 ms-md-3 mt-2 mt-md-0" style="white-space: nowrap;">
+                                <i class="bi bi-save me-1"></i>Simpan
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -112,5 +103,55 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.getElementById('btnSimpanTunkinClass').addEventListener('click', function () {
+    const classId   = document.getElementById('selectClass').value;
+    const tunjangan = document.getElementById('inputTunjangan').value.trim();
+    const tglMulai  = document.getElementById('inputTanggal').value.trim();
+    const noSurat   = document.getElementById('inputNoSurat').value.trim();
 
+    if (!classId) {
+        alert('Class wajib dipilih');
+        return;
+    }
+    if (!tunjangan) {
+        alert('Tunjangan wajib diisi');
+        return;
+    }
+    if (!noSurat) {
+        alert('No Surat wajib diisi');
+        return;
+    }
+
+    const payload = {
+        class_id: classId,
+        tunjangan: tunjangan,
+        tgl_mulai: tglMulai || null,
+        dokreff: noSurat,
+    };
+
+    fetch("{{ url_for('main.api_tunkin_class_save') }}", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                // reset form setelah sukses
+                document.getElementById('selectClass').value = '';
+                document.getElementById('inputTunjangan').value = '';
+                document.getElementById('inputTanggal').value = '';
+                document.getElementById('inputNoSurat').value = '';
+            } else {
+                alert('Gagal: ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan saat menyimpan data.');
+        });
+});
+</script>
 {% endblock %}

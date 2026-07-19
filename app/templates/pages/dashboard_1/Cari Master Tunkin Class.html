@@ -11,7 +11,7 @@
                 <h5 class="m-b-10">Master File</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Master File Master Tunkin Class .html">Master Tunkin Class</a>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_master_tunkin_class') }}">Master Tunkin Class</a>
                 </li>
                 <li class="breadcrumb-item">Cari Tunkin Class</li>
             </ul>
@@ -23,47 +23,51 @@
             <div class="card mb-4 filter-card">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Transaksi</h6>
-                    <a href="Master File Master Tunkin Class .html" class="btn-close-custom">
+                    <a href="{{ url_for('main.view_master_tunkin_class') }}" class="btn-close-custom">
                         <i class="bi bi-x-lg"></i>
                     </a>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
-                        <div
-                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                        <div class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
                             <label class="filter-label-wide">Periode</label>
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" id="filterPeriode" class="form-control-sm border" placeholder="YYYY-MM-DD">
                                 <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                             </div>
                         </div>
 
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
                             <label class="filter-label-wide">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select id="filterField1" class="form-select-sm border custom-select w-mobile-100">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Class">Class</option>
+                                <option value="Tunjangan">Tunjangan</option>
+                                <option value="No Surat">No Surat</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" id="filterKeyword1" class="form-control-sm border">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
                             <span class="mx-md-2 fw-bold text-dan">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select id="filterField2" class="form-select-sm border custom-select w-mobile-100">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Class">Class</option>
+                                <option value="Tunjangan">Tunjangan</option>
+                                <option value="No Surat">No Surat</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" id="filterKeyword2" class="form-control-sm border">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button id="btnRefreshTunkinClass" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
@@ -82,10 +86,9 @@
                                         <th style="color:white; vertical-align: middle;">Updated</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tunkinClassTableBody">
                                     <tr>
-                                        <td colspan="6" style="vertical-align: middle; padding: 20px;">No records to
-                                            display.</td>
+                                        <td colspan="6" style="vertical-align: middle; padding: 20px;">No records to display.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -99,5 +102,64 @@
 {% endblock %}
 
 {% block script %}
+<script>
+function loadTunkinClassList() {
+    const periode  = document.getElementById('filterPeriode').value.trim();
+    const field1   = document.getElementById('filterField1').value;
+    const keyword1 = document.getElementById('filterKeyword1').value.trim();
+    const field2   = document.getElementById('filterField2').value;
+    const keyword2 = document.getElementById('filterKeyword2').value.trim();
 
+    const params = new URLSearchParams();
+    if (periode) params.append('periode', periode);
+    if (field1 && keyword1) {
+        params.append('field1', field1);
+        params.append('keyword1', keyword1);
+    }
+    if (field2 && keyword2) {
+        params.append('field2', field2);
+        params.append('keyword2', keyword2);
+    }
+
+    fetch("{{ url_for('main.api_tunkin_class_list') }}?" + params.toString())
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById('tunkinClassTableBody');
+            tbody.innerHTML = '';
+
+            if (data.status !== 'success') {
+                tbody.innerHTML = `<tr><td colspan="6" style="padding:20px;">${data.message || 'Terjadi kesalahan'}</td></tr>`;
+                return;
+            }
+
+            if (data.data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="padding:20px;">No records to display.</td></tr>';
+                return;
+            }
+
+            data.data.forEach(row => {
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td>${row.no}</td>
+                        <td>${row.class_id}</td>
+                        <td>${row.tunjangan}</td>
+                        <td>${row.tgl_mulai}</td>
+                        <td>${row.dokreff}</td>
+                        <td>${row.updated}</td>
+                    </tr>
+                `);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            const tbody = document.getElementById('tunkinClassTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" style="padding:20px;">Gagal memuat data.</td></tr>';
+        });
+}
+
+document.getElementById('btnRefreshTunkinClass').addEventListener('click', loadTunkinClassList);
+
+// Load semua data begitu halaman dibuka (sama seperti klik Refresh dengan filter kosong)
+document.addEventListener('DOMContentLoaded', loadTunkinClassList);
+</script>
 {% endblock %}

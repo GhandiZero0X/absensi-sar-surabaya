@@ -3,6 +3,7 @@ import requests
 from datetime import date, datetime, timedelta
 from flask import render_template, request, jsonify, session, current_app
 from app import db
+from app.models.classModel import MfClass
 from app.models.pegawaiModel import Pegawai
 from app.models.unitKerjaModel import MfUnitKerja
 from app.models.kalenderModel import MfKalender
@@ -451,6 +452,92 @@ def master_tunkin_class():
     """Render halaman Master File Master Tunkin Class."""
     return render_template('pages/dashboard_1/Master File Master Tunkin Class.html')
 
+def save_tunkin_class():
+    """
+    Simpan data Master Tunkin/Class baru dari form.
+    Body JSON yang diharapkan:
+    {
+        "class_id": 3,
+        "tunjangan": 1500000,
+        "tgl_mulai": "2026-01-01",
+        "dokreff": "SE-001/2026"
+    }
+    """
+    payload = request.get_json(silent=True) or {}
+
+    class_id_raw = payload.get('class_id')
+    tunjangan_raw = payload.get('tunjangan')
+    tgl_mulai_raw = payload.get('tgl_mulai', '').strip() if payload.get('tgl_mulai') else ''
+    dokreff = (payload.get('dokreff') or '').strip()
+
+    # --- Validasi field wajib ---
+    if class_id_raw in (None, ''):
+        return jsonify({'status': 'error', 'message': 'Class wajib dipilih'}), 400
+    if tunjangan_raw in (None, ''):
+        return jsonify({'status': 'error', 'message': 'Tunjangan wajib diisi'}), 400
+    if not dokreff:
+        return jsonify({'status': 'error', 'message': 'No Surat wajib diisi'}), 400
+
+    # --- Validasi & konversi Class ID ---
+    try:
+        class_id = int(class_id_raw)
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'Class harus berupa angka'}), 400
+
+    # Cegah duplikat primary key — kalau sudah ada, update alih-alih insert baru
+    existing = MfClass.query.get(class_id)
+
+    # --- Validasi & konversi Tunjangan ---
+    try:
+        tunjangan = float(tunjangan_raw)
+        if tunjangan < 0:
+            return jsonify({'status': 'error', 'message': 'Tunjangan tidak boleh negatif'}), 400
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'Tunjangan harus berupa angka'}), 400
+
+    # --- Validasi & konversi Tanggal ---
+    tgl_mulai = None
+    if tgl_mulai_raw:
+        try:
+            tgl_mulai = datetime.strptime(tgl_mulai_raw, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({'status': 'error', 'message': 'Format tanggal harus YYYY-MM-DD'}), 400
+
+    current_nip = session.get('nip', 'system')
+    now = datetime.utcnow()
+
+    if existing is not None:
+        # Update baris yang sudah ada
+        existing.TUNJANGAN = tunjangan
+        existing.TGL_MULAI = tgl_mulai
+        existing.DOKREFF = dokreff
+        existing.UPDATE_IN_BY = current_nip
+        existing.UPDATE_DATE = now
+        db.session.commit()
+        return jsonify({
+            'status': 'success',
+            'message': 'Data tunkin/class berhasil diperbarui',
+            'data': existing.to_dict(),
+        })
+
+    tunkin_class = MfClass(
+        CLASS_ID=class_id,
+        TUNJANGAN=tunjangan,
+        TGL_MULAI=tgl_mulai,
+        DOKREFF=dokreff,
+        UPDATE_IN_BY=current_nip,
+        UPDATE_DATE=now,
+    )
+
+    db.session.add(tunkin_class)
+    db.session.commit()
+
+    return jsonify({
+        'status': 'success',
+        'message': 'Data tunkin/class berhasil disimpan',
+        'data': tunkin_class.to_dict(),
+    })
+
 def master_unit_kerja():
     """Render halaman Master File Master Unit Kerja."""
     return render_template('pages/dashboard_1/Master File Master Unit Kerja.html')
@@ -566,6 +653,74 @@ def cari_master_potongan():
 def cari_master_tunkin_class():
     """Render halaman Cari Master Tunkin Class."""
     return render_template('pages/dashboard_1/Cari Master Tunkin Class.html')
+
+def get_tunkin_class_list():
+    """
+    Ambil data Master Tunkin/Class untuk tabel Cari Master Tunkin Class.
+
+    Filter opsional (semua bisa kosong -> berlaku seperti klik Refresh biasa,
+    menampilkan seluruh data):
+      - periode        : filter TGL_MULAI pada tanggal tertentu (format YYYY-MM-DD)
+      - field1/keyword1 dan field2/keyword2 : dua dropdown "Filter"
+        (Class, Tunjangan, No Surat), digabung dengan AND
+    """
+    periode_raw = request.args.get('periode', '').strip()
+    field1 = request.args.get('field1')
+    keyword1 = request.args.get('keyword1', '').strip()
+    field2 = request.args.get('field2')
+    keyword2 = request.args.get('keyword2', '').strip()
+
+    query = MfClass.query
+
+    # --- Filter Periode: cocokkan TGL_MULAI pada tanggal yang dipilih ---
+    if periode_raw:
+        try:
+            periode_date = datetime.strptime(periode_raw, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({'status': 'error', 'message': 'Format periode harus YYYY-MM-DD'}), 400
+
+        awal_hari = periode_date
+        akhir_hari = periode_date + timedelta(days=1)
+        query = query.filter(MfClass.TGL_MULAI >= awal_hari, MfClass.TGL_MULAI < akhir_hari)
+
+    # --- Filter field1/field2 (Class, Tunjangan, No Surat) ---
+    # Class     -> primary key Integer, exact match angka
+    # Tunjangan -> kolom Float, exact match angka
+    # No Surat  -> kolom teks (DOKREFF), partial match (ilike)
+    for field, keyword in [(field1, keyword1), (field2, keyword2)]:
+        if not field or not keyword:
+            continue  # filter ini tidak dipakai -> skip, tidak wajib diisi
+
+        if field == 'Class':
+            try:
+                nilai = int(keyword)
+            except ValueError:
+                return jsonify({'status': 'error', 'message': 'Class harus berupa angka'}), 400
+            query = query.filter(MfClass.CLASS_ID == nilai)
+        elif field == 'Tunjangan':
+            try:
+                nilai = float(keyword)
+            except ValueError:
+                return jsonify({'status': 'error', 'message': 'Tunjangan harus berupa angka'}), 400
+            query = query.filter(MfClass.TUNJANGAN == nilai)
+        elif field == 'No Surat':
+            query = query.filter(MfClass.DOKREFF.ilike(f'%{keyword}%'))
+
+    tunkin_class_list = query.order_by(MfClass.CLASS_ID.asc()).all()
+
+    data = [
+        {
+            'no': idx + 1,
+            'class_id': row.CLASS_ID,
+            'tunjangan': row.TUNJANGAN if row.TUNJANGAN is not None else '-',
+            'tgl_mulai': row.TGL_MULAI.strftime('%d-%m-%Y') if row.TGL_MULAI else '-',
+            'dokreff': row.DOKREFF or '-',
+            'updated': row.UPDATE_DATE.strftime('%d-%m-%Y %H:%M') if row.UPDATE_DATE else '-',
+        }
+        for idx, row in enumerate(tunkin_class_list)
+    ]
+
+    return jsonify({'status': 'success', 'data': data})
 
 def cari_master_uang_makan():
     """Render halaman Cari Master Uang Makan."""

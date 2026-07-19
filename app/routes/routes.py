@@ -9,6 +9,7 @@ from app.controllers.dashboard_1MasterFileController import (
     get_kalender_list,
     get_pegawai_vip_list,
     get_potongan_list,
+    get_tunkin_class_list,
     get_unit_kerja_list,
     master_butir_kegiatan,
     master_jabatan,
@@ -33,6 +34,7 @@ from app.controllers.dashboard_1MasterFileController import (
     cari_user_account,
     create_kalender,
     save_potongan,
+    save_tunkin_class,
     save_unit_kerja,
     toggle_pegawai_vip,
 )
@@ -198,6 +200,11 @@ def view_master_trt():
 def view_master_tunkin_class():
     return master_tunkin_class()
 
+@main.route('/api/tunkin-class/save', methods=['POST'])
+@login_required
+def api_tunkin_class_save():
+    return save_tunkin_class()
+
 @main.route('/master/unit-kerja')
 @login_required
 def view_master_unit_kerja():
@@ -253,6 +260,11 @@ def api_potongan_list():
 @login_required
 def view_cari_master_tunkin_class():
     return cari_master_tunkin_class()
+
+@main.route('/api/tunkin-class/list', methods=['GET'])
+@login_required
+def api_tunkin_class_list():
+    return get_tunkin_class_list()
 
 @main.route('/master/cari/uang-makan')
 @login_required
