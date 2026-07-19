@@ -91,10 +91,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td colspan="4" style="vertical-align: middle; padding: 20px;">No
-                                            records to display.</td>
-                                    </tr>
+                                    {% if data_pensiun %}
+                                        {% for row in data_pensiun %}
+                                        <tr>
+                                            <td>{{ row.no }}</td>
+                                            <td>{{ row.nip }}</td>
+                                            <td>{{ row.tgl_lahir_str }}</td>
+                                            <td>{{ row.umur }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4" style="vertical-align: middle; padding: 20px;">No records to display.</td>
+                                        </tr>
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>

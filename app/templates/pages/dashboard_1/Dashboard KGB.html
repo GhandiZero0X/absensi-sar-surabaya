@@ -93,60 +93,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>197111201996021001</td>
-                                        <td class="text-start">NANANG SIGIT PH, S.IP, M.M.</td>
-                                        <td>1996.02.01</td>
-                                        <td>1997.02.01</td>
-                                        <td>II/b</td>
-                                        <td>0t, 0b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>197211251998031001</td>
-                                        <td class="text-start">FADLY HARYANTO WASIS, S.E.</td>
-                                        <td>1998.03.01</td>
-                                        <td>1999.07.01</td>
-                                        <td>II/b</td>
-                                        <td>0t, 1b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>198110312006041002</td>
-                                        <td class="text-start">FARID KURNIADI, S.T.</td>
-                                        <td>2006.04.01</td>
-                                        <td>2007.05.01</td>
-                                        <td>II/a</td>
-                                        <td>0t, 2b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>197609102006041001</td>
-                                        <td class="text-start">JOHAN SAPTADI, S. E.</td>
-                                        <td>2006.04.01</td>
-                                        <td>2007.05.01</td>
-                                        <td>II/a</td>
-                                        <td>0t, 2b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>198407312006041001</td>
-                                        <td class="text-start">AKHMAD AFANDI, S.E.</td>
-                                        <td>2006.04.01</td>
-                                        <td>2007.05.01</td>
-                                        <td>II/a</td>
-                                        <td>0t, 2b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>199108162022031001</td>
-                                        <td class="text-start">NUR ARDHI SUKMA PRASETYO A.Md.</td>
-                                        <td>2022.03.01</td>
-                                        <td>2022.03.01</td>
-                                        <td>II/c</td>
-                                        <td>0t, 1b, 0h</td>
-                                    </tr>
+                                    {% if data_kgb %}
+                                        {% for row in data_kgb %}
+                                        <tr>
+                                            <td>{{ row.no }}</td>
+                                            <td>{{ row.nip }}</td>
+                                            <td class="text-start">{{ row.nama }}</td>
+                                            <td>{{ row.tmt_cpns }}</td>
+                                            <td>{{ row.tmt_pns }}</td>
+                                            <td>{{ row.gol_recruit }}</td>
+                                            <td>{{ row.rentang }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="7" class="text-start">Tidak ada data KGB.</td>
+                                        </tr>
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>

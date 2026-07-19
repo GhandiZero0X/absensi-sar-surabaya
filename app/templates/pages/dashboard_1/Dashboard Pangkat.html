@@ -93,54 +93,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>198702112009121004</td>
-                                        <td class="text-start">DIDIT ARIE RISTANDY, SE</td>
-                                        <td>2022.04.01</td>
-                                        <td>III/d</td>
-                                        <td>3t, 10b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>197302111993032001</td>
-                                        <td class="text-start">WIRDAYATI UMANAILO, S.E.</td>
-                                        <td>2016.04.01</td>
-                                        <td>III/d</td>
-                                        <td>9t, 10b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>198110232008122001</td>
-                                        <td class="text-start">DYAH SULISTYORINI, S.E.</td>
-                                        <td>2021.04.01</td>
-                                        <td>III/d</td>
-                                        <td>4t, 10b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>198301062009122003</td>
-                                        <td class="text-start">CONNIE MAGDALENA SITINDJAK, S. Kom</td>
-                                        <td>2022.04.01</td>
-                                        <td>III/d</td>
-                                        <td>3t, 10b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>198411222009121001</td>
-                                        <td class="text-start">IRFANI YUGUS SUHARDYAN, S.E</td>
-                                        <td>2022.04.01</td>
-                                        <td>III/b</td>
-                                        <td>3t, 10b, 0h</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>198407312006041001</td>
-                                        <td class="text-start">AKHMAD AFANDI, S.E.</td>
-                                        <td>2022.04.01</td>
-                                        <td>III/a</td>
-                                        <td>3t, 10b, 0h</td>
-                                    </tr>
+                                    {% if data_pangkat %}
+                                        {% for row in data_pangkat %}
+                                        <tr>
+                                            <td>{{ row.no }}</td>
+                                            <td>{{ row.nip }}</td>
+                                            <td class="text-start">{{ row.nama }}</td>
+                                            <td>{{ row.tmt_pangkat }}</td>
+                                            <td>{{ row.gol }}</td>
+                                            <td>{{ row.rentang }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6" class="text-start">Tidak ada data pangkat.</td>
+                                        </tr>
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>

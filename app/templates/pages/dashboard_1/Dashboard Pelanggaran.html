@@ -96,64 +96,26 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>EBTARIO DWI PRAKOSO</td>
-                                        <td>14</td>
-                                        <td>Kosong</td>
-                                        <td>Kosong</td>
-                                        <td>0</td>
-                                        <td>0 Bulan</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>ONE RIZQI KURNIAWAN</td>
-                                        <td>12</td>
-                                        <td>Kosong</td>
-                                        <td>Kosong</td>
-                                        <td>0</td>
-                                        <td>0 Bulan</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>ANDI IRAWAN</td>
-                                        <td>11</td>
-                                        <td>Kosong</td>
-                                        <td>Kosong</td>
-                                        <td>0</td>
-                                        <td>0 Bulan</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>ALFIYAN ADI SETIAWAN</td>
-                                        <td>9</td>
-                                        <td>Hukuman Disiplin Ringan</td>
-                                        <td>Pernyataan Tidak Puas Secara Tertulis</td>
-                                        <td>0</td>
-                                        <td>0 Bulan</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>NURHOLIS MAJID</td>
-                                        <td>8</td>
-                                        <td>Hukuman Disiplin Ringan</td>
-                                        <td>Pernyataan Tidak Puas Secara Tertulis</td>
-                                        <td>0</td>
-                                        <td>0 Bulan</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>RISKY PUTRA BUANA</td>
-                                        <td>6</td>
-                                        <td>Hukuman Disiplin Ringan</td>
-                                        <td>Pernyataan Tidak Puas Secara Tertulis</td>
-                                        <td>0</td>
-                                        <td>0 Bulan</td>
-                                    </tr>
+                                    {% if data_pelanggaran %}
+                                        {% for row in data_pelanggaran %}
+                                        <tr>
+                                            <td>{{ row.no }}</td>
+                                            <td>{{ row.nama }}</td>
+                                            <td>{{ row.hari }}</td>
+                                            <td>{{ row.kategori }}</td>
+                                            <td>{{ row.jenis }}</td>
+                                            <td>{{ row.potongan }}</td>
+                                            <td>{{ row.lama_pot }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="7" class="text-start">Tidak ada data pelanggaran.</td>
+                                        </tr>
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>
-
 
                     </div>
                 </div>
