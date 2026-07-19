@@ -24,44 +24,45 @@
                     <h6 class="mb-0">
                         <i class="ti ti-calendar-plus me-2"></i> Create Master Kalender
                     </h6>
-
-                    <div class="header-actions">
-                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
-                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
-                        </button>
-
-                        <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari Master Kalender.html"
-                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
-                                    <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
-                                </a>
-
-                                <a href="Create Kalender.html"
-                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </a>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tanggal</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="date" class="form-control-sm border w-100" style="outline: none;">
-                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
-                                </div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tahun</label>
+                            <div class="col-md-4">
+                                <input type="number" id="tahunInput" class="form-control-sm border w-100"
+                                       placeholder="Contoh: 2026" min="1900" max="2200" style="outline: none;">
+                            </div>
+                            <div class="col-md-5 d-flex gap-2 mt-2 mt-md-0 ps-md-3">
+                                <button type="button" id="btnBuatKalender" class="btn btn-orange-figma px-3">
+                                    <i class="bi bi-calendar-plus"></i> Buat
+                                </button>
+                                <button type="button" id="btnRefreshKalender" class="btn-refresh-custom">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                </button>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="table-responsive mt-4">
+                        <table class="table table-bordered table-striped text-center align-middle">
+                            <thead style="background:#EB6831;">
+                                <tr>
+                                    <th style="color:white;">No</th>
+                                    <th style="color:white;">Tanggal</th>
+                                    <th style="color:white;">Isi Libur</th>
+                                    <th style="color:white;">Keterangan</th>
+                                    <th style="color:white;">Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kalenderTableBody">
+                                <tr>
+                                    <td colspan="5" style="padding: 20px;">Isi tahun lalu klik Refresh.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -71,5 +72,86 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tahunInput = document.getElementById('tahunInput');
+    const btnBuat = document.getElementById('btnBuatKalender');
+    const btnRefresh = document.getElementById('btnRefreshKalender');
+    const tbody = document.getElementById('kalenderTableBody');
 
+    function getTahunOrAlert() {
+        const tahun = tahunInput.value.trim();
+        if (!tahun) {
+            alert('Isi tahun terlebih dahulu');
+            return null;
+        }
+        return tahun;
+    }
+
+    async function loadKalenderList() {
+        const tahun = getTahunOrAlert();
+        if (!tahun) return;
+
+        tbody.innerHTML = `<tr><td colspan="5" style="padding:20px;">Memuat data...</td></tr>`;
+
+        try {
+            const res = await fetch(`/api/kalender/list?tahun=${encodeURIComponent(tahun)}`);
+            const json = await res.json();
+
+            if (json.status !== 'success' || json.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="padding:20px;">Belum ada data kalender untuk tahun ${tahun}.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = json.data.map(row => `
+                <tr>
+                    <td>${row.no}</td>
+                    <td>${row.tanggal}</td>
+                    <td>${row.is_libur}</td>
+                    <td>${row.ket}</td>
+                    <td>${row.updated}</td>
+                </tr>
+            `).join('');
+
+        } catch (err) {
+            console.error('Gagal memuat data kalender:', err);
+            tbody.innerHTML = `<tr><td colspan="5" style="padding:20px;">Gagal memuat data.</td></tr>`;
+        }
+    }
+
+    async function buatKalender() {
+        const tahun = getTahunOrAlert();
+        if (!tahun) return;
+
+        btnBuat.disabled = true;
+        btnBuat.innerHTML = '<i class="bi bi-hourglass-split"></i> Memproses...';
+
+        try {
+            const res = await fetch('/api/kalender/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tahun })
+            });
+            const json = await res.json();
+
+            if (json.status !== 'success') {
+                alert(json.message || 'Gagal membuat kalender');
+                return;
+            }
+
+            alert(`Kalender tahun ${json.tahun} berhasil dibuat (${json.inserted} baris baru, ${json.updated} diperbarui).`);
+            loadKalenderList(); // langsung tampilkan hasilnya
+        } catch (err) {
+            console.error('Gagal membuat kalender:', err);
+            alert('Terjadi kesalahan jaringan');
+        } finally {
+            btnBuat.disabled = false;
+            btnBuat.innerHTML = '<i class="bi bi-calendar-plus"></i> Buat';
+        }
+    }
+
+    btnRefresh.addEventListener('click', loadKalenderList);
+    btnBuat.addEventListener('click', buatKalender);
+});
+</script>
 {% endblock %}

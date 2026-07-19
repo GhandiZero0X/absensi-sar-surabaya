@@ -17,4 +17,6 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False  # matikan overhead tracking yg gak perlu
 
+    GOOGLE_CALENDAR_API_KEY = os.environ.get('GOOGLE_CALENDAR_API_KEY')
+
     SECRET_KEY = os.getenv('SECRET_KEY')

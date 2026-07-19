@@ -24,53 +24,30 @@
                     <h6 class="mb-0">
                         <i class="ti ti-vip me-2"></i> Pegawai VIP
                     </h6>
-                    <div class="header-actions d-flex gap-3">
-                        <button class="btn p-0 border-0 bg-transparent shadow-none">
-                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                        </button>
-                    </div>
                 </div>
 
                 <div class="card-body">
                     <div class="row g-3 mb-3">
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
-                            <label class="filter-label-wide fw-bold">Unit</label>
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                            <label class="filter-label-wide fw-bold">Unit kerja</label>
 
                             <div class="flex-grow-1" style="max-width: 70%;">
-                                <select class="form-select-sm border custom-select w-100">
+                                <select class="form-select-sm border custom-select w-100" id="unitKerjaSelect">
                                     <option value="">Pilih Kategori</option>
-                                    <option>Surabaya</option>
-                                    <option>Jember</option>
-                                    <option>Trenggalek</option>
-                                    <option>Banyuwangi</option>
-                                    <option>Sumenep</option>
-                                    <option>Bojonegoro</option>
-                                    <option>Malang</option>
-                                    <option>KN Widura</option>
-                                    <option>KN Srikandi</option>
-                                    <option>KN Permadi</option>
-                                    <option>Security</option>
-                                    <option>Pramubakti</option>
-                                    <option>ABK Honorer</option>
-                                    <option>CPNS</option>
-                                    <option>PPNPN</option>
-                                    <option>ABK PPNPN</option>
-                                    <option>Rescuer PPNPN</option>
-                                    <option>PPPK</option>
-                                    <option>PPPK Paruh Waktu</option>
+                                    {% for unit in unit_kerja_list %}
+                                    <option value="{{ unit.UNIT_KERJA_ID }}">{{ unit.NAMA_UNIT_KERJA }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
                             <label class="filter-label-wide fw-bold">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select class="form-select-sm border custom-select w-mobile-100" id="filterField1">
+                                <option value="">- Pilih Field -</option>
                                 <option>Gol</option>
                                 <option>Jabatan</option>
                                 <option>Jenis Kelamin</option>
@@ -81,14 +58,14 @@
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" class="form-control-sm border" id="filterKeyword1">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
                             <span class="mx-md-2 fw-bold text-dan">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select class="form-select-sm border custom-select w-mobile-100" id="filterField2">
+                                <option value="">- Pilih Field -</option>
                                 <option>Gol</option>
                                 <option>Jabatan</option>
                                 <option>Jenis Kelamin</option>
@@ -99,7 +76,7 @@
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" class="form-control-sm border" id="filterKeyword2">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
@@ -136,5 +113,111 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tbody = document.querySelector('.master-siaga table tbody');
+    const refreshBtn = document.querySelector('.btn-refresh-custom');
 
+    // Elemen filter — pastikan id ini sudah ada di HTML
+    const unitKerjaSelect = document.getElementById('unitKerjaSelect');
+    const filterField1 = document.getElementById('filterField1');
+    const filterKeyword1 = document.getElementById('filterKeyword1');
+    const filterField2 = document.getElementById('filterField2');
+    const filterKeyword2 = document.getElementById('filterKeyword2');
+
+    // Susun query string dari nilai filter saat ini.
+    // Semua filter opsional — kalau kosong, tidak dikirim sama sekali.
+    function buildQueryParams() {
+        const params = new URLSearchParams();
+
+        if (unitKerjaSelect.value) {
+            params.set('unit_kerja_id', unitKerjaSelect.value);
+        }
+
+        // Filter 1 hanya dikirim kalau field DAN keyword-nya sama-sama diisi
+        if (filterField1.value && filterKeyword1.value.trim()) {
+            params.set('field1', filterField1.value);
+            params.set('keyword1', filterKeyword1.value.trim());
+        }
+
+        if (filterField2.value && filterKeyword2.value.trim()) {
+            params.set('field2', filterField2.value);
+            params.set('keyword2', filterKeyword2.value.trim());
+        }
+
+        return params;
+    }
+
+    async function loadPegawaiList() {
+        tbody.innerHTML = `<tr><td colspan="4" style="padding:20px;">Memuat data...</td></tr>`;
+
+        try {
+            const params = buildQueryParams();
+            const res = await fetch(`/api/pegawai-vip/list?${params.toString()}`);
+            const json = await res.json();
+
+            if (json.status !== 'success' || json.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="padding:20px;">No records to display.</td></tr>`;
+                return;
+            }
+
+            // Render baris tabel — checkbox pakai data-nip untuk tahu row mana yang di-toggle
+            tbody.innerHTML = json.data.map(p => `
+                <tr>
+                    <td>${p.no}</td>
+                    <td>
+                        <input type="checkbox"
+                               class="vip-checkbox"
+                               data-nip="${p.nip}"
+                               ${p.is_vip ? 'checked' : ''}>
+                    </td>
+                    <td>${p.nama}</td>
+                    <td>${p.jabatan ?? '-'}</td>
+                </tr>
+            `).join('');
+
+        } catch (err) {
+            console.error('Gagal memuat data pegawai:', err);
+            tbody.innerHTML = `<tr><td colspan="4" style="padding:20px;">Gagal memuat data.</td></tr>`;
+        }
+    }
+
+    // Event delegation: satu listener untuk semua checkbox (efisien, walau tabel di-render ulang)
+    tbody.addEventListener('change', async function (e) {
+        if (!e.target.classList.contains('vip-checkbox')) return;
+
+        const checkbox = e.target;
+        const nip = checkbox.dataset.nip;
+        const isVip = checkbox.checked;
+
+        checkbox.disabled = true; // cegah double-click saat request masih jalan
+
+        try {
+            const res = await fetch('/api/pegawai-vip/toggle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nip, is_vip: isVip })
+            });
+            const json = await res.json();
+
+            if (json.status !== 'success') {
+                // Rollback tampilan kalau backend menolak
+                checkbox.checked = !isVip;
+                alert(json.message || 'Gagal mengubah status VIP');
+            }
+        } catch (err) {
+            checkbox.checked = !isVip;
+            console.error('Gagal update status VIP:', err);
+            alert('Terjadi kesalahan jaringan');
+        } finally {
+            checkbox.disabled = false;
+        }
+    });
+
+    refreshBtn.addEventListener('click', loadPegawaiList);
+
+    // Muat data otomatis saat halaman pertama kali dibuka (tanpa filter apapun)
+    loadPegawaiList();
+});
+</script>
 {% endblock %}

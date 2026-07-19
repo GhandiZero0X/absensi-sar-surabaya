@@ -23,13 +23,6 @@ class MfKalender(db.Model):
     UPDATE_BY = db.Column(db.String(50), nullable=True)
     UPDATE_DATE = db.Column(db.DateTime, nullable=True)
 
-    # Relationship balik ke ABSENSI dan LEMBUR
-    # (opsional, berguna kalau perlu query absensi/lembur dari objek kalender)
-    absensi_list = db.relationship('Absensi', backref='kalender', lazy=True,
-                                   foreign_keys='Absensi.TGL_KERJA')
-    lembur_list = db.relationship('Lembur', backref='kalender', lazy=True,
-                                  foreign_keys='Lembur.TGL_KERJA')
-
     # Representasi objek (memudahkan debugging di console/log)
     def __repr__(self):
         return f'<Kalender {self.TGL_KERJA} - Libur: {self.IS_LIBUR}>'

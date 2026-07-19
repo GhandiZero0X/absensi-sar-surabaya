@@ -5,6 +5,9 @@ from app.utils.decorators import login_required
 from app.controllers.dashboard_1HomeController import (
     dashboard_kgb, dashboard_pangkat, dashboard_pelanggaran, dashboard_pensiun, dashboard_trt)
 from app.controllers.dashboard_1MasterFileController import (
+    create_kalender_tahun,
+    get_kalender_list,
+    get_pegawai_vip_list,
     master_butir_kegiatan,
     master_jabatan,
     master_jam_finger,
@@ -27,6 +30,7 @@ from app.controllers.dashboard_1MasterFileController import (
     cari_master_unit_kerja,
     cari_user_account,
     create_kalender,
+    toggle_pegawai_vip,
 )
 from app.controllers.dashboard_2DataSiagaController import (
     data_siaga_absensi_kehadiran,
@@ -145,10 +149,30 @@ def view_master_jam_kerja():
 def view_master_kalender():
     return master_kalender()
 
+@main.route('/api/kalender/list', methods=['GET'])
+@login_required
+def api_kalender_list():
+    return get_kalender_list()
+
+@main.route('/api/kalender/generate', methods=['POST'])
+@login_required
+def api_kalender_generate():
+    return create_kalender_tahun()
+
 @main.route('/master/pegawai-vip')
 @login_required
 def view_master_pegawai_vip():
     return master_pegawai_vip()
+
+@main.route('/api/pegawai-vip/list', methods=['GET'])
+@login_required
+def api_pegawai_vip_list():
+    return get_pegawai_vip_list()
+
+@main.route('/api/pegawai-vip/toggle', methods=['POST'])
+@login_required
+def api_pegawai_vip_toggle():
+    return toggle_pegawai_vip()
 
 @main.route('/master/potongan')
 @login_required
