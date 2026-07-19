@@ -1,4 +1,4 @@
-# controllers/mediaInformasiDashboard_1Controller.py
+# controllers/dashboard_1MediaInformasiController.py
 from flask import render_template, request
 
 def media_informasi():

@@ -1,9 +1,9 @@
 # app/routes/routes.py
 
 from flask import Blueprint, jsonify
-from app.controllers.homeDashboard_1Controller import (
+from app.controllers.dashboard_1HomeController import (
     dashboard_kgb, dashboard_pangkat, dashboard_pelanggaran, dashboard_pensiun, dashboard_trt)
-from app.controllers.masterFileDashboard_1Controller import (
+from app.controllers.dashboard_1MasterFileController import (
     master_butir_kegiatan,
     master_jabatan,
     master_jam_finger,
@@ -27,9 +27,28 @@ from app.controllers.masterFileDashboard_1Controller import (
     cari_user_account,
     create_kalender,
 )
+from app.controllers.dashboard_2DataSiagaController import (
+    data_siaga_absensi_kehadiran,
+    data_siaga_cetak_daftar_lembur_siaga,
+    data_siaga_cetak_rekap_siaga,
+    data_siaga_cetak_uang_siaga,
+    data_siaga_jadwal_ulang,
+    data_siaga_membuat_jadwal_piket_siaga,
+)
+from app.controllers.dashboard_2MasterDataController import (
+    master_data_email_broadcast,
+    master_data_kgr,
+    master_data_nominal_ut_piket,
+    master_data_tim_siaga,
+    master_data_user_account,
+)
+from app.controllers.dashboard_2OtoritasPersetujuanController import (
+    otorisasi_persetujuan_kepala_kantor,
+    otorisasi_persetujuan_kepala_seksi_operasi,
+)
 from app.controllers.homeController import get_pelanggaran_disiplin, get_piket_siaga, home, search_buku_telp
 from app.controllers.loginController import login, logout
-from app.controllers.mediaInformasiDashboard_1Controller import media_informasi, media_informasi_detail
+from app.controllers.dashboard_1MediaInformasiController import media_informasi, media_informasi_detail
 
 from app.models.pegawaiModel import Pegawai
 
@@ -188,3 +207,59 @@ def view_media_informasi():
 @main.route('/media-informasi/detail')
 def view_media_informasi_detail():
     return media_informasi_detail()
+
+# ---- Dashboard 2 Routes ----
+# Data Siaga:
+@main.route('/siaga/absensi-kehadiran')
+def view_data_siaga_absensi_kehadiran():
+    return data_siaga_absensi_kehadiran()
+
+@main.route('/siaga/cetak-daftar-lembur')
+def view_data_siaga_cetak_daftar_lembur_siaga():
+    return data_siaga_cetak_daftar_lembur_siaga()
+
+@main.route('/siaga/cetak-rekap')
+def view_data_siaga_cetak_rekap_siaga():
+    return data_siaga_cetak_rekap_siaga()
+
+@main.route('/siaga/cetak-uang-siaga')
+def view_data_siaga_cetak_uang_siaga():
+    return data_siaga_cetak_uang_siaga()
+
+@main.route('/siaga/jadwal-ulang')
+def view_data_siaga_jadwal_ulang():
+    return data_siaga_jadwal_ulang()
+
+@main.route('/siaga/buat-jadwal-piket')
+def view_data_siaga_membuat_jadwal_piket_siaga():
+    return data_siaga_membuat_jadwal_piket_siaga()
+
+# Master Data:
+@main.route('/siaga/master-data/email-broadcast')
+def view_master_data_email_broadcast():
+    return master_data_email_broadcast()
+
+@main.route('/siaga/master-data/kgr')
+def view_master_data_kgr():
+    return master_data_kgr()
+
+@main.route('/siaga/master-data/nominal-ut-piket')
+def view_master_data_nominal_ut_piket():
+    return master_data_nominal_ut_piket()
+
+@main.route('/siaga/master-data/tim-siaga')
+def view_master_data_tim_siaga():
+    return master_data_tim_siaga()
+
+@main.route('/siaga/master-data/user-account')
+def view_master_data_user_account():
+    return master_data_user_account()
+
+# Otorisasi Persetujuan:
+@main.route('/siaga/otorisasi/kepala-kantor')
+def view_otorisasi_persetujuan_kepala_kantor():
+    return otorisasi_persetujuan_kepala_kantor()
+
+@main.route('/siaga/otorisasi/kepala-seksi-operasi')
+def view_otorisasi_persetujuan_kepala_seksi_operasi():
+    return otorisasi_persetujuan_kepala_seksi_operasi()

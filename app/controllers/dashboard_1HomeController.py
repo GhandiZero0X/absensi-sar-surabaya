@@ -1,4 +1,4 @@
-# controllers/dashboard_1Controller.py
+# controllers/dashboard_1HomeController.py
 from flask import render_template, request
 
 def dashboard_pelanggaran():

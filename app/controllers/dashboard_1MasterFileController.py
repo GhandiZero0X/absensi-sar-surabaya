@@ -1,4 +1,4 @@
-# controllers/masterFileDashboard_1Controller.py
+# controllers/dashboard_1MasterFileController.py
 from flask import render_template, request
 
 def master_butir_kegiatan():
