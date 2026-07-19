@@ -11,7 +11,7 @@
                 <h5 class="m-b-10">Master File</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Master File Master Potongan.html">Master Potongan</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_master_potongan') }}">Master Potongan</a></li>
                 <li class="breadcrumb-item">Cari Master Potongan</li>
             </ul>
         </div>
@@ -29,46 +29,44 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <div
-                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                        <div class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
                             <label class="filter-label-wide">Periode</label>
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="date" class="form-control-sm border" id="periodeInput">
                                 <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                             </div>
                         </div>
 
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
                             <label class="filter-label-wide">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select class="form-select-sm border custom-select w-mobile-100" id="filterField1">
+                                <option value="">- Pilih Field -</option>
                                 <option>Kategori</option>
                                 <option>Potongan(%)</option>
                                 <option>Tingkat</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" class="form-control-sm border" id="filterKeyword1">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
                             <span class="mx-md-2 fw-bold text-dan">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select class="form-select-sm border custom-select w-mobile-100" id="filterField2">
+                                <option value="">- Pilih Field -</option>
                                 <option>Kategori</option>
                                 <option>Potongan(%)</option>
                                 <option>Tingkat</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" class="form-control-sm border" id="filterKeyword2">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100" id="btnRefreshPotongan">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
@@ -89,10 +87,9 @@
                                         <th style="color:white; vertical-align: middle;">Updated</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="potonganTableBody">
                                     <tr>
-                                        <td colspan="8" style="vertical-align: middle; padding: 20px;">No records to
-                                            display.</td>
+                                        <td colspan="8" style="vertical-align: middle; padding: 20px;">No records to display.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -106,5 +103,78 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tbody = document.getElementById('potonganTableBody');
+    const btnRefresh = document.getElementById('btnRefreshPotongan');
 
+    const periodeInput = document.getElementById('periodeInput');
+    const filterField1 = document.getElementById('filterField1');
+    const filterKeyword1 = document.getElementById('filterKeyword1');
+    const filterField2 = document.getElementById('filterField2');
+    const filterKeyword2 = document.getElementById('filterKeyword2');
+
+    function buildQueryParams() {
+        const params = new URLSearchParams();
+
+        if (periodeInput.value) {
+            params.set('periode', periodeInput.value);
+        }
+
+        if (filterField1.value && filterKeyword1.value.trim()) {
+            params.set('field1', filterField1.value);
+            params.set('keyword1', filterKeyword1.value.trim());
+        }
+
+        if (filterField2.value && filterKeyword2.value.trim()) {
+            params.set('field2', filterField2.value);
+            params.set('keyword2', filterKeyword2.value.trim());
+        }
+
+        return params;
+    }
+
+    async function loadPotonganList() {
+        tbody.innerHTML = `<tr><td colspan="8" style="padding:20px;">Memuat data...</td></tr>`;
+
+        try {
+            const params = buildQueryParams();
+            const res = await fetch(`/api/potongan/list?${params.toString()}`);
+            const json = await res.json();
+
+            if (json.status !== 'success') {
+                tbody.innerHTML = `<tr><td colspan="8" style="padding:20px;">${json.message || 'Gagal memuat data.'}</td></tr>`;
+                return;
+            }
+
+            if (json.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="padding:20px;">No records to display.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = json.data.map(row => `
+                <tr>
+                    <td>${row.no}</td>
+                    <td>${row.kategori}</td>
+                    <td>${row.tingkat}</td>
+                    <td>${row.deskripsi}</td>
+                    <td>${row.persen_pot}</td>
+                    <td>${row.range}</td>
+                    <td>${row.tgl_mulai}</td>
+                    <td>${row.updated}</td>
+                </tr>
+            `).join('');
+
+        } catch (err) {
+            console.error('Gagal memuat data potongan:', err);
+            tbody.innerHTML = `<tr><td colspan="8" style="padding:20px;">Gagal memuat data.</td></tr>`;
+        }
+    }
+
+    btnRefresh.addEventListener('click', loadPotonganList);
+
+    // Muat data otomatis saat halaman pertama kali dibuka (tanpa filter)
+    loadPotonganList();
+});
+</script>
 {% endblock %}

@@ -8,6 +8,7 @@ from app.controllers.dashboard_1MasterFileController import (
     create_kalender_tahun,
     get_kalender_list,
     get_pegawai_vip_list,
+    get_potongan_list,
     master_butir_kegiatan,
     master_jabatan,
     master_jam_finger,
@@ -30,6 +31,7 @@ from app.controllers.dashboard_1MasterFileController import (
     cari_master_unit_kerja,
     cari_user_account,
     create_kalender,
+    save_potongan,
     toggle_pegawai_vip,
 )
 from app.controllers.dashboard_2DataSiagaController import (
@@ -179,6 +181,11 @@ def api_pegawai_vip_toggle():
 def view_master_potongan():
     return master_potongan()
 
+@main.route('/api/potongan/save', methods=['POST'])
+@login_required
+def api_potongan_save():
+    return save_potongan()
+
 @main.route('/master/trt')
 @login_required
 def view_master_trt():
@@ -229,6 +236,11 @@ def view_cari_master_kalender():
 @login_required
 def view_cari_master_potongan():
     return cari_master_potongan()
+
+@main.route('/api/potongan/list', methods=['GET'])
+@login_required
+def api_potongan_list():
+    return get_potongan_list()
 
 @main.route('/master/cari/tunkin-class')
 @login_required

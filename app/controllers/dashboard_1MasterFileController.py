@@ -6,6 +6,7 @@ from app import db
 from app.models.pegawaiModel import Pegawai
 from app.models.unitKerjaModel import MfUnitKerja
 from app.models.kalenderModel import MfKalender
+from app.models.potModel import MfPot
 
 GOOGLE_ID_HOLIDAY_CALENDAR_ID = 'id.indonesian#holiday@group.v.calendar.google.com'
 
@@ -271,6 +272,176 @@ def toggle_pegawai_vip():
 def master_potongan():
     """Render halaman Master File Master Potongan."""
     return render_template('pages/dashboard_1/Master File Master Potongan.html')
+
+def save_potongan():
+    """
+    Simpan data Master Potongan baru dari form.
+    Body JSON yang diharapkan:
+    {
+        "kategori": "Cuti",
+        "tingkat": "Ringan",
+        "diskripsi": "Terlambat 1-15 menit",
+        "persen_pot": 1.5,
+        "is_pendukung": true,      // true=Ada -> 'Y', false=Tidak Ada -> 'N'
+        "tgl_mulai": "2026-01-01",
+        "range_awal": 1,
+        "range_akhir": 15
+    }
+    """
+    payload = request.get_json(silent=True) or {}
+
+    kategori = payload.get('kategori', '').strip()
+    tingkat = payload.get('tingkat', '').strip()
+    diskripsi = payload.get('diskripsi', '').strip()
+    persen_pot_raw = payload.get('persen_pot')
+    is_pendukung_raw = payload.get('is_pendukung')
+    tgl_mulai_raw = payload.get('tgl_mulai', '').strip()
+    range_awal_raw = payload.get('range_awal')
+    range_akhir_raw = payload.get('range_akhir')
+
+    # --- Validasi field wajib ---
+    if not kategori:
+        return jsonify({'status': 'error', 'message': 'Kategori wajib diisi'}), 400
+    if not diskripsi:
+        return jsonify({'status': 'error', 'message': 'Diskripsi wajib diisi'}), 400
+    if is_pendukung_raw is None:
+        return jsonify({'status': 'error', 'message': 'Bukti Pendukung wajib dipilih'}), 400
+
+    # --- Validasi & konversi tipe data numerik ---
+    persen_pot = None
+    if persen_pot_raw not in (None, ''):
+        try:
+            persen_pot = float(persen_pot_raw)
+            if not (0 <= persen_pot <= 100):
+                return jsonify({'status': 'error', 'message': 'Potongan (%) harus antara 0-100'}), 400
+        except (TypeError, ValueError):
+            return jsonify({'status': 'error', 'message': 'Potongan (%) harus berupa angka'}), 400
+
+    range_awal = None
+    if range_awal_raw not in (None, ''):
+        try:
+            range_awal = float(range_awal_raw)
+        except (TypeError, ValueError):
+            return jsonify({'status': 'error', 'message': 'Range awal harus berupa angka'}), 400
+
+    range_akhir = None
+    if range_akhir_raw not in (None, ''):
+        try:
+            range_akhir = float(range_akhir_raw)
+        except (TypeError, ValueError):
+            return jsonify({'status': 'error', 'message': 'Range akhir harus berupa angka'}), 400
+
+    if range_awal is not None and range_akhir is not None and range_awal > range_akhir:
+        return jsonify({'status': 'error', 'message': 'Range awal tidak boleh lebih besar dari range akhir'}), 400
+
+    # --- Validasi & konversi tanggal ---
+    tgl_mulai = None
+    if tgl_mulai_raw:
+        try:
+            tgl_mulai = datetime.strptime(tgl_mulai_raw, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({'status': 'error', 'message': 'Format tanggal harus YYYY-MM-DD'}), 400
+
+    # --- Konversi Bukti Pendukung: Ada -> 'Y', Tidak Ada -> 'N' ---
+    is_pendukung = 'Y' if is_pendukung_raw else 'N'
+
+    potongan = MfPot(
+        KATEGORI=kategori,
+        TINGKAT=tingkat or None,
+        NAMA_POT=diskripsi,
+        PERSEN_POT=persen_pot,
+        IS_PENDUKUNG=is_pendukung,
+        TGL_MULAI=tgl_mulai,
+        RANGE_AWAL=range_awal,
+        RANGE_AKHIR=range_akhir,
+        UPDATE_BY=session.get('nip', 'system'),
+        UPDATE_DATE=datetime.utcnow(),
+    )
+
+    db.session.add(potongan)
+    db.session.commit()
+
+    return jsonify({
+        'status': 'success',
+        'message': 'Data potongan berhasil disimpan',
+        'data': potongan.to_dict(),
+    })
+
+def get_potongan_list():
+    """
+    Ambil data Master Potongan untuk tabel Cari Master Potongan.
+
+    Filter opsional (semua bisa kosong -> berlaku seperti klik Refresh biasa):
+      - periode        : filter TGL_MULAI pada tanggal tertentu (format YYYY-MM-DD)
+      - field1/keyword1 dan field2/keyword2 : dua dropdown "Filter" (Kategori,
+        Potongan(%), Tingkat), digabung dengan AND
+    """
+    periode_raw = request.args.get('periode', '').strip()
+    field1 = request.args.get('field1')
+    keyword1 = request.args.get('keyword1', '').strip()
+    field2 = request.args.get('field2')
+    keyword2 = request.args.get('keyword2', '').strip()
+
+    query = MfPot.query
+
+    # --- Filter Periode: cocokkan TGL_MULAI pada tanggal yang dipilih ---
+    if periode_raw:
+        try:
+            periode_date = datetime.strptime(periode_raw, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({'status': 'error', 'message': 'Format periode harus YYYY-MM-DD'}), 400
+
+        awal_hari = periode_date
+        akhir_hari = periode_date + timedelta(days=1)
+        query = query.filter(MfPot.TGL_MULAI >= awal_hari, MfPot.TGL_MULAI < akhir_hari)
+
+    # --- Filter field1/field2 (Kategori, Potongan(%), Tingkat) ---
+    # Kategori & Tingkat -> kolom teks, pakai partial match (ilike)
+    # Potongan(%) -> kolom Float, tidak bisa ilike -> exact match angka
+    text_field_map = {
+        'Kategori': MfPot.KATEGORI,
+        'Tingkat': MfPot.TINGKAT,
+    }
+
+    for field, keyword in [(field1, keyword1), (field2, keyword2)]:
+        if not field or not keyword:
+            continue  # filter tidak dipakai -> skip, tidak wajib diisi
+
+        if field == 'Potongan(%)':
+            try:
+                nilai = float(keyword)
+            except ValueError:
+                return jsonify({'status': 'error', 'message': 'Potongan(%) harus berupa angka'}), 400
+            query = query.filter(MfPot.PERSEN_POT == nilai)
+        else:
+            column = text_field_map.get(field)
+            if column is not None:
+                query = query.filter(column.ilike(f'%{keyword}%'))
+
+    pot_list = query.order_by(MfPot.UPDATE_DATE.desc()).all()
+
+    def format_range(row):
+        if row.RANGE_AWAL is None and row.RANGE_AKHIR is None:
+            return '-'
+        awal = row.RANGE_AWAL if row.RANGE_AWAL is not None else '-'
+        akhir = row.RANGE_AKHIR if row.RANGE_AKHIR is not None else '-'
+        return f'{awal} s/d {akhir}'
+
+    data = [
+        {
+            'no': idx + 1,
+            'kategori': row.KATEGORI or '-',
+            'tingkat': row.TINGKAT or '-',
+            'deskripsi': row.NAMA_POT or '-',
+            'persen_pot': row.PERSEN_POT if row.PERSEN_POT is not None else '-',
+            'range': format_range(row),
+            'tgl_mulai': row.TGL_MULAI.strftime('%d-%m-%Y') if row.TGL_MULAI else '-',
+            'updated': row.UPDATE_DATE.strftime('%d-%m-%Y %H:%M') if row.UPDATE_DATE else '-',
+        }
+        for idx, row in enumerate(pot_list)
+    ]
+
+    return jsonify({'status': 'success', 'data': data})
 
 def master_trt():
     """Render halaman Master File Master TRT."""
