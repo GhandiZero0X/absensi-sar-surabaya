@@ -8,6 +8,7 @@ from app.models.pegawaiModel import Pegawai
 from app.models.unitKerjaModel import MfUnitKerja
 from app.models.kalenderModel import MfKalender
 from app.models.potModel import MfPot
+from app.models.jamKerjaModel import MfJamKerja
 
 GOOGLE_ID_HOLIDAY_CALENDAR_ID = 'id.indonesian#holiday@group.v.calendar.google.com'
 
@@ -26,6 +27,91 @@ def master_jam_finger():
 def master_jam_kerja():
     """Render halaman Master File Master Jam Kerja."""
     return render_template('pages/dashboard_1/Master File Master Jam Kerja.html')
+
+def save_jam_kerja():
+    """
+    Simpan data Master Jam Kerja baru dari form.
+    Body JSON yang diharapkan:
+    {
+        "shift": "1",                    // dari dropdown Shift (1/2) -> SHIFT_KERJA
+        "penggantian_tlm1": true,        // true=Ada Penggantian -> 'Y', false=Tidak Ada -> 'N'
+        "tgl_mulai": "2026-01-01",
+        "hari_kerja": "1",                // 1=Senin-Kamis, 2=Jum'at -> AGENDA
+        "jam_masuk": "07:30",
+        "jam_pulang": "16:00"
+    }
+    """
+    payload = request.get_json(silent=True) or {}
+
+    shift_raw = payload.get('shift', '').strip() if payload.get('shift') else ''
+    penggantian_tlm1_raw = payload.get('penggantian_tlm1')
+    tgl_mulai_raw = payload.get('tgl_mulai', '').strip() if payload.get('tgl_mulai') else ''
+    hari_kerja_raw = payload.get('hari_kerja', '').strip() if payload.get('hari_kerja') else ''
+    jam_masuk_raw = payload.get('jam_masuk', '').strip() if payload.get('jam_masuk') else ''
+    jam_pulang_raw = payload.get('jam_pulang', '').strip() if payload.get('jam_pulang') else ''
+
+    # --- Validasi field wajib ---
+    if not shift_raw:
+        return jsonify({'status': 'error', 'message': 'Shift wajib dipilih'}), 400
+    if penggantian_tlm1_raw is None:
+        return jsonify({'status': 'error', 'message': 'Penggantian TLM 1 wajib dipilih'}), 400
+    if not tgl_mulai_raw:
+        return jsonify({'status': 'error', 'message': 'Tanggal Mulai wajib diisi'}), 400
+    if not hari_kerja_raw:
+        return jsonify({'status': 'error', 'message': 'Hari Kerja wajib dipilih'}), 400
+    if not jam_masuk_raw:
+        return jsonify({'status': 'error', 'message': 'Jam Masuk wajib diisi'}), 400
+    if not jam_pulang_raw:
+        return jsonify({'status': 'error', 'message': 'Jam Pulang wajib diisi'}), 400
+
+    # --- Validasi & konversi Tanggal Mulai ---
+    try:
+        tgl_mulai = datetime.strptime(tgl_mulai_raw, '%Y-%m-%d')
+    except ValueError:
+        return jsonify({'status': 'error', 'message': 'Format Tanggal Mulai harus YYYY-MM-DD'}), 400
+
+    # --- Validasi & konversi Jam Masuk / Jam Pulang, digabung dengan Tanggal Mulai ---
+    try:
+        jam_masuk_time = datetime.strptime(jam_masuk_raw, '%H:%M').time()
+        std_jam_in = datetime.combine(tgl_mulai.date(), jam_masuk_time)
+    except ValueError:
+        return jsonify({'status': 'error', 'message': 'Format Jam Masuk harus HH:MM'}), 400
+
+    try:
+        jam_pulang_time = datetime.strptime(jam_pulang_raw, '%H:%M').time()
+        std_jam_out = datetime.combine(tgl_mulai.date(), jam_pulang_time)
+    except ValueError:
+        return jsonify({'status': 'error', 'message': 'Format Jam Pulang harus HH:MM'}), 400
+
+    # --- Konversi Penggantian TLM 1: Ada -> 'Y', Tidak Ada -> 'N' ---
+    penggantian_tlm1 = 'Y' if penggantian_tlm1_raw else 'N'
+
+    # --- Konversi Hari Kerja -> label AGENDA ---
+    agenda_map = {'1': 'Senin-Kamis', '2': "Jum'at"}
+    agenda = agenda_map.get(hari_kerja_raw)
+    if agenda is None:
+        return jsonify({'status': 'error', 'message': 'Hari Kerja tidak valid'}), 400
+
+    jam_kerja = MfJamKerja(
+        STD_JAM_IN=std_jam_in,
+        STD_JAM_OUT=std_jam_out,
+        TGL_MULAI_BERLAKU=tgl_mulai,
+        SHIFT=shift_raw,
+        AGENDA=agenda,
+        PENGGANTIAN_TLM1=penggantian_tlm1,
+        UPDATE_BY=session.get('nip', 'system'),
+        UPDATE_DATE=datetime.utcnow(),
+        SHIFT_KERJA=shift_raw,
+    )
+
+    db.session.add(jam_kerja)
+    db.session.commit()
+
+    return jsonify({
+        'status': 'success',
+        'message': 'Data jam kerja berhasil disimpan',
+        'data': jam_kerja.to_dict(),
+    })
 
 def master_kalender():
     """Render halaman Master File Master Kalender."""
@@ -641,6 +727,90 @@ def cari_master_jam_finger():
 def cari_master_jam_kerja():
     """Render halaman Cari Master Jam Kerja."""
     return render_template('pages/dashboard_1/Cari Master Jam Kerja.html')
+
+def get_jam_kerja_list():
+    """
+    Ambil data Master Jam Kerja untuk tabel Cari Master Jam Kerja.
+
+    Filter opsional (semua bisa kosong -> berlaku seperti klik Refresh biasa,
+    menampilkan seluruh data):
+      - periode        : filter TGL_MULAI_BERLAKU pada tanggal tertentu (format YYYY-MM-DD)
+      - field1/keyword1 dan field2/keyword2 : dua dropdown "Filter"
+        ("Hari Kerja Senin-Kamis(1)/Jumat(2)", "Tanggal(yyyy-mm-dd)"), digabung dengan AND
+    """
+    periode_raw = request.args.get('periode', '').strip()
+    field1 = request.args.get('field1')
+    keyword1 = request.args.get('keyword1', '').strip()
+    field2 = request.args.get('field2')
+    keyword2 = request.args.get('keyword2', '').strip()
+
+    query = MfJamKerja.query
+
+    # --- Filter Periode: cocokkan TGL_MULAI_BERLAKU pada tanggal yang dipilih ---
+    if periode_raw:
+        try:
+            periode_date = datetime.strptime(periode_raw, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({'status': 'error', 'message': 'Format periode harus YYYY-MM-DD'}), 400
+
+        awal_hari = periode_date
+        akhir_hari = periode_date + timedelta(days=1)
+        query = query.filter(
+            MfJamKerja.TGL_MULAI_BERLAKU >= awal_hari,
+            MfJamKerja.TGL_MULAI_BERLAKU < akhir_hari
+        )
+
+    # --- Konversi label Hari Kerja: 1 -> "Senin-Kamis", 2 -> "Jum'at" ---
+    hari_kerja_map = {'1': 'Senin-Kamis', '2': "Jum'at"}
+
+    # --- Filter field1/field2 ---
+    # "Hari Kerja Senin-Kamis(1)/Jumat(2)" -> kolom AGENDA, exact match dari mapping 1/2
+    # "Tanggal(yyyy-mm-dd)"                -> kolom TGL_MULAI_BERLAKU, exact match tanggal
+    for field, keyword in [(field1, keyword1), (field2, keyword2)]:
+        if not field or not keyword:
+            continue  # filter ini tidak dipakai -> skip, tidak wajib diisi
+
+        if field == 'Hari Kerja Senin-Kamis(1)/Jumat(2)':
+            agenda = hari_kerja_map.get(keyword)
+            if agenda is None:
+                return jsonify({
+                    'status': 'error',
+                    'message': 'Hari Kerja harus diisi 1 (Senin-Kamis) atau 2 (Jumat)'
+                }), 400
+            query = query.filter(MfJamKerja.AGENDA == agenda)
+
+        elif field == 'Tanggal(yyyy-mm-dd)':
+            try:
+                tgl = datetime.strptime(keyword, '%Y-%m-%d')
+            except ValueError:
+                return jsonify({'status': 'error', 'message': 'Format Tanggal harus YYYY-MM-DD'}), 400
+            awal_hari = tgl
+            akhir_hari = tgl + timedelta(days=1)
+            query = query.filter(
+                MfJamKerja.TGL_MULAI_BERLAKU >= awal_hari,
+                MfJamKerja.TGL_MULAI_BERLAKU < akhir_hari
+            )
+
+    jam_kerja_list = query.order_by(MfJamKerja.TGL_MULAI_BERLAKU.desc()).all()
+
+    # --- Label Ada Pengganti TLM1: 'Y' -> Ada, 'N' -> Tidak Ada ---
+    tlm1_label = {'Y': 'Ada', 'N': 'Tidak Ada'}
+
+    data = [
+        {
+            'no': idx + 1,
+            'tgl_mulai': row.TGL_MULAI_BERLAKU.strftime('%d-%m-%Y') if row.TGL_MULAI_BERLAKU else '-',
+            'hari_kerja': row.AGENDA or '-',
+            'shift': row.SHIFT or '-',
+            'jam_masuk': row.STD_JAM_IN.strftime('%H:%M') if row.STD_JAM_IN else '-',
+            'jam_pulang': row.STD_JAM_OUT.strftime('%H:%M') if row.STD_JAM_OUT else '-',
+            'penggantian_tlm1': tlm1_label.get(row.PENGGANTIAN_TLM1, '-'),
+            'updated': row.UPDATE_DATE.strftime('%d-%m-%Y %H:%M') if row.UPDATE_DATE else '-',
+        }
+        for idx, row in enumerate(jam_kerja_list)
+    ]
+
+    return jsonify({'status': 'success', 'data': data})
 
 def cari_master_kalender():
     """Render halaman Cari Master Kalender."""

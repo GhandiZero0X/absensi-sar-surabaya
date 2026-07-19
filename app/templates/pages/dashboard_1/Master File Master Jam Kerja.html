@@ -33,21 +33,10 @@
 
                         <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
                             <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari Master Jam Kerja.html"
+                                <a href="{{ url_for('main.view_cari_master_jam_kerja') }}"
                                     class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
                                     <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
                                 </a>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </button>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -59,10 +48,10 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
                             <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                                <select id="selectShift" class="form-select-sm border custom-select w-100">
                                     <option value="">Pilih</option>
-                                    <option>1</option>
-                                    <option>2</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
                                 </select>
                             </div>
                         </div>
@@ -71,23 +60,25 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Penggantian TLM 1</label>
                             <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                                <select id="selectPenggantianTlm1" class="form-select-sm border custom-select w-100">
                                     <option value="">Pilih</option>
-                                    <option>Ada Penggantian (Y)</option>
-                                    <option>Tidak Ada Penggantian (N)</option>
+                                    <option value="1">Ada Penggantian (Y)</option>
+                                    <option value="0">Tidak Ada Penggantian (N)</option>
                                 </select>
                             </div>
                         </div>
+
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tanggal Mulai</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="date" class="form-control-sm border w-100" style="outline: none;">
+                                    <input type="date" id="inputTglMulai" class="form-control-sm border w-100" style="outline: none;">
                                     <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Hari Kerja</label>
@@ -110,12 +101,13 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jam Masuk</label>
                             <div class="col-md-7">
                                 <div style="display: flex; align-items: center; gap: 5px;">
-                                    <input type="time" class="form-control-sm border"
+                                    <input type="time" id="inputJamMasuk" class="form-control-sm border"
                                         style="width: 150px; outline: none;">
                                 </div>
                             </div>
@@ -126,10 +118,16 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jam Pulang</label>
                             <div class="col-md-7">
                                 <div style="display: flex; align-items: center; gap: 5px;">
-                                    <input type="time" class="form-control-sm border"
+                                    <input type="time" id="inputJamPulang" class="form-control-sm border"
                                         style="width: 150px; outline: none;">
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-center mt-3">
+                            <button type="button" id="btnSimpanJamKerja" class="btn btn-orange-figma px-4">
+                                <i class="bi bi-save me-1"></i>Simpan
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -140,5 +138,75 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.getElementById('btnSimpanJamKerja').addEventListener('click', function () {
+    const shift = document.getElementById('selectShift').value;
+    const penggantianTlm1 = document.getElementById('selectPenggantianTlm1').value;
+    const tglMulai = document.getElementById('inputTglMulai').value;
+    const hariKerja = document.querySelector('input[name="hari_kerja"]:checked')
+        ? document.querySelector('input[name="hari_kerja"]:checked').value
+        : '';
+    const jamMasuk = document.getElementById('inputJamMasuk').value;
+    const jamPulang = document.getElementById('inputJamPulang').value;
 
+    if (!shift) {
+        alert('Shift wajib dipilih');
+        return;
+    }
+    if (penggantianTlm1 === '') {
+        alert('Penggantian TLM 1 wajib dipilih');
+        return;
+    }
+    if (!tglMulai) {
+        alert('Tanggal Mulai wajib diisi');
+        return;
+    }
+    if (!hariKerja) {
+        alert('Hari Kerja wajib dipilih');
+        return;
+    }
+    if (!jamMasuk) {
+        alert('Jam Masuk wajib diisi');
+        return;
+    }
+    if (!jamPulang) {
+        alert('Jam Pulang wajib diisi');
+        return;
+    }
+
+    const payload = {
+        shift: shift,
+        penggantian_tlm1: penggantianTlm1 === '1',
+        tgl_mulai: tglMulai,
+        hari_kerja: hariKerja,
+        jam_masuk: jamMasuk,
+        jam_pulang: jamPulang,
+    };
+
+    fetch("{{ url_for('main.api_jam_kerja_save') }}", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                // reset form setelah sukses
+                document.getElementById('selectShift').value = '';
+                document.getElementById('selectPenggantianTlm1').value = '';
+                document.getElementById('inputTglMulai').value = '';
+                document.getElementById('seninKamis').checked = true;
+                document.getElementById('inputJamMasuk').value = '';
+                document.getElementById('inputJamPulang').value = '';
+            } else {
+                alert('Gagal: ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan saat menyimpan data.');
+        });
+});
+</script>
 {% endblock %}
