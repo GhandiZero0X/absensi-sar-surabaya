@@ -11,7 +11,7 @@
                 <h5 class="m-b-10">Master File</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Master File Master Unit Kerja.html">Master Unit Kerja</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_master_unit_kerja') }}">Master Unit Kerja</a></li>
                 <li class="breadcrumb-item">Cari Unit Kerja</li>
             </ul>
         </div>
@@ -22,51 +22,49 @@
             <div class="card mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden; border: none;">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Transaksi</h6>
-                    <a href="Master File Master Unit Kerja.html" class="btn-close-custom">
+                    <a href="{{ url_for('main.view_master_unit_kerja') }}" class="btn-close-custom">
                         <i class="bi bi-x-lg"></i>
                     </a>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
-                        <div
-                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                        <div class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
                             <label class="filter-label-wide">Periode</label>
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="date" class="form-control-sm border" id="periodeInput">
                                 <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                             </div>
                         </div>
 
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
                             <label class="filter-label-wide">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select class="form-select-sm border custom-select w-mobile-100" id="filterField1">
+                                <option value="">- Pilih Field -</option>
                                 <option>Nama Unit Kerja</option>
                                 <option>Unit Kerja ID</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" class="form-control-sm border" id="filterKeyword1">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
                             <span class="mx-md-2 fw-bold text-dan">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select class="form-select-sm border custom-select w-mobile-100" id="filterField2">
+                                <option value="">- Pilih Field -</option>
                                 <option>Nama Unit Kerja</option>
                                 <option>Unit Kerja ID</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" class="form-control-sm border" id="filterKeyword2">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100" id="btnRefreshUnitKerja">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
@@ -78,19 +76,16 @@
                                 <thead style="background:#EB6831;">
                                     <tr>
                                         <th style="color:white; vertical-align: middle;">No</th>
-                                        <th style="color:white; vertical-align: middle;">Kategori</th>
-                                        <th style="color:white; vertical-align: middle;">Tingkat</th>
-                                        <th style="color:white; vertical-align: middle;">Deskripsi</th>
-                                        <th style="color:white; vertical-align: middle;">Potongan(%)</th>
-                                        <th style="color:white; vertical-align: middle;">Range</th>
-                                        <th style="color:white; vertical-align: middle;">Tanggal Mulai</th>
+                                        <th style="color:white; vertical-align: middle;">Unit Kerja ID</th>
+                                        <th style="color:white; vertical-align: middle;">Nama Unit Kerja</th>
+                                        <th style="color:white; vertical-align: middle;">Tipe</th>
+                                        <th style="color:white; vertical-align: middle;">Urut Report</th>
                                         <th style="color:white; vertical-align: middle;">Updated</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="unitKerjaTableBody">
                                     <tr>
-                                        <td colspan="8" style="vertical-align: middle; padding: 20px;">No records to
-                                            display.</td>
+                                        <td colspan="6" style="vertical-align: middle; padding: 20px;">No records to display.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -104,5 +99,76 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tbody = document.getElementById('unitKerjaTableBody');
+    const btnRefresh = document.getElementById('btnRefreshUnitKerja');
 
+    const periodeInput = document.getElementById('periodeInput');
+    const filterField1 = document.getElementById('filterField1');
+    const filterKeyword1 = document.getElementById('filterKeyword1');
+    const filterField2 = document.getElementById('filterField2');
+    const filterKeyword2 = document.getElementById('filterKeyword2');
+
+    function buildQueryParams() {
+        const params = new URLSearchParams();
+
+        if (periodeInput.value) {
+            params.set('periode', periodeInput.value);
+        }
+
+        if (filterField1.value && filterKeyword1.value.trim()) {
+            params.set('field1', filterField1.value);
+            params.set('keyword1', filterKeyword1.value.trim());
+        }
+
+        if (filterField2.value && filterKeyword2.value.trim()) {
+            params.set('field2', filterField2.value);
+            params.set('keyword2', filterKeyword2.value.trim());
+        }
+
+        return params;
+    }
+
+    async function loadUnitKerjaList() {
+        tbody.innerHTML = `<tr><td colspan="6" style="padding:20px;">Memuat data...</td></tr>`;
+
+        try {
+            const params = buildQueryParams();
+            const res = await fetch(`/api/unit-kerja/list?${params.toString()}`);
+            const json = await res.json();
+
+            if (json.status !== 'success') {
+                tbody.innerHTML = `<tr><td colspan="6" style="padding:20px;">${json.message || 'Gagal memuat data.'}</td></tr>`;
+                return;
+            }
+
+            if (json.data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="padding:20px;">No records to display.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = json.data.map(row => `
+                <tr>
+                    <td>${row.no}</td>
+                    <td>${row.unit_kerja_id}</td>
+                    <td>${row.nama_unit_kerja}</td>
+                    <td>${row.tipe}</td>
+                    <td>${row.urut_report}</td>
+                    <td>${row.updated}</td>
+                </tr>
+            `).join('');
+
+        } catch (err) {
+            console.error('Gagal memuat data unit kerja:', err);
+            tbody.innerHTML = `<tr><td colspan="6" style="padding:20px;">Gagal memuat data.</td></tr>`;
+        }
+    }
+
+    btnRefresh.addEventListener('click', loadUnitKerjaList);
+
+    // Muat data otomatis saat halaman pertama kali dibuka (tanpa filter)
+    loadUnitKerjaList();
+});
+</script>
 {% endblock %}

@@ -9,6 +9,7 @@ from app.controllers.dashboard_1MasterFileController import (
     get_kalender_list,
     get_pegawai_vip_list,
     get_potongan_list,
+    get_unit_kerja_list,
     master_butir_kegiatan,
     master_jabatan,
     master_jam_finger,
@@ -32,6 +33,7 @@ from app.controllers.dashboard_1MasterFileController import (
     cari_user_account,
     create_kalender,
     save_potongan,
+    save_unit_kerja,
     toggle_pegawai_vip,
 )
 from app.controllers.dashboard_2DataSiagaController import (
@@ -201,6 +203,11 @@ def view_master_tunkin_class():
 def view_master_unit_kerja():
     return master_unit_kerja()
 
+@main.route('/api/unit-kerja/save', methods=['POST'])
+@login_required
+def api_unit_kerja_save():
+    return save_unit_kerja()
+
 @main.route('/master/user')
 @login_required
 def view_master_user():
@@ -256,6 +263,11 @@ def view_cari_master_uang_makan():
 @login_required
 def view_cari_master_unit_kerja():
     return cari_master_unit_kerja()
+
+@main.route('/api/unit-kerja/list', methods=['GET'])
+@login_required
+def api_unit_kerja_list():
+    return get_unit_kerja_list()
 
 @main.route('/master/cari/user-account')
 @login_required

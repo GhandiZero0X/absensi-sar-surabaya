@@ -455,6 +455,85 @@ def master_unit_kerja():
     """Render halaman Master File Master Unit Kerja."""
     return render_template('pages/dashboard_1/Master File Master Unit Kerja.html')
 
+def save_unit_kerja():
+    """
+    Simpan data Master Unit Kerja baru dari form.
+    Body JSON yang diharapkan:
+    {
+        "unit_kerja_id": 20,
+        "nama_unit_kerja": "Surabaya",
+        "urut_report": 1,
+        "tipe": "Pusat"   // "Pusat" -> IS_PUSAT=1, "Pos" -> IS_PUSAT=0
+    }
+
+    Catatan: field "Isi Aktif" di form saat ini TIDAK punya kolom
+    yang sesuai di model MfUnitKerja (hanya ada IS_PUSAT untuk Tipe),
+    jadi nilai itu diterima tapi tidak disimpan. Kalau memang perlu
+    disimpan, tambahkan kolom IS_AKTIF ke model dulu.
+    """
+    payload = request.get_json(silent=True) or {}
+
+    unit_kerja_id_raw = payload.get('unit_kerja_id')
+    nama_unit_kerja = payload.get('nama_unit_kerja', '').strip()
+    urut_report_raw = payload.get('urut_report')
+    tipe_raw = payload.get('tipe', '').strip()
+
+    # --- Validasi field wajib ---
+    if unit_kerja_id_raw in (None, ''):
+        return jsonify({'status': 'error', 'message': 'Unit Kerja ID wajib diisi'}), 400
+    if not nama_unit_kerja:
+        return jsonify({'status': 'error', 'message': 'Nama Unit Kerja wajib diisi'}), 400
+    if not tipe_raw:
+        return jsonify({'status': 'error', 'message': 'Tipe wajib dipilih'}), 400
+
+    # --- Validasi & konversi Unit Kerja ID ---
+    try:
+        unit_kerja_id = int(unit_kerja_id_raw)
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'Unit Kerja ID harus berupa angka'}), 400
+
+    # Cegah duplikat primary key — kalau sudah ada, tolak (bukan overwrite diam-diam)
+    existing = MfUnitKerja.query.get(unit_kerja_id)
+    if existing is not None:
+        return jsonify({
+            'status': 'error',
+            'message': f'Unit Kerja ID {unit_kerja_id} sudah terdaftar ({existing.NAMA_UNIT_KERJA})'
+        }), 409
+
+    # --- Validasi & konversi Urut Report ---
+    urut_report = 0
+    if urut_report_raw not in (None, ''):
+        try:
+            urut_report = int(urut_report_raw)
+        except (TypeError, ValueError):
+            return jsonify({'status': 'error', 'message': 'Urut Report harus berupa angka bulat'}), 400
+        if urut_report < 0:
+            return jsonify({'status': 'error', 'message': 'Urut Report tidak boleh negatif'}), 400
+
+    # --- Konversi Tipe: Pusat -> 1, Pos -> 0 ---
+    tipe_map = {'Pusat': 1, 'Pos': 2}
+    if tipe_raw not in tipe_map:
+        return jsonify({'status': 'error', 'message': 'Tipe harus "Pusat" atau "Pos"'}), 400
+    is_pusat = tipe_map[tipe_raw]
+
+    unit_kerja = MfUnitKerja(
+        UNIT_KERJA_ID=unit_kerja_id,
+        NAMA_UNIT_KERJA=nama_unit_kerja,
+        URUT_REPORT=urut_report,
+        IS_PUSAT=is_pusat,
+        UPDATE_IN_BY=session.get('nip', 'system'),
+        UPDATE_DATE=datetime.utcnow(),
+    )
+
+    db.session.add(unit_kerja)
+    db.session.commit()
+
+    return jsonify({
+        'status': 'success',
+        'message': 'Data unit kerja berhasil disimpan',
+        'data': unit_kerja.to_dict(),
+    })
+
 def master_user():
     """Render halaman Master File Master User."""
     return render_template('pages/dashboard_1/Master File Master User.html')
@@ -495,6 +574,68 @@ def cari_master_uang_makan():
 def cari_master_unit_kerja():
     """Render halaman Cari Master Unit Kerja."""
     return render_template('pages/dashboard_1/Cari Master Unit Kerja.html')
+
+def get_unit_kerja_list():
+    """
+    Ambil data Master Unit Kerja untuk tabel Cari Master Unit Kerja.
+
+    Filter opsional (semua bisa kosong -> berlaku seperti klik Refresh biasa):
+      - periode        : filter UPDATE_DATE pada tanggal tertentu (format YYYY-MM-DD)
+      - field1/keyword1 dan field2/keyword2 : dua dropdown "Filter"
+        (Nama Unit Kerja, Unit Kerja ID), digabung dengan AND
+    """
+    periode_raw = request.args.get('periode', '').strip()
+    field1 = request.args.get('field1')
+    keyword1 = request.args.get('keyword1', '').strip()
+    field2 = request.args.get('field2')
+    keyword2 = request.args.get('keyword2', '').strip()
+
+    query = MfUnitKerja.query
+
+    # --- Filter Periode: cocokkan UPDATE_DATE pada tanggal yang dipilih ---
+    if periode_raw:
+        try:
+            periode_date = datetime.strptime(periode_raw, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({'status': 'error', 'message': 'Format periode harus YYYY-MM-DD'}), 400
+
+        awal_hari = periode_date
+        akhir_hari = periode_date + timedelta(days=1)
+        query = query.filter(MfUnitKerja.UPDATE_DATE >= awal_hari, MfUnitKerja.UPDATE_DATE < akhir_hari)
+
+    # --- Filter field1/field2 ---
+    # Nama Unit Kerja -> kolom teks, pakai partial match (ilike)
+    # Unit Kerja ID   -> kolom Integer, exact match angka
+    for field, keyword in [(field1, keyword1), (field2, keyword2)]:
+        if not field or not keyword:
+            continue  # filter tidak dipakai -> skip, tidak wajib diisi
+
+        if field == 'Unit Kerja ID':
+            try:
+                nilai = int(keyword)
+            except ValueError:
+                return jsonify({'status': 'error', 'message': 'Unit Kerja ID harus berupa angka'}), 400
+            query = query.filter(MfUnitKerja.UNIT_KERJA_ID == nilai)
+        elif field == 'Nama Unit Kerja':
+            query = query.filter(MfUnitKerja.NAMA_UNIT_KERJA.ilike(f'%{keyword}%'))
+
+    unit_kerja_list = query.order_by(MfUnitKerja.URUT_REPORT.asc(), MfUnitKerja.NAMA_UNIT_KERJA.asc()).all()
+
+    tipe_label = {1: 'Pusat', 2: 'Pos'}
+
+    data = [
+        {
+            'no': idx + 1,
+            'unit_kerja_id': row.UNIT_KERJA_ID,
+            'nama_unit_kerja': row.NAMA_UNIT_KERJA or '-',
+            'tipe': tipe_label.get(row.IS_PUSAT, '-'),
+            'urut_report': row.URUT_REPORT if row.URUT_REPORT is not None else '-',
+            'updated': row.UPDATE_DATE.strftime('%d-%m-%Y %H:%M') if row.UPDATE_DATE else '-',
+        }
+        for idx, row in enumerate(unit_kerja_list)
+    ]
+
+    return jsonify({'status': 'success', 'data': data})
 
 def cari_user_account():
     """Render halaman Cari User Account."""

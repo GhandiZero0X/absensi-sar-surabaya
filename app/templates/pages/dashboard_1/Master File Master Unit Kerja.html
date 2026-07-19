@@ -33,21 +33,10 @@
 
                         <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
                             <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari Master Unit Kerja.html"
+                                <a href="{{ url_for('main.view_cari_master_unit_kerja') }}"
                                     class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
                                     <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
                                 </a>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </button>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -60,7 +49,7 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Unit Kerja ID</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
+                                    <input type="number" class="form-control-sm border w-100" id="inputUnitKerjaId">
                                     <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                 </div>
                             </div>
@@ -71,21 +60,9 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Nama Unit Kerja</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
+                                    <input type="text" class="form-control-sm border w-100" id="inputNamaUnitKerja">
                                     <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Isi Aktif</label>
-                            <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
-                                    <option value="">Pilih</option>
-                                    <option>Aktif</option>
-                                    <option>Non Aktif</option>
-                                </select>
                             </div>
                         </div>
 
@@ -95,7 +72,7 @@
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
                                     <input type="number" class="form-control-sm border w-100 text-end" min="0" step="1"
-                                        value="0">
+                                        value="0" id="inputUrutReport">
                                     <span class="icon-append">
                                         <i class="bi bi-sort-numeric-down"></i>
                                     </span>
@@ -103,16 +80,20 @@
                             </div>
                         </div>
 
-                        <div class="col-12 d-md-flex align-items-center">
+                        <div class="col-12 d-md-flex align-items-center mb-2">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tipe</label>
-                            <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                            <div class="col-md-7 d-flex align-items-center gap-2 flex-wrap">
+                                <select class="form-select-sm border custom-select flex-grow-1" style="min-width: 150px;" id="inputTipe">
                                     <option value="">Pilih</option>
-                                    <option>Pusat</option>
-                                    <option>Pos</option>
+                                    <option value="Pusat">Pusat</option>
+                                    <option value="Pos">Pos</option>
                                 </select>
                             </div>
+                            <button type="button" class="btn btn-orange-figma px-4 ms-md-3 mt-2 mt-md-0"
+                                        id="btnSimpanUnitKerja" style="white-space: nowrap;">
+                                    <i class="bi bi-save me-1"></i>Simpan
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -123,5 +104,72 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btnSave = document.getElementById('btnSimpanUnitKerja');
 
+    const el = {
+        unitKerjaId: document.getElementById('inputUnitKerjaId'),
+        namaUnitKerja: document.getElementById('inputNamaUnitKerja'),
+        urutReport: document.getElementById('inputUrutReport'),
+        tipe: document.getElementById('inputTipe'),
+    };
+
+    function resetForm() {
+        el.unitKerjaId.value = '';
+        el.namaUnitKerja.value = '';
+        el.urutReport.value = '0';
+        el.tipe.value = '';
+    }
+
+    async function saveUnitKerja() {
+        if (!el.unitKerjaId.value.trim()) {
+            alert('Unit Kerja ID wajib diisi');
+            return;
+        }
+        if (!el.namaUnitKerja.value.trim()) {
+            alert('Nama Unit Kerja wajib diisi');
+            return;
+        }
+        if (!el.tipe.value) {
+            alert('Tipe wajib dipilih');
+            return;
+        }
+
+        const payload = {
+            unit_kerja_id: el.unitKerjaId.value,
+            nama_unit_kerja: el.namaUnitKerja.value.trim(),
+            urut_report: el.urutReport.value,
+            tipe: el.tipe.value,
+        };
+
+        btnSave.disabled = true;
+
+        try {
+            const res = await fetch('/api/unit-kerja/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const json = await res.json();
+
+            if (json.status !== 'success') {
+                alert(json.message || 'Gagal menyimpan data unit kerja');
+                return;
+            }
+
+            alert('Data unit kerja berhasil disimpan');
+            resetForm();
+
+        } catch (err) {
+            console.error('Gagal menyimpan unit kerja:', err);
+            alert('Terjadi kesalahan jaringan');
+        } finally {
+            btnSave.disabled = false;
+        }
+    }
+
+    btnSave.addEventListener('click', saveUnitKerja);
+});
+</script>
 {% endblock %}
