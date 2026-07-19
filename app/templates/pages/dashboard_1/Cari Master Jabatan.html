@@ -11,7 +11,7 @@
                 <h5 class="m-b-10">Master File</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Master File Master Jam Finger.html">Master Jabatan</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_master_jabatan') }}">Master Jabatan</a></li>
                 <li class="breadcrumb-item">Cari Master Jabatan</li>
             </ul>
         </div>
@@ -23,40 +23,45 @@
                 <div class="card-header-custom d-flex justify-content-between align-items-center p-3"
                     style="background: #ffffff; border-bottom: 1px solid #eee;">
                     <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Transaksi</h6>
-                    <a href="Master File Master Jabatan.html" class="btn-close-custom">
+                    <a href="{{ url_for('main.view_master_jabatan') }}" class="btn-close-custom">
                         <i class="bi bi-x-lg"></i>
                     </a>
                 </div>
 
                 <div class="card-body p-4">
                     <div class="row mb-4 align-items-center">
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
                             <label class="filter-label-wide">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Tanggal Mulai</option>
+                            <select id="filterField1" class="form-select-sm border custom-select w-mobile-100">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Jabatan ID">Jabatan ID</option>
+                                <option value="Nama Jabatan">Nama Jabatan</option>
+                                <option value="Isi Aktif">Isi Aktif</option>
+                                <option value="Tanggal Mulai">Tanggal Mulai</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" id="filterKeyword1" class="form-control-sm border">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
                             <span class="mx-md-2 fw-bold text-dan">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Tanggal Mulai</option>
+                            <select id="filterField2" class="form-select-sm border custom-select w-mobile-100">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Jabatan ID">Jabatan ID</option>
+                                <option value="Nama Jabatan">Nama Jabatan</option>
+                                <option value="Isi Aktif">Isi Aktif</option>
+                                <option value="Tanggal Mulai">Tanggal Mulai</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" id="filterKeyword2" class="form-control-sm border">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button id="btnRefreshJabatan" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
@@ -84,7 +89,7 @@
                                     <th style="color:white; vertical-align: middle;">UPDATED</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="jabatanTableBody">
                                 <tr>
                                     <td colspan="8" style="vertical-align: middle; padding: 20px;">No records to
                                         display.</td>
@@ -100,5 +105,64 @@
 {% endblock %}
 
 {% block script %}
+<script>
+function loadJabatanList() {
+    const field1   = document.getElementById('filterField1').value;
+    const keyword1 = document.getElementById('filterKeyword1').value.trim();
+    const field2   = document.getElementById('filterField2').value;
+    const keyword2 = document.getElementById('filterKeyword2').value.trim();
 
+    const params = new URLSearchParams();
+    if (field1 && keyword1) {
+        params.append('field1', field1);
+        params.append('keyword1', keyword1);
+    }
+    if (field2 && keyword2) {
+        params.append('field2', field2);
+        params.append('keyword2', keyword2);
+    }
+
+    fetch("{{ url_for('main.api_jabatan_list') }}?" + params.toString())
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById('jabatanTableBody');
+            tbody.innerHTML = '';
+
+            if (data.status !== 'success') {
+                tbody.innerHTML = `<tr><td colspan="8" style="padding:20px;">${data.message || 'Terjadi kesalahan'}</td></tr>`;
+                return;
+            }
+
+            if (data.data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="padding:20px;">No records to display.</td></tr>';
+                return;
+            }
+
+            data.data.forEach(row => {
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>${row.no}</td>
+                        <td>${row.jabatan_id}</td>
+                        <td>${row.nama_jabatan}</td>
+                        <td>${row.butir_kegiatan}</td>
+                        <td>${row.urut_jabatan}</td>
+                        <td>${row.is_aktif}</td>
+                        <td>${row.updated}</td>
+                    </tr>
+                `);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            const tbody = document.getElementById('jabatanTableBody');
+            tbody.innerHTML = '<tr><td colspan="8" style="padding:20px;">Gagal memuat data.</td></tr>';
+        });
+}
+
+document.getElementById('btnRefreshJabatan').addEventListener('click', loadJabatanList);
+
+// Load semua data begitu halaman dibuka (sama seperti klik Refresh dengan filter kosong)
+document.addEventListener('DOMContentLoaded', loadJabatanList);
+</script>
 {% endblock %}

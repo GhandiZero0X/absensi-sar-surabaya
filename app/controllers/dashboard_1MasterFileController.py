@@ -9,6 +9,9 @@ from app.models.unitKerjaModel import MfUnitKerja
 from app.models.kalenderModel import MfKalender
 from app.models.potModel import MfPot
 from app.models.jamKerjaModel import MfJamKerja
+from app.models.jabatanModel import MfJabatan
+from app.models.groupJabatanModel import MfGroupJabatan
+from app.models.subGroupJabatanModel import MfSubGroupJabatan
 
 GOOGLE_ID_HOLIDAY_CALENDAR_ID = 'id.indonesian#holiday@group.v.calendar.google.com'
 
@@ -17,8 +20,150 @@ def master_butir_kegiatan():
     return render_template('pages/dashboard_1/Master File Butir Kegiatan.html')
 
 def master_jabatan():
-    """Render halaman Master File Master Jabatan."""
-    return render_template('pages/dashboard_1/Master File Master Jabatan.html')
+    """
+    Render halaman Master File Master Jabatan.
+    Group Jabatan & SubGroup Jabatan diisi dari tabel MF_GROUP_JABATAN dan
+    MF_SUB_GROUP_JABATAN (server-side render) — bukan hardcode di HTML,
+    supaya kalau ada group/subgroup baru, cukup tambah row di DB.
+    """
+    group_jabatan_list = MfGroupJabatan.query.order_by(
+        MfGroupJabatan.GROUP_JABATAN_ID.asc()
+    ).all()
+    sub_group_jabatan_list = MfSubGroupJabatan.query.order_by(
+        MfSubGroupJabatan.SUB_GROUP_JABATAN_ID.asc()
+    ).all()
+
+    return render_template(
+        'pages/dashboard_1/Master File Master Jabatan.html',
+        group_jabatan_list=group_jabatan_list,
+        sub_group_jabatan_list=sub_group_jabatan_list,
+    )
+
+def save_jabatan():
+    """
+    Simpan data Master Jabatan baru dari form.
+    Body JSON yang diharapkan:
+    {
+        "group_jabatan_id": 10,
+        "sub_group_jabatan_id": 10101010,
+        "jabatan_id": 5001,
+        "nama_jabatan": "Analis SAR",
+        "parent_jabatan_id": 0,      // -> JABATAN_MANAGE (opsional)
+        "level_jabatan": 1,          // -> URUT_JABATAN (wajib)
+        "type_jabatan": "FT",
+        "is_aktif": true             // true=Aktif -> IS_USE=1, false=Non Aktif -> IS_USE=0
+    }
+
+    Catatan: JABATAN_ID_BARU (FK ke PERUBAHAN_JABATAN, NOT NULL) belum
+    ada field-nya di form ini. Untuk sementara diisi otomatis sama
+    dengan jabatan_id (asumsi: belum ada perubahan jabatan). Sesuaikan
+    kalau logika sebenarnya berbeda atau tabel PERUBAHAN_JABATAN sudah
+    ada modelnya.
+    """
+    payload = request.get_json(silent=True) or {}
+
+    group_jabatan_id_raw = payload.get('group_jabatan_id')
+    sub_group_jabatan_id_raw = payload.get('sub_group_jabatan_id')
+    jabatan_id_raw = payload.get('jabatan_id')
+    nama_jabatan = (payload.get('nama_jabatan') or '').strip()
+    parent_jabatan_id_raw = payload.get('parent_jabatan_id')
+    level_jabatan_raw = payload.get('level_jabatan')
+    type_jabatan = (payload.get('type_jabatan') or '').strip()
+    is_aktif_raw = payload.get('is_aktif')
+
+    # --- Validasi field wajib ---
+    if group_jabatan_id_raw in (None, ''):
+        return jsonify({'status': 'error', 'message': 'Group Jabatan wajib dipilih'}), 400
+    if sub_group_jabatan_id_raw in (None, ''):
+        return jsonify({'status': 'error', 'message': 'SubGroup Jabatan wajib dipilih'}), 400
+    if jabatan_id_raw in (None, ''):
+        return jsonify({'status': 'error', 'message': 'Jabatan ID wajib diisi'}), 400
+    if not nama_jabatan:
+        return jsonify({'status': 'error', 'message': 'Nama Jabatan wajib diisi'}), 400
+    if level_jabatan_raw in (None, ''):
+        return jsonify({'status': 'error', 'message': 'Level Jabatan wajib diisi'}), 400
+    if not type_jabatan:
+        return jsonify({'status': 'error', 'message': 'Type wajib dipilih'}), 400
+    if is_aktif_raw is None:
+        return jsonify({'status': 'error', 'message': 'Isi Aktif wajib dipilih'}), 400
+
+    # --- Validasi & konversi Jabatan ID ---
+    try:
+        jabatan_id = int(jabatan_id_raw)
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'Jabatan ID harus berupa angka'}), 400
+
+    # Cegah duplikat primary key
+    existing = MfJabatan.query.get(jabatan_id)
+    if existing is not None:
+        return jsonify({
+            'status': 'error',
+            'message': f'Jabatan ID {jabatan_id} sudah terdaftar ({existing.NAMA_JABATAN})'
+        }), 409
+
+    # --- Validasi & konversi Group Jabatan ID (harus ada di MF_GROUP_JABATAN) ---
+    try:
+        group_jabatan_id = int(group_jabatan_id_raw)
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'Group Jabatan ID harus berupa angka'}), 400
+
+    group_jabatan = MfGroupJabatan.query.get(group_jabatan_id)
+    if group_jabatan is None:
+        return jsonify({'status': 'error', 'message': 'Group Jabatan tidak ditemukan'}), 400
+
+    # --- Validasi & konversi SubGroup Jabatan ID (harus ada di MF_SUB_GROUP_JABATAN) ---
+    try:
+        sub_group_jabatan_id = int(sub_group_jabatan_id_raw)
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'SubGroup Jabatan ID harus berupa angka'}), 400
+
+    sub_group_jabatan = MfSubGroupJabatan.query.get(sub_group_jabatan_id)
+    if sub_group_jabatan is None:
+        return jsonify({'status': 'error', 'message': 'SubGroup Jabatan tidak ditemukan'}), 400
+
+    # --- Validasi & konversi Parent Jabatan ID (opsional) ---
+    parent_jabatan_id = None
+    if parent_jabatan_id_raw not in (None, ''):
+        try:
+            parent_jabatan_id = int(parent_jabatan_id_raw)
+        except (TypeError, ValueError):
+            return jsonify({'status': 'error', 'message': 'Parent Jabatan ID harus berupa angka'}), 400
+
+    # --- Validasi & konversi Level Jabatan ---
+    try:
+        level_jabatan = int(level_jabatan_raw)
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'Level Jabatan harus berupa angka bulat'}), 400
+
+    # --- Validasi Type ---
+    if type_jabatan not in ('FT', 'FU'):
+        return jsonify({'status': 'error', 'message': 'Type harus "FT" atau "FU"'}), 400
+
+    # --- Konversi Isi Aktif: Aktif -> 1, Non Aktif -> 0 ---
+    is_use = 1 if is_aktif_raw else 0
+
+    jabatan = MfJabatan(
+        JABATAN_ID=jabatan_id,
+        JABATAN_ID_BARU=jabatan_id,  # asumsi sementara: belum ada perubahan jabatan
+        GROUP_JABATAN_ID=group_jabatan_id,
+        SUB_GROUP_JABATAN_ID=sub_group_jabatan_id,
+        JABATAN_MANAGE=parent_jabatan_id,
+        NAMA_JABATAN=nama_jabatan,
+        URUT_JABATAN=level_jabatan,
+        TYPE_JABATAN=type_jabatan,
+        IS_USE=is_use,
+        UPDATE_IN_BY=session.get('nip', 'system'),
+        UPDATE_DATE=datetime.utcnow(),
+    )
+
+    db.session.add(jabatan)
+    db.session.commit()
+
+    return jsonify({
+        'status': 'success',
+        'message': 'Data jabatan berhasil disimpan',
+        'data': jabatan.to_dict(),
+    })
 
 def master_jam_finger():
     """Render halaman Master File Master Jam Finger."""
@@ -719,6 +864,83 @@ def master_uang_makan():
 def cari_master_jabatan():
     """Render halaman Cari Master Jabatan."""
     return render_template('pages/dashboard_1/Cari Master Jabatan.html')
+
+def get_jabatan_list():
+    """
+    Ambil data Master Jabatan untuk tabel Cari Master Jabatan.
+
+    Filter opsional (semua bisa kosong -> berlaku seperti klik Refresh biasa,
+    menampilkan seluruh data):
+      - field1/keyword1 dan field2/keyword2 : dua dropdown "Filter"
+        (Jabatan ID, Nama Jabatan, Isi Aktif, Tanggal Mulai), digabung dengan AND
+
+    Catatan: "Tanggal Mulai" dipetakan ke kolom UPDATE_DATE karena
+    MfJabatan tidak punya kolom tanggal mulai berlaku tersendiri.
+    Sesuaikan kalau ternyata dimaksudkan untuk kolom lain.
+    """
+    field1 = request.args.get('field1')
+    keyword1 = request.args.get('keyword1', '').strip()
+    field2 = request.args.get('field2')
+    keyword2 = request.args.get('keyword2', '').strip()
+
+    query = MfJabatan.query
+
+    for field, keyword in [(field1, keyword1), (field2, keyword2)]:
+        if not field or not keyword:
+            continue  # filter ini tidak dipakai -> skip, tidak wajib diisi
+
+        if field == 'Jabatan ID':
+            try:
+                nilai = int(keyword)
+            except ValueError:
+                return jsonify({'status': 'error', 'message': 'Jabatan ID harus berupa angka'}), 400
+            query = query.filter(MfJabatan.JABATAN_ID == nilai)
+
+        elif field == 'Nama Jabatan':
+            query = query.filter(MfJabatan.NAMA_JABATAN.ilike(f'%{keyword}%'))
+
+        elif field == 'Isi Aktif':
+            keyword_lower = keyword.strip().lower()
+            if keyword_lower in ('aktif', '1'):
+                query = query.filter(MfJabatan.IS_USE == 1)
+            elif keyword_lower in ('non aktif', 'nonaktif', '0'):
+                query = query.filter(MfJabatan.IS_USE == 0)
+            else:
+                return jsonify({
+                    'status': 'error',
+                    'message': 'Isi Aktif harus diisi "Aktif" atau "Non Aktif"'
+                }), 400
+
+        elif field == 'Tanggal Mulai':
+            try:
+                tgl = datetime.strptime(keyword, '%Y-%m-%d')
+            except ValueError:
+                return jsonify({'status': 'error', 'message': 'Format Tanggal Mulai harus YYYY-MM-DD'}), 400
+            awal_hari = tgl
+            akhir_hari = tgl + timedelta(days=1)
+            query = query.filter(
+                MfJabatan.UPDATE_DATE >= awal_hari,
+                MfJabatan.UPDATE_DATE < akhir_hari
+            )
+
+    jabatan_list = query.order_by(MfJabatan.JABATAN_ID.asc()).all()
+
+    is_aktif_label = {1: 'Aktif', 0: 'Non Aktif'}
+
+    data = [
+        {
+            'no': idx + 1,
+            'jabatan_id': row.JABATAN_ID,
+            'nama_jabatan': row.NAMA_JABATAN or '-',
+            'butir_kegiatan': '-',  # belum ada model/relasi Butir Kegiatan
+            'urut_jabatan': row.URUT_JABATAN if row.URUT_JABATAN is not None else '-',
+            'is_aktif': is_aktif_label.get(row.IS_USE, '-'),
+            'updated': row.UPDATE_DATE.strftime('%d-%m-%Y %H:%M') if row.UPDATE_DATE else '-',
+        }
+        for idx, row in enumerate(jabatan_list)
+    ]
+
+    return jsonify({'status': 'success', 'data': data})
 
 def cari_master_jam_finger():
     """Render halaman Cari Master Jam Finger."""

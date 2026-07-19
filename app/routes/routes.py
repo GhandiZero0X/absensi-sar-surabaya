@@ -6,6 +6,7 @@ from app.controllers.dashboard_1HomeController import (
     dashboard_kgb, dashboard_pangkat, dashboard_pelanggaran, dashboard_pensiun, dashboard_trt)
 from app.controllers.dashboard_1MasterFileController import (
     create_kalender_tahun,
+    get_jabatan_list,
     get_jam_kerja_list,
     get_kalender_list,
     get_pegawai_vip_list,
@@ -34,6 +35,7 @@ from app.controllers.dashboard_1MasterFileController import (
     cari_master_unit_kerja,
     cari_user_account,
     create_kalender,
+    save_jabatan,
     save_jam_kerja,
     save_potongan,
     save_tunkin_class,
@@ -142,6 +144,11 @@ def view_master_butir_kegiatan():
 def view_master_jabatan():
     return master_jabatan()
 
+@main.route('/api/jabatan/save', methods=['POST'])
+@login_required
+def api_jabatan_save():
+    return save_jabatan()
+
 @main.route('/master/jam-finger')
 @login_required
 def view_master_jam_finger():
@@ -237,6 +244,11 @@ def view_master_uang_makan():
 @login_required
 def view_cari_master_jabatan():
     return cari_master_jabatan()
+
+@main.route('/api/jabatan/list', methods=['GET'])
+@login_required
+def api_jabatan_list():
+    return get_jabatan_list()
 
 @main.route('/master/cari/jam-finger')
 @login_required
