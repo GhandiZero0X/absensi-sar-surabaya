@@ -506,63 +506,76 @@
                             <div class="row g-3">
                                 <div class="card-body p-4">
                                     <!-- Filter Section -->
+                                    <!-- Filter Section -->
                                     <div class="row g-3 mb-4">
-                                        <!-- Tanggal Activity -->
-                                        <div class="col-12 d-md-flex align-items-center mb-2">
-                                            <label class="col-md-2 form-label-bold">Tanggal Activity</label>
-                                            <div class="col-md-2 me-2">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control" placeholder="Tgl Mulai">
-                                                    <span class="input-group-text bg-white"><i
-                                                            class="bi bi-calendar3"></i></span>
+                                        <!-- Baris 1: Tanggal Activity -->
+                                        <div class="col-12 d-md-flex align-items-center">
+                                            <!-- Label Utama -->
+                                            <label class="col-md-2 form-label-bold mb-1 mb-md-0 text-nowrap">Tanggal
+                                                Activity</label>
+
+                                            <!-- Input Tanggal Mulai -->
+                                            <div class="col-md-3 me-md-2 mb-2 mb-md-0">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="date" class="form-control-sm border w-100"
+                                                        style="outline: none;" placeholder="Tgl Mulai">
+                                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                                 </div>
                                             </div>
-                                            <span class="mx-2 fw-bold text-muted small">s/d</span>
-                                            <div class="col-md-2">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control" placeholder="Tgl Akhir">
-                                                    <span class="input-group-text bg-white"><i
-                                                            class="bi bi-calendar3"></i></span>
+
+                                            <!-- Separator s/d -->
+                                            <span
+                                                class="mx-2 fw-bold text-muted small mb-2 mb-md-0 text-center text-nowrap"
+                                                style="min-width: 30px;">s/d</span>
+
+                                            <!-- Input Tanggal Akhir -->
+                                            <div class="col-md-3 ms-md-2">
+                                                <div class="input-group-custom w-100">
+                                                    <input type="date" class="form-control-sm border w-100"
+                                                        style="outline: none;" placeholder="Tgl Akhir">
+                                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <!-- Filter Ganda (Dan) -->
+                                        <!-- Baris 2: Filter (Dipaksa Sebaris di Desktop) -->
                                         <div class="col-12 d-md-flex align-items-center">
-                                            <label class="col-md-2 form-label-bold">Filter</label>
-                                            <!-- Field 1 -->
-                                            <div class="col-md-2 me-2">
-                                                <select class="form-select form-select-sm">
+                                            <!-- Label Filter -->
+                                            <label
+                                                class="col-md-2 filter-label-wide mb-1 mb-md-0 text-nowrap">Filter</label>
+
+                                            <!-- Elemen di dalam Filter (d-md-flex flex-md-nowrap) -->
+                                            <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-2">
+                                                <!-- Select Field 1 -->
+                                                <select class="form-select-sm border custom-select"
+                                                    style="width: 120px;">
                                                     <option>- Pilih Field -</option>
-                                                    <option>NIP</option>
-                                                    <option>Nama</option>
-                                                    <option>Unit Kerja</option>
+                                                    <option>Tanggal Mulai</option>
                                                 </select>
-                                            </div>
-                                            <div class="col-md-2 me-3">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control">
-                                                    <span class="input-group-text bg-white"><i class="bi bi-pencil-fill"
-                                                            style="font-size: 10px;"></i></span>
+
+                                                <!-- Input Text 1 -->
+                                                <div class="input-group-custom" style="width: 110px;">
+                                                    <input type="text" class="form-control-sm border w-100"
+                                                        style="outline: none;">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                                 </div>
-                                            </div>
 
-                                            <span class="mx-2 fw-bold text-muted small">Dan</span>
+                                                <!-- Separator Dan -->
+                                                <span class="mx-1 fw-bold text-dan text-nowrap text-center"
+                                                    style="min-width: 30px;">Dan</span>
 
-                                            <!-- Field 2 -->
-                                            <div class="col-md-2 me-2">
-                                                <select class="form-select form-select-sm">
+                                                <!-- Select Field 2 -->
+                                                <select class="form-select-sm border custom-select"
+                                                    style="width: 120px;">
                                                     <option>- Pilih Field -</option>
-                                                    <option>NIP</option>
-                                                    <option>Nama</option>
-                                                    <option>Unit Kerja</option>
+                                                    <option>Tanggal Mulai</option>
                                                 </select>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control">
-                                                    <span class="input-group-text bg-white"><i class="bi bi-pencil-fill"
-                                                            style="font-size: 10px;"></i></span>
+
+                                                <!-- Input Text 2 -->
+                                                <div class="input-group-custom" style="width: 110px;">
+                                                    <input type="text" class="form-control-sm border w-100"
+                                                        style="outline: none;">
+                                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                                 </div>
                                             </div>
                                         </div>

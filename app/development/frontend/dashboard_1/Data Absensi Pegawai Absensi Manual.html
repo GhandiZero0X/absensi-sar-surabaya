@@ -8,7 +8,6 @@
     <meta name="description" content="">
     <meta name="keyword" content="">
     <meta name="author" content="theme_ocean">
-    <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- BEGIN: Apps Title-->
     <title>Data Absensi Pegawai Absensi Manual</title>
     <!-- END:  Apps Title-->
@@ -447,16 +446,6 @@
     <!-- ================================================================ -->
     <!-- [End] Header -->
 
-    
-Berdasarkan gambar referensi yang kamu lampirkan, struktur halaman di dalam kartu tersebut bukan berupa satu form input vertikal yang panjang, melainkan terdiri dari **tiga bagian utama**:
-
-1. **Dua kolom panel filter di atas** (kiri untuk Unit Kerja/Tanggal/No Surat, kanan untuk Shift/Keterangan/Status In-Out).
-2. **Tabel data** di bagian tengah (`No records to display`).
-3. **Panel Insert Pegawai** di bagian bawah.
-
-Berikut adalah penyesuaian kode lengkap di dalam `.card-body` agar tata letak, tombol, dan susunan *field*-nya sama persis seperti gambar:
-
-```html
     <!-- [Start] Main Content -->
     <!-- ================================================================ -->
     <main class="nxl-container">
@@ -467,7 +456,7 @@ Berikut adalah penyesuaian kode lengkap di dalam `.card-body` agar tata letak, t
                         <h5 class="m-b-10">Data Absensi</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="Data Absensi Non Finger.html">Pegawai Absensi Manual</a></li>
+                        <li class="breadcrumb-item"><a href="Data Absensi Pegawai Absensi Manual.html">Absensi Manual</a></li>
                         <li class="breadcrumb-item">Edit</li>
                     </ul>
                 </div>
@@ -478,21 +467,21 @@ Berikut adalah penyesuaian kode lengkap di dalam `.card-body` agar tata letak, t
                     <div class="card mb-4 filter-card">
                         <div class="card-header-custom d-flex justify-content-between align-items-center" style="border-radius: 10px;">
                             <h6 class="mb-0">
-                                <i class="bi bi-hand-index-thumb-fill me-2"></i> Pegawai Absensi Manual
+                                <i class="ti ti-edit me-2"></i> Absensi Manual
                             </h6>
                             <div class="header-actions">
                                 <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
                                     <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
                                 </button>
                                 <div class="collapse d-md-flex align-items-center mb-0" id="headerIconsCollapse">
-                                    <div class="header-icons-wrapper d-flex align-items-center gap-2 p-2 p-md-0 mt-2 mt-md-0">
-                                        <!-- Form Pencarian Kecil & Tombol Kuning Sesuai Gambar -->
-                                        <div class="position-relative d-inline-block">
-                                            <input type="text" class="form-control form-control-sm pe-4 border-secondary" style="width: 150px; height: 28px; border-radius: 4px;">
-                                            <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-2 text-secondary" style="font-size: 0.85rem;"></i>
-                                        </div>
-                                        <button class="btn btn-sm p-0 d-flex align-items-center justify-content-center border border-secondary bg-warning text-dark" style="width: 28px; height: 28px; border-radius: 4px;">
-                                            <i class="bi bi-file-earmark"></i>
+                                    <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                        <a href="Cari Absensi Pegawai Absen Manual.html"
+                                            class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                        </a>
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-file-earmark-plus"
+                                                style="color: #0d6efd; font-size: 1.2rem;"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -509,7 +498,7 @@ Berikut adalah penyesuaian kode lengkap di dalam `.card-body` agar tata letak, t
                                 background: #fff;
                             }
                             .sub-panel-header {
-                                background-color: #E29526;
+                                background-color: #e66b30;
                                 height: 35px;
                                 width: 100%;
                             }
@@ -599,7 +588,7 @@ Berikut adalah penyesuaian kode lengkap di dalam `.card-body` agar tata letak, t
                                             </div>
                                             <div class="row align-items-center">
                                                 <div class="col-sm-3">
-                                                    <button type="button" class="btn btn-sm text-white rounded-pill px-2 py-0 w-100" style="font-size: 0.7rem; background-color: #E29526; border: none;">Acak Jam</button>
+                                                    <button type="button" class="btn btn-sm text-white rounded-pill px-2 py-0 w-100" style="font-size: 0.7rem; background-color: #e66b30; border: none;">Acak Jam</button>
                                                 </div>
                                                 <div class="col-sm-9 d-flex gap-4 ps-3">
                                                     <div class="form-check d-flex align-items-center gap-1 min-height-0">
@@ -673,6 +662,7 @@ Berikut adalah penyesuaian kode lengkap di dalam `.card-body` agar tata letak, t
     </main>
     <!-- ================================================================ -->
     <!-- [End] Main Content -->
+
 
     <!-- BEGIN: Vendors JS-->
     <script src="assets/vendors/js/vendors.min.js"></script>
