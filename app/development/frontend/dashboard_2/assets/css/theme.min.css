@@ -10015,3 +10015,43 @@ html.app-font-family-roboto-slab body {
         width: auto !important;
     }
 }
+
+
+.attendance-table{
+    min-width:1600px;
+    border-collapse:collapse;
+}
+.attendance-table thead th{
+    background:#4f7db8;
+    color:#fff;
+    text-align:center;
+    white-space:nowrap;
+    min-width:70px;
+}
+.attendance-table td{
+    width:70px;
+    height:55px;
+    text-align:center;
+    vertical-align:middle;
+}
+.sticky-col{
+    position:sticky;
+    left:0;
+    background:#eef6ff;
+    min-width:220px!important;
+    font-weight:600;
+    z-index:5;
+}
+.status{
+    width:28px;
+    height:28px;
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:3px;
+    margin:auto;
+}
+.status i{color:#fff;font-size:16px;}
+.success{background:#79C66B;}
+.warning{background:#E6B04B;}
+.danger{background:#D9534F;}
