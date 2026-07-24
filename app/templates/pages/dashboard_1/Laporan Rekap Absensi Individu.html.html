@@ -1,0 +1,144 @@
+<!-- pages/dashboard_1/Laporan Rekap Absensi Individu.html -->
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- Rekap Absensi Individu{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Laporan</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Laporan</a></li>
+                <li class="breadcrumb-item">Rekap Absensi Individu</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+
+                <!-- Header Utama Halaman -->
+                <div class="card-header-custom d-flex justify-content-between align-items-center"
+                    style="border-radius: 10px;">
+                    <h6 class="mb-0">
+                        <i class="ti ti-checkbox me-2"></i> Report Absensi Per Personal
+                    </h6>
+                </div>
+
+                <!-- Custom CSS Style Khusus Halaman Ini -->
+                <style>
+                    .orange-section-header {
+                        background-color: #e66b30 !important;
+                        color: #ffffff !important;
+                        padding: 8px 15px;
+                        font-size: 0.9rem;
+                        font-weight: 500;
+                        border-radius: 6px 6px 0 0;
+                    }
+
+                    .inner-report-card {
+                        border: 1px solid #e0e0e0;
+                        border-radius: 6px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+                    }
+
+                    .form-label-custom {
+                        font-size: 0.85rem;
+                        font-weight: 500;
+                        color: #333;
+                        min-width: 100px;
+                    }
+
+                    .btn-pill-run {
+                        background-color: #0000ff;
+                        color: white !important;
+                        border-radius: 50px;
+                        padding: 5px 30px;
+                        font-size: 0.8rem;
+                        border: none;
+                        font-weight: 600;
+                        letter-spacing: 0.5px;
+                        transition: all 0.2s ease;
+                    }
+
+                    .btn-pill-run:hover {
+                        background-color: #0000cc;
+                    }
+
+                    .custom-input-field {
+                        height: 31px;
+                        outline: none;
+                        border: 1px solid #dee2e6;
+                        border-radius: 4px;
+                        font-size: 0.85rem;
+                    }
+
+                    .custom-input-field:focus {
+                        border-color: #a8a8a8;
+                    }
+                </style>
+
+                <!-- Body Utama Content -->
+                <div class="card-body p-4">
+                    <div class="row">
+
+                        <!-- SECTION: Filter Data -->
+                        <div class="col-12">
+                            <div class="inner-report-card bg-white">
+                                <div class="orange-section-header">Filter Data</div>
+                                <div class="p-4">
+
+                                    <!-- Input Periode -->
+                                    <div class="row align-items-center mb-3">
+                                        <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
+                                        <div class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
+                                            <div style="max-width: 200px; width: 100%;">
+                                                <input type="date"
+                                                    class="form-control-sm custom-input-field w-100 px-2">
+                                            </div>
+                                            <span class="mx-2 fw-bold text-muted small">s/d</span>
+                                            <div style="max-width: 200px; width: 100%;">
+                                                <input type="date"
+                                                    class="form-control-sm custom-input-field w-100 px-2">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Input Nama -->
+                                    <div class="row align-items-center mb-4">
+                                        <label class="col-md-2 form-label-custom mb-1 mb-md-0">Nama</label>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control-sm custom-input-field w-100 px-2"
+                                                placeholder="Masukkan nama pegawai...">
+                                        </div>
+                                    </div>
+
+                                    <!-- Tombol RUN -->
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center mt-2">
+                                            <button type="submit" class="btn btn-pill-run shadow-sm">RUN</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

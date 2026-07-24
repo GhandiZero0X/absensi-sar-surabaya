@@ -1,0 +1,396 @@
+<!-- pages/dashboard_1/Laporan Absensi Normalisasi Absensi Finger.html -->
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- Data Absensi Finger{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Data Absensi</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Data Absensi Normalisasi Absensi Finger.html">Absensi Finger</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center"
+                    style="border-radius: 10px;">
+                    <h6 class="mb-0">
+                        <i class="ti ti-fingerprint"></i> Absensi Finger
+                    </h6>
+                    <div class="header-actions">
+                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
+                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                        </button>
+                        <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
+                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                <a href="Cari Absensi Finger.html"
+                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                    <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                </a>
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                                </button>
+
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="card-body p-4">
+                            <!-- Filter Section -->
+                            <!-- Filter Section -->
+                            <div class="row g-3 mb-4">
+                                <!-- Baris 1: Tanggal Activity -->
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <!-- Label Utama -->
+                                    <label class="col-md-2 form-label-bold mb-1 mb-md-0 text-nowrap">Tanggal
+                                        Activity</label>
+
+                                    <!-- Input Tanggal Mulai -->
+                                    <div class="col-md-3 me-md-2 mb-2 mb-md-0">
+                                        <div class="input-group-custom w-100">
+                                            <input type="date" class="form-control-sm border w-100"
+                                                style="outline: none;" placeholder="Tgl Mulai">
+                                            <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Separator s/d -->
+                                    <span class="mx-2 fw-bold text-muted small mb-2 mb-md-0 text-center text-nowrap"
+                                        style="min-width: 30px;">s/d</span>
+
+                                    <!-- Input Tanggal Akhir -->
+                                    <div class="col-md-3 ms-md-2">
+                                        <div class="input-group-custom w-100">
+                                            <input type="date" class="form-control-sm border w-100"
+                                                style="outline: none;" placeholder="Tgl Akhir">
+                                            <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Baris 2: Filter (Dipaksa Sebaris di Desktop) -->
+                                <div class="col-12 d-md-flex align-items-center">
+                                    <!-- Label Filter -->
+                                    <label class="col-md-2 filter-label-wide mb-1 mb-md-0 text-nowrap">Filter</label>
+
+                                    <!-- Elemen di dalam Filter (d-md-flex flex-md-nowrap) -->
+                                    <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-2">
+                                        <!-- Select Field 1 -->
+                                        <select class="form-select-sm border custom-select" style="width: 120px;">
+                                            <option>- Pilih Field -</option>
+                                            <option>Tanggal Mulai</option>
+                                        </select>
+
+                                        <!-- Input Text 1 -->
+                                        <div class="input-group-custom" style="width: 110px;">
+                                            <input type="text" class="form-control-sm border w-100"
+                                                style="outline: none;">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+
+                                        <!-- Separator Dan -->
+                                        <span class="mx-1 fw-bold text-dan text-nowrap text-center"
+                                            style="min-width: 30px;">Dan</span>
+
+                                        <!-- Select Field 2 -->
+                                        <select class="form-select-sm border custom-select" style="width: 120px;">
+                                            <option>- Pilih Field -</option>
+                                            <option>Tanggal Mulai</option>
+                                        </select>
+
+                                        <!-- Input Text 2 -->
+                                        <div class="input-group-custom" style="width: 110px;">
+                                            <input type="text" class="form-control-sm border w-100"
+                                                style="outline: none;">
+                                            <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Custom Style yang Diperkecil -->
+                            <style>
+                                /* Orange Nav Bar Container - Diperketat */
+                                .orange-tab-bar {
+                                    background-color: #e66b30 !important;
+                                    padding: 5px 10px;
+                                    border-radius: 8px 8px 0 0;
+                                    border-bottom: none !important;
+                                    display: flex;
+                                    flex-wrap: nowrap;
+                                    /* Memaksa tetap satu baris */
+                                    gap: 5px;
+                                    align-items: center;
+                                    overflow-x: auto;
+                                    /* Mengantisipasi layar super kecil */
+                                }
+
+                                .orange-tab-bar::-webkit-scrollbar {
+                                    display: none;
+                                    /* Sembunyikan scrollbar jika overflow */
+                                }
+
+                                .orange-tab-bar .nav-item {
+                                    flex-shrink: 0;
+                                }
+
+                                .orange-tab-bar .nav-link {
+                                    color: #ffffff !important;
+                                    font-weight: 500;
+                                    border: none !important;
+                                    background: transparent !important;
+                                    padding: 6px 12px;
+                                    /* Dikecilkan dari 18px */
+                                    font-size: 0.85rem;
+                                    /* Dikecilkan dari 0.9rem */
+                                    border-radius: 5px !important;
+                                    transition: all 0.2s ease;
+                                    white-space: nowrap;
+                                    /* Mencegah teks terpotong ke bawah */
+                                }
+
+                                /* Active Tab State */
+                                .orange-tab-bar .nav-link.active {
+                                    background-color: rgba(255, 255, 255, 0.25) !important;
+                                    color: #ffffff !important;
+                                }
+
+                                .orange-tab-bar .nav-link:hover:not(.active) {
+                                    background-color: rgba(255, 255, 255, 0.1);
+                                }
+
+                                /* Action Bar & Buttons */
+                                .tab-action-bar {
+                                    padding: 12px 5px;
+                                }
+
+                                .btn-pill-blue {
+                                    background-color: #0000ff;
+                                    color: white !important;
+                                    border-radius: 50px;
+                                    padding: 4px 18px;
+                                    font-size: 0.8rem;
+                                    border: none;
+                                    font-weight: 500;
+                                }
+
+                                .btn-pill-blue:hover {
+                                    background-color: #0000cc;
+                                }
+
+                                /* Gray Table Headers */
+                                .table-custom-header th {
+                                    background-color: #f1f3f5 !important;
+                                    color: #495057 !important;
+                                    font-size: 0.8rem;
+                                    font-weight: 500;
+                                    border-bottom: none;
+                                    padding: 8px 10px;
+                                }
+                            </style>
+
+                            <!-- Navigasi Tab (Desain Rapat & Aman dari Turun Baris) -->
+                            <ul class="nav nav-tabs orange-tab-bar" id="absensiTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="finger-tab" data-bs-toggle="tab"
+                                        data-bs-target="#finger-pane" type="button" role="tab">View From
+                                        Finger</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="normalisasi-tab" data-bs-toggle="tab"
+                                        data-bs-target="#normalisasi-pane" type="button" role="tab">Normalisasi</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="export-tab" data-bs-toggle="tab"
+                                        data-bs-target="#export-pane" type="button" role="tab">View Data Absensi
+                                        (Hasil Export)</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="closing-tab" data-bs-toggle="tab"
+                                        data-bs-target="#closing-pane" type="button" role="tab">Penentuan
+                                        Tanggal Closing Absensi</button>
+                                </li>
+                            </ul>
+
+                            <!-- Konten Tab Dinamis -->
+                            <div class="tab-content border border-top-0 rounded-bottom p-2 bg-white"
+                                id="absensiTabContent">
+
+                                <!-- TAB 1: View From Finger -->
+                                <div class="tab-pane fade show active" id="finger-pane" role="tabpanel"
+                                    aria-labelledby="finger-tab">
+                                    <div class="tab-action-bar">
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-pill-blue">Impor</button>
+                                            <button class="btn btn-pill-blue">Next</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table text-center align-middle">
+                                            <thead class="table-custom-header">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>NIP</th>
+                                                    <th>Nama</th>
+                                                    <th>Gol-Pangkat</th>
+                                                    <th>Unit Kerja</th>
+                                                    <th>Waktu</th>
+                                                    <th>Status</th>
+                                                    <th>Transaksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="8" style="padding: 25px;"
+                                                        class="text-start text-muted ps-3">No records to
+                                                        display.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- TAB 2: Normalisasi -->
+                                <div class="tab-pane fade" id="normalisasi-pane" role="tabpanel"
+                                    aria-labelledby="normalisasi-tab">
+                                    <div class="tab-action-bar">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="fw-bold small text-dark">Default Nilai TLM atau PSW tdk
+                                                Check In/Out</span>
+                                            <input type="text"
+                                                class="form-control form-control-sm text-center mx-1 py-1" value="180"
+                                                style="width: 75px; height: 31px;">
+                                            <button class="btn btn-pill-blue">NORMALISASI</button>
+                                            <button class="btn btn-pill-blue">EXPORT</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table text-center align-middle" style="min-width: 1200px;">
+                                            <thead class="table-custom-header">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Reg</th>
+                                                    <th>Nama</th>
+                                                    <th>Tgl Activity</th>
+                                                    <th>Shift</th>
+                                                    <th>Utk Tgl Kerja</th>
+                                                    <th>Hari</th>
+                                                    <th>Pot TLM 1</th>
+                                                    <th>Baku (In)</th>
+                                                    <th>Baku (Out)</th>
+                                                    <th>In</th>
+                                                    <th>Out</th>
+                                                    <th>Awal TLM</th>
+                                                    <th>Total TLM</th>
+                                                    <th>Tk TLM</th>
+                                                    <th>Pot TLM (%)</th>
+                                                    <th>Total PSW</th>
+                                                    <th>Tk PSW</th>
+                                                    <th>Pot PSW (%)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="19" style="padding: 25px;"
+                                                        class="text-start text-muted ps-3">No records to
+                                                        display.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- TAB 3: View Data Absensi (Hasil Export) -->
+                                <div class="tab-pane fade" id="export-pane" role="tabpanel"
+                                    aria-labelledby="export-tab">
+                                    <div class="tab-action-bar">
+                                        <button class="btn btn-pill-blue">Refresh</button>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table text-center align-middle" style="min-width: 1200px;">
+                                            <thead class="table-custom-header">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nama</th>
+                                                    <th>Fingerid</th>
+                                                    <th>Tgl Kerja</th>
+                                                    <th>Hari</th>
+                                                    <th>Baku (In)</th>
+                                                    <th>Baku (Out)</th>
+                                                    <th>In</th>
+                                                    <th>Out</th>
+                                                    <th>Awal TLM</th>
+                                                    <th>Total TLM</th>
+                                                    <th>Tk TLM</th>
+                                                    <th>Pot TLM (%)</th>
+                                                    <th>Total PSW</th>
+                                                    <th>Tk PSW</th>
+                                                    <th>Pot PSW (%)</th>
+                                                    <th>Transaksi In</th>
+                                                    <th>Transaksi Out</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="18" style="padding: 25px;"
+                                                        class="text-start text-muted ps-3">No records to
+                                                        display.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- TAB 4: Penentuan Tanggal Closing Absensi -->
+                                <div class="tab-pane fade" id="closing-pane" role="tabpanel"
+                                    aria-labelledby="closing-tab">
+                                    <div class="p-3 bg-light rounded mt-2" style="max-width: 450px;">
+                                        <div class="d-flex align-items-center mb-3 gap-3">
+                                            <label class="form-label-bold mb-0"
+                                                style="max-width: 120px; flex-shrink: 0;">Tanggal
+                                                Closing</label>
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" class="form-control" placeholder="Per Tgl">
+                                                <span class="input-group-text bg-white"><i
+                                                        class="bi bi-calendar3"></i></span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-success px-4 ms-auto d-block"><i
+                                                class="bi bi-lock-fill"></i> Simpan</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
