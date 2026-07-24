@@ -8,8 +8,9 @@
         content="Portal Internal Basarnas Surabaya untuk mendukung administrasi, kepegawaian, operasional, dan layanan internal pegawai.">
     <meta name="keywords" content="Basarnas, Basarnas Surabaya, Portal Internal, Kepegawaian, Operasional SAR">
     <title>BHRIS Dashboard {% block title %}{% endblock %}</title>
-    
+
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='static_dashboard_2/assets/images/logo1.png') }}">
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='static_dashboard_2/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='static_dashboard_2/assets/vendors/css/vendors.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='static_dashboard_2/assets/vendors/css/select2.min.css') }}">
@@ -23,7 +24,6 @@
 </head>
 
 <body>
-
     <!-- Header Start -->
     {% include 'partials/header.html' %}
     <!-- Header End -->
@@ -39,7 +39,6 @@
     </main>
     <!-- Main End -->
 
-    <!-- Main Start -->
     <script src="{{ url_for('static', filename='static_dashboard_2/assets/vendors/js/vendors.min.js') }}"></script>
     <script src="{{ url_for('static', filename='static_dashboard_2/assets/vendors/js/select2.min.js') }}"></script>
     <script src="{{ url_for('static', filename='static_dashboard_2/assets/vendors/js/select2-active.min.js') }}"></script>

@@ -1,0 +1,197 @@
+<!-- pages/dashboard_2/Kirim_Kritik_Saran.html -->
+{% extends "layout/baseDashboard3.html" %}
+
+{% block title %}- Kirim Kritik dan Saran{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Kirim</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Kirim_Kritik_Saran.html">Kritik dan Saran</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="bi bi-send-fill me-2"></i>Kritik dan Saran
+                    </h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Nama</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">NIP</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jabatan</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">JabatanID</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Gol</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">eMail</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Saran</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-1">
+                                <button class="btn btn-primary w-100 py-2"><i
+                                        class="bi bi-send-fill me-2"></i>Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 filter-card">
+                <div class="card-header-customm">
+                    <h6 class="mb-0">Cari Saran</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div
+                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                            <label class="filter-label-wide">Filter</label>
+
+                            <select class="form-select-sm border custom-select w-mobile-100">
+                                <option>- Pilih Field -</option>
+                            </select>
+
+                            <div class="input-group-custom w-mobile-100">
+                                <input type="text" class="form-control-sm border">
+                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            </div>
+
+                            <span class="mx-md-2 fw-bold text-dan">Dan</span>
+
+                            <select class="form-select-sm border custom-select w-mobile-100">
+                                <option>- Pilih Field -</option>
+                            </select>
+
+                            <div class="input-group-custom w-mobile-100">
+                                <input type="text" class="form-control-sm border">
+                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            </div>
+
+                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm w-100 mb-0">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th class="py-3"
+                                                style="background-color: #f8f9fa; color: #2c5282; font-weight: 700; width: 10%;">
+                                                NIP</th>
+                                            <th class="py-3"
+                                                style="background-color: #f8f9fa; color: #2c5282; font-weight: 700; width: 15%;">
+                                                NAMA</th>
+                                            <th class="py-3"
+                                                style="background-color: #f8f9fa; color: #2c5282; font-weight: 700; width: 15%;">
+                                                JABATAN</th>
+                                            <th class="py-3"
+                                                style="background-color: #f8f9fa; color: #2c5282; font-weight: 700; width: 10%;">
+                                                GOL</th>
+                                            <th class="py-3"
+                                                style="background-color: #f8f9fa; color: #2c5282; font-weight: 700; width: 15%;">
+                                                TANGGAL</th>
+                                            <th class="py-3"
+                                                style="background-color: #f8f9fa; color: #2c5282; font-weight: 700; width: 35%;">
+                                                SARAN</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="p-2 align-middle">
+                                                <textarea class="form-control" rows="2"
+                                                    style="border: 2px solid #000; border-radius: 6px; width: 100%; resize: none;"></textarea>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

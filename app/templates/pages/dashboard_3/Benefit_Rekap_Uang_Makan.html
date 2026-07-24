@@ -1,0 +1,88 @@
+<!-- pages/dashboard_2/Benefit_Rekap_Uang_Makan.html -->
+{% extends "layout/baseDashboard3.html" %}
+
+{% block title %}- Benefit Rekap Uang Makan{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Benefit</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Benefit_Rekap_U.Makan.html">Rekap U.Makan</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="bi bi-hand-thumbs-up-fill me-2"></i>Rekap U.Makan (by Absensi)
+                    </h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Periode</label>
+                            <div class="col-md-7">
+                                <input type="month" class="form-control" style="height:38px;">
+                            </div>
+                            <button id="btn-refresh" class="btn-refresh-custom ms-md-4 w-mobile-100">
+                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade show active" id="table-content" role="tabpanel" style="display: none;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Hari Kerja</th>
+                                    <th>Dinas Luar</th>
+                                    <th>Cuti</th>
+                                    <th>Ijin</th>
+                                    <th>Sakit</th>
+                                    <th>Tdk Absen</th>
+                                    <th>UM (hari)</th>
+                                    <th>Nominal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const refreshBtn = document.getElementById('btn-refresh');
+        const tableContent = document.getElementById('table-content');
+
+        refreshBtn.addEventListener('click', function () {
+            // Menampilkan tabel saat tombol diklik
+            tableContent.style.display = 'block';
+
+            // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+            console.log("Memuat data...");
+        });
+    });
+</script>
+{% endblock %}

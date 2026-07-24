@@ -1,0 +1,65 @@
+<!-- pages/dashboard_2/Aktifitasku_Dupak.html -->
+{% extends "layout/baseDashboard3.html" %}
+
+{% block title %}- Aktifitas Jadwal Piket{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Aktifitasku</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Aktifitasku_Jadwal_Piket.html">Jadwal Piket</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="bi bi-calendar-event me-2"></i>Jadwal Piket
+                    </h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Periode</label>
+                            <div class="col-12 col-md-7">
+                                <input type="month" class="form-control" style="height:38px;">
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tunjangan</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" class="form-control-sm border w-100">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Dupak</label>
+                            <div class="col-md-0">
+                                <button class="btn btn-primary w-100 py-2"><i class="bi bi-save"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

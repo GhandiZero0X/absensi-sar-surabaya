@@ -1,0 +1,225 @@
+<!-- pages/dashboard_2/Benefit_Tunjangan_Kinerja.html -->
+{% extends "layout/baseDashboard3.html" %}
+
+{% block title %}- Benefit Tunjangan Kinerja{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Benefit</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Benefit_Tunjangan_Kinerja.html">Tunjangan Kinerja</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="bi bi-hand-thumbs-up-fill me-2"></i>Tunjangan Kinerja
+                    </h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div
+                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Periode</label>
+                                <div class="col-md-2">
+                                    <input type="month" class="form-control" style="height:38px;">
+                                </div>
+                                <div class="col-md-1"></div>
+                                <label class="mx-md-3 fw-bold text-dan">s/d</label>
+                                <div class="col-md-1"></div>
+                                <div class="ccol-md-2">
+                                    <input type="month" class="form-control" style="height:38px;">
+                                </div>
+                            </div>
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Besaran</label>
+                                <div class="col-md-7">
+                                    <div class="input-group-custom w-100">
+                                        <input type="text" class="form-control-sm border w-100">
+                                        <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-md-flex">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-1">
+                                    <button id="btn-refresh" class="btn btn-primary w-100 py-2"><i
+                                            class="bi bi-arrow-clockwise me-2"></i>Refresh</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="table-responsive mb-3">
+                                <table class="table table-sm table-borderless align-middle" style="min-width: 1000px;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th rowspan="2" class="text-start"
+                                                style="color: #8d6e63; vertical-align: middle;">Sum</th>
+                                            <th colspan="1"></th>
+                                            <th colspan="4" class="border-bottom">TLM</th>
+                                            <th colspan="4" class="border-bottom">PSW</th>
+                                            <th></th>
+                                            <th colspan="6" class="border-bottom">Cuti</th>
+                                            <th colspan="5" class="border-bottom">Sakit</th>
+                                            <th rowspan="2" style="color: #a52a2a; vertical-align: middle;">Total</th>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td><span class="badge bg-danger">TA</span></td>
+                                            <td><span class="badge bg-success">1</span></td>
+                                            <td><span class="badge bg-success">2</span></td>
+                                            <td><span class="badge bg-success">3</span></td>
+                                            <td><span class="badge bg-success">4</span></td>
+                                            <td><span class="badge bg-warning text-white">1</span></td>
+                                            <td><span class="badge bg-warning text-white">2</span></td>
+                                            <td><span class="badge bg-warning text-white">3</span></td>
+                                            <td><span class="badge bg-warning text-white">4</span></td>
+                                            <td><span class="badge bg-dark">DL</span></td>
+                                            <td><span class="badge bg-info">Thn</span></td>
+                                            <td><span class="badge bg-info">CB-1</span></td>
+                                            <td><span class="badge bg-info">CB-2</span></td>
+                                            <td><span class="badge bg-info">CB-3</span></td>
+                                            <td><span class="badge bg-info">CAP-M2</span></td>
+                                            <td><span class="badge bg-info">CAP</span></td>
+                                            <td><span class="badge bg-primary">1</span></td>
+                                            <td><span class="badge bg-primary">2</span></td>
+                                            <td><span class="badge bg-primary">3</span></td>
+                                            <td><span class="badge bg-primary">4</span></td>
+                                            <td><span class="badge bg-primary">5</span></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <td class="text-start">Freq(kali)</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-start">Pot.(%)</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid mt-4">
+                            <div class="table-responsive" id="table-content" style="display: none;">
+                                <table class="table table-bordered text-center align-middle">
+                                    <thead class="table-header-custom">
+                                        <tr>
+                                            <th rowspan="2">NO</th>
+                                            <th rowspan="2">TGL</th>
+                                            <th rowspan="2">TA</th>
+                                            <th colspan="2">TLM</th>
+                                            <th colspan="2">PSW</th>
+                                            <th rowspan="2">DINAS LUAR</th>
+                                            <th colspan="6">CUTI</th>
+                                            <th colspan="5">SAKIT</th>
+                                            <th rowspan="2">IJIN</th>
+                                            <th rowspan="2">KET.</th>
+                                        </tr>
+                                        <tr>
+                                            <th>POT.%</th>
+                                            <th>TINGKAT</th>
+                                            <th>POT.%</th>
+                                            <th>TINGKAT</th>
+                                            <th>THN</th>
+                                            <th>CB-1</th>
+                                            <th>CB-2</th>
+                                            <th>CB-3</th>
+                                            <th>CAP-M2</th>
+                                            <th>CAP</th>
+                                            <th>S-1</th>
+                                            <th>S-2</th>
+                                            <th>S-3</th>
+                                            <th>S-4</th>
+                                            <th>S-5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="21" class="py-4 text-muted">No records to display.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const refreshBtn = document.getElementById('btn-refresh');
+        const tableContent = document.getElementById('table-content');
+
+        refreshBtn.addEventListener('click', function () {
+            // Menampilkan tabel saat tombol diklik
+            tableContent.style.display = 'block';
+
+            // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+            console.log("Memuat data...");
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,143 @@
+<!-- pages/dashboard_2/Approval_Request.html -->
+{% extends "layout/baseDashboard3.html" %}
+
+{% block title %}- Approval Request{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Approval</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Approval_Need_Approved.html">Request</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+        <div class="page-header-right ms-auto">
+            <div class="page-header-right-items">
+                <div class="d-flex d-md-none">
+                    <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                        <i class="feather-arrow-left me-2"></i>
+                        <span>Back</span>
+                    </a>
+                </div>
+            </div>
+            <div class="d-md-none d-flex align-items-center">
+                <a href="javascript:void(0)" class="page-header-right-open-toggle">
+                    <i class="feather-align-right fs-20"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="bi bi-people me-2"></i>Need Approved
+                    </h6>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header p-0"
+                    style="background-color: #EB6831; border-top-left-radius: 12px; border-top-right-radius: 12px; min-height: 50px; display: flex; align-items: center;">
+                    <ul class="nav nav-tabs border-0 ps-2" id="skpTab" role="tablist">
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active custom-tab-btn px-3 py-1 fw-bold" id="piket-tab"
+                                data-bs-toggle="tab" data-bs-target="#piket-content" type="button" role="tab">Piket
+                                Siaga</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" id="skp-tab" data-bs-toggle="tab"
+                                data-bs-target="#skp-content" type="button" role="tab">SKP</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" id="buku-tab" data-bs-toggle="tab"
+                                data-bs-target="#buku-content" type="button" role="tab">Buku Harian</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body">
+                    <div class="tab-content" id="skpTabContent">
+                        <div class="tab-pane fade show active" id="piket-content" role="tabpanel">
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Tgl Pengajuan</th>
+                                            <th>Perihal</th>
+                                            <th>Note Otorisasi</th>
+                                            <th>Action</th>
+                                            <th>Otorisasi</th>
+                                            <th>Jabatan Sebagai</th>
+                                            <th>View</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="skp-content" role="tabpanel">
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Tgl Pengajuan</th>
+                                            <th>Perihal</th>
+                                            <th>Aksi</th>
+                                            <th>Keterangan aksi</th>
+                                            <th>Otorisasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="buku-content" role="tabpanel">
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Tgl Pengajuan</th>
+                                            <th>Perihal</th>
+                                            <th>Aksi</th>
+                                            <th>Keterangan aksi</th>
+                                            <th>Otorisasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

@@ -1,0 +1,88 @@
+<!-- pages/dashboard_2/Aktifitasku_Update _endukung.html -->
+{% extends "layout/baseDashboard3.html" %}
+
+{% block title %}- Aktifitas Update Pendukung{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Aktifitasku</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Aktifitasku_Update_Pendukung.html">Update Pendukung</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="bi bi-hammer me-2"></i>Update Pendukung
+                    </h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div
+                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                            <label class="mx-md-2 fw-bold text-dan">Periode</label>
+                            <div class="col-12 col-md-4">
+                                <input type="month" class="form-control" style="height:38px;">
+                            </div>
+
+                            <label class="mx-md-2 fw-bold text-dan">Bukti Pendukung</label>
+                            <select class="form-select-sm border custom-select w-mobile-100">
+                                <option>- Pilih Bukti -</option>
+                                <option>Tidak Ada</option>
+                                <option>Ada</option>
+                            </select>
+
+                            <button class="btn-refresh-custom w-mobile-100">
+                                <i class="bi bi-arrow-clockwise me-2"></i>Refresh
+                            </button>
+
+                            <button class="btn-refresh-custom w-mobile-100">
+                                <i class="bi bi-arrow-clockwise me-2"></i>Update
+                            </button>
+                        </div>
+
+                        <div class="col-12 d-md-flex">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sm w-100">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Tgl</th>
+                                                <th>Ada Pendukung</th>
+                                                <th>Status</th>
+                                                <th>FingerID</th>
+                                                <th>Nama</th>
+                                                <th>keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="7" class="text-center py-4">No records to display.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
