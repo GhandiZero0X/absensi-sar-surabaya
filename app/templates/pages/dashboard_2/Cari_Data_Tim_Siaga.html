@@ -1,0 +1,122 @@
+<!-- pages/dashboard_2/Cari_Data_Tim_Siaga.html -->
+{% extends "layout/baseDashboard2.html" %}
+
+{% block title %}- Tim Siaga{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Master Data</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Master_Data_Tim_Siaga.html">Tim Siaga</a></li>
+                <li class="breadcrumb-item">Cari Data Tim Siaga</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0"><i class="bi bi-search"></i> Cari Data TIM Siaga</h6>
+                    <a href="Master_Data_Tim_Siaga.html" class="btn-close-custom">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div
+                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                            <label class="filter-label-wide">Periode</label>
+                            <div class="col-md-2">
+                                <input type="month" class="form-control" style="height:38px;">
+                            </div>
+                        </div>
+
+                        <div
+                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                            <label class="filter-label-wide">Filter</label>
+
+                            <select class="form-select-sm border custom-select w-mobile-100">
+                                <option>- Pilih Field -</option>
+                            </select>
+
+                            <div class="input-group-custom w-mobile-100">
+                                <input type="text" class="form-control-sm border">
+                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            </div>
+
+                            <span class="mx-md-2 fw-bold text-dan">Dan</span>
+
+                            <select class="form-select-sm border custom-select w-mobile-100">
+                                <option>- Pilih Field -</option>
+                            </select>
+
+                            <div class="input-group-custom w-mobile-100">
+                                <input type="text" class="form-control-sm border">
+                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            </div>
+
+                            <button id="btn-refresh" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade show active" id="table-content" role="tabpanel" style="display: none;">
+                    <div class="table-toolbar">
+                        <span class="divider-vertical">|</span>
+                        <a href="#" class="icon-download"><i class="bi bi-file-earmark-excel-fill"></i></a>
+                        <a href="#" class="icon-download"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Periode</th>
+                                    <th>Shift</th>
+                                    <th>No Urut TIM</th>
+                                    <th>TIM</th>
+                                    <th>Unit</th>
+                                    <th>Nama</th>
+                                    <th>Fungsional</th>
+                                    <th>Edit</th>
+                                    <th>UpdateBy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const refreshBtn = document.getElementById('btn-refresh');
+        const tableContent = document.getElementById('table-content');
+
+        refreshBtn.addEventListener('click', function () {
+            // Menampilkan tabel saat tombol diklik
+            tableContent.style.display = 'block';
+
+            // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
+            console.log("Memuat data...");
+        });
+    });
+</script>
+{% endblock %}

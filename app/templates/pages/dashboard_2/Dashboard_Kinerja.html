@@ -1,0 +1,249 @@
+<!-- pages/dashboard_2/Dashboard_Kinerja.html -->
+{% extends "layout/baseDashboard2.html" %}
+
+{% block title %}- Dashboard Kinerja{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Dashboard</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html">Dashboard Kinerja</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="page-header-right ms-auto">
+        <div class="main-content master-siaga">
+            <div class="container-fluid">
+                <div class="card mb-4">
+                    <div class="card-header-custom d-flex justify-content-between align-items-center">
+                        <div class="card shadow-sm">
+                            <div class="row g-3 align-items-start mb-4">
+                                <!-- Card Hijau -->
+                                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12">
+                                    <div class="card border-0 shadow-sm h-100"
+                                        style="background:#76A66B;color:#fff;border-radius:16px;">
+                                        <div class="card-body">
+                                            <h4 class="fw-bold mb-3">
+                                                ABSENSI KEHADIRAN KOMPLITE
+                                            </h4>
+                                            <i class="ti ti-thumb-up fs-1"></i>
+                                            <p class="mt-3 mb-0 fs-5">
+                                                Personil Piket Siaga Telah Terabsen Semuanya.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card Kuning -->
+                                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12">
+                                    <div class="card border-0 shadow-sm h-100"
+                                        style="background:#E3A74B;color:#fff;border-radius:16px;">
+                                        <div class="card-body">
+                                            <h4 class="fw-bold mb-3">
+                                                ABSENSI KEHADIRAN SEBAGIAN BELUM DIABSEN
+                                            </h4>
+                                            <i class="ti ti-alert-triangle fs-1"></i>
+                                            <p class="mt-3 mb-0 fs-5">
+                                                Ada Beberapa Personil Piket Siaga Belum Terabsen.
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card Merah -->
+                                <div class="col-xl-4 col-lg-3 col-md-4 col-sm-12">
+                                    <div class="card border-0 shadow-sm h-100"
+                                        style="background:#BF614A;color:#fff;border-radius:16px;">
+                                        <div class="card-body">
+                                            <h4 class="fw-bold mb-3">
+                                                ABSENSI KEHADIRAN BELUM DIABSEN ?
+                                            </h4>
+                                            <i class="ti ti-help-circle fs-1"></i>
+                                            <p class="mt-3 mb-0 fs-5">
+                                                Semua Personil Piket Siaga Belum Terabsen.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="table-responsive w-100">
+                                <table class="table table-bordered attendance-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="sticky-col">Karyawan</th>
+                                            <th>01/02</th>
+                                            <th>02/02</th>
+                                            <th>03/02</th>
+                                            <th>04/02</th>
+                                            <th>05/02</th>
+                                            <th>06/02</th>
+                                            <th>07/02</th>
+                                            <th>08/02</th>
+                                            <th>09/02</th>
+                                            <th>10/02</th>
+                                            <th>11/02</th>
+                                            <th>12/02</th>
+                                            <th>13/02</th>
+                                            <th>14/02</th>
+                                            <th>15/02</th>
+                                            <th>16/02</th>
+                                            <th>17/02</th>
+                                            <th>18/02</th>
+                                            <th>19/02</th>
+                                            <th>20/02</th>
+                                            <th>21/02</th>
+                                            <th>22/02</th>
+                                            <th>23/02</th>
+                                            <th>24/02</th>
+                                            <th>25/02</th>
+                                            <th>26/02</th>
+                                            <th>27/02</th>
+                                            <th>28/02</th>
+                                            <th>01/03</th>
+                                            <th>02/03</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="sticky-col">SURABAYA</td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status warning"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>-</td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                            <td>
+                                                <span class="status success"><i class="bi bi-check-lg"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sticky-col">TRENGGALEK</td>
+                                            <td colspan="30"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sticky-col">SUMENEP</td>
+                                            <td colspan="30"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sticky-col">BOJONEGORO</td>
+                                            <td colspan="30"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sticky-col">MALANG</td>
+                                            <td colspan="30"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sticky-col">KN WIDURA</td>
+                                            <td colspan="30"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sticky-col">KN SRIKANDI</td>
+                                            <td colspan="30"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sticky-col">KN PERMADI</td>
+                                            <td colspan="30"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

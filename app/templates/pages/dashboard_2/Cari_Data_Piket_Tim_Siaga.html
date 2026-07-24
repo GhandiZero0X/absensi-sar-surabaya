@@ -1,0 +1,73 @@
+<!-- pages/dashboard_2/Cari_Data_Piket_Tim_Siaga.html -->
+{% extends "layout/baseDashboard2.html" %}
+
+{% block title %}- Membuat Jadwal Piket{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Data Siaga</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Data_Siaga_Membuat_Jadwal_Piket_Siaga.html">Membuat Jadwal Piket</a></li>
+                <li class="breadcrumb-item">Cari Data Piket TIM Siaga</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card mb-4 filter-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0"><i class="bi bi-search"></i>Cari Data Piket TIM Siaga</h6>
+                    <a href="Data_Siaga_Membuat_Jadwal_Piket_Siaga.html" class="btn-close-custom">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div
+                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                            <label class="filter-label-wide">Periode</label>
+                            <div class="col-md-2">
+                                <input type="month" class="form-control" style="height:38px;">
+                            </div>
+                        </div>
+
+                        <div
+                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                            <label class="filter-label-wide">Filter</label>
+
+                            <select class="form-select-sm border custom-select w-mobile-100">
+                                <option>- Pilih Field -</option>
+                            </select>
+
+                            <div class="input-group-custom w-mobile-100">
+                                <input type="text" class="form-control-sm border">
+                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            </div>
+
+                            <span class="mx-md-2 fw-bold text-dan">Dan</span>
+
+                            <select class="form-select-sm border custom-select w-mobile-100">
+                                <option>- Pilih Field -</option>
+                            </select>
+
+                            <div class="input-group-custom w-mobile-100">
+                                <input type="text" class="form-control-sm border">
+                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            </div>
+
+                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

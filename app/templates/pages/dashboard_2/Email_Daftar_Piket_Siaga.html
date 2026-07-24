@@ -1,0 +1,98 @@
+<!-- pages/dashboard_2/Dashboard_Kinerja.html -->
+{% extends "layout/baseDashboard2.html" %}
+
+{% block title %}- Membuat Jadwal Piket{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Data Siaga</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Data_Siaga_Membuat_Jadwal_Piket_Siaga.html">Membuat Jadwal Piket</a></li>
+                <li class="breadcrumb-item">Email Daftar Piket Siaga</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card shadow-sm border-0">
+                <div class="table-toolbar">
+                    <span class="divider-vertical">|</span>
+                    <a href="#" class="icon-download"><i class="bi bi-file-earmark-excel-fill"></i></a>
+                    <a href="#" class="icon-download"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-custom-v2 mb-0">
+                        <thead>
+                            <tr>
+                                <th width="50">No</th>
+                                <th width="60">View</th>
+                                <th>Perihal</th>
+                                <th width="80">Send</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td class="text-center"><i class="bi bi-folder2-open icon-view"></i></td>
+                                <td>Jadwal Piket Siaga 2017-10 JEMBER</td>
+                                <td class="text-center"><i class="bi bi-send-fill icon-send"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">2</td>
+                                <td class="text-center"><i class="bi bi-folder2-open icon-view"></i></td>
+                                <td>Jadwal Piket Siaga 2017-10 SURABAYA</td>
+                                <td class="text-center"><i class="bi bi-send-fill icon-send"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td class="text-center"><i class="bi bi-folder2-open icon-view"></i></td>
+                                <td>Jadwal Piket Siaga 2017-10 TRENGGALEK</td>
+                                <td class="text-center"><i class="bi bi-send-fill icon-send"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">4</td>
+                                <td class="text-center"><i class="bi bi-folder2-open icon-view"></i></td>
+                                <td>Jadwal Piket Siaga 2017-10 KN225</td>
+                                <td class="text-center"><i class="bi bi-send-fill icon-send"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-footer">
+                    <div class="left-controls">
+                        <div class="custom-btn-group">
+                            <a href="#" class="page-item">Preview</a>
+                            <a href="#" class="page-item">1</a>
+                            <a href="#" class="page-item">2</a>
+                            <a href="#" class="page-item">Next</a>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <span class="page-size-label">Page size:</span>
+                            <select class="small-select">
+                                <option>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="item-info">
+                        <strong>2927</strong> items in <strong>293</strong> pages
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

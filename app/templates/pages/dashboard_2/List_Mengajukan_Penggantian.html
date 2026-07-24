@@ -1,0 +1,113 @@
+<!-- pages/dashboard_2/Dashboard_Kinerja.html -->
+{% extends "layout/baseDashboard2.html" %}
+
+{% block title %}- Ubah Jadwal Piket{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Data Siaga</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Data_Siaga_Jadwal_Ulang.html">Ubah Jadwal Piket</a></li>
+                <li class="breadcrumb-item">List Mengajukan Penggantian</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <div class="card shadow-sm border-0">
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th width="50">CANCEL REQ</th>
+                                <th>TGL</th>
+                                <th>SHIFT</th>
+                                <th>NAMA</th>
+                                <th>UNIT KERJA</th>
+                                <th>KETERANGAN</th>
+                                <th>FUNGSIONAL</th>
+                                <th width="50">STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center"><i class="bi bi-arrow-90deg-left btn-undo"></i></td>
+                                <td>2026.04.28</td>
+                                <td>2</td>
+                                <td>ANISA NOORMA WIJAYANTI</td>
+                                <td>SURABAYA</td>
+                                <td>-</td>
+                                <td>Kom</td>
+                                <td><span class="status-box"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><i class="bi bi-arrow-90deg-left btn-undo"></i></td>
+                                <td>2026.04.28</td>
+                                <td>1</td>
+                                <td>ANISA NOORMA WIJAYANTI</td>
+                                <td>SURABAYA</td>
+                                <td>-</td>
+                                <td>Kom</td>
+                                <td><span class="status-box"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><i class="bi bi-arrow-90deg-left btn-undo"></i></td>
+                                <td>2026.04.22</td>
+                                <td>1</td>
+                                <td>ANISA NOORMA WIJAYANTI</td>
+                                <td>SURABAYA</td>
+                                <td>-</td>
+                                <td>Kom</td>
+                                <td><span class="status-box"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><i class="bi bi-arrow-90deg-left btn-undo"></i></td>
+                                <td>2026.04.06</td>
+                                <td>2</td>
+                                <td>VINNO ADE SUJONO</td>
+                                <td>KN SRIKANDI</td>
+                                <td>-</td>
+                                <td>PW</td>
+                                <td><span class="status-box"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-footer">
+                    <div class="left-controls">
+                        <div class="custom-btn-group">
+                            <a href="#" class="page-item">Preview</a>
+                            <a href="#" class="page-item">1</a>
+                            <a href="#" class="page-item">2</a>
+                            <a href="#" class="page-item">Next</a>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <span class="page-size-label">Page size:</span>
+                            <select class="small-select">
+                                <option>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="item-info">
+                        <strong>2927</strong> items in <strong>293</strong> pages
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
