@@ -95,6 +95,40 @@ from app.controllers.dashboard_1DataAbsensiController import (
     cari_absensi_pegawai_manual,
     cari_absensi_pegawai_lembur_manual,
 )
+from app.controllers.dashboard_3HomeController import (
+    dashboard_kinerja,
+)
+from app.controllers.dashboard_3AktivitasController import (
+    aktifitasku_dashboard,
+    aktifitasku_buku_harian,
+    aktifitasku_buku_harian_baru_utama,
+    aktifitasku_buku_harian_baru_tambahan,
+    aktifitasku_buku_harian_baru_penunjang,
+    aktifitasku_dupak,
+    aktifitasku_skp,
+    aktifitasku_jadwal_piket,
+    aktifitasku_dinas_luar,
+    aktifitasku_update_pendukung,
+)
+from app.controllers.dashboard_3BenefitController import (
+    benefit_tunjangan_kinerja,
+    benefit_rekap_uang_makan,
+)
+from app.controllers.dashboard_3ApprovalController import (
+    approval_approved,
+    approved_request,
+)
+from app.controllers.dashboard_3ProfileController import (
+    profile,
+)
+from app.controllers.dashboard_3KirimController import (
+    kirim_kritik_saran,
+    kirim_forum_media_informasi,
+)
+from app.controllers.dashboard_3PengajuanController import (
+    pengajuan_skp,
+    pengajuan_absensi,
+)
 
 from app.models.pegawaiModel import Pegawai
 
@@ -132,7 +166,9 @@ def preview_pegawai():
         'data': [pegawai.to_dict() for pegawai in data]
     })
 
+# ============================
 # ---- Dashboard 1 Routes ----
+# ============================
 # Dasboard :
 @main.route('/dashboard/pelanggaran')
 @login_required
@@ -481,7 +517,9 @@ def view_cari_absensi_pegawai_manual():
 def view_cari_absensi_pegawai_lembur_manual():
     return cari_absensi_pegawai_lembur_manual()
 
+# ============================
 # ---- Dashboard 2 Routes ----
+# ============================
 # Dashboard Tim Siaga:
 @main.route('/dashboard/pelanggaran')
 @login_required
@@ -555,3 +593,113 @@ def view_otorisasi_persetujuan_kepala_kantor():
 @login_required
 def view_otorisasi_persetujuan_kepala_seksi_operasi():
     return otorisasi_persetujuan_kepala_seksi_operasi()
+
+# ============================
+# ---- Dashboard 3 Routes ----
+# ============================
+# Dashboard Kinerja:
+@main.route('/kinerja/dashboard')
+@login_required
+def view_dashboard_kinerja():
+    return dashboard_kinerja()
+
+# Pengajuan:
+@main.route('/kinerja/pengajuan/skp')
+@login_required
+def view_pengajuan_skp():
+    return pengajuan_skp()
+
+@main.route('/kinerja/pengajuan/absensi')
+@login_required
+def view_pengajuan_absensi():
+    return pengajuan_absensi()
+
+# Aktifitasku:
+@main.route('/kinerja/aktifitasku/dashboard')
+@login_required
+def view_aktifitasku_dashboard():
+    return aktifitasku_dashboard()
+
+@main.route('/kinerja/aktifitasku/buku-harian')
+@login_required
+def view_aktifitasku_buku_harian():
+    return aktifitasku_buku_harian()
+
+@main.route('/kinerja/aktifitasku/buku-harian/baru/utama')
+@login_required
+def view_aktifitasku_buku_harian_baru_utama():
+    return aktifitasku_buku_harian_baru_utama()
+
+@main.route('/kinerja/aktifitasku/buku-harian/baru/tambahan')
+@login_required
+def view_aktifitasku_buku_harian_baru_tambahan():
+    return aktifitasku_buku_harian_baru_tambahan()
+
+@main.route('/kinerja/aktifitasku/buku-harian/baru/penunjang')
+@login_required
+def view_aktifitasku_buku_harian_baru_penunjang():
+    return aktifitasku_buku_harian_baru_penunjang()
+
+@main.route('/kinerja/aktifitasku/dupak')
+@login_required
+def view_aktifitasku_dupak():
+    return aktifitasku_dupak()
+
+@main.route('/kinerja/aktifitasku/skp')
+@login_required
+def view_aktifitasku_skp():
+    return aktifitasku_skp()
+
+@main.route('/kinerja/aktifitasku/jadwal-piket')
+@login_required
+def view_aktifitasku_jadwal_piket():
+    return aktifitasku_jadwal_piket()
+
+@main.route('/kinerja/aktifitasku/dinas-luar')
+@login_required
+def view_aktifitasku_dinas_luar():
+    return aktifitasku_dinas_luar()
+
+@main.route('/kinerja/aktifitasku/update-pendukung')
+@login_required
+def view_aktifitasku_update_pendukung():
+    return aktifitasku_update_pendukung()
+
+# Benefit:
+@main.route('/kinerja/benefit/tunjangan-kinerja')
+@login_required
+def view_benefit_tunjangan_kinerja():
+    return benefit_tunjangan_kinerja()
+
+@main.route('/kinerja/benefit/rekap-uang-makan')
+@login_required
+def view_benefit_rekap_uang_makan():
+    return benefit_rekap_uang_makan()
+
+# Approval:
+@main.route('/kinerja/approval/need-approval')
+@login_required
+def view_approved_request():
+    return approved_request()
+
+@main.route('/kinerja/approval/has-been-approved')
+@login_required
+def view_approval_approved():
+    return approval_approved()
+
+# Profile:
+@main.route('/kinerja/profile')
+@login_required
+def view_profile():
+    return profile()
+
+# Kirim:
+@main.route('/kinerja/kirim/kritik-saran')
+@login_required
+def view_kirim_kritik_saran():
+    return kirim_kritik_saran()
+
+@main.route('/kinerja/kirim/forum-media-informasi')
+@login_required
+def view_kirim_forum_media_informasi():
+    return kirim_forum_media_informasi()
