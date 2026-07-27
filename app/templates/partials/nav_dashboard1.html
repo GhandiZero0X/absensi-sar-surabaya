@@ -230,42 +230,42 @@
                     </a>
                     <ul class="nxl-submenu">
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_data_absensi_normalisasi_finger') }}">
                                 <span class="nxl-micon"><i class="ti ti-fingerprint"></i></span>
                                 <span class="nxl-mtext">Absensi Finger</span>
                             </a>
                         </li>
 
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_data_absensi_non_finger') }}">
                                 <span class="nxl-micon"><i class="ti ti-user-check"></i></span>
                                 <span class="nxl-mtext">Absensi Non Finger</span>
                             </a>
                         </li>
 
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_data_absensi_trace') }}">
                                 <span class="nxl-micon"><i class="ti ti-file-text"></i></span>
                                 <span class="nxl-mtext">Detail Absensi</span>
                             </a>
                         </li>
 
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_data_absensi_trace_tunjangan') }}">
                                 <span class="nxl-micon"><i class="ti ti-cash"></i></span>
                                 <span class="nxl-mtext">Detail Tunkin</span>
                             </a>
                         </li>
 
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_data_absensi_pegawai_manual') }}">
                                 <span class="nxl-micon"><i class="ti ti-edit"></i></span>
                                 <span class="nxl-mtext">Absensi Manual</span>
                             </a>
                         </li>
 
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_data_absensi_pegawai_lembur_manual') }}">
                                 <span class="nxl-micon"><i class="ti ti-clock"></i></span>
                                 <span class="nxl-mtext">Lembur Manual</span>
                             </a>
@@ -280,47 +280,48 @@
                     </a>
                     <ul class="nxl-submenu">
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_rekap_absensi_all') }}">
                                 <i class="ti ti-checkbox me-2"></i>Rekap Absensi All
                             </a>
                         </li>
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <!-- Diasumsikan "Recap Absensi Person" = Laporan Rekap Absensi Individu -->
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_rekap_absensi_individu') }}">
                                 <i class="ti ti-checkbox me-2"></i>Recap Absensi Person
                             </a>
                         </li>
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_rekap_absensi_log_finger') }}">
                                 <i class="ti ti-checkbox me-2"></i>Recap History Log Finger
                             </a>
                         </li>
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_rekap_clock_exception') }}">
                                 <i class="ti ti-checkbox me-2"></i>Recap Bulanan Absensi
                             </a>
                         </li>
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_rekap_ketidakhadiran_pegawai') }}">
                                 <i class="ti ti-checkbox me-2"></i>Recap DL, S, I CUTI
                             </a>
                         </li>
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_rekap_uang_makan') }}">
                                 <i class="ti ti-checkbox me-2"></i>Recap Uang Makan
                             </a>
                         </li>
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_rekap_pelanggaran_disiplin') }}">
                                 <i class="ti ti-checkbox me-2"></i>Recap Pelanggaran Disiplin
                             </a>
                         </li>
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_rekap_tunjangan_kinerja') }}">
                                 <i class="ti ti-checkbox me-2"></i>Recap Tunjangan Kinerja
                             </a>
                         </li>
                         <li class="nxl-item">
-                            <a class="nxl-link" href="#">
+                            <a class="nxl-link" href="{{ url_for('main.view_laporan_cetak_daftar_lembur_umum') }}">
                                 <i class="ti ti-checkbox me-2"></i>Recap Daftar Lembur
                             </a>
                         </li>

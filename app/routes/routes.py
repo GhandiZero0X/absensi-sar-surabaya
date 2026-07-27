@@ -69,6 +69,29 @@ from app.controllers.dashboard_1MediaInformasiController import (
     get_media_informasi_list, get_media_informasi_by_id,
     update_media_informasi, nonaktifkan_media_informasi
 )
+from app.controllers.dashboard_1LaporanRekapController import (
+    laporan_cetak_daftar_lembur_umum,
+    laporan_rekap_absensi_all,
+    laporan_rekap_absensi_individu,
+    laporan_rekap_absensi_log_finger,
+    laporan_rekap_clock_exception,
+    laporan_rekap_ketidakhadiran_pegawai,
+    laporan_rekap_pelanggaran_disiplin,
+    laporan_rekap_uang_makan,
+    laporan_rekap_tunjangan_kinerja,
+)
+from app.controllers.dashboard_1DataAbsensiController import (
+    data_absensi_non_finger,
+    data_absensi_normalisasi_finger,
+    data_absensi_pegawai_manual,
+    data_absensi_pegawai_lembur_manual,
+    data_absensi_trace_tunjangan,
+    data_absensi_trace,
+    cari_absensi_non_finger,
+    cari_absensi_normalisasi_finger,
+    cari_absensi_pegawai_manual,
+    cari_absensi_pegawai_lembur_manual,
+)
 
 from app.models.pegawaiModel import Pegawai
 
@@ -425,3 +448,101 @@ def view_otorisasi_persetujuan_kepala_kantor():
 @login_required
 def view_otorisasi_persetujuan_kepala_seksi_operasi():
     return otorisasi_persetujuan_kepala_seksi_operasi()
+
+# Laporan Rekap :
+@main.route('/laporan/cetak-daftar-lembur-umum')
+@login_required
+def view_laporan_cetak_daftar_lembur_umum():
+    return laporan_cetak_daftar_lembur_umum()
+
+@main.route('/laporan/rekap-absensi-all')
+@login_required
+def view_laporan_rekap_absensi_all():
+    return laporan_rekap_absensi_all()
+
+@main.route('/laporan/rekap-absensi-individu')
+@login_required
+def view_laporan_rekap_absensi_individu():
+    return laporan_rekap_absensi_individu()
+
+@main.route('/laporan/rekap-absensi-log-finger')
+@login_required
+def view_laporan_rekap_absensi_log_finger():
+    return laporan_rekap_absensi_log_finger()
+
+@main.route('/laporan/rekap-clock-exception')
+@login_required
+def view_laporan_rekap_clock_exception():
+    return laporan_rekap_clock_exception()
+
+@main.route('/laporan/rekap-ketidakhadiran-pegawai')
+@login_required
+def view_laporan_rekap_ketidakhadiran_pegawai():
+    return laporan_rekap_ketidakhadiran_pegawai()
+
+@main.route('/laporan/rekap-pelanggaran-disiplin')
+@login_required
+def view_laporan_rekap_pelanggaran_disiplin():
+    return laporan_rekap_pelanggaran_disiplin()
+
+@main.route('/laporan/rekap-uang-makan')
+@login_required
+def view_laporan_rekap_uang_makan():
+    return laporan_rekap_uang_makan()
+
+@main.route('/laporan/rekap-tunjangan-kinerja')
+@login_required
+def view_laporan_rekap_tunjangan_kinerja():
+    return laporan_rekap_tunjangan_kinerja()
+
+# Data Absensi :
+@main.route('/data-absensi/non-finger')
+@login_required
+def view_data_absensi_non_finger():
+    return data_absensi_non_finger()
+
+@main.route('/data-absensi/normalisasi-finger')
+@login_required
+def view_data_absensi_normalisasi_finger():
+    return data_absensi_normalisasi_finger()
+
+@main.route('/data-absensi/pegawai-manual')
+@login_required
+def view_data_absensi_pegawai_manual():
+    return data_absensi_pegawai_manual()
+
+@main.route('/data-absensi/pegawai-lembur-manual')
+@login_required
+def view_data_absensi_pegawai_lembur_manual():
+    return data_absensi_pegawai_lembur_manual()
+
+@main.route('/data-absensi/trace-tunjangan')
+@login_required
+def view_data_absensi_trace_tunjangan():
+    return data_absensi_trace_tunjangan()
+
+@main.route('/data-absensi/trace')
+@login_required
+def view_data_absensi_trace():
+    return data_absensi_trace()
+
+# Cari Absensi :
+@main.route('/data-absensi/cari/non-finger')
+@login_required
+def view_cari_absensi_non_finger():
+    return cari_absensi_non_finger()
+
+@main.route('/data-absensi/cari/normalisasi-finger')
+@login_required
+def view_cari_absensi_normalisasi_finger():
+    return cari_absensi_normalisasi_finger()
+
+@main.route('/data-absensi/cari/pegawai-manual')
+@login_required
+def view_cari_absensi_pegawai_manual():
+    return cari_absensi_pegawai_manual()
+
+@main.route('/data-absensi/cari/pegawai-lembur-manual')
+@login_required
+def view_cari_absensi_pegawai_lembur_manual():
+    return cari_absensi_pegawai_lembur_manual()
