@@ -61,6 +61,9 @@ from app.controllers.dashboard_2OtoritasPersetujuanController import (
     otorisasi_persetujuan_kepala_kantor,
     otorisasi_persetujuan_kepala_seksi_operasi,
 )
+from app.controllers.dashboard_2HomeController import (
+    dashboard_tim_siaga,
+)
 from app.controllers.homeController import get_pelanggaran_disiplin, get_piket_siaga, home, search_buku_telp
 from app.controllers.loginController import login, logout
 from app.controllers.dashboard_1MediaInformasiController import (
@@ -380,75 +383,6 @@ def api_nonaktifkan_media_informasi(med_infor_id):
 def view_media_informasi_detail():
     return media_informasi_detail()
 
-# ---- Dashboard 2 Routes ----
-# Data Siaga:
-@main.route('/siaga/absensi-kehadiran')
-@login_required
-def view_data_siaga_absensi_kehadiran():
-    return data_siaga_absensi_kehadiran()
-
-@main.route('/siaga/cetak-daftar-lembur')
-@login_required
-def view_data_siaga_cetak_daftar_lembur_siaga():
-    return data_siaga_cetak_daftar_lembur_siaga()
-
-@main.route('/siaga/cetak-rekap')
-@login_required
-def view_data_siaga_cetak_rekap_siaga():
-    return data_siaga_cetak_rekap_siaga()
-
-@main.route('/siaga/cetak-uang-siaga')
-@login_required
-def view_data_siaga_cetak_uang_siaga():
-    return data_siaga_cetak_uang_siaga()
-
-@main.route('/siaga/jadwal-ulang')
-@login_required
-def view_data_siaga_jadwal_ulang():
-    return data_siaga_jadwal_ulang()
-
-@main.route('/siaga/buat-jadwal-piket')
-@login_required
-def view_data_siaga_membuat_jadwal_piket_siaga():
-    return data_siaga_membuat_jadwal_piket_siaga()
-
-# Master Data:
-@main.route('/siaga/master-data/email-broadcast')
-@login_required
-def view_master_data_email_broadcast():
-    return master_data_email_broadcast()
-
-@main.route('/siaga/master-data/kgr')
-@login_required
-def view_master_data_kgr():
-    return master_data_kgr()
-
-@main.route('/siaga/master-data/nominal-ut-piket')
-@login_required
-def view_master_data_nominal_ut_piket():
-    return master_data_nominal_ut_piket()
-
-@main.route('/siaga/master-data/tim-siaga')
-@login_required
-def view_master_data_tim_siaga():
-    return master_data_tim_siaga()
-
-@main.route('/siaga/master-data/user-account')
-@login_required
-def view_master_data_user_account():
-    return master_data_user_account()
-
-# Otorisasi Persetujuan:
-@main.route('/siaga/otorisasi/kepala-kantor')
-@login_required
-def view_otorisasi_persetujuan_kepala_kantor():
-    return otorisasi_persetujuan_kepala_kantor()
-
-@main.route('/siaga/otorisasi/kepala-seksi-operasi')
-@login_required
-def view_otorisasi_persetujuan_kepala_seksi_operasi():
-    return otorisasi_persetujuan_kepala_seksi_operasi()
-
 # Laporan Rekap :
 @main.route('/laporan/cetak-daftar-lembur-umum')
 @login_required
@@ -546,3 +480,78 @@ def view_cari_absensi_pegawai_manual():
 @login_required
 def view_cari_absensi_pegawai_lembur_manual():
     return cari_absensi_pegawai_lembur_manual()
+
+# ---- Dashboard 2 Routes ----
+# Dashboard Tim Siaga:
+@main.route('/dashboard/pelanggaran')
+@login_required
+def view_dashboard_tim_siaga():
+    return dashboard_tim_siaga()
+
+# Data Siaga:
+@main.route('/siaga/absensi-kehadiran')
+@login_required
+def view_data_siaga_absensi_kehadiran():
+    return data_siaga_absensi_kehadiran()
+
+@main.route('/siaga/cetak-daftar-lembur')
+@login_required
+def view_data_siaga_cetak_daftar_lembur_siaga():
+    return data_siaga_cetak_daftar_lembur_siaga()
+
+@main.route('/siaga/cetak-rekap')
+@login_required
+def view_data_siaga_cetak_rekap_siaga():
+    return data_siaga_cetak_rekap_siaga()
+
+@main.route('/siaga/cetak-uang-siaga')
+@login_required
+def view_data_siaga_cetak_uang_siaga():
+    return data_siaga_cetak_uang_siaga()
+
+@main.route('/siaga/jadwal-ulang')
+@login_required
+def view_data_siaga_jadwal_ulang():
+    return data_siaga_jadwal_ulang()
+
+@main.route('/siaga/buat-jadwal-piket')
+@login_required
+def view_data_siaga_membuat_jadwal_piket_siaga():
+    return data_siaga_membuat_jadwal_piket_siaga()
+
+# Master Data:
+@main.route('/siaga/master-data/email-broadcast')
+@login_required
+def view_master_data_email_broadcast():
+    return master_data_email_broadcast()
+
+@main.route('/siaga/master-data/kgr')
+@login_required
+def view_master_data_kgr():
+    return master_data_kgr()
+
+@main.route('/siaga/master-data/nominal-ut-piket')
+@login_required
+def view_master_data_nominal_ut_piket():
+    return master_data_nominal_ut_piket()
+
+@main.route('/siaga/master-data/tim-siaga')
+@login_required
+def view_master_data_tim_siaga():
+    return master_data_tim_siaga()
+
+@main.route('/siaga/master-data/user-account')
+@login_required
+def view_master_data_user_account():
+    return master_data_user_account()
+
+# Otorisasi Persetujuan:
+@main.route('/siaga/otorisasi/kepala-kantor')
+@login_required
+def view_otorisasi_persetujuan_kepala_kantor():
+    return otorisasi_persetujuan_kepala_kantor()
+
+@main.route('/siaga/otorisasi/kepala-seksi-operasi')
+@login_required
+def view_otorisasi_persetujuan_kepala_seksi_operasi():
+    return otorisasi_persetujuan_kepala_seksi_operasi()
