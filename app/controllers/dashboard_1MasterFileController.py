@@ -1,7 +1,11 @@
 # controllers/dashboard_1MasterFileController.py
 import requests
 from datetime import date, datetime, timedelta
-from flask import render_template, request, jsonify, session, current_app
+from io import BytesIO
+from flask import render_template, request, jsonify, session, current_app, send_file
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment
+from sqlalchemy import func
 from app import db
 from app.models.classModel import MfClass
 from app.models.pegawaiModel import Pegawai
@@ -12,6 +16,9 @@ from app.models.jamKerjaModel import MfJamKerja
 from app.models.jabatanModel import MfJabatan
 from app.models.groupJabatanModel import MfGroupJabatan
 from app.models.subGroupJabatanModel import MfSubGroupJabatan
+from app.models.loadFingerModel import MfLoadFinger
+from app.models.logTransaksiModel import LogTransaksi
+from app.models.logTransaksiBackupModel import LogTransaksiBackup
 
 GOOGLE_ID_HOLIDAY_CALENDAR_ID = 'id.indonesian#holiday@group.v.calendar.google.com'
 
@@ -168,6 +175,136 @@ def save_jabatan():
 def master_jam_finger():
     """Render halaman Master File Master Jam Finger."""
     return render_template('pages/dashboard_1/Master File Master Jam Finger.html')
+
+def save_jam_finger():
+    """
+    Simpan data Master Jam Finger baru dari form.
+
+    LOG_TRANSAKSI dan LOG_TRANSAKSI_BACKUP punya circular foreign key
+    (masing-masing mereferensikan satu sama lain), jadi urutan insert
+    HARUS:
+      1. Insert LOG_TRANSAKSI_BACKUP dulu TANPA mengisi TRAKSAKSI_ID
+         (kosongkan/None dulu -- kolom ini nullable).
+      2. Insert LOG_TRANSAKSI dengan TRAKSAKSI_BACKUP_ID dari langkah 1.
+      3. UPDATE balik LOG_TRANSAKSI_BACKUP.TRAKSAKSI_ID dengan ID dari
+         langkah 2 (baru sekarang aman, karena baris LOG_TRANSAKSI
+         sudah ada).
+      4. Insert MF_LOAD_FINGER dengan TRAKSAKSI_ID dari langkah 2.
+
+    Kedua tabel (LOG_TRANSAKSI, LOG_TRANSAKSI_BACKUP) BUKAN auto_increment
+    di database (dikonfirmasi via DESCRIBE), jadi ID dihitung manual
+    lewat MAX()+1.
+    """
+    payload = request.get_json(silent=True) or {}
+
+    shift_raw = (payload.get('shift') or '').strip()
+    tgl_mulai_raw = (payload.get('tgl_mulai') or '').strip()
+    jam_in_start_raw = (payload.get('jam_in_start') or '').strip()
+    jam_in_end_raw = (payload.get('jam_in_end') or '').strip()
+    jam_out_start_raw = (payload.get('jam_out_start') or '').strip()
+    jam_out_end_raw = (payload.get('jam_out_end') or '').strip()
+
+    if not shift_raw:
+        return jsonify({'status': 'error', 'message': 'Shift wajib dipilih'}), 400
+    if not tgl_mulai_raw:
+        return jsonify({'status': 'error', 'message': 'Tanggal Mulai wajib diisi'}), 400
+    if not jam_in_start_raw or not jam_in_end_raw:
+        return jsonify({'status': 'error', 'message': 'Rentang Start Jam In wajib diisi'}), 400
+    if not jam_out_start_raw or not jam_out_end_raw:
+        return jsonify({'status': 'error', 'message': 'Rentang Start Jam Out wajib diisi'}), 400
+
+    try:
+        tgl_mulai = datetime.strptime(tgl_mulai_raw, '%Y-%m-%d').date()
+    except ValueError:
+        return jsonify({'status': 'error', 'message': 'Format Tanggal Mulai harus YYYY-MM-DD'}), 400
+
+    def _parse_jam(value):
+        try:
+            jam = datetime.strptime(value, '%H:%M').time()
+            return datetime.combine(tgl_mulai, jam)
+        except ValueError:
+            return None
+
+    start_finger = _parse_jam(jam_in_start_raw)
+    end_finger = _parse_jam(jam_in_end_raw)
+    start_finger_out = _parse_jam(jam_out_start_raw)
+    end_finger_out = _parse_jam(jam_out_end_raw)
+
+    if start_finger is None or end_finger is None:
+        return jsonify({'status': 'error', 'message': 'Format Start Jam In harus HH:MM'}), 400
+    if start_finger_out is None or end_finger_out is None:
+        return jsonify({'status': 'error', 'message': 'Format Start Jam Out harus HH:MM'}), 400
+    if start_finger >= end_finger:
+        return jsonify({'status': 'error', 'message': 'Rentang Start Jam In tidak valid'}), 400
+    if start_finger_out >= end_finger_out:
+        return jsonify({'status': 'error', 'message': 'Rentang Start Jam Out tidak valid'}), 400
+
+    current_nip = session.get('nip')
+    if not current_nip:
+        return jsonify({'status': 'error', 'message': 'Sesi login tidak valid (NIP tidak ditemukan)'}), 401
+
+    now = datetime.utcnow()
+
+    try:
+        # --- Langkah 1: insert LOG_TRANSAKSI_BACKUP TANPA isi TRAKSAKSI_ID dulu ---
+        next_backup_id = db.session.query(
+            func.coalesce(func.max(LogTransaksiBackup.TRAKSAKSI_BACKUP_ID), 0)
+        ).scalar() + 1
+
+        log_transaksi_backup = LogTransaksiBackup(
+            TRAKSAKSI_BACKUP_ID=next_backup_id,
+            TRAKSAKSI_ID=None,  # dikosongkan dulu -- diisi belakangan setelah LOG_TRANSAKSI ada
+            TRANSAKSI='MASTER_JAM_FINGER',
+            ACTIVITY='INSERT',
+            UPDATE_DATE=now,
+        )
+        db.session.add(log_transaksi_backup)
+        db.session.flush()  # commit sementara insert ini, supaya baris backup benar-benar ada di DB
+
+        # --- Langkah 2: insert LOG_TRANSAKSI dengan TRAKSAKSI_BACKUP_ID dari langkah 1 ---
+        next_transaksi_id = db.session.query(
+            func.coalesce(func.max(LogTransaksi.TRAKSAKSI_ID), 0)
+        ).scalar() + 1
+
+        log_transaksi = LogTransaksi(
+            TRAKSAKSI_ID=next_transaksi_id,
+            NIP=current_nip,
+            TRAKSAKSI_BACKUP_ID=next_backup_id,
+            TRANSAKSI='MASTER_JAM_FINGER',
+            ACTIVITY='INSERT',
+            UPDATE_DATE=now,
+        )
+        db.session.add(log_transaksi)
+        db.session.flush()  # sekarang baris LOG_TRANSAKSI juga benar-benar ada di DB
+
+        # --- Langkah 3: baru sekarang aman untuk update balik TRAKSAKSI_ID ---
+        log_transaksi_backup.TRAKSAKSI_ID = next_transaksi_id
+        db.session.flush()
+
+        # --- Langkah 4: insert MF_LOAD_FINGER ---
+        jam_finger = MfLoadFinger(
+            TRAKSAKSI_ID=next_transaksi_id,
+            START_FINGER=start_finger,
+            END_FINGER=end_finger,
+            TGL_MULAI_BERLAKU=tgl_mulai,
+            UPDATE_BY=current_nip,
+            UPDATE_DATE=now,
+            SHIFT_KERJA=shift_raw,
+            START_FINGER_OUT=start_finger_out,
+            END_FINGER_OUT=end_finger_out,
+        )
+        db.session.add(jam_finger)
+        db.session.commit()
+
+    except Exception:
+        db.session.rollback()
+        raise
+
+    return jsonify({
+        'status': 'success',
+        'message': 'Data jam finger berhasil disimpan',
+        'data': jam_finger.to_dict(),
+    })
 
 def master_jam_kerja():
     """Render halaman Master File Master Jam Kerja."""
@@ -680,12 +817,44 @@ def master_trt():
     return render_template('pages/dashboard_1/Master File Master TRT.html')
 
 def master_tunkin_class():
-    """Render halaman Master File Master Tunkin Class."""
-    return render_template('pages/dashboard_1/Master File Master Tunkin Class.html')
+    """
+    Render halaman Master File Master Tunkin Class.
+    Dropdown Class diisi dari data MF_CLASS yang sudah ada di DB
+    (fix 14 baris, CLASS_ID 1-14) — bukan hardcode di HTML, karena
+    fitur ini hanya untuk EDIT data yang sudah ada, bukan insert baru.
+    """
+    class_list = MfClass.query.order_by(MfClass.CLASS_ID.asc()).all()
+    return render_template(
+        'pages/dashboard_1/Master File Master Tunkin Class.html',
+        class_list=class_list,
+    )
+
+def get_tunkin_class_detail(class_id):
+    """
+    Ambil detail 1 baris MF_CLASS berdasarkan CLASS_ID, dipakai untuk
+    autofill form saat user memilih Class di dropdown.
+    """
+    row = MfClass.query.get(class_id)
+    if row is None:
+        return jsonify({'status': 'error', 'message': 'Class tidak ditemukan'}), 404
+
+    return jsonify({
+        'status': 'success',
+        'data': {
+            'class_id': row.CLASS_ID,
+            'tunjangan': row.TUNJANGAN,
+            'tgl_mulai': row.TGL_MULAI.strftime('%Y-%m-%d') if row.TGL_MULAI else '',
+            'dokreff': row.DOKREFF or '',
+        }
+    })
 
 def save_tunkin_class():
     """
-    Simpan data Master Tunkin/Class baru dari form.
+    Update data Master Tunkin/Class yang SUDAH ADA (edit-only).
+    Data MF_CLASS bersifat fix (14 baris, CLASS_ID 1-14) sesuai PERBAN
+    NO 4 TAHUN 2024 — form ini tidak membuat baris baru, hanya mengubah
+    isi (TUNJANGAN, TGL_MULAI, DOKREFF) dari Class yang dipilih.
+
     Body JSON yang diharapkan:
     {
         "class_id": 3,
@@ -715,8 +884,13 @@ def save_tunkin_class():
     except (TypeError, ValueError):
         return jsonify({'status': 'error', 'message': 'Class harus berupa angka'}), 400
 
-    # Cegah duplikat primary key — kalau sudah ada, update alih-alih insert baru
+    # --- Wajib sudah ada — form ini edit-only, tidak boleh buat baris baru ---
     existing = MfClass.query.get(class_id)
+    if existing is None:
+        return jsonify({
+            'status': 'error',
+            'message': f'Class ID {class_id} tidak ditemukan. Data Master Tunkin/Class bersifat tetap (1-14), tidak bisa membuat Class baru.'
+        }), 404
 
     # --- Validasi & konversi Tunjangan ---
     try:
@@ -726,47 +900,27 @@ def save_tunkin_class():
     except (TypeError, ValueError):
         return jsonify({'status': 'error', 'message': 'Tunjangan harus berupa angka'}), 400
 
-    # --- Validasi & konversi Tanggal ---
-    tgl_mulai = None
+    # --- Validasi & konversi Tanggal (opsional) ---
+    tgl_mulai = existing.TGL_MULAI  # default: pertahankan nilai lama kalau tidak diisi
     if tgl_mulai_raw:
         try:
             tgl_mulai = datetime.strptime(tgl_mulai_raw, '%Y-%m-%d')
         except ValueError:
             return jsonify({'status': 'error', 'message': 'Format tanggal harus YYYY-MM-DD'}), 400
 
-    current_nip = session.get('nip', 'system')
-    now = datetime.utcnow()
+    # --- Update baris yang sudah ada ---
+    existing.TUNJANGAN = tunjangan
+    existing.TGL_MULAI = tgl_mulai
+    existing.DOKREFF = dokreff
+    existing.UPDATE_IN_BY = session.get('nip', 'system')
+    existing.UPDATE_DATE = datetime.utcnow()
 
-    if existing is not None:
-        # Update baris yang sudah ada
-        existing.TUNJANGAN = tunjangan
-        existing.TGL_MULAI = tgl_mulai
-        existing.DOKREFF = dokreff
-        existing.UPDATE_IN_BY = current_nip
-        existing.UPDATE_DATE = now
-        db.session.commit()
-        return jsonify({
-            'status': 'success',
-            'message': 'Data tunkin/class berhasil diperbarui',
-            'data': existing.to_dict(),
-        })
-
-    tunkin_class = MfClass(
-        CLASS_ID=class_id,
-        TUNJANGAN=tunjangan,
-        TGL_MULAI=tgl_mulai,
-        DOKREFF=dokreff,
-        UPDATE_IN_BY=current_nip,
-        UPDATE_DATE=now,
-    )
-
-    db.session.add(tunkin_class)
     db.session.commit()
 
     return jsonify({
         'status': 'success',
-        'message': 'Data tunkin/class berhasil disimpan',
-        'data': tunkin_class.to_dict(),
+        'message': f'Data Tunkin/Class {class_id} berhasil diperbarui',
+        'data': existing.to_dict(),
     })
 
 def master_unit_kerja():
@@ -946,9 +1100,180 @@ def cari_master_jam_finger():
     """Render halaman Cari Master Jam Finger."""
     return render_template('pages/dashboard_1/Cari Master Jam Finger.html')
 
+def _query_jam_finger(periode_raw, field1, keyword1, field2, keyword2):
+    """
+    Helper bersama untuk get_jam_finger_list() dan export_jam_finger_excel(),
+    supaya logic filter tidak perlu ditulis dua kali dan selalu konsisten
+    antara tampilan tabel dan hasil download Excel.
+
+    Filter opsional (semua bisa kosong -> tampilkan semua data):
+      - periode : filter TGL_MULAI_BERLAKU pada tanggal tertentu (YYYY-MM-DD)
+      - field1/keyword1, field2/keyword2 : dropdown "Filter" (cuma ada
+        "Tanggal Mulai" di UI saat ini), digabung dengan AND
+    """
+    query = MfLoadFinger.query
+
+    if periode_raw:
+        try:
+            periode_date = datetime.strptime(periode_raw, '%Y-%m-%d')
+        except ValueError:
+            raise ValueError('Format periode harus YYYY-MM-DD')
+        awal_hari = periode_date
+        akhir_hari = periode_date + timedelta(days=1)
+        query = query.filter(
+            MfLoadFinger.TGL_MULAI_BERLAKU >= awal_hari,
+            MfLoadFinger.TGL_MULAI_BERLAKU < akhir_hari
+        )
+
+    for field, keyword in [(field1, keyword1), (field2, keyword2)]:
+        if not field or not keyword:
+            continue  # filter tidak dipakai -> skip, tidak wajib diisi
+
+        if field == 'Tanggal Mulai':
+            try:
+                tgl = datetime.strptime(keyword, '%Y-%m-%d')
+            except ValueError:
+                raise ValueError('Format Tanggal Mulai harus YYYY-MM-DD')
+            awal_hari = tgl
+            akhir_hari = tgl + timedelta(days=1)
+            query = query.filter(
+                MfLoadFinger.TGL_MULAI_BERLAKU >= awal_hari,
+                MfLoadFinger.TGL_MULAI_BERLAKU < akhir_hari
+            )
+
+    return query.order_by(MfLoadFinger.TGL_MULAI_BERLAKU.desc()).all()
+
+
+def get_jam_finger_list():
+    """
+    Ambil data Master Jam Finger untuk tabel Cari Master Jam Finger.
+    Filter opsional -> kalau semua kosong, berlaku seperti klik Refresh biasa.
+    """
+    periode_raw = request.args.get('periode', '').strip()
+    field1 = request.args.get('field1')
+    keyword1 = request.args.get('keyword1', '').strip()
+    field2 = request.args.get('field2')
+    keyword2 = request.args.get('keyword2', '').strip()
+
+    try:
+        rows = _query_jam_finger(periode_raw, field1, keyword1, field2, keyword2)
+    except ValueError as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
+    data = [
+        {
+            'no': idx + 1,
+            'tgl_mulai': row.TGL_MULAI_BERLAKU.strftime('%d-%m-%Y') if row.TGL_MULAI_BERLAKU else '-',
+            'shift': row.SHIFT_KERJA or '-',
+            'start_finger': row.START_FINGER.strftime('%H:%M') if row.START_FINGER else '-',
+            'end_finger': row.END_FINGER.strftime('%H:%M') if row.END_FINGER else '-',
+            'start_finger_out': row.START_FINGER_OUT.strftime('%H:%M') if row.START_FINGER_OUT else '-',
+            'end_finger_out': row.END_FINGER_OUT.strftime('%H:%M') if row.END_FINGER_OUT else '-',
+            'updated': row.UPDATE_DATE.strftime('%d-%m-%Y %H:%M') if row.UPDATE_DATE else '-',
+        }
+        for idx, row in enumerate(rows)
+    ]
+
+    return jsonify({'status': 'success', 'data': data})
+
+
+def export_jam_finger_excel():
+    """
+    Export data Master Jam Finger ke file Excel (.xlsx), dengan filter
+    yang SAMA PERSIS seperti tabel di layar -- supaya file yang di-download
+    selalu cocok dengan apa yang sedang ditampilkan user.
+    """
+    periode_raw = request.args.get('periode', '').strip()
+    field1 = request.args.get('field1')
+    keyword1 = request.args.get('keyword1', '').strip()
+    field2 = request.args.get('field2')
+    keyword2 = request.args.get('keyword2', '').strip()
+
+    try:
+        rows = _query_jam_finger(periode_raw, field1, keyword1, field2, keyword2)
+    except ValueError as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = 'Jam Finger'
+
+    headers = [
+        'No', 'Tgl Mulai', 'Shift',
+        'Start Finger (In)', 'End Finger (In)',
+        'Start Finger (Out)', 'End Finger (Out)',
+        'Updated',
+    ]
+    ws.append(headers)
+
+    # Styling header supaya konsisten dengan warna orange di tabel web (#EB6831)
+    header_fill = PatternFill(start_color='EB6831', end_color='EB6831', fill_type='solid')
+    header_font = Font(color='FFFFFF', bold=True)
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal='center')
+
+    for idx, row in enumerate(rows):
+        ws.append([
+            idx + 1,
+            row.TGL_MULAI_BERLAKU.strftime('%d-%m-%Y') if row.TGL_MULAI_BERLAKU else '-',
+            row.SHIFT_KERJA or '-',
+            row.START_FINGER.strftime('%H:%M') if row.START_FINGER else '-',
+            row.END_FINGER.strftime('%H:%M') if row.END_FINGER else '-',
+            row.START_FINGER_OUT.strftime('%H:%M') if row.START_FINGER_OUT else '-',
+            row.END_FINGER_OUT.strftime('%H:%M') if row.END_FINGER_OUT else '-',
+            row.UPDATE_DATE.strftime('%d-%m-%Y %H:%M') if row.UPDATE_DATE else '-',
+        ])
+
+    # Auto-lebar kolom supaya isinya tidak terpotong
+    for col_cells in ws.columns:
+        max_length = max(len(str(cell.value)) for cell in col_cells if cell.value is not None)
+        col_letter = col_cells[0].column_letter
+        ws.column_dimensions[col_letter].width = max_length + 4
+
+    buffer = BytesIO()
+    wb.save(buffer)
+    buffer.seek(0)
+
+    filename = f'jam_finger_{datetime.utcnow().strftime("%Y%m%d_%H%M%S")}.xlsx'
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+
 def cari_master_jam_kerja():
     """Render halaman Cari Master Jam Kerja."""
     return render_template('pages/dashboard_1/Cari Master Jam Kerja.html')
+
+def _format_jam(value):
+    """
+    Format nilai jam (STD_JAM_IN/STD_JAM_OUT) menjadi string 'HH:MM',
+    aman dipakai baik value berupa objek datetime maupun string mentah
+    dari database (mengatasi ketidakcocokan tipe kolom DB vs model).
+    """
+    if value is None:
+        return '-'
+    if isinstance(value, str):
+        value = value.strip()
+        if not value:
+            return '-'
+        # Coba beberapa format string yang mungkin tersimpan di DB
+        for fmt in ('%Y-%m-%d %H:%M:%S', '%H:%M:%S', '%H:%M'):
+            try:
+                return datetime.strptime(value, fmt).strftime('%H:%M')
+            except ValueError:
+                continue
+        # Kalau tidak ada format yang cocok, tampilkan apa adanya
+        return value
+    # Kalau sudah objek datetime/time
+    try:
+        return value.strftime('%H:%M')
+    except AttributeError:
+        return str(value)
 
 def get_jam_kerja_list():
     """
@@ -1024,8 +1349,8 @@ def get_jam_kerja_list():
             'tgl_mulai': row.TGL_MULAI_BERLAKU.strftime('%d-%m-%Y') if row.TGL_MULAI_BERLAKU else '-',
             'hari_kerja': row.AGENDA or '-',
             'shift': row.SHIFT or '-',
-            'jam_masuk': row.STD_JAM_IN.strftime('%H:%M') if row.STD_JAM_IN else '-',
-            'jam_pulang': row.STD_JAM_OUT.strftime('%H:%M') if row.STD_JAM_OUT else '-',
+            'jam_masuk': _format_jam(row.STD_JAM_IN),
+            'jam_pulang': _format_jam(row.STD_JAM_OUT),
             'penggantian_tlm1': tlm1_label.get(row.PENGGANTIAN_TLM1, '-'),
             'updated': row.UPDATE_DATE.strftime('%d-%m-%Y %H:%M') if row.UPDATE_DATE else '-',
         }

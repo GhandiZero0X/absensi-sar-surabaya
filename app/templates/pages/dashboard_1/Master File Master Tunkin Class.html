@@ -61,11 +61,9 @@
                             <div class="col-md-7">
                                 <select id="selectClass" class="form-select-sm border custom-select w-100">
                                     <option value="">Pilih</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                    {% for c in class_list %}
+                                    <option value="{{ c.CLASS_ID }}">{{ c.CLASS_ID }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -104,6 +102,37 @@
 
 {% block script %}
 <script>
+// --- Autofill form saat Class dipilih ---
+document.getElementById('selectClass').addEventListener('change', function () {
+    const classId = this.value;
+
+    // Kosongkan dulu form kalau tidak ada class dipilih
+    if (!classId) {
+        document.getElementById('inputTunjangan').value = '';
+        document.getElementById('inputTanggal').value = '';
+        document.getElementById('inputNoSurat').value = '';
+        return;
+    }
+
+    fetch(`/api/tunkin-class/detail/${classId}`)
+        .then(res => res.json())
+        .then(result => {
+            if (result.status === 'success') {
+                const data = result.data;
+                document.getElementById('inputTunjangan').value = data.tunjangan ?? '';
+                document.getElementById('inputTanggal').value = data.tgl_mulai || '';
+                document.getElementById('inputNoSurat').value = data.dokreff || '';
+            } else {
+                alert('Gagal memuat detail: ' + result.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan saat memuat detail Class.');
+        });
+});
+
+// --- Simpan (update) data Class yang dipilih ---
 document.getElementById('btnSimpanTunkinClass').addEventListener('click', function () {
     const classId   = document.getElementById('selectClass').value;
     const tunjangan = document.getElementById('inputTunjangan').value.trim();
@@ -139,11 +168,6 @@ document.getElementById('btnSimpanTunkinClass').addEventListener('click', functi
         .then(data => {
             if (data.status === 'success') {
                 alert(data.message);
-                // reset form setelah sukses
-                document.getElementById('selectClass').value = '';
-                document.getElementById('inputTunjangan').value = '';
-                document.getElementById('inputTanggal').value = '';
-                document.getElementById('inputNoSurat').value = '';
             } else {
                 alert('Gagal: ' + data.message);
             }

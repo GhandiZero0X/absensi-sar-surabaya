@@ -38,21 +38,10 @@
 
                         <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
                             <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari Master Jam Finger.html"
+                                <a href="{{ url_for('main.view_cari_master_jam_finger')}}"
                                     class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
                                     <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
                                 </a>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </button>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -64,10 +53,10 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
                             <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                                <select id="selectShiftFinger" class="form-select-sm border custom-select w-100">
                                     <option value="">Pilih</option>
-                                    <option>1</option>
-                                    <option>2</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
                                 </select>
                             </div>
                         </div>
@@ -77,7 +66,7 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tanggal Mulai</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="date" class="form-control-sm border w-100" style="outline: none;">
+                                    <input type="date" id="inputTglMulaiFinger" class="form-control-sm border w-100" style="outline: none;">
                                     <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                 </div>
                             </div>
@@ -89,12 +78,12 @@
                                 Sama)</label>
                             <div class="col-md-7">
                                 <div style="display: flex; align-items: center; gap: 15px;">
-                                    <input type="time" class="form-control-sm border"
+                                    <input type="time" id="inputJamInStart" class="form-control-sm border"
                                         style="width: 150px; outline: none;">
 
                                     <span class="fw-bold">S.D</span>
 
-                                    <input type="time" class="form-control-sm border"
+                                    <input type="time" id="inputJamInEnd" class="form-control-sm border"
                                         style="width: 150px; outline: none;">
                                 </div>
                             </div>
@@ -105,13 +94,18 @@
                                 Sama)</label>
                             <div class="col-md-7">
                                 <div style="display: flex; align-items: center; gap: 15px;">
-                                    <input type="time" class="form-control-sm border"
+                                    <input type="time" id="inputJamOutStart" class="form-control-sm border"
                                         style="width: 150px; outline: none;">
                                     <span class="fw-bold">S.D</span>
-                                    <input type="time" class="form-control-sm border"
+                                    <input type="time" id="inputJamOutEnd" class="form-control-sm border"
                                         style="width: 150px; outline: none;">
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center mt-3">
+                            <button type="button" id="btnSimpanJamFinger" class="btn btn-orange-figma px-4">
+                                <i class="bi bi-save me-1"></i>Simpan
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -122,5 +116,52 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.getElementById('btnSimpanJamFinger').addEventListener('click', function () {
+    const shift = document.getElementById('selectShiftFinger').value;
+    const tglMulai = document.getElementById('inputTglMulaiFinger').value;
+    const jamInStart = document.getElementById('inputJamInStart').value;
+    const jamInEnd = document.getElementById('inputJamInEnd').value;
+    const jamOutStart = document.getElementById('inputJamOutStart').value;
+    const jamOutEnd = document.getElementById('inputJamOutEnd').value;
 
+    if (!shift) { alert('Shift wajib dipilih'); return; }
+    if (!tglMulai) { alert('Tanggal Mulai wajib diisi'); return; }
+    if (!jamInStart || !jamInEnd) { alert('Rentang Start Jam In wajib diisi'); return; }
+    if (!jamOutStart || !jamOutEnd) { alert('Rentang Start Jam Out wajib diisi'); return; }
+
+    const payload = {
+        shift: shift,
+        tgl_mulai: tglMulai,
+        jam_in_start: jamInStart,
+        jam_in_end: jamInEnd,
+        jam_out_start: jamOutStart,
+        jam_out_end: jamOutEnd,
+    };
+
+    fetch("{{ url_for('main.api_jam_finger_save') }}", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                document.getElementById('selectShiftFinger').value = '';
+                document.getElementById('inputTglMulaiFinger').value = '';
+                document.getElementById('inputJamInStart').value = '';
+                document.getElementById('inputJamInEnd').value = '';
+                document.getElementById('inputJamOutStart').value = '';
+                document.getElementById('inputJamOutEnd').value = '';
+            } else {
+                alert('Gagal: ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan saat menyimpan data.');
+        });
+});
+</script>
 {% endblock %}
