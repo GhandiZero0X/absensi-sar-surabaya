@@ -10056,11 +10056,6 @@ html.app-font-family-roboto-slab body {
 .warning{background:#E6B04B;}
 .danger{background:#D9534F;}
 
-
-/* ==========================================
-   TABLE
-========================================== */
-
 .table-responsive{
     overflow-x:auto;
     overflow-y:auto;
@@ -10075,240 +10070,132 @@ html.app-font-family-roboto-slab body {
     border-spacing:0;
 }
 
-/* ==========================================
-   HEADER
-========================================== */
-
 .attendance-table thead th{
-
     position:sticky;
     top:0;
     z-index:30;
-
     background:#5E80B7;
     color:#fff;
-
     text-align:center;
     vertical-align:middle;
-
     font-size:14px;
     font-weight:600;
-
     white-space:nowrap;
-
     padding:16px 20px;
-
     border:1px solid #dfe4ea;
 }
 
-/* ==========================================
-   BODY
-========================================== */
-
 .attendance-table tbody td{
-
     background:#fff;
-
     border:1px solid #dfe4ea;
-
     text-align:center;
     vertical-align:middle;
-
     height:72px;
-
     padding:10px;
 }
 
 .attendance-table tbody tr:hover td{
-
     background:#fafafa;
-
 }
-
-/* ==========================================
-   KOLOM TANGGAL
-========================================== */
 
 .sticky-date{
-
     position:sticky;
-
     left:0;
-
     min-width:180px;
     width:180px;
-
     background:#F5F7FA !important;
-
     font-weight:700;
-
     z-index:20;
 }
-
-/* Header tanggal */
 
 thead .sticky-date{
-
     background:#5E80B7 !important;
     color:#fff;
-
     z-index:40;
 }
 
-/* ==========================================
-   KOLOM SHIFT
-========================================== */
-
 .sticky-shift{
-
     position:sticky;
-
     left:180px;
-
     min-width:120px;
     width:120px;
-
     background:#fff !important;
-
     font-weight:600;
-
     z-index:20;
 }
 
-/* Header shift */
-
 thead .sticky-shift{
-
     background:#5E80B7 !important;
     color:#fff;
-
     z-index:40;
 }
 
-/* ==========================================
-   STATUS ICON
-========================================== */
-
 .status{
-
     width:42px;
     height:42px;
-
     display:inline-flex;
-
     justify-content:center;
     align-items:center;
-
     border-radius:10px;
-
     color:#fff;
-
     font-size:22px;
-
     font-weight:bold;
 }
 
-/* Hijau */
-
 .status.success{
-
     background:#7FC36A;
 }
 
-/* Kuning */
-
 .status.warning{
-
     background:#E3AF45;
 }
 
-/* Merah */
-
 .status.danger{
-
     background:#CF654D;
 }
 
-/* ==========================================
-   ICON
-========================================== */
-
 .status i{
-
     color:#fff;
-
 }
-
-/* ==========================================
-   CELL KOSONG
-========================================== */
 
 .empty{
-
     font-size:28px;
-
     color:#666;
-
 }
-
-/* ==========================================
-   GARIS TABEL
-========================================== */
 
 .attendance-table td,
 .attendance-table th{
-
     border:1px solid #E3E8EF;
-
 }
 
-/* ==========================================
-   SCROLLBAR
-========================================== */
-
 .table-responsive::-webkit-scrollbar{
-
     height:10px;
     width:10px;
-
 }
 
 .table-responsive::-webkit-scrollbar-track{
-
     background:#f1f1f1;
 }
 
 .table-responsive::-webkit-scrollbar-thumb{
-
     background:#c5c5c5;
     border-radius:10px;
 }
 
 .table-responsive::-webkit-scrollbar-thumb:hover{
-
     background:#999;
 }
 
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
 @media(max-width:768px){
-
     .sticky-date{
-
         min-width:140px;
         width:140px;
     }
-
     .sticky-shift{
-
         min-width:90px;
         width:90px;
-
         left:140px;
     }
-
 }
 
 .summary-card{
@@ -10328,7 +10215,7 @@ thead .sticky-shift{
 }
 
 .summary-card h4{
-    font-size:20px;          /* sebelumnya 30px */
+    font-size:20px;   
     font-weight:700;
     line-height:1.35;
     margin:0;
@@ -10337,19 +10224,18 @@ thead .sticky-shift{
 }
 
 .summary-card p{
-    font-size:16px;          /* sebelumnya 24px */
+    font-size:16px; 
     line-height:1.6;
     margin:0;
     color:#fff;
 }
 
 .summary-icon{
-    font-size:42px;          /* sebelumnya 56px */
+    font-size:42px;    
     color:#fff;
     margin-bottom:12px;
 }
 
-/* Warna Card */
 .bg-success-card{
     background:#7FA66F;
 }
