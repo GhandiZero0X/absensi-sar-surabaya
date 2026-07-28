@@ -1,4 +1,6 @@
 # controllers/dashboard_1MasterFileController.py
+from sqlite3 import IntegrityError
+
 import requests
 from datetime import date, datetime, timedelta
 from io import BytesIO
@@ -19,12 +21,143 @@ from app.models.subGroupJabatanModel import MfSubGroupJabatan
 from app.models.loadFingerModel import MfLoadFinger
 from app.models.logTransaksiModel import LogTransaksi
 from app.models.logTransaksiBackupModel import LogTransaksiBackup
+from app.models.joblistModel import MfJoblist
+from app.models.jabatanKegiatanModel import MfJabatanKegiatan
 
 GOOGLE_ID_HOLIDAY_CALENDAR_ID = 'id.indonesian#holiday@group.v.calendar.google.com'
 
 def master_butir_kegiatan():
-    """Render halaman Master File Butir Kegiatan."""
-    return render_template('pages/dashboard_1/Master File Butir Kegiatan.html')
+    """
+    Render halaman Master File Butir Kegiatan.
+    Group Jabatan dropdown diisi dari MF_GROUP_JABATAN (server-side render),
+    supaya user WAJIB pilih salah satu sebelum tabel Item Kegiatan bisa
+    di-refresh (composite key MF_JOBLIST butuh GROUP_JABATAN_ID).
+    """
+    group_jabatan_list = MfGroupJabatan.query.order_by(
+        MfGroupJabatan.GROUP_JABATAN_ID.asc()
+    ).all()
+
+    return render_template(
+        'pages/dashboard_1/Master File Butir Kegiatan.html',
+        group_jabatan_list=group_jabatan_list,
+    )
+
+def get_joblist_list():
+    """
+    Ambil data MF_JOBLIST (Item ID + Diskripsi) untuk tabel di halaman
+    Butir Kegiatan, difilter berdasarkan Group Jabatan.
+
+    Query param:
+      - group_jabatan_id : WAJIB. Tanpa ini, tabel tidak boleh menampilkan
+        apa-apa (mencegah query seluruh MF_JOBLIST tanpa filter).
+    """
+    group_jabatan_id = request.args.get('group_jabatan_id', type=int)
+
+    if group_jabatan_id is None:
+        return jsonify({'status': 'error', 'message': 'Group Jabatan wajib dipilih terlebih dahulu'}), 400
+
+    group_jabatan = MfGroupJabatan.query.get(group_jabatan_id)
+    if group_jabatan is None:
+        return jsonify({'status': 'error', 'message': 'Group Jabatan tidak ditemukan'}), 404
+
+    rows = (
+        MfJoblist.query
+        .filter(MfJoblist.GROUP_JABATAN_ID == group_jabatan_id)
+        .order_by(MfJoblist.ITEM_ID.asc())
+        .all()
+    )
+
+    data = [
+        {
+            'no': idx + 1,
+            'item_id': row.ITEM_ID,
+            'deskripsi': row.DESKRIPSI or '-',
+        }
+        for idx, row in enumerate(rows)
+    ]
+
+    return jsonify({'status': 'success', 'data': data})
+
+def save_joblist():
+    """
+    Simpan baris baru ke MF_JOBLIST (Item Kegiatan) untuk sebuah Group Jabatan.
+
+    Body JSON yang diharapkan:
+    {
+        "group_jabatan_id": 10,
+        "item_id": "ITM-001",
+        "deskripsi": "Menyusun laporan bulanan"
+    }
+
+    Catatan penting:
+    ITEM_ID punya FK ke MF_JABATAN_KEGIATAN.ITEM_ID -- jadi ID Kegiatan
+    yang diinput HARUS sudah terdaftar di master MF_JABATAN_KEGIATAN
+    lebih dulu. Kalau belum ada, insert akan ditolak database (FK
+    constraint) dan kita kembalikan pesan yang jelas ke user, bukan
+    error 500 mentah.
+    """
+    payload = request.get_json(silent=True) or {}
+
+    group_jabatan_id_raw = payload.get('group_jabatan_id')
+    item_id = (payload.get('item_id') or '').strip()
+    deskripsi = (payload.get('deskripsi') or '').strip()
+
+    # --- Validasi field wajib ---
+    if group_jabatan_id_raw in (None, ''):
+        return jsonify({'status': 'error', 'message': 'Group Jabatan wajib dipilih'}), 400
+    if not item_id:
+        return jsonify({'status': 'error', 'message': 'ID Kegiatan wajib diisi'}), 400
+    if not deskripsi:
+        return jsonify({'status': 'error', 'message': 'Deskripsi Kegiatan wajib diisi'}), 400
+
+    # --- Validasi & konversi Group Jabatan ID ---
+    try:
+        group_jabatan_id = int(group_jabatan_id_raw)
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'Group Jabatan ID harus berupa angka'}), 400
+
+    group_jabatan = MfGroupJabatan.query.get(group_jabatan_id)
+    if group_jabatan is None:
+        return jsonify({'status': 'error', 'message': 'Group Jabatan tidak ditemukan'}), 400
+
+    # --- Pastikan ITEM_ID sudah terdaftar di master MF_JABATAN_KEGIATAN (FK) ---
+    jabatan_kegiatan = MfJabatanKegiatan.query.get(item_id)
+    if jabatan_kegiatan is None:
+        return jsonify({
+            'status': 'error',
+            'message': f'ID Kegiatan "{item_id}" belum terdaftar di Master Jabatan Kegiatan. '
+                       f'Tambahkan dulu di master tersebut sebelum dikaitkan ke Group Jabatan ini.'
+        }), 400
+
+    # --- Cegah duplikat composite key (GROUP_JABATAN_ID + ITEM_ID) ---
+    existing = MfJoblist.query.get((group_jabatan_id, item_id))
+    if existing is not None:
+        return jsonify({
+            'status': 'error',
+            'message': f'ID Kegiatan "{item_id}" sudah terdaftar untuk Group Jabatan ini'
+        }), 409
+
+    joblist = MfJoblist(
+        GROUP_JABATAN_ID=group_jabatan_id,
+        ITEM_ID=item_id,
+        DESKRIPSI=deskripsi,
+    )
+
+    try:
+        db.session.add(joblist)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({
+            'status': 'error',
+            'message': 'Gagal menyimpan: referensi data tidak valid (FK constraint)'
+        }), 400
+
+    return jsonify({
+        'status': 'success',
+        'message': 'Item kegiatan berhasil disimpan',
+        'data': joblist.to_dict(),
+    })
 
 def master_jabatan():
     """
