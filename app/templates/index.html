@@ -83,7 +83,7 @@
                             OPERASI
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ url_for('main.view_master_data_tim_siaga') }}" class="dropdown-item">Piket Siaga</a>
+                            <a href="{{ url_for('main.view_dashboard_tim_siaga') }}" class="dropdown-item">Piket Siaga</a>
                             <a href="{{ url_for('main.index') }}" class="dropdown-item">Kesiapsiagaan</a>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                             <a href="" class="dropdown-item">Gudang</a>
                         </div>
                     </div>
-                    <a href="#"
+                    <a href="{{ url_for('main.view_dashboard_kinerja') }}"
                         class="nav-link text-white d-flex align-items-center">DATA PRIBADI
                     </a>
 

@@ -521,7 +521,7 @@ def view_cari_absensi_pegawai_lembur_manual():
 # ---- Dashboard 2 Routes ----
 # ============================
 # Dashboard Tim Siaga:
-@main.route('/dashboard/pelanggaran')
+@main.route('/siaga/dashboard-tim-siaga')
 @login_required
 def view_dashboard_tim_siaga():
     return dashboard_tim_siaga()
