@@ -48,6 +48,7 @@ from app.controllers.dashboard_1LaporanRekapController import (
     export_rekap_absensi_all,
     export_rekap_absensi_individu,
     export_rekap_absensi_log_finger,
+    export_rekap_clock_exception,
     laporan_cetak_daftar_lembur_umum,
     laporan_rekap_absensi_all,
     laporan_rekap_absensi_individu,
@@ -501,6 +502,11 @@ def export_laporan_rekap_absensi_log_finger():
 @login_required
 def view_laporan_rekap_clock_exception():
     return laporan_rekap_clock_exception()
+
+@main.route('/laporan/rekap-clock-exception/export', methods=['POST'])
+@login_required
+def export_laporan_rekap_clock_exception():
+    return export_rekap_clock_exception()
 
 @main.route('/laporan/rekap-ketidakhadiran-pegawai')
 @login_required
