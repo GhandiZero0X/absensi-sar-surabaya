@@ -1,7 +1,8 @@
 # controllers/dashboard_1LaporanRekapController.py
 from flask import render_template, request, send_file
 from io import BytesIO
-from datetime import datetime
+from sqlalchemy import func
+from datetime import datetime, timedelta
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Side, Font
@@ -12,6 +13,7 @@ from app.models.pegawaiModel import Pegawai
 from app.models.kalenderModel import MfKalender
 from app.models.dinasLuarModel import DinasLuar
 from app.models.unitKerjaModel import MfUnitKerja
+from app.models.timeRecorderModel import TimeRecorder
 
 
 def laporan_cetak_daftar_lembur_umum():
@@ -440,8 +442,173 @@ def search_pegawai_by_name():
 def laporan_rekap_absensi_log_finger():
     """
     Render halaman Laporan Rekap Absensi Log Finger.
+    Unit Kerja dropdown diisi dari tabel MF_UNIT_KERJA.
     """
-    return render_template('pages/dashboard_1/Laporan Rekap Absensi Log Finger.html')
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+
+    return render_template(
+        'pages/dashboard_1/Laporan Rekap Absensi Log Finger.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def laporan_rekap_absensi_log_finger():
+    """
+    Render halaman Laporan Rekap Absensi Log Finger.
+    Unit Kerja dropdown diisi dari tabel MF_UNIT_KERJA.
+    """
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+
+    return render_template(
+        'pages/dashboard_1/Laporan Rekap Absensi Log Finger.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def export_rekap_absensi_log_finger():
+    """Export Laporan Log Finger via TIME_RECORDER -> ABSENSI -> PEGAWAI"""
+    unit_list = request.form.getlist('unit_kerja[]')
+    tgl_awal_str = request.form.get('tgl_awal')
+    tgl_akhir_str = request.form.get('tgl_akhir')
+    
+    if not unit_list or not tgl_awal_str or not tgl_akhir_str:
+        return {'error': 'Unit kosong atau format tanggal salah'}, 400
+    
+    try:
+        unit_ids = [int(u) for u in unit_list]
+    except ValueError:
+        return {'error': 'Unit Kerja ID harus berupa angka'}, 400
+    
+    tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+    tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d') + timedelta(days=1)
+    
+    # Subquery: ambil 1 NIP per FINGER_ID dari ABSENSI (hindari duplikat)
+    subquery = (
+        db.session.query(
+            Absensi.FINGER_ID,
+            func.min(Absensi.NIP).label('NIP')
+        )
+        .filter(Absensi.NIP.isnot(None))
+        .group_by(Absensi.FINGER_ID)
+        .subquery()
+    )
+    
+    # Query utama: TIME_RECORDER -> subquery -> PEGAWAI -> MF_UNIT_KERJA
+    rows = (
+        db.session.query(TimeRecorder, Pegawai, MfUnitKerja)
+        .join(subquery, TimeRecorder.FINGER_ID == subquery.c.FINGER_ID)
+        .join(Pegawai, subquery.c.NIP == Pegawai.NIP)
+        .join(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+        .filter(TimeRecorder.WAKTU.between(tgl_awal, tgl_akhir))
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+        .order_by(Pegawai.NAMA, TimeRecorder.WAKTU)
+        .all()
+    )
+    
+    if not rows:
+        return {'error': 'Record tidak ada'}, 400
+    
+    # Ambil nama unit untuk judul
+    unit_names_list = MfUnitKerja.query.filter(MfUnitKerja.UNIT_KERJA_ID.in_(unit_ids)).all()
+    unit_names = ', '.join([u.NAMA_UNIT_KERJA for u in unit_names_list])
+    
+    # Build Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Log Finger"
+    ws.sheet_properties.tabColor = "FF7B00"
+    ws.page_setup.orientation = 'landscape'
+    ws.page_setup.paperSize = ws.PAPERSIZE_A4
+    
+    # Logo
+    try:
+        img = XLImage('static/img/LogoSAR.png')
+        img.width, img.height = 50, 50
+        ws.add_image(img, 'A1')
+    except:
+        pass
+    
+    # Judul
+    ws.merge_cells('D2:F2')
+    ws['D2'] = 'Rekap Log Finger'
+    ws['D2'].font = Font(bold=True, size=12)
+    ws['D2'].alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells('D3:F3')
+    ws['D3'] = f"Periode {tgl_awal:%d.%m.%Y} s/d {(tgl_akhir - timedelta(days=1)):%d.%m.%Y}"
+    ws['D3'].alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells('D4:F4')
+    ws['D4'] = f"Unit : {unit_names}"
+    ws['D4'].alignment = Alignment(horizontal='center')
+    
+    thin = Side(style='thin')
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+    
+    # Header kolom
+    headers = ['No.', 'Tanggal', 'Jam', 'Status', 'Device']
+    for col, h in enumerate(headers, start=2):
+        c = ws.cell(row=5, column=col, value=h)
+        c.border = border
+        c.font = Font(bold=True)
+        c.alignment = Alignment(horizontal='center', vertical='center')
+    
+    ws.column_dimensions['B'].width = 5
+    ws.column_dimensions['C'].width = 13
+    ws.column_dimensions['D'].width = 10
+    ws.column_dimensions['E'].width = 8
+    ws.column_dimensions['F'].width = 30
+    
+    row = 6
+    prev_name = ''
+    no = 0
+    
+    for tr, pg, uk in rows:
+        current_name = f"{tr.FINGER_ID} - {pg.NAMA}"
+        
+        if current_name != prev_name:
+            # Baris nama pegawai
+            ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=6)
+            ws.cell(row=row, column=2, value=current_name)
+            ws.cell(row=row, column=2).font = Font(bold=True, italic=True)
+            for col in range(2, 7):
+                ws.cell(row=row, column=col).border = border
+            row += 1
+            prev_name = current_name
+            no = 0
+        
+        no += 1
+        for col in range(2, 7):
+            ws.cell(row=row, column=col).border = border
+        
+        ws.cell(row=row, column=2, value=no)
+        ws.cell(row=row, column=2).alignment = Alignment(horizontal='center')
+        ws.cell(row=row, column=3, value=tr.WAKTU.strftime('%d %b %Y') if tr.WAKTU else '')
+        ws.cell(row=row, column=3).alignment = Alignment(horizontal='left')
+        ws.cell(row=row, column=4, value=tr.WAKTU.strftime('%H:%M:%S') if tr.WAKTU else '')
+        ws.cell(row=row, column=4).alignment = Alignment(horizontal='center')
+        ws.cell(row=row, column=5, value=tr.STATUS or '')
+        ws.cell(row=row, column=5).alignment = Alignment(horizontal='center')
+        ws.cell(row=row, column=6, value=f"{tr.MESIN or '-'} @ {uk.NAMA_UNIT_KERJA or '-'}")
+        ws.cell(row=row, column=6).alignment = Alignment(horizontal='left')
+        
+        row += 1
+    
+    # Stream download
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    filename = f"Rekap_Log_Finger_{tgl_awal:%Y%m%d}_{(tgl_akhir - timedelta(days=1)):%Y%m%d}.xlsx"
+    return send_file(
+        buf,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 
 
 def laporan_rekap_clock_exception():
