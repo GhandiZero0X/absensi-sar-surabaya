@@ -45,6 +45,7 @@ from app.controllers.dashboard_1MediaInformasiController import (
     update_media_informasi, nonaktifkan_media_informasi
 )
 from app.controllers.dashboard_1LaporanRekapController import (
+    export_rekap_absensi_all,
     laporan_cetak_daftar_lembur_umum,
     laporan_rekap_absensi_all,
     laporan_rekap_absensi_individu,
@@ -462,6 +463,11 @@ def view_laporan_cetak_daftar_lembur_umum():
 @login_required
 def view_laporan_rekap_absensi_all():
     return laporan_rekap_absensi_all()
+
+@main.route('/laporan/rekap-absensi-all/export', methods=['POST'])
+@login_required
+def export_laporan_rekap_absensi_all():
+    return export_rekap_absensi_all()
 
 @main.route('/laporan/rekap-absensi-individu')
 @login_required

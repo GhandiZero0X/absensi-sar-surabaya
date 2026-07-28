@@ -1,4 +1,4 @@
-# app/models/izinModel.py
+# app/models/dinasLuarModel.py
 from app import db
 
 

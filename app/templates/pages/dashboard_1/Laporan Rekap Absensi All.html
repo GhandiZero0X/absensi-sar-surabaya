@@ -142,13 +142,11 @@
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
                                         <div class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
                                             <div class="input-group input-group-sm" style="max-width: 200px;">
-                                                <input type="date" class="form-control-sm border w-100 px-2"
-                                                    style="outline: none;">
+                                                <input type="date" id="tglAwal" class="form-control-sm border w-100 px-2" style="outline: none;">
                                             </div>
                                             <span class="mx-2 fw-bold text-muted small">s/d</span>
                                             <div class="input-group input-group-sm" style="max-width: 200px;">
-                                                <input type="date" class="form-control-sm border w-100 px-2"
-                                                    style="outline: none;">
+                                                <input type="date" id="tglAkhir" class="form-control-sm border w-100 px-2" style="outline: none;">
                                             </div>
                                         </div>
                                     </div>
@@ -178,110 +176,17 @@
                                                                 for="checkAllUnit">Check All</label>
                                                         </div>
                                                     </li>
+                                                    {% for unit in unit_kerja_list %}
                                                     <li class="dropdown-item-custom">
                                                         <div class="form-check m-0 d-flex align-items-center gap-2">
                                                             <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="SURABAYA" id="unitSurabaya">
+                                                                type="checkbox" value="{{ unit.UNIT_KERJA_ID }}"  {# ✅ Integer #}
+                                                                id="unit{{ unit.UNIT_KERJA_ID }}">
                                                             <label class="form-check-label small w-100"
-                                                                for="unitSurabaya">SURABAYA</label>
+                                                                for="unit{{ unit.UNIT_KERJA_ID }}">{{ unit.NAMA_UNIT_KERJA }}</label>
                                                         </div>
                                                     </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="JEMBER" id="unitJember">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitJember">JEMBER</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="TRENGGALEK" id="unitTrenggalek">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitTrenggalek">TRENGGALEK</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="BANYUWANGI" id="unitBanyuwangi">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitBanyuwangi">BANYUWANGI</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="BOJONEGORO" id="unitBojonegoro">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitBojonegoro">BOJONEGORO</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="MALANG" id="unitMalang">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitMalang">MALANG</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="KN WIDURA" id="unitWidura">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitWidura">KN WIDURA</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="LAMONGAN" id="unitLamongan">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitLamongan">LAMONGAN</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="SECURITY" id="unitSecurity">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitSecurity">SECURITY</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="PRAMUBAKTI" id="unitPramubakti">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitPramubakti">PRAMUBAKTI</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="ABK HONORER" id="unitAbkHonorer">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitAbkHonorer">ABK HONORER</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="CPNS" id="unitCpns">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitCpns">CPNS</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="PPNPN" id="unitPpnpn">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitPpnpn">PPNPN</label>
-                                                        </div>
-                                                    </li>
+                                                    {% endfor %}
                                                 </ul>
                                             </div>
                                         </div>
@@ -320,15 +225,13 @@
                                     <div class="row align-items-center mb-3">
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Nama</label>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control-sm border w-100 px-2"
-                                                style="outline: none; height: 31px;">
+                                            <input type="text" id="namaEselon3" class="form-control-sm border w-100 px-2" style="outline: none; height: 31px;">
                                         </div>
                                     </div>
                                     <div class="row align-items-center">
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Pangkat</label>
                                         <div class="col-md-4 d-flex align-items-center gap-2">
-                                            <input type="text" class="form-control-sm border w-100 px-2"
-                                                style="outline: none; height: 31px;">
+                                            <input type="text" id="pangkatEselon3" class="form-control-sm border w-100 px-2" style="outline: none; height: 31px;">
                                             <span class="text-dark">★</span>
                                         </div>
                                     </div>
@@ -344,24 +247,30 @@
                                     <div class="row align-items-center mb-3">
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Petugas 1</label>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control-sm border w-100 px-2"
-                                                style="outline: none; height: 31px;">
+                                            <input type="text" id="petugas1" class="form-control-sm border w-100 px-2" style="outline: none; height: 31px;">
                                         </div>
                                     </div>
                                     <div class="row align-items-center mb-4">
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Petugas 2</label>
                                         <div class="col-md-8">
-                                            <input type="text" class="form-control-sm border w-100 px-2"
-                                                style="outline: none; height: 31px;">
+                                            <input type="text" id="petugas2" class="form-control-sm border w-100 px-2" style="outline: none; height: 31px;">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-center mt-2">
-                                            <button type="submit" class="btn btn-pill-run shadow-sm">RUN</button>
+                                            <button type="button" id="btnRunLaporan" class="btn btn-pill-run shadow-sm">
+                                                <span id="btnRunText">RUN</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div id="alertContainer" class="alert alert-dismissible d-none mt-3" role="alert">
+                            <strong id="alertStatus"></strong>
+                            <span id="alertInfo"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
 
                     </div>
@@ -375,42 +284,80 @@
 
 {% block script %}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const checkAll = document.getElementById("checkAllUnit");
-        const items = document.querySelectorAll(".check-unit-item");
-        const label = document.getElementById("dropdownLabelUnit");
+    document.getElementById('btnRunLaporan').addEventListener('click', async (e) => {
+        e.preventDefault();
 
-        // Fungsi memperbarui teks tombol berdasarkan nama unit yang dicentang
-        function updateLabel() {
-            const checkedItems = document.querySelectorAll(".check-unit-item:checked");
-
-            if (checkedItems.length === 0) {
-                label.innerText = "Pilih Unit Kerja";
-            } else if (checkedItems.length === items.length) {
-                label.innerText = "Semua Unit Terpilih";
-            } else {
-                // Mengambil nilai text/value dari item yang dicentang lalu digabung dengan koma
-                const selectedNames = Array.from(checkedItems).map(item => item.value);
-                label.innerText = selectedNames.join(", ");
-            }
-        }
-
-        if (checkAll) {
-            checkAll.addEventListener("change", function () {
-                items.forEach(item => {
-                    item.checked = checkAll.checked;
-                });
-                updateLabel();
-            });
-        }
-
-        items.forEach(item => {
-            item.addEventListener("change", function () {
-                const checkedCount = document.querySelectorAll(".check-unit-item:checked").length;
-                if (checkAll) checkAll.checked = (checkedCount === items.length);
-                updateLabel();
-            });
+        const formData = new FormData();
+        document.querySelectorAll('.check-unit-item:checked').forEach(cb => {
+            formData.append('unit_kerja[]', cb.value);
         });
+        formData.append('tgl_awal', document.getElementById('tglAwal').value);
+        formData.append('tgl_akhir', document.getElementById('tglAkhir').value);
+        formData.append('kolom_keterangan', document.querySelector('input[name=kolomKeterangan]:checked').value);
+
+        // Field yang sebelumnya belum dikirim -- ini penyebab KeyError
+        formData.append('nama_eselon3', document.getElementById('namaEselon3').value);
+        formData.append('pangkat_eselon3', document.getElementById('pangkatEselon3').value);
+        formData.append('petugas1', document.getElementById('petugas1').value);
+        formData.append('petugas2', document.getElementById('petugas2').value);
+
+        const btnRun = document.getElementById('btnRunLaporan');
+        const btnRunText = document.getElementById('btnRunText');
+        btnRun.disabled = true;
+        btnRunText.textContent = 'Memproses...';
+
+        try {
+            const res = await fetch('/laporan/rekap-absensi-all/export', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                alert(err.error || 'Gagal membuat laporan');
+                return;
+            }
+
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const tglAwal = document.getElementById('tglAwal').value.replace(/-/g, '');
+            const tglAkhir = document.getElementById('tglAkhir').value.replace(/-/g, '');
+            a.download = `Laporan_Rekap_Daftar_Hadir_${tglAwal}_${tglAkhir}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+
+        } catch (err) {
+            console.error('Gagal export laporan:', err);
+            alert('Terjadi kesalahan jaringan');
+        } finally {
+            btnRun.disabled = false;
+            btnRunText.textContent = 'RUN';
+        }
     });
+    // Update label dropdown saat checkbox berubah
+    document.querySelectorAll('.check-unit-item').forEach(cb => {
+        cb.addEventListener('change', updateUnitLabel);
+    });
+    document.getElementById('checkAllUnit').addEventListener('change', function() {
+        document.querySelectorAll('.check-unit-item').forEach(cb => {
+            cb.checked = this.checked;
+        });
+        updateUnitLabel();
+    });
+
+    function updateUnitLabel() {
+        const checked = document.querySelectorAll('.check-unit-item:checked');
+        const label = document.getElementById('dropdownLabelUnit');
+        if (checked.length === 0) {
+            label.textContent = 'Pilih Unit Kerja';
+        } else {
+            const names = Array.from(checked).map(cb => cb.parentElement.querySelector('label').textContent);
+            label.textContent = names.join(', ');
+        }
+    }
 </script>
 {% endblock %}

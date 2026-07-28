@@ -1,5 +1,17 @@
 # controllers/dashboard_1LaporanRekapController.py
-from flask import render_template, request
+from flask import render_template, request, send_file
+from io import BytesIO
+from datetime import datetime
+import pandas as pd
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Border, Side, Font
+from openpyxl.drawing.image import Image as XLImage
+from app import db
+from app.models.absensiModel import Absensi
+from app.models.pegawaiModel import Pegawai
+from app.models.kalenderModel import MfKalender
+from app.models.dinasLuarModel import DinasLuar
+from app.models.unitKerjaModel import MfUnitKerja
 
 
 def laporan_cetak_daftar_lembur_umum():
@@ -12,8 +24,175 @@ def laporan_cetak_daftar_lembur_umum():
 def laporan_rekap_absensi_all():
     """
     Render halaman Laporan Rekap Absensi All.
+    Unit Kerja dropdown diisi dari tabel MF_UNIT_KERJA (server-side render),
+    bukan hardcode di HTML.
     """
-    return render_template('pages/dashboard_1/Laporan Rekap Absensi All.html')
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+
+    return render_template(
+        'pages/dashboard_1/Laporan Rekap Absensi All.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def export_rekap_absensi_all():
+    unit_list = request.form.getlist('unit_kerja[]')
+    tgl_awal_str = request.form.get('tgl_awal')
+    tgl_akhir_str = request.form.get('tgl_akhir')
+    
+    if not unit_list or not tgl_awal_str or not tgl_akhir_str:
+        return {'error': 'Unit kosong atau format tanggal salah'}, 400
+    
+    # Konversi unit_list ke integer
+    try:
+        unit_ids = [int(u) for u in unit_list]
+    except ValueError:
+        return {'error': 'Unit Kerja ID harus berupa angka'}, 400
+    
+    tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+    tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d')
+    tampilkan_ket = request.form.get('kolom_keterangan') == 'tampilkan'
+    nama_eselon3 = request.form.get('nama_eselon3', '')
+    pangkat_eselon3 = request.form.get('pangkat_eselon3', '')
+    petugas1 = request.form.get('petugas1', '')
+    petugas2 = request.form.get('petugas2', '')
+
+    # Cek tanggal server
+    tgl_server = datetime.now()
+    if tgl_server.date() < tgl_awal.date():
+        return {'error': 'Tgl server lebih kecil dari tanggal awal periode'}, 400
+    if tgl_server.date() < tgl_akhir.date():
+        tgl_akhir = tgl_server
+
+    # Query — JOIN VIA NIP, BUKAN FINGER_ID
+    q = (
+        db.session.query(Absensi, Pegawai)
+        .join(Pegawai, Absensi.NIP == Pegawai.NIP)  # ✅ JOIN VIA NIP
+        .join(MfKalender, Absensi.TGL_KERJA == MfKalender.TGL_KERJA)
+        .filter(Absensi.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .filter(MfKalender.IS_LIBUR == 'N')
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))  # ✅ pakai integer
+    )
+    rows = q.all()
+    df_absensi = pd.DataFrame([{**a.__dict__, **p.__dict__} for a, p in rows]) if rows else pd.DataFrame()
+
+    if df_absensi.empty:
+        return {'error': 'Record tidak ada atau kalender belum dibuat'}, 400
+
+    # Agregasi — ganti 'tingkat_tlm' jadi 'TINGKAT_TLM' (sesuai kolom model)
+    hasil = []
+    for nip, grp in df_absensi.groupby('NIP'):
+        hasil.append({
+            'nip': nip,
+            'nama': grp['NAMA'].iloc[0],
+            'tlm1': (grp['TINGKAT_TLM'] == 'TLM-1').sum(),
+            'tlm2': (grp['TINGKAT_TLM'] == 'TLM-2').sum(),
+            'tlm3': (grp['TINGKAT_TLM'] == 'TLM-3').sum(),
+            'tlm4': (grp['TINGKAT_TLM'] == 'TLM-4').sum(),
+            'psw1': (grp['TINGKAT_PSW'] == 'PSW-1').sum(),
+            'psw2': (grp['TINGKAT_PSW'] == 'PSW-2').sum(),
+            'psw3': (grp['TINGKAT_PSW'] == 'PSW-3').sum(),
+            'psw4': (grp['TINGKAT_PSW'] == 'PSW-4').sum(),
+            'dl': (grp['TRANSAKSI_IN'] == 'DinasLuar').sum(),
+            'cuti': ((grp['TRANSAKSI_IN'] == 'Cuti') & (grp['TINGKAT_TLM'] == 'CT')).sum(),
+            'cb1': ((grp['TRANSAKSI_IN'] == 'Cuti') & (grp['TINGKAT_TLM'] == 'CB-1')).sum(),
+            'cb2': ((grp['TRANSAKSI_IN'] == 'Cuti') & (grp['TINGKAT_TLM'] == 'CB-2')).sum(),
+            'cb3': ((grp['TRANSAKSI_IN'] == 'Cuti') & (grp['TINGKAT_TLM'] == 'CB-3')).sum(),
+            'capm2': ((grp['TRANSAKSI_IN'] == 'Cuti') & (grp['TINGKAT_TLM'] == 'CAP-M2')).sum(),
+            'cap': ((grp['TRANSAKSI_IN'] == 'Cuti') & (grp['TINGKAT_TLM'] == 'CAP')).sum(),
+            'sakit': ((grp['TRANSAKSI_IN'] == 'Sakit') & (grp['TINGKAT_TLM'] == 'S-1')).sum(),
+            'sakit2': ((grp['TRANSAKSI_IN'] == 'Sakit') & (grp['TINGKAT_TLM'] == 'S-2')).sum(),
+            'sakit3': ((grp['TRANSAKSI_IN'] == 'Sakit') & (grp['TINGKAT_TLM'] == 'S-3')).sum(),
+            'sakit4': ((grp['TRANSAKSI_IN'] == 'Sakit') & (grp['TINGKAT_TLM'] == 'S-4')).sum(),
+            'sakit5': ((grp['TRANSAKSI_IN'] == 'Sakit') & (grp['TINGKAT_TLM'] == 'S-5')).sum(),
+            'alpa': ((grp['TRANSAKSI_IN'] == 'Alpa') & (grp['PENDUKUNG_IN'] == 'Y')).sum(),
+            'alpa_tanpa_ket': ((grp['TRANSAKSI_IN'] == 'Alpa') & (grp['PENDUKUNG_IN'] == 'N')).sum(),
+        })
+    df_hasil = pd.DataFrame(hasil)
+
+    # 4. (Opsional) keterangan dinas luar/cuti kalau tampilkan_ket True
+    if tampilkan_ket:
+        dl_rows = (
+            DinasLuar.query
+            .filter(DinasLuar.TGL_AWAL_DINAS_LUAR <= tgl_akhir)
+            .filter(DinasLuar.TGL_AKHIR_DINAS_LUAR >= tgl_awal)
+            .all()
+        )
+        # susun jadi dict {nip: "1. ... \n2. ..."} sesuai format lama
+
+    # 5. Build Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Daftar"
+    ws.sheet_properties.tabColor = "FF7B00"
+
+    try:
+        img = XLImage('static/img/LogoSAR.png')
+        img.width, img.height = 50, 50
+        ws.add_image(img, 'A1')
+    except FileNotFoundError:
+        pass
+
+    ws.merge_cells('D2:AL2')
+    ws['D2'] = 'Laporan Rekap Daftar Hadir Pegawai'
+    ws['D2'].font = Font(bold=True)
+    ws['D2'].alignment = Alignment(horizontal='center')
+
+    ws.merge_cells('D3:AL3')
+    ws['D3'] = f"Periode {tgl_awal:%d.%m.%Y} s/d {tgl_akhir:%d.%m.%Y}"
+    ws['D3'].alignment = Alignment(horizontal='center')
+
+    ws.merge_cells('D4:AL4')
+    ws['D4'] = f"Unit : {', '.join(unit_list)}"
+    ws['D4'].alignment = Alignment(horizontal='center')
+
+    thin = Side(style='thin')
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+
+    header_row = 5
+    headers = ['No', 'Nama', 'TLM1', 'TLM2', 'TLM3', 'TLM4', 'Cuti', 'Sakit', 'Alpa']  # lengkapi sesuai kebutuhan
+    for col, h in enumerate(headers, start=2):
+        c = ws.cell(row=header_row, column=col, value=h)
+        c.border = border
+        c.alignment = Alignment(horizontal='center', vertical='center')
+
+    row = header_row + 1
+    for i, r in enumerate(df_hasil.to_dict('records'), start=1):
+        ws.cell(row=row, column=2, value=i).border = border
+        ws.cell(row=row, column=3, value=f"{r['nip']}\n{r['nama']}").border = border
+        ws.cell(row=row, column=4, value=r['tlm1'] or None).border = border
+        ws.cell(row=row, column=5, value=r['tlm2'] or None).border = border
+        ws.cell(row=row, column=6, value=r['tlm3'] or None).border = border
+        ws.cell(row=row, column=7, value=r['tlm4'] or None).border = border
+        ws.cell(row=row, column=8, value=r['cuti'] or None).border = border
+        ws.cell(row=row, column=9, value=r['sakit'] or None).border = border
+        ws.cell(row=row, column=10, value=r['alpa'] or None).border = border
+        row += 1
+
+    row += 2
+    ws.cell(row=row, column=4, value='Mengetahui,')
+    ws.cell(row=row+1, column=4, value='Pejabat Eselon III')
+    ws.cell(row=row+4, column=4, value=nama_eselon3).font = Font(underline='single')
+    ws.cell(row=row+5, column=4, value=pangkat_eselon3)
+
+    ws.cell(row=row, column=32, value=f"Surabaya, {tgl_akhir:%d %B %Y}")
+    ws.cell(row=row+1, column=32, value='Petugas Pengelola Daftar Hadir')
+    ws.cell(row=row+3, column=32, value=f"1. {petugas1}")
+    ws.cell(row=row+5, column=32, value=f"2. {petugas2}")
+
+    # 6. Stream sebagai download, bukan simpan ke disk
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    filename = f"Laporan_Rekap_Daftar_Hadir_Peg_{tgl_awal:%Y%m%d}_{tgl_akhir:%Y%m%d}.xlsx"
+    return send_file(
+        buf,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 
 
 def laporan_rekap_absensi_individu():

@@ -1,4 +1,4 @@
-# app/models/hariLiburModel.py
+# app/models/kalenderModel.py
 from app import db
 
 
