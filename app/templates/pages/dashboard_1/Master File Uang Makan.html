@@ -1,7 +1,7 @@
 <!-- pages/dashboard_1/Master File Uang Makan.html -->
 {% extends "layout/baseDashboard1.html" %}
 
-{% block title %}- User Account{% endblock %}
+{% block title %}- Uang Makan{% endblock %}
 
 {% block content %}
 <div class="nxl-content">
@@ -33,21 +33,10 @@
 
                         <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
                             <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari Master Uang Makan.html"
+                                <a href="{{ url_for('main.view_cari_master_uang_makan') }}"
                                     class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
                                     <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
                                 </a>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </button>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -60,9 +49,21 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tanggal Mulai</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="date" class="form-control-sm border w-100" style="outline: none;">
+                                    <input type="date" id="inputTglMulai" class="form-control-sm border w-100" style="outline: none;">
                                     <span class="icon-append"><i class="bi bi-calendar3"></i></span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jenis Tunjangan</label>
+                            <div class="col-md-7">
+                                <select class="form-select-sm border w-100" id="inputJenisTunjangan">
+                                    <option value="">-- Pilih Jenis Tunjangan --</option>
+                                    {% for jenis in jenis_tunjangan_options %}
+                                    <option value="{{ jenis }}">{{ jenis }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="col-12 d-md-flex align-items-center">
@@ -70,11 +71,8 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Nominal</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="number" class="form-control-sm border w-100 text-end" min="0" step="1"
-                                        value="0">
-                                    <span class="icon-append">
-                                        <i class="bi bi-sort-numeric-down"></i>
-                                    </span>
+                                    <input type="number" id="inputNominal" class="form-control-sm border w-100 text-end" min="0" step="1" value="0">
+                                    <span class="icon-append"><i class="bi bi-sort-numeric-down"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -83,10 +81,46 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">No Surat</label>
                             <div class="col-md-7">
                                 <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
+                                    <input type="text" id="inputNoSurat" class="form-control-sm border w-100">
                                     <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Hari Kerja</label>
+                            <div class="col-md-7">
+                                <select class="form-select-sm border w-100" id="inputHariKerja">
+                                    <option value="">-- Pilih Hari Kerja --</option>
+                                    <option value="1">Hari Kerja</option>
+                                    <option value="0">Hari Libur</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Fungsional</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" id="inputFungsional" class="form-control-sm border w-100" maxlength="50">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
+                            <div class="col-md-7">
+                                <div class="input-group-custom w-100">
+                                    <input type="text" id="inputShift" class="form-control-sm border w-100" maxlength="5">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center mt-3">
+                            <button type="button" id="btnSimpanTunjangan" class="btn btn-orange-figma px-4">
+                                <i class="bi bi-save me-1"></i>Simpan
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -97,5 +131,68 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btnSimpan = document.getElementById('btnSimpanTunjangan');
+    if (!btnSimpan) return;
 
+    btnSimpan.addEventListener('click', async () => {
+        const jenisTunjangan = document.getElementById('inputJenisTunjangan').value;
+        const tglMulai = document.getElementById('inputTglMulai').value;
+        const nominal = document.getElementById('inputNominal').value;
+        const noSurat = document.getElementById('inputNoSurat').value;
+        const hariKerja = document.getElementById('inputHariKerja').value;
+        const shift = document.getElementById('inputShift').value;
+        const fungsional = document.getElementById('inputFungsional').value;
+
+        if (!jenisTunjangan) {
+            alert('Pilih Jenis Tunjangan terlebih dahulu');
+            return;
+        }
+        if (!tglMulai) {
+            alert('Tanggal Mulai wajib diisi');
+            return;
+        }
+        if (nominal === '' || Number(nominal) < 0) {
+            alert('Nominal wajib diisi dan tidak boleh negatif');
+            return;
+        }
+        if (hariKerja === '') {
+            alert('Hari Kerja wajib dipilih');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/uang-makan/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jenis_tunjangan: jenisTunjangan,
+                    tgl_mulai: tglMulai,
+                    nominal: nominal,
+                    no_surat: noSurat,
+                    hari_kerja: hariKerja,
+                    shift: shift,
+                    fungsional: fungsional,
+                })
+            });
+            const json = await res.json();
+            alert(json.message);
+
+            if (json.status === 'success') {
+                document.getElementById('inputJenisTunjangan').value = '';
+                document.getElementById('inputTglMulai').value = '';
+                document.getElementById('inputNominal').value = '0';
+                document.getElementById('inputNoSurat').value = '';
+                document.getElementById('inputHariKerja').value = '';
+                document.getElementById('inputShift').value = '';
+                document.getElementById('inputFungsional').value = '';
+            }
+        } catch (err) {
+            alert('Gagal menghubungi server, coba lagi.');
+            console.error(err);
+        }
+    });
+});
+</script>
 {% endblock %}
