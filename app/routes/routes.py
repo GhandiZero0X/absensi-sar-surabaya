@@ -7,11 +7,11 @@ from app.controllers.dashboard_1HomeController import (
 from app.controllers.dashboard_1MasterFileController import (
     create_kalender_tahun, export_jam_finger_excel, export_tunjangan_excel, get_jabatan_list, get_jam_finger_list, get_jam_kerja_list, get_joblist_list, get_kalender_list,
     get_pegawai_vip_list, get_potongan_list, get_tunjangan_list, get_tunkin_class_detail, get_tunkin_class_list,
-    get_unit_kerja_list, master_butir_kegiatan, master_jabatan, master_jam_finger, master_jam_kerja,
+    get_unit_kerja_list, get_user_account_detail, get_user_account_list, master_butir_kegiatan, master_jabatan, master_jam_finger, master_jam_kerja,
     master_kalender, master_pegawai_vip, master_potongan, master_trt as master_file_trt, master_tunkin_class,
     master_unit_kerja, master_user, master_uang_makan, cari_master_jabatan, cari_master_jam_finger, cari_master_jam_kerja,
     cari_master_kalender, cari_master_potongan, cari_master_tunkin_class, cari_master_uang_makan, cari_master_unit_kerja,
-    cari_user_account, create_kalender, save_jabatan, save_jam_kerja, save_joblist, save_potongan, save_tunkin_class, save_uang_makan, save_unit_kerja,
+    cari_user_account, create_kalender, save_jabatan, save_jam_kerja, save_joblist, save_potongan, save_tunkin_class, save_uang_makan, save_unit_kerja, save_user_account,
     toggle_pegawai_vip, save_jam_finger,
 )
 from app.controllers.dashboard_2DataSiagaController import (
@@ -288,6 +288,16 @@ def api_unit_kerja_save():
 def view_master_user():
     return master_user()
 
+@main.route('/api/user-account/detail', methods=['GET'])
+@login_required
+def api_user_account_detail():
+    return get_user_account_detail()
+
+@main.route('/api/user-account/save', methods=['POST'])
+@login_required
+def api_user_account_save():
+    return save_user_account()
+
 @main.route('/master/uang-makan')
 @login_required
 def view_master_uang_makan():
@@ -388,6 +398,12 @@ def api_unit_kerja_list():
 @login_required
 def view_cari_user_account():
     return cari_user_account()
+
+# Tambahkan route:
+@main.route('/api/user-account/list', methods=['GET'])
+@login_required
+def api_user_account_list():
+    return get_user_account_list()
 
 # Create :
 @main.route('/master/create/kalender')

@@ -34,41 +34,41 @@
                             class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
                             <label class="filter-label-wide">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Gol</option>
-                                <option>Jabatan</option>
-                                <option>Jenis Kelamin</option>
-                                <option>Nama Peg</option>
-                                <option>NIP</option>
-                                <option>No Finger</option>
-                                <option>Unit Kerja</option>
+                            <select class="form-select-sm border custom-select w-mobile-100" id="filterField1">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Gol">Gol</option>
+                                <option value="Jabatan">Jabatan</option>
+                                <option value="Jenis Kelamin">Jenis Kelamin</option>
+                                <option value="Nama Peg">Nama Peg</option>
+                                <option value="NIP">NIP</option>
+                                <option value="No Finger">No Finger</option>
+                                <option value="Unit Kerja">Unit Kerja</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" class="form-control-sm border" id="filterKeyword1">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
                             <span class="mx-md-2 fw-bold text-dan">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Gol</option>
-                                <option>Jabatan</option>
-                                <option>Jenis Kelamin</option>
-                                <option>Nama Peg</option>
-                                <option>NIP</option>
-                                <option>No Finger</option>
-                                <option>Unit Kerja</option>
+                            <select class="form-select-sm border custom-select w-mobile-100" id="filterField2">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Gol">Gol</option>
+                                <option value="Jabatan">Jabatan</option>
+                                <option value="Jenis Kelamin">Jenis Kelamin</option>
+                                <option value="Nama Peg">Nama Peg</option>
+                                <option value="NIP">NIP</option>
+                                <option value="No Finger">No Finger</option>
+                                <option value="Unit Kerja">Unit Kerja</option>
                             </select>
 
                             <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
+                                <input type="text" class="form-control-sm border" id="filterKeyword2">
                                 <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
                             </div>
 
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100" id="btnRefreshUser">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
@@ -87,7 +87,7 @@
                                         <th style="color:white; vertical-align: middle;">UpdateBy</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="userAccountTableBody">
                                     <tr>
                                         <td colspan="6" style="vertical-align: middle; padding: 20px;">No records to
                                             display.</td>
@@ -104,5 +104,72 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tbody = document.getElementById('userAccountTableBody');
 
+    function buildQueryParams() {
+        const params = new URLSearchParams();
+        const field1 = document.getElementById('filterField1').value;
+        const keyword1 = document.getElementById('filterKeyword1').value.trim();
+        const field2 = document.getElementById('filterField2').value;
+        const keyword2 = document.getElementById('filterKeyword2').value.trim();
+
+        if (field1 && keyword1) {
+            params.append('field1', field1);
+            params.append('keyword1', keyword1);
+        }
+        if (field2 && keyword2) {
+            params.append('field2', field2);
+            params.append('keyword2', keyword2);
+        }
+        return params;
+    }
+
+    async function loadUserAccount() {
+        const params = buildQueryParams();
+        try {
+            const res = await fetch('/api/user-account/list?' + params.toString());
+            const json = await res.json();
+
+            if (json.status !== 'success') {
+                alert(json.message || 'Gagal mengambil data');
+                return;
+            }
+
+            renderTable(json.data);
+        } catch (err) {
+            alert('Gagal menghubungi server, coba lagi.');
+            console.error(err);
+        }
+    }
+
+    function renderTable(data) {
+        tbody.innerHTML = '';
+
+        if (!data || data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="padding:20px;">No records to display.</td></tr>';
+            return;
+        }
+
+        data.forEach(row => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${row.no}</td>
+                    <td>${row.user_id}</td>
+                    <td>${row.nama}</td>
+                    <td>${row.jabatan}</td>
+                    <td>${row.level}</td>
+                    <td>${row.update_by}</td>
+                </tr>
+            `;
+        });
+    }
+
+    document.getElementById('btnRefreshUser').addEventListener('click', loadUserAccount);
+
+    // Load data pertama kali saat halaman dibuka
+    loadUserAccount();
+});
+</script>
 {% endblock %}

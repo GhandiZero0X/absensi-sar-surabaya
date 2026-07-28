@@ -37,6 +37,9 @@
                                     class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
                                     <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
                                 </a>
+                                <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnSimpanUser">
+                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -47,14 +50,14 @@
                         <label class="col-md-2 fw-bold text-dark">NIP</label>
                         <div class="col-md-10 d-flex gap-2 flex-wrap">
                             <div class="input-group" style="max-width: 320px;">
-                                <input type="text" class="form-control bg-white" placeholder="NIP Pegawai">
+                                <input type="text" class="form-control bg-white" placeholder="NIP Pegawai" id="inputNip">
                                 <span class="input-group-text bg-light"><i class="bi bi-person text-muted"></i></span>
                             </div>
                             <button class="btn btn-info text-white px-3 fw-bold"
-                                style="background-color: #4fd1c5; border: none;">
+                                style="background-color: #4fd1c5; border: none;" id="btnCariPeg">
                                 <i class="bi bi-search me-1"></i> CARI PEG.
                             </button>
-                            <button class="btn btn-light border px-3">
+                            <button class="btn btn-light border px-3" id="btnRefreshUser">
                                 <i class="bi bi-arrow-clockwise me-1"></i> REFRESH
                             </button>
                         </div>
@@ -63,7 +66,7 @@
                     <div class="row mb-4 align-items-center">
                         <label class="col-md-2 fw-bold text-dark">Nama</label>
                         <div class="col-md-10">
-                            <div class="border-bottom py-2 text-primary" style="min-height: 38px;">-</div>
+                            <div class="border-bottom py-2 text-primary" style="min-height: 38px;" id="displayNama">-</div>
                         </div>
                     </div>
 
@@ -71,12 +74,11 @@
                         <label class="col-md-2 fw-bold text-dark">Level</label>
                         <div class="col-md-4">
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select" id="selectLevel">
                                     <option value="operator">Operator</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                                <span class="input-group-text bg-light"><i
-                                        class="bi bi-diagram-3 text-muted"></i></span>
+                                <span class="input-group-text bg-light"><i class="bi bi-diagram-3 text-muted"></i></span>
                             </div>
                         </div>
                     </div>
@@ -95,10 +97,10 @@
                                                 <th style="color:white; vertical-align: middle;">Type Akses</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="operatorFormsTableBody">
                                             <tr>
                                                 <td colspan="4" style="vertical-align: middle; padding: 20px;">
-                                                    No records to display.</td>
+                                                    Cari pegawai terlebih dahulu.</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -134,5 +136,127 @@
 {% endblock %}
 
 {% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const inputNip = document.getElementById('inputNip');
+    const btnCari = document.getElementById('btnCariPeg');
+    const btnRefresh = document.getElementById('btnRefreshUser');
+    const btnSimpan = document.getElementById('btnSimpanUser');
+    const displayNama = document.getElementById('displayNama');
+    const selectLevel = document.getElementById('selectLevel');
+    const tbodyForms = document.getElementById('operatorFormsTableBody');
 
+    function renderOperatorForms(forms) {
+        if (!forms || forms.length === 0) {
+            tbodyForms.innerHTML = `<tr><td colspan="4" style="padding:20px;">No records to display.</td></tr>`;
+            return;
+        }
+
+        tbodyForms.innerHTML = forms.map(form => `
+            <tr>
+                <td class="text-start">${form.form_name}</td>
+                <td>${form.form_type}</td>
+                <td>
+                    <input type="checkbox"
+                           class="akses-checkbox"
+                           data-form-id="${form.form_id}"
+                           ${form.is_akses ? 'checked' : ''}>
+                </td>
+                <td>
+                    <select class="form-select form-select-sm type-akses-select" data-form-id="${form.form_id}">
+                        <option value="M" ${form.type_akses === 'M' ? 'selected' : ''}>Modify</option>
+                        <option value="R" ${form.type_akses === 'R' ? 'selected' : ''}>Read Only</option>
+                    </select>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    async function loadUserAccount() {
+        const nip = inputNip.value.trim();
+        if (!nip) {
+            alert('NIP kosong');
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/user-account/detail?nip=${encodeURIComponent(nip)}`);
+            const json = await res.json();
+
+            if (json.status !== 'success') {
+                alert(json.message || 'Pegawai tidak ditemukan');
+                displayNama.textContent = '-';
+                renderOperatorForms([]);
+                return;
+            }
+
+            displayNama.textContent = json.data.nama;
+            selectLevel.value = json.data.init_level === 0 ? 'admin' : 'operator';
+            renderOperatorForms(json.data.operator_forms);
+
+        } catch (err) {
+            console.error('Gagal memuat data user account:', err);
+            alert('Terjadi kesalahan jaringan');
+        }
+    }
+
+    function collectAksesList() {
+        // Hanya ambil form yang checkbox-nya DICENTANG -- form yang
+        // tidak dicentang tidak dikirim sama sekali (sesuai logic
+        // delete-then-insert di backend)
+        const checkedBoxes = tbodyForms.querySelectorAll('.akses-checkbox:checked');
+        return Array.from(checkedBoxes).map(checkbox => {
+            const formId = checkbox.dataset.formId;
+            const select = tbodyForms.querySelector(`.type-akses-select[data-form-id="${formId}"]`);
+            return {
+                form_id: formId,
+                type_akses: select ? select.value : 'M',
+            };
+        });
+    }
+
+    async function saveUserAccount() {
+        const nip = inputNip.value.trim();
+        if (!nip) {
+            alert('NIP wajib diisi');
+            return;
+        }
+
+        const payload = {
+            nip: nip,
+            level: selectLevel.value,
+            akses_list: collectAksesList(),
+        };
+
+        btnSimpan.disabled = true;
+
+        try {
+            const res = await fetch('/api/user-account/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const json = await res.json();
+
+            if (json.status !== 'success') {
+                alert(json.message || 'Gagal menyimpan data user account');
+                return;
+            }
+
+            alert(json.message);
+            loadUserAccount(); // refresh tampilan supaya sinkron dengan DB
+
+        } catch (err) {
+            console.error('Gagal menyimpan user account:', err);
+            alert('Terjadi kesalahan jaringan');
+        } finally {
+            btnSimpan.disabled = false;
+        }
+    }
+
+    btnCari.addEventListener('click', loadUserAccount);
+    btnRefresh.addEventListener('click', loadUserAccount);
+    btnSimpan.addEventListener('click', saveUserAccount);
+});
+</script>
 {% endblock %}

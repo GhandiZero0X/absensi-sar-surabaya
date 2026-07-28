@@ -24,10 +24,16 @@ from app.models.logTransaksiBackupModel import LogTransaksiBackup
 from app.models.joblistModel import MfJoblist
 from app.models.jabatanKegiatanModel import MfJabatanKegiatan
 from app.models.tunjanganModel import MfTunjangan
+from app.models.userAccountModel import UserAccount
+from app.models.formModel import MfForm
+from app.models.hakAksesFormModel import HakAksesForm
 
 JENIS_TUNJANGAN_OPTIONS = ['U.Makan', 'U.Transport', 'U.Lembur']
 
 GOOGLE_ID_HOLIDAY_CALENDAR_ID = 'id.indonesian#holiday@group.v.calendar.google.com'
+
+LEVEL_LABEL = {0: 'Admin', 1: 'Operator'}
+LEVEL_VALUE = {'admin': 0, 'operator': 1}
 
 def master_butir_kegiatan():
     """
@@ -1146,6 +1152,215 @@ def master_user():
     """Render halaman Master File Master User."""
     return render_template('pages/dashboard_1/Master File Master User.html')
 
+def _get_operator_forms(nip):
+    """
+    Bangun daftar form untuk tabel "Khusus Operator", meniru query UNION
+    di VB.NET Filldata():
+      1. Form yang SUDAH punya baris HAK_AKSES_FORM untuk NIP ini
+         (Modul='HRIS', join ke MF_FORM dengan MODEL=2) -> tampilkan
+         is_akses & type_akses apa adanya.
+      2. Form yang BELUM punya baris HAK_AKSES_FORM untuk NIP ini,
+         DIBATASI hanya FORM_TYPE 'Transaksi' atau 'Report'
+         -> default is_akses='N', type_akses='M'.
+
+    Diurutkan: is_akses desc dulu (yang aktif duluan), lalu nama form.
+    """
+    existing_access = {
+        row.FORM_ID: row
+        for row in HakAksesForm.query.filter(
+            HakAksesForm.NIP == nip,
+            HakAksesForm.MODUL == 'HRIS'
+        ).all()
+    }
+
+    all_forms = MfForm.query.filter(
+        MfForm.MODUL == 'HRIS',
+        MfForm.MODEL == 2
+    ).all()
+
+    result = []
+    for form in all_forms:
+        access = existing_access.get(form.FORM_ID)
+
+        if access is not None:
+            # Bagian 1: sudah punya baris akses -> tampil apa adanya
+            result.append({
+                'form_id': form.FORM_ID,
+                'form_name': form.FORM_NAME or '-',
+                'form_type': form.FORM_TYPE or '-',
+                'is_akses': access.IS_AKSES == 'Y',
+                'type_akses': access.TYPE_AKSES or 'M',
+            })
+        elif form.FORM_TYPE in ('Transaksi', 'Report'):
+            # Bagian 2: belum punya baris akses -> default, HANYA untuk
+            # FormType Transaksi/Report (sesuai filter WHERE VB.NET)
+            result.append({
+                'form_id': form.FORM_ID,
+                'form_name': form.FORM_NAME or '-',
+                'form_type': form.FORM_TYPE or '-',
+                'is_akses': False,
+                'type_akses': 'M',
+            })
+        # Form lain (bukan Transaksi/Report, belum punya akses) -> di-skip,
+        # sesuai logic VB.NET yang tidak menampilkannya sama sekali.
+
+    # Urutkan: is_akses True duluan, lalu berdasarkan nama form
+    result.sort(key=lambda x: (not x['is_akses'], x['form_name']))
+    return result
+
+def get_user_account_detail():
+    """
+    Cari data user account berdasarkan NIP -- dipakai oleh tombol
+    "Cari Peg." dan "Refresh" di halaman Master User.
+
+    Sekarang termasuk daftar form "Khusus Operator" (dari MF_FORM +
+    HAK_AKSES_FORM), meniru logic Filldata() di VB.NET.
+
+    Query param:
+      - nip : wajib
+    """
+    nip = request.args.get('nip', '').strip()
+
+    if not nip:
+        return jsonify({'status': 'error', 'message': 'NIP wajib diisi'}), 400
+
+    pegawai = Pegawai.query.get(nip)
+    if pegawai is None:
+        return jsonify({'status': 'error', 'message': f'Pegawai dengan NIP {nip} tidak ditemukan'}), 404
+
+    user_account = UserAccount.query.get(nip)
+    operator_forms = _get_operator_forms(nip)
+
+    return jsonify({
+        'status': 'success',
+        'data': {
+            'nip': pegawai.NIP,
+            'nama': pegawai.NAMA,
+            'init_level': user_account.INIT_LEVEL if user_account else 1,
+            'level_label': LEVEL_LABEL.get(
+                user_account.INIT_LEVEL if user_account else 1, 'Operator'
+            ),
+            'has_account': user_account is not None,
+            'operator_forms': operator_forms,
+        }
+    })
+
+def save_user_account():
+    """
+    Simpan/update level akses (Operator/Admin) DAN hak akses per-form
+    (Khusus Operator) seorang pegawai.
+
+    Body JSON yang diharapkan:
+    {
+        "nip": "1985...",
+        "level": "operator",
+        "akses_list": [
+            { "form_id": "F001", "type_akses": "M" },
+            { "form_id": "F002", "type_akses": "R" }
+        ]
+    }
+
+    "akses_list" hanya berisi form yang checkbox-nya DICENTANG di UI --
+    form yang tidak dicentang tidak perlu dikirim sama sekali.
+
+    Meniru pola VB.NET BtnSave_Click(): hapus SEMUA baris HAK_AKSES_FORM
+    milik NIP ini dulu, baru insert ulang baris baru untuk form yang
+    dicentang. Untuk USER_ACCOUNT (Level), tetap pakai pola upsert
+    seperti sebelumnya.
+    """
+    payload = request.get_json(silent=True) or {}
+
+    nip = (payload.get('nip') or '').strip()
+    level_raw = (payload.get('level') or '').strip().lower()
+    akses_list = payload.get('akses_list') or []
+
+    if not nip:
+        return jsonify({'status': 'error', 'message': 'NIP wajib diisi'}), 400
+    if level_raw not in LEVEL_VALUE:
+        return jsonify({'status': 'error', 'message': 'Level harus "operator" atau "admin"'}), 400
+    if not isinstance(akses_list, list):
+        return jsonify({'status': 'error', 'message': 'akses_list harus berupa list'}), 400
+
+    pegawai = Pegawai.query.get(nip)
+    if pegawai is None:
+        return jsonify({'status': 'error', 'message': f'Pegawai dengan NIP {nip} tidak ditemukan'}), 404
+
+    # --- Validasi setiap entri akses_list sebelum ada perubahan apapun ke DB ---
+    valid_type_akses = ('M', 'R')
+    cleaned_akses = []
+    for item in akses_list:
+        if not isinstance(item, dict):
+            return jsonify({'status': 'error', 'message': 'Setiap item akses_list harus berupa object'}), 400
+        form_id = (item.get('form_id') or '').strip()
+        type_akses = (item.get('type_akses') or 'M').strip().upper()
+
+        if not form_id:
+            return jsonify({'status': 'error', 'message': 'form_id wajib diisi pada setiap item akses_list'}), 400
+        if type_akses not in valid_type_akses:
+            return jsonify({
+                'status': 'error',
+                'message': f'type_akses harus "M" (Modify) atau "R" (Read Only), diterima: "{type_akses}"'
+            }), 400
+
+        form = MfForm.query.get(form_id)
+        if form is None:
+            return jsonify({'status': 'error', 'message': f'Form dengan ID "{form_id}" tidak ditemukan'}), 400
+
+        cleaned_akses.append({'form_id': form_id, 'type_akses': type_akses})
+
+    init_level = LEVEL_VALUE[level_raw]
+    now = datetime.utcnow()
+    current_nip_login = session.get('nip', 'system')
+
+    try:
+        # --- Bagian 1: upsert USER_ACCOUNT (Level) ---
+        user_account = UserAccount.query.get(nip)
+        if user_account is None:
+            user_account = UserAccount(
+                NIP=nip,
+                INIT_LEVEL=init_level,
+                MODUL='HRIS',
+                UPDATE_BY=current_nip_login,
+                UPDATE_DATE=now,
+            )
+            db.session.add(user_account)
+        else:
+            user_account.INIT_LEVEL = init_level
+            user_account.MODUL = 'HRIS'
+            user_account.UPDATE_BY = current_nip_login
+            user_account.UPDATE_DATE = now
+
+        # --- Bagian 2: hapus semua HAK_AKSES_FORM lama milik NIP ini,
+        #     lalu insert ulang untuk form yang dicentang (delete-then-insert,
+        #     persis seperti Delete() + loop insert di VB.NET) ---
+        HakAksesForm.query.filter(
+            HakAksesForm.NIP == nip,
+            HakAksesForm.MODUL == 'HRIS'
+        ).delete()
+
+        for item in cleaned_akses:
+            db.session.add(HakAksesForm(
+                NIP=nip,
+                FORM_ID=item['form_id'],
+                IS_AKSES='Y',
+                TYPE_AKSES=item['type_akses'],
+                MODUL='HRIS',
+                UPDATE_BY=current_nip_login,
+                UPDATE_DATE=now,
+            ))
+
+        db.session.commit()
+
+    except Exception:
+        db.session.rollback()
+        raise
+
+    return jsonify({
+        'status': 'success',
+        'message': f'Data akun {pegawai.NAMA} berhasil disimpan ({len(cleaned_akses)} hak akses form)',
+        'data': user_account.to_dict(),
+    })
+
 def master_uang_makan():
     """
     Render halaman Master File Uang Makan.
@@ -1991,6 +2206,73 @@ def cari_user_account():
     """Render halaman Cari User Account."""
     return render_template('pages/dashboard_1/Cari User Account.html')
 
+def get_user_account_list():
+    """
+    Ambil data untuk tabel Cari User Account.
+    Join PEGAWAI + USER_ACCOUNT (INNER JOIN) -- hanya pegawai yang
+    SUDAH punya akun sistem yang ditampilkan, karena ini halaman
+    pencarian akun, bukan daftar seluruh pegawai.
+
+    Filter opsional (semua bisa kosong -> berlaku seperti klik Refresh
+    biasa, menampilkan seluruh data):
+      - field1/keyword1 dan field2/keyword2 : dua dropdown "Filter"
+        (Gol, Jabatan, Jenis Kelamin, Nama Peg, NIP, Unit Kerja),
+        digabung dengan AND.
+
+    Catatan: "Gol" dan "No Finger" sengaja belum dimasukkan ke field_map
+    -- sama seperti di get_pegawai_vip_list(), butuh model master
+    tambahan (MF_GOLONGAN, master no-finger) yang belum tersedia.
+    Kalau dipilih tapi belum didukung, akan dikembalikan error yang jelas.
+    """
+    field1 = request.args.get('field1')
+    keyword1 = request.args.get('keyword1', '').strip()
+    field2 = request.args.get('field2')
+    keyword2 = request.args.get('keyword2', '').strip()
+
+    field_map = {
+        'Nama Peg': Pegawai.NAMA,
+        'NIP': Pegawai.NIP,
+        'Jabatan': Pegawai.JABATAN,
+        'Jenis Kelamin': Pegawai.JENIS_KEL,
+        'Unit Kerja': MfUnitKerja.NAMA_UNIT_KERJA,
+    }
+    not_yet_supported = ('Gol', 'No Finger')
+
+    query = UserAccount.query.join(Pegawai, UserAccount.NIP == Pegawai.NIP)
+
+    needs_unit_kerja_join = 'Unit Kerja' in (field1, field2)
+    if needs_unit_kerja_join:
+        query = query.join(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+
+    for field, keyword in [(field1, keyword1), (field2, keyword2)]:
+        if not field or not keyword:
+            continue  # filter ini tidak dipakai -> skip, tidak wajib diisi
+
+        if field in not_yet_supported:
+            return jsonify({
+                'status': 'error',
+                'message': f'Filter "{field}" belum didukung (master data belum tersedia)'
+            }), 400
+
+        column = field_map.get(field)
+        if column is not None:
+            query = query.filter(column.ilike(f'%{keyword}%'))
+
+    rows = query.order_by(Pegawai.NAMA.asc()).all()
+
+    data = [
+        {
+            'no': idx + 1,
+            'user_id': row.NIP,
+            'nama': row.pegawai.NAMA if row.pegawai else '-',
+            'jabatan': row.pegawai.JABATAN if row.pegawai else '-',
+            'level': LEVEL_LABEL.get(row.INIT_LEVEL, '-'),
+            'update_by': row.UPDATE_BY or '-',
+        }
+        for idx, row in enumerate(rows)
+    ]
+
+    return jsonify({'status': 'success', 'data': data})
 
 # ---- Create ----
 def create_kalender():
