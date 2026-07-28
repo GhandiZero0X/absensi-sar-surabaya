@@ -46,6 +46,7 @@ from app.controllers.dashboard_1MediaInformasiController import (
 )
 from app.controllers.dashboard_1LaporanRekapController import (
     export_rekap_absensi_all,
+    export_rekap_absensi_individu,
     laporan_cetak_daftar_lembur_umum,
     laporan_rekap_absensi_all,
     laporan_rekap_absensi_individu,
@@ -55,6 +56,7 @@ from app.controllers.dashboard_1LaporanRekapController import (
     laporan_rekap_pelanggaran_disiplin,
     laporan_rekap_uang_makan,
     laporan_rekap_tunjangan_kinerja,
+    search_pegawai_by_name,
 )
 from app.controllers.dashboard_1DataAbsensiController import (
     data_absensi_non_finger,
@@ -473,6 +475,16 @@ def export_laporan_rekap_absensi_all():
 @login_required
 def view_laporan_rekap_absensi_individu():
     return laporan_rekap_absensi_individu()
+
+@main.route('/laporan/rekap-absensi-individu/export', methods=['POST'])
+@login_required
+def export_laporan_rekap_absensi_individu():
+    return export_rekap_absensi_individu()
+
+@main.route('/api/laporan/search-pegawai')
+@login_required
+def api_laporan_search_pegawai():
+    return search_pegawai_by_name()
 
 @main.route('/laporan/rekap-absensi-log-finger')
 @login_required

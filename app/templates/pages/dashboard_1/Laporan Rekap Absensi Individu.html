@@ -87,8 +87,6 @@
                 <!-- Body Utama Content -->
                 <div class="card-body p-4">
                     <div class="row">
-
-                        <!-- SECTION: Filter Data -->
                         <div class="col-12">
                             <div class="inner-report-card bg-white">
                                 <div class="orange-section-header">Filter Data</div>
@@ -98,41 +96,42 @@
                                     <div class="row align-items-center mb-3">
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
                                         <div class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
-                                            <div style="max-width: 200px; width: 100%;">
-                                                <input type="date"
-                                                    class="form-control-sm custom-input-field w-100 px-2">
+                                            <div class="input-group input-group-sm" style="max-width: 200px;">
+                                                <input type="date" id="tglAwal" class="form-control-sm border w-100 px-2" style="outline: none;">
                                             </div>
                                             <span class="mx-2 fw-bold text-muted small">s/d</span>
-                                            <div style="max-width: 200px; width: 100%;">
-                                                <input type="date"
-                                                    class="form-control-sm custom-input-field w-100 px-2">
+                                            <div class="input-group input-group-sm" style="max-width: 200px;">
+                                                <input type="date" id="tglAkhir" class="form-control-sm border w-100 px-2" style="outline: none;">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Input Nama -->
+                                    <!-- Input Nama (multi-select atau text search) -->
                                     <div class="row align-items-center mb-4">
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Nama</label>
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control-sm custom-input-field w-100 px-2"
-                                                placeholder="Masukkan nama pegawai...">
+                                            <input type="text" id="searchPegawai" class="form-control-sm custom-input-field w-100 px-2"
+                                                placeholder="Cari nama pegawai...">
+                                            <!-- Hidden input untuk menyimpan NIP yang dipilih -->
+                                            <input type="hidden" id="selectedNip">
+                                            <div id="searchResults" style="max-height: 150px; overflow-y: auto; border: 1px solid #ddd; display: none;"></div>
                                         </div>
                                     </div>
 
                                     <!-- Tombol RUN -->
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-center mt-2">
-                                            <button type="submit" class="btn btn-pill-run shadow-sm">RUN</button>
+                                            <button type="button" id="btnRun" class="btn btn-pill-run shadow-sm">
+                                                <span id="btnRunText">RUN</span>
+                                            </button>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -140,5 +139,100 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    // Search pegawai
+    document.getElementById('searchPegawai').addEventListener('input', async function() {
+        const keyword = this.value.trim();
+        if (keyword.length < 2) {
+            document.getElementById('searchResults').style.display = 'none';
+            return;
+        }
+        
+        try {
+            // Gunakan API khusus untuk halaman ini
+            const res = await fetch(`/api/laporan/search-pegawai?keyword=${encodeURIComponent(keyword)}`);
+            const result = await res.json();
+            
+            const data = result.data || [];
+            const container = document.getElementById('searchResults');
+            container.innerHTML = '';
+            
+            if (data.length > 0) {
+                container.style.display = 'block';
+                data.forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'p-2 border-bottom';
+                    div.style.cursor = 'pointer';
+                    div.textContent = `${p.nip} - ${p.nama}`;
+                    div.addEventListener('click', () => {
+                        document.getElementById('searchPegawai').value = p.nama;
+                        document.getElementById('selectedNip').value = p.nip;
+                        container.style.display = 'none';
+                    });
+                    container.appendChild(div);
+                });
+            } else {
+                container.innerHTML = '<div class="p-2 text-muted">Tidak ditemukan</div>';
+                container.style.display = 'block';
+            }
+        } catch (err) {
+            console.error('Search error:', err);
+        }
+    });
 
+    // Hide dropdown saat klik di luar
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#searchPegawai') && !e.target.closest('#searchResults')) {
+            document.getElementById('searchResults').style.display = 'none';
+        }
+    });
+
+    // Tombol RUN
+    document.getElementById('btnRun').addEventListener('click', async function() {
+        const nip = document.getElementById('selectedNip').value;
+        const tglAwal = document.getElementById('tglAwal').value;
+        const tglAkhir = document.getElementById('tglAkhir').value;
+        
+        if (!nip || !tglAwal || !tglAkhir) {
+            alert('Lengkapi semua field');
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('nip[]', nip);
+        formData.append('tgl_awal', tglAwal);
+        formData.append('tgl_akhir', tglAkhir);
+        
+        const btn = document.getElementById('btnRun');
+        const btnText = document.getElementById('btnRunText');
+        btn.disabled = true;
+        btnText.textContent = 'Memproses...';
+        
+        try {
+            const res = await fetch('/laporan/rekap-absensi-individu/export', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!res.ok) {
+                const err = await res.json();
+                alert(err.error || 'Gagal');
+                return;
+            }
+            
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Laporan_Rekap_Absensi_Individu_${tglAwal.replace(/-/g, '')}_${tglAkhir.replace(/-/g, '')}.xlsx`;
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            alert('Gagal: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btnText.textContent = 'RUN';
+        }
+    });
+</script>
 {% endblock %}

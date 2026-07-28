@@ -201,6 +201,241 @@ def laporan_rekap_absensi_individu():
     """
     return render_template('pages/dashboard_1/Laporan Rekap Absensi Individu.html')
 
+def export_rekap_absensi_individu():
+    """
+    Export Laporan Rekap Absensi Individu (per pegawai, detail per hari).
+    Mirip dengan FillRekapAbsensiPerson di VB.NET.
+    """
+    nip_list = request.form.getlist('nip[]')  # ['198501232009122002', ...]
+    tgl_awal_str = request.form.get('tgl_awal')
+    tgl_akhir_str = request.form.get('tgl_akhir')
+    
+    if not nip_list or not tgl_awal_str or not tgl_akhir_str:
+        return {'error': 'NIP atau tanggal kosong'}, 400
+    
+    tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+    tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d')
+    
+    # Cek tanggal server
+    tgl_server = datetime.now()
+    if tgl_server.date() < tgl_awal.date():
+        return {'error': 'Tgl server lebih kecil dari tanggal awal periode'}, 400
+    if tgl_server.date() < tgl_akhir.date():
+        tgl_akhir = tgl_server
+    
+    # 1. Ambil data kalender (hari kerja saja)
+    kalender_rows = (
+        MfKalender.query
+        .filter(MfKalender.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .filter(MfKalender.IS_LIBUR == 'N')
+        .order_by(MfKalender.TGL_KERJA.asc())
+        .all()
+    )
+    
+    if not kalender_rows:
+        return {'error': 'Tidak ada hari kerja dalam periode tersebut'}, 400
+    
+    # 2. Ambil data absensi untuk NIP yang dipilih
+    absensi_rows = (
+        db.session.query(Absensi, Pegawai)
+        .join(Pegawai, Absensi.NIP == Pegawai.NIP)
+        .filter(Absensi.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .filter(Absensi.NIP.in_(nip_list))
+        .order_by(Pegawai.NAMA, Absensi.TGL_KERJA)
+        .all()
+    )
+    
+    # 3. Ambil data pegawai
+    pegawai_rows = (
+        Pegawai.query
+        .filter(Pegawai.NIP.in_(nip_list))
+        .order_by(Pegawai.NAMA)
+        .all()
+    )
+    
+    if not pegawai_rows:
+        return {'error': 'Pegawai tidak ditemukan'}, 400
+    
+    # 4. Build data per pegawai per tanggal
+    # Struktur: {nip: {nama: ..., unit_kerja: ..., rows: [{tgl, tlm, kategori_tlm, psw, kategori_psw, cuti, dl, sakit, sakit_a, alpa, alpa_a, ket}]}}
+    absensi_dict = {}
+    for a, p in absensi_rows:
+        tgl_key = a.TGL_KERJA.strftime('%Y-%m-%d') if a.TGL_KERJA else None
+        if a.NIP not in absensi_dict:
+            absensi_dict[a.NIP] = {}
+        absensi_dict[a.NIP][tgl_key] = a
+    
+    # 5. Build Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Daftar Individu"
+    ws.sheet_properties.tabColor = "FF7B00"
+    
+    # Setup printer
+    ws.sheet_properties.pageSetUpPr = None
+    ws.page_setup.orientation = 'landscape'
+    ws.page_setup.paperSize = ws.PAPERSIZE_A4
+    
+    # Header
+    ws.merge_cells('D2:N2')
+    ws['D2'] = 'Laporan Rekap Daftar Hadir Pegawai'
+    ws['D2'].font = Font(bold=True, size=12)
+    ws['D2'].alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells('D3:N3')
+    ws['D3'] = f"Periode {tgl_awal:%d.%m.%Y} s/d {tgl_akhir:%d.%m.%Y}"
+    ws['D3'].alignment = Alignment(horizontal='center')
+    
+    thin = Side(style='thin')
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+    
+    # Kolom header
+    headers = ['No.', 'Tanggal', 'TLM\n(menit)', 'Kategori\nTLM', 'PSW\n(menit)', 
+               'Kategori\nPSW', 'Cuti\n(hari)', 'Dinas\nLuar', 'Sakit\nDokter', 
+               'Sakit\ntnp dr', 'Tdk Hadir\ndgn Izin', 'Tdk Hadir\nTanpa Ket', 'Keterangan']
+    
+    header_row = 5
+    for col, h in enumerate(headers, start=2):
+        c = ws.cell(row=header_row, column=col, value=h)
+        c.border = border
+        c.font = Font(bold=True, size=9)
+        c.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+    
+    # Set lebar kolom
+    ws.column_dimensions['B'].width = 5
+    ws.column_dimensions['C'].width = 11
+    ws.column_dimensions['D'].width = 9
+    ws.column_dimensions['E'].width = 9
+    ws.column_dimensions['F'].width = 9
+    ws.column_dimensions['G'].width = 9
+    ws.column_dimensions['H'].width = 9
+    ws.column_dimensions['I'].width = 9
+    ws.column_dimensions['J'].width = 9
+    ws.column_dimensions['K'].width = 9
+    ws.column_dimensions['L'].width = 9
+    ws.column_dimensions['M'].width = 9
+    ws.column_dimensions['N'].width = 25
+    
+    row = header_row + 1
+    
+    for pegawai in pegawai_rows:
+        # Baris nama pegawai (merge)
+        ws.merge_cells(start_row=row, start_column=2, end_row=row, end_column=14)
+        ws.cell(row=row, column=2, value=pegawai.NAMA).font = Font(bold=True)
+        ws.cell(row=row, column=2).alignment = Alignment(horizontal='left')
+        for col in range(2, 15):
+            ws.cell(row=row, column=col).border = border
+        row += 1
+        
+        # Detail per hari
+        no = 0
+        for kl in kalender_rows:
+            no += 1
+            tgl_str = kl.TGL_KERJA.strftime('%Y-%m-%d') if kl.TGL_KERJA else ''
+            
+            # Border
+            for col in range(2, 15):
+                ws.cell(row=row, column=col).border = border
+            
+            ws.cell(row=row, column=2, value=no).alignment = Alignment(horizontal='right', vertical='center')
+            ws.cell(row=row, column=3, value=kl.TGL_KERJA.strftime('%d-%m-%Y') if kl.TGL_KERJA else '').alignment = Alignment(horizontal='left', vertical='center')
+            
+            # Cek absensi untuk tanggal ini
+            absensi = absensi_dict.get(pegawai.NIP, {}).get(tgl_str)
+            
+            if absensi:
+                ws.cell(row=row, column=4, value=absensi.AWAL_TLM or 0).alignment = Alignment(horizontal='right', vertical='center')
+                ws.cell(row=row, column=5, value=absensi.TINGKAT_TLM or '').alignment = Alignment(horizontal='center', vertical='center')
+                ws.cell(row=row, column=6, value=absensi.TOTAL_PSW or 0).alignment = Alignment(horizontal='right', vertical='center')
+                ws.cell(row=row, column=7, value=absensi.TINGKAT_PSW or '').alignment = Alignment(horizontal='center', vertical='center')
+                ws.cell(row=row, column=14, value=absensi.KET_IN or '').alignment = Alignment(horizontal='left', vertical='center', wrap_text=True)
+                
+                # Kategori transaksi
+                transaksi = (absensi.TRANSAKSI_IN or '').upper()
+                pendukung = (absensi.PENDUKUNG_IN or '').upper()
+                
+                if transaksi == 'CUTI':
+                    ws.cell(row=row, column=8, value=1)
+                elif transaksi == 'DINASLUAR':
+                    ws.cell(row=row, column=9, value=1)
+                elif transaksi == 'SAKIT':
+                    if pendukung == 'Y':
+                        ws.cell(row=row, column=10, value=1)
+                    else:
+                        ws.cell(row=row, column=11, value=1)
+                elif transaksi == 'ALPA':
+                    if pendukung == 'Y':
+                        ws.cell(row=row, column=12, value=1)
+                    else:
+                        ws.cell(row=row, column=13, value=1)
+                elif transaksi == 'IJIN':
+                    if pendukung == 'Y':
+                        ws.cell(row=row, column=12, value=1)
+                    else:
+                        ws.cell(row=row, column=13, value=1)
+            else:
+                # Tidak ada record = Alpa tanpa keterangan
+                ws.cell(row=row, column=13, value=1)
+            
+            # Alignment untuk kolom angka
+            for col in [8, 9, 10, 11, 12, 13]:
+                ws.cell(row=row, column=col).alignment = Alignment(horizontal='right', vertical='center')
+            
+            row += 1
+        
+        row += 1  # Spasi antar pegawai
+    
+    # Keterangan di bawah
+    row += 1
+    ws.cell(row=row, column=2, value='Keterangan:').font = Font(bold=True)
+    row += 1
+    ws.cell(row=row, column=2, value='TLM')
+    ws.cell(row=row, column=4, value=': Terlambat Masuk')
+    row += 1
+    ws.cell(row=row, column=2, value='PSW')
+    ws.cell(row=row, column=4, value=': Pulang Sebelum Waktu')
+    row += 1
+    ws.cell(row=row, column=2, value='TLM (-)')
+    ws.cell(row=row, column=4, value=': Datang Lebih Awal')
+    
+    # Stream download
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    filename = f"Laporan_Rekap_Daftar_Hadir_Per_Pegawai_{tgl_awal:%Y%m%d}_{tgl_akhir:%Y%m%d}.xlsx"
+    return send_file(
+        buf,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+def search_pegawai_by_name():
+    """
+    API untuk search pegawai berdasarkan nama (untuk dropdown autocomplete).
+    """
+    keyword = request.args.get('keyword', '').strip()
+    if len(keyword) < 2:
+        return {'data': []}
+    
+    pegawai_list = (
+        Pegawai.query
+        .filter(Pegawai.NAMA.ilike(f'%{keyword}%'))
+        .order_by(Pegawai.NAMA.asc())
+        .limit(15)
+        .all()
+    )
+    
+    return {
+        'data': [
+            {
+                'nip': p.NIP,
+                'nama': p.NAMA,
+                'jabatan': p.JABATAN,
+            }
+            for p in pegawai_list
+        ]
+    }
 
 def laporan_rekap_absensi_log_finger():
     """
