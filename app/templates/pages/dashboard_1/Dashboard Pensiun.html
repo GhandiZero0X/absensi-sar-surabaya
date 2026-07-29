@@ -5,7 +5,6 @@
 
 {% block content %}
 <div class="nxl-content">
-    <!-- [ page-header ] start -->
     <div class="page-header">
         <div class="page-header-left d-flex align-items-center">
             <div class="page-header-title">
@@ -16,8 +15,7 @@
             </ul>
         </div>
     </div>
-    <!-- [ page-header ] end -->
-    <!-- [ Main Content ] start -->
+
     <div class="main-content master-siaga">
         <div class="container-fluid">
             <div class="card mb-4 filter-card">
@@ -27,8 +25,13 @@
                         <i class="ti ti-speakerphone me-2"></i> Reminder
                     </h6>
 
-                    <input type="month" class="form-control form-control-sm" value="2026-02"
-                        style="width: auto; min-height: 30px; font-size: 12px; border-radius: 8px; height: 15px;">
+                    <!-- ✅ GANTI: Select Tahun -->
+                    <select id="tahunFilter" class="form-select form-select-sm" 
+                        style="width: auto; min-height: 30px; font-size: 12px; border-radius: 8px;">
+                        {% for y in range(2020, 2031) %}
+                        <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="card-body">
@@ -41,19 +44,16 @@
                                     color: white;
                                     border: 1px solid #1E1E1E;
                                 }
-
                                 .btn-orange:hover {
                                     background-color: #d95c28;
                                     color: white;
                                     border: 1px solid #1E1E1E;
                                 }
-
                                 .btn-orange-outline {
                                     border: 1px solid #1E1E1E;
                                     color: #1E1E1E;
                                     background: transparent;
                                 }
-
                                 .btn-orange-outline:hover {
                                     background-color: #EB6831;
                                     color: white;
@@ -71,15 +71,12 @@
                                     <a href="{{ url_for('main.view_dashboard_trt') }}" class="btn btn-sm btn-orange-outline">TRT</a>
                                 </div>
                             </div>
-
                         </div>
 
-                        <!-- TITLE TABLE -->
                         <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
                             ㅤ
                         </p>
 
-                        <!-- TABLE -->
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped text-center align-middle">
                                 <thead style="background:#EB6831;">
@@ -108,11 +105,8 @@
                                 </tbody>
                             </table>
                         </div>
-
-
                     </div>
                 </div>
-                <!-- [ Main Content ] end -->
             </div>
         </div>
     </div>
@@ -120,5 +114,11 @@
 {% endblock %}
 
 {% block script %}
-
+<script>
+    // ✅ Filter tahun - reload halaman saat ganti tahun
+    document.getElementById('tahunFilter').addEventListener('change', function() {
+        const tahun = this.value;
+        window.location.href = "{{ url_for('main.view_dashboard_pensiun') }}?tahun=" + tahun;
+    });
+</script>
 {% endblock %}
