@@ -1,4 +1,4 @@
-<!-- pages/dashboard_1/Laporan Absensi Non Finger.html -->
+<!-- pages/dashboard_1/Data Absensi Non Finger.html -->
 {% extends "layout/baseDashboard1.html" %}
 
 {% block title %}- Data Absensi Non Finger{% endblock %}
@@ -11,8 +11,7 @@
                 <h5 class="m-b-10">Data Absensi</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Data Absensi Non Finger.html">Absensi Non Finger</a></li>
-                <li class="breadcrumb-item">Edit</li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_data_absensi_non_finger') }}">Absensi Non Finger</a></li>
             </ul>
         </div>
     </div>
@@ -20,36 +19,38 @@
     <div class="main-content master-siaga">
         <div class="container-fluid">
             <div class="card mb-4 filter-card">
-                <div class="card-header-custom d-flex justify-content-between align-items-center"
-                    style="border-radius: 10px;">
-                    <h6 class="mb-0">
-                        <i class="ti ti-user-check me-2"></i> Absensi Non Finger
-                    </h6>
-                    <div class="header-actions">
-                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
-                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                <div class="card-header-custom d-flex justify-content-between align-items-center" style="border-radius: 10px;">
+                    <h6 class="mb-0"><i class="ti ti-user-check me-2"></i> Absensi Non Finger</h6>
+                    <div class="header-icons-wrapper d-flex gap-3">
+                        <a href="{{ url_for('main.view_cari_absensi_non_finger') }}" class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none" title="Cari">
+                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                        </a>
+                        <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnNew" title="Baru">
+                            <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
                         </button>
-                        <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari Absensi Non Finger.html"
-                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
-                                    <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
-                                </a>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </button>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnDelete" title="Hapus">
+                            <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                        </button>
                     </div>
                 </div>
+
+                <style>
+                    .form-control-sm { height: 30px; font-size: 0.85rem; }
+                    .form-select-sm { height: 30px; font-size: 0.85rem; }
+                    .btn-save {
+                        background-color: #e66b30;
+                        color: white;
+                        border: none;
+                        padding: 10px 40px;
+                        border-radius: 50px;
+                        font-size: 0.9rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    }
+                    .btn-save:hover { background-color: #d95c28; }
+                    .btn-save:disabled { background-color: #ccc; cursor: not-allowed; }
+                </style>
 
                 <div class="card-body">
                     <div class="row g-3">
@@ -57,8 +58,10 @@
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Pegawai</label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control-sm border w-100" name="pegawai">
+                            <div class="col-md-3 position-relative">
+                                <input type="text" id="searchPegawai" class="form-control-sm border w-100" placeholder="Cari pegawai...">
+                                <input type="hidden" id="fingerId">
+                                <div id="searchResults" class="list-group position-absolute shadow-sm" style="z-index:1000; display:none; max-height:200px; overflow-y:auto; width:100%;"></div>
                             </div>
                         </div>
 
@@ -67,9 +70,8 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tanggal</label>
                             <div class="col-md-3">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100" placeholder="Tgl Kerja">
-                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                    <input type="date" id="tglKerja" class="form-control-sm border w-100 px-2" style="outline: none;">
                                 </div>
                             </div>
                         </div>
@@ -79,10 +81,9 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
                             <div class="col-md-3">
-                                <select class="form-select-sm border custom-select w-100">
+                                <select id="cmbShift" class="form-select-sm border w-100">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
-                                    <option value="3">3</option>
                                 </select>
                             </div>
                         </div>
@@ -93,29 +94,13 @@
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Status *</label>
                             <div class="col-md-7 d-flex gap-5">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="statusIn" name="status_in">
-                                    <label class="form-check-label fw-bold" for="statusIn">In</label>
+                                    <input class="form-check-input" type="checkbox" id="chkIn" checked>
+                                    <label class="form-check-label fw-bold">In</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="statusOut" name="status_out">
-                                    <label class="form-check-label fw-bold" for="statusOut">Out</label>
+                                    <input class="form-check-input" type="checkbox" id="chkOut" checked>
+                                    <label class="form-check-label fw-bold">Out</label>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Pendukung -->
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Pendukung</label>
-                            <div class="col-md-3 me-md-4 mb-2 mb-md-0">
-                                <select class="form-select-sm border custom-select w-100">
-                                    <option>Tanpa Pendukung</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-select-sm border custom-select w-100">
-                                    <option>Tanpa Pendukung</option>
-                                </select>
                             </div>
                         </div>
 
@@ -124,16 +109,10 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jam</label>
                             <div class="col-md-3 me-md-4 mb-2 mb-md-0">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-clock"></i></span>
-                                </div>
+                                <input type="time" id="jamIn" class="form-control-sm border w-100">
                             </div>
                             <div class="col-md-3">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-clock"></i></span>
-                                </div>
+                                <input type="time" id="jamOut" class="form-control-sm border w-100">
                             </div>
                         </div>
 
@@ -141,8 +120,11 @@
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jam Baku</label>
-                            <div class="col-md-7">
-                                <!-- Kosong sesuai gambar -->
+                            <div class="col-md-3 me-md-4 mb-2 mb-md-0">
+                                <span id="jamBakuIn" class="fw-bold">-</span>
+                            </div>
+                            <div class="col-md-3">
+                                <span id="jamBakuOut" class="fw-bold">-</span>
                             </div>
                         </div>
 
@@ -151,10 +133,10 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Keterangan</label>
                             <div class="col-md-3 me-md-4 mb-2 mb-md-0">
-                                <input type="text" class="form-control-sm border w-100">
+                                <input type="text" id="ketIn" class="form-control-sm border w-100" placeholder="Ket IN">
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control-sm border w-100">
+                                <input type="text" id="ketOut" class="form-control-sm border w-100" placeholder="Ket OUT">
                             </div>
                         </div>
 
@@ -163,7 +145,7 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Total</label>
                             <div class="col-md-7">
-                                <span>( )</span>
+                                <span id="lblTotal">(Awal: <span id="awalTLM">0</span>, TLM: <span id="totalTLM">0</span>, PSW: <span id="totalPSW">0</span>)</span>
                             </div>
                         </div>
 
@@ -171,21 +153,36 @@
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Tingkat</label>
-                            <div class="col-md-7"></div>
+                            <div class="col-md-3 me-md-4 mb-2 mb-md-0">
+                                <span id="tingkatTLM" class="fw-bold">-</span>
+                            </div>
+                            <div class="col-md-3">
+                                <span id="tingkatPSW" class="fw-bold">-</span>
+                            </div>
                         </div>
 
                         <!-- Potongan -->
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Potongan</label>
-                            <div class="col-md-7"></div>
+                            <div class="col-md-3 me-md-4 mb-2 mb-md-0">
+                                <span id="persenPotTLM" class="fw-bold">0%</span>
+                            </div>
+                            <div class="col-md-3">
+                                <span id="persenPotPSW" class="fw-bold">0%</span>
+                            </div>
                         </div>
 
                         <!-- Valid -->
                         <div class="col-12 d-md-flex align-items-center">
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Valid</label>
-                            <div class="col-md-7"></div>
+                            <div class="col-md-3 me-md-4 mb-2 mb-md-0">
+                                <span id="isInValid" class="fw-bold text-danger">N</span>
+                            </div>
+                            <div class="col-md-3">
+                                <span id="isOutValid" class="fw-bold text-danger">N</span>
+                            </div>
                         </div>
 
                         <!-- Simulate -->
@@ -193,25 +190,16 @@
                             <div class="col-md-1"></div>
                             <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Simulate</label>
                             <div class="col-md-7">
-                                <button type="button" class="btn btn-sm btn-orange-figma text-white fw-bold px-3"
-                                    style="background-color: #E29526; border: none;">Koreksi</button>
+                                <button type="button" id="btnKoreksi" class="btn btn-sm text-white fw-bold px-3" style="background-color: #E29526; border: none;">Koreksi</button>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Update -->
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Update</label>
-                            <div class="col-md-7"></div>
-                        </div>
-
-                        <!-- by -->
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">by</label>
-                            <div class="col-md-7"></div>
-                        </div>
-
+                    <!-- Tombol Simpan -->
+                    <div class="text-center mt-4">
+                        <button type="button" id="btnSave" class="btn-save">
+                            <i class="bi bi-save me-2"></i> Simpan
+                        </button>
                     </div>
                 </div>
             </div>
@@ -221,5 +209,233 @@
 {% endblock %}
 
 {% block script %}
-
+<script>
+    let currentData = null;
+    
+    document.getElementById('tglKerja').value = new Date().toISOString().split('T')[0];
+    
+    // ===================== SEARCH PEGAWAI =====================
+    let searchTimeout;
+    document.getElementById('searchPegawai').addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        const kw = this.value.trim();
+        if (kw.length < 2) { 
+            document.getElementById('searchResults').style.display = 'none'; 
+            return; 
+        }
+        searchTimeout = setTimeout(() => {
+            fetch(`/api/absensi-non-finger/search-pegawai?keyword=${encodeURIComponent(kw)}`)
+                .then(res => res.json())
+                .then(result => {
+                    const div = document.getElementById('searchResults');
+                    // ✅ Tambahkan safety check:
+                    const list = Array.isArray(result.data) ? result.data : [];
+                    if (list.length > 0) {
+                        div.innerHTML = list.map(p => 
+                            `<a href="#" class="list-group-item list-group-item-action py-1 px-2 small" onclick="event.preventDefault();selectPegawai('${p.nip}','${p.nama}')">${p.nama} (${p.nip})</a>`
+                        ).join('');
+                        div.style.display = 'block';
+                    } else { 
+                        div.style.display = 'none'; 
+                    }
+                });
+        }, 300);
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#searchPegawai') && !e.target.closest('#searchResults')) {
+            document.getElementById('searchResults').style.display = 'none';
+        }
+    });
+    
+    // ✅ FUNCTION INI YANG PENTING - HARUS MENGISI fingerId
+    function selectPegawai(nip, nama) {
+        console.log('✅ selectPegawai dipanggil - NIP:', nip, 'NAMA:', nama);
+        document.getElementById('searchPegawai').value = nama + ' (' + nip + ')';
+        document.getElementById('fingerId').value = nip;  // ✅ ISI NIP
+        document.getElementById('searchResults').style.display = 'none';
+        
+        // Auto-search data
+        const tgl = document.getElementById('tglKerja').value;
+        if (tgl) searchData(nip, tgl);
+    }
+    
+    function searchData(nip, tgl) {
+        console.log('🔍 searchData - NIP:', nip, 'TGL:', tgl);
+        fetch(`/api/absensi-non-finger/search?finger_id=${encodeURIComponent(nip)}&tgl=${tgl}`)
+            .then(res => res.json())
+            .then(result => {
+                if (result.data) {
+                    currentData = result.data;
+                    fillForm(result.data);
+                } else {
+                    clearResults();
+                }
+            });
+    }
+    
+    function fillForm(data) {
+        document.getElementById('jamIn').value = data.jam_in || '';
+        document.getElementById('jamOut').value = data.jam_out || '';
+        document.getElementById('jamBakuIn').textContent = data.jam_baku_in || '-';
+        document.getElementById('jamBakuOut').textContent = data.jam_baku_out || '-';
+        document.getElementById('ketIn').value = data.ket_in || '';
+        document.getElementById('ketOut').value = data.ket_out || '';
+        document.getElementById('awalTLM').textContent = data.awal_tlm;
+        document.getElementById('totalTLM').textContent = data.total_tlm;
+        document.getElementById('totalPSW').textContent = data.total_psw;
+        document.getElementById('tingkatTLM').textContent = data.tingkat_tlm || '-';
+        document.getElementById('tingkatPSW').textContent = data.tingkat_psw || '-';
+        document.getElementById('persenPotTLM').textContent = (data.persen_pot_tlm || 0) + '%';
+        document.getElementById('persenPotPSW').textContent = (data.persen_pot_psw || 0) + '%';
+        
+        const inValid = document.getElementById('isInValid');
+        inValid.textContent = data.is_in_valid ? 'Y' : 'N';
+        inValid.className = data.is_in_valid ? 'fw-bold text-success' : 'fw-bold text-danger';
+        
+        const outValid = document.getElementById('isOutValid');
+        outValid.textContent = data.is_out_valid ? 'Y' : 'N';
+        outValid.className = data.is_out_valid ? 'fw-bold text-success' : 'fw-bold text-danger';
+    }
+    
+    function clearResults() {
+        document.getElementById('jamBakuIn').textContent = '-';
+        document.getElementById('jamBakuOut').textContent = '-';
+        document.getElementById('awalTLM').textContent = '0';
+        document.getElementById('totalTLM').textContent = '0';
+        document.getElementById('totalPSW').textContent = '0';
+        document.getElementById('tingkatTLM').textContent = '-';
+        document.getElementById('tingkatPSW').textContent = '-';
+        document.getElementById('persenPotTLM').textContent = '0%';
+        document.getElementById('persenPotPSW').textContent = '0%';
+        document.getElementById('isInValid').textContent = 'N';
+        document.getElementById('isInValid').className = 'fw-bold text-danger';
+        document.getElementById('isOutValid').textContent = 'N';
+        document.getElementById('isOutValid').className = 'fw-bold text-danger';
+    }
+    
+    // ===================== KOREKSI =====================
+    document.getElementById('btnKoreksi').addEventListener('click', function() {
+        const tgl = document.getElementById('tglKerja').value;
+        const jamIn = document.getElementById('jamIn').value;
+        const jamOut = document.getElementById('jamOut').value;
+        const shift = document.getElementById('cmbShift').value;
+        
+        if (!tgl || !jamIn || !jamOut) { 
+            alert('Tanggal, Jam IN, dan Jam OUT harus diisi!'); 
+            return; 
+        }
+        
+        fetch('/api/absensi-non-finger/koreksi', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({tgl, jam_in: jamIn, jam_out: jamOut, shift})
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.data) {
+                document.getElementById('jamBakuIn').textContent = result.data.jam_baku_in;
+                document.getElementById('jamBakuOut').textContent = result.data.jam_baku_out;
+                document.getElementById('awalTLM').textContent = result.data.awal_tlm;
+                document.getElementById('totalTLM').textContent = result.data.total_tlm;
+                document.getElementById('totalPSW').textContent = result.data.total_psw;
+                document.getElementById('tingkatTLM').textContent = result.data.tingkat_tlm || '-';
+                document.getElementById('tingkatPSW').textContent = result.data.tingkat_psw || '-';
+                document.getElementById('persenPotTLM').textContent = result.data.persen_pot_tlm + '%';
+                document.getElementById('persenPotPSW').textContent = result.data.persen_pot_psw + '%';
+                document.getElementById('isInValid').textContent = 'Y';
+                document.getElementById('isInValid').className = 'fw-bold text-success';
+                document.getElementById('isOutValid').textContent = 'Y';
+                document.getElementById('isOutValid').className = 'fw-bold text-success';
+            }
+        });
+    });
+    
+    // ===================== SIMPAN =====================
+    document.getElementById('btnSave').addEventListener('click', function() {
+        const fingerId = document.getElementById('fingerId').value;
+        const tgl = document.getElementById('tglKerja').value;
+        
+        // ✅ DEBUG
+        console.log('💾 SIMPAN - fingerId:', fingerId, 'tgl:', tgl);
+        console.log('💾 searchPegawai value:', document.getElementById('searchPegawai').value);
+        
+        if (!fingerId || fingerId === '') { 
+            alert('❌ Pegawai belum dipilih! Silahkan cari dan pilih pegawai terlebih dahulu.'); 
+            return; 
+        }
+        if (!tgl) { 
+            alert('❌ Tanggal harus diisi!'); 
+            return; 
+        }
+        
+        const chkIn = document.getElementById('chkIn').checked;
+        const chkOut = document.getElementById('chkOut').checked;
+        let mode = -1;
+        if (chkIn && chkOut) mode = 0;
+        else if (chkIn) mode = 1;
+        else if (chkOut) mode = 2;
+        else { alert('Centang In dan/atau Out!'); return; }
+        
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+        
+        fetch('/api/absensi-non-finger/save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                finger_id: fingerId, 
+                tgl: tgl,
+                jam_in: document.getElementById('jamIn').value,
+                jam_out: document.getElementById('jamOut').value,
+                shift: document.getElementById('cmbShift').value,
+                ket_in: document.getElementById('ketIn').value,
+                ket_out: document.getElementById('ketOut').value,
+                mode: mode
+            })
+        })
+        .then(res => res.json())
+        .then(result => {
+            alert(result.message || 'Berhasil!');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-save me-2"></i> Simpan';
+        })
+        .catch(err => {
+            alert('Gagal menyimpan!');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-save me-2"></i> Simpan';
+        });
+    });
+    
+    // ===================== HAPUS =====================
+    document.getElementById('btnDelete').addEventListener('click', function() {
+        const fingerId = document.getElementById('fingerId').value;
+        const tgl = document.getElementById('tglKerja').value;
+        if (!fingerId || !tgl) { alert('Pilih pegawai dan tanggal!'); return; }
+        if (!confirm('Yakin hapus?')) return;
+        
+        fetch('/api/absensi-non-finger/delete', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({finger_id: fingerId, tgl})
+        })
+        .then(res => res.json())
+        .then(result => {
+            alert(result.message || 'Berhasil!');
+            clearResults();
+        });
+    });
+    
+    // ===================== BARU =====================
+    document.getElementById('btnNew').addEventListener('click', function() {
+        document.getElementById('searchPegawai').value = '';
+        document.getElementById('fingerId').value = '';
+        document.getElementById('jamIn').value = '';
+        document.getElementById('jamOut').value = '';
+        document.getElementById('ketIn').value = '';
+        document.getElementById('ketOut').value = '';
+        clearResults();
+    });
+</script>
 {% endblock %}

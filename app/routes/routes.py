@@ -73,6 +73,12 @@ from app.controllers.dashboard_1DataAbsensiController import (
     api_inject_lembur_get_pegawai as data_absensi_api_inject_lembur_pegawai, api_inject_lembur_acak_jam as data_absensi_api_inject_lembur_acak,
     api_inject_lembur_save as data_absensi_api_inject_lembur_save, api_cari_lembur_manual as data_absensi_api_cari_lembur,
     api_cari_lembur_manual_delete as data_absensi_api_cari_lembur_delete, api_cari_lembur_manual_update as data_absensi_api_cari_lembur_update,
+    api_absensi_non_finger_search as data_absensi_api_non_finger_search,
+    api_absensi_non_finger_koreksi as data_absensi_api_non_finger_koreksi,
+    api_absensi_non_finger_save as data_absensi_api_non_finger_save,
+    api_absensi_non_finger_delete as data_absensi_api_non_finger_delete,
+    api_search_pegawai_non_finger as data_absensi_api_search_pegawai,
+    api_cari_absensi_non_finger as data_absensi_api_cari_non_finger,
 )
 from app.controllers.dashboard_3HomeController import (
     dashboard_kinerja,
@@ -566,6 +572,31 @@ def export_laporan_rekap_tunjangan_kinerja():
 def view_data_absensi_non_finger():
     return data_absensi_non_finger()
 
+@main.route('/api/absensi-non-finger/search')
+@login_required
+def api_absensi_non_finger_search():
+    return data_absensi_api_non_finger_search()
+
+@main.route('/api/absensi-non-finger/koreksi', methods=['POST'])
+@login_required
+def api_absensi_non_finger_koreksi():
+    return data_absensi_api_non_finger_koreksi()
+
+@main.route('/api/absensi-non-finger/save', methods=['POST'])
+@login_required
+def api_absensi_non_finger_save():
+    return data_absensi_api_non_finger_save()
+
+@main.route('/api/absensi-non-finger/delete', methods=['POST'])
+@login_required
+def api_absensi_non_finger_delete():
+    return data_absensi_api_non_finger_delete()
+
+@main.route('/api/absensi-non-finger/search-pegawai')
+@login_required
+def api_absensi_non_finger_search_pegawai():
+    return data_absensi_api_search_pegawai()
+
 @main.route('/data-absensi/normalisasi-finger')
 @login_required
 def view_data_absensi_normalisasi_finger():
@@ -621,6 +652,11 @@ def api_trace_absensi():
 @login_required
 def view_cari_absensi_non_finger():
     return cari_absensi_non_finger()
+
+@main.route('/api/cari-absensi-non-finger')
+@login_required
+def api_cari_absensi_non_finger():
+    return data_absensi_api_cari_non_finger()
 
 @main.route('/data-absensi/cari/normalisasi-finger')
 @login_required

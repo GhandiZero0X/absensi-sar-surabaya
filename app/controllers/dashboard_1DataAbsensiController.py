@@ -25,6 +25,405 @@ def data_absensi_non_finger():
     """
     return render_template('pages/dashboard_1/Data Absensi Non Finger.html')
 
+def api_search_pegawai_non_finger():
+    """
+    API pencarian pegawai KHUSUS untuk form Absensi Non Finger.
+    """
+    keyword = request.args.get('keyword', '').strip()
+    if len(keyword) < 2:
+        return jsonify({'data': []})
+
+    pegawai_list = (
+        Pegawai.query
+        .filter(Pegawai.NAMA.ilike(f'%{keyword}%'))
+        .order_by(Pegawai.NAMA.asc())
+        .limit(15)
+        .all()
+    )
+
+    return jsonify({
+        'data': [
+            {'nip': p.NIP, 'nama': p.NAMA}
+            for p in pegawai_list
+        ]
+    })
+
+def api_absensi_non_finger_search():
+    """API: Cari data absensi untuk form Non Finger (single record)"""
+    try:
+        nip = request.args.get('finger_id', '')  # ✅ Parameter bernama finger_id tapi isinya NIP
+        tgl = request.args.get('tgl', '')
+        
+        if not nip or not tgl:
+            return jsonify({'error': 'NIP dan Tanggal harus diisi', 'data': None})
+        
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d')
+        
+        # ✅ Cari via NIP (bukan FINGER_ID)
+        absensi = (
+            db.session.query(Absensi, Pegawai)
+            .join(Pegawai, Absensi.NIP == Pegawai.NIP)
+            .filter(Absensi.NIP == nip)  # ✅ Pakai NIP
+            .filter(db.func.date(Absensi.TGL_KERJA) == tgl_date.date())
+            .first()
+        )
+        
+        if absensi:
+            a, p = absensi
+            return jsonify({
+                'success': True,
+                'data': {
+                    'finger_id': a.NIP or p.NIP,
+                    'nip': a.NIP or p.NIP,
+                    'nama': p.NAMA,
+                    'tgl_kerja': a.TGL_KERJA.strftime('%Y-%m-%d') if a.TGL_KERJA else '',
+                    'jam_in': a.TGL_JAM_IN.strftime('%H:%M') if a.TGL_JAM_IN and a.TGL_JAM_IN.year > 1900 else '',
+                    'jam_out': a.TGL_JAM_OUT.strftime('%H:%M') if a.TGL_JAM_OUT and a.TGL_JAM_OUT.year > 1900 else '',
+                    'jam_baku_in': a.TGL_JAM_BAKU_IN.strftime('%H:%M') if a.TGL_JAM_BAKU_IN and a.TGL_JAM_BAKU_IN.year > 1900 else '',
+                    'jam_baku_out': a.TGL_JAM_BAKU_OUT.strftime('%H:%M') if a.TGL_JAM_BAKU_OUT and a.TGL_JAM_BAKU_OUT.year > 1900 else '',
+                    'ket_in': a.KET_IN or '',
+                    'ket_out': a.KET_OUT or '',
+                    'awal_tlm': a.AWAL_TLM or 0,
+                    'total_tlm': a.TOTAL_TLM or 0,
+                    'total_psw': a.TOTAL_PSW or 0,
+                    'tingkat_tlm': a.TINGKAT_TLM or '',
+                    'tingkat_psw': a.TINGKAT_PSW or '',
+                    'persen_pot_tlm': a.PERSEN_POT_TLM or 0,
+                    'persen_pot_psw': a.PERSEN_POT_PSW or 0,
+                    'is_in_valid': (a.IS_INVALID or '').upper() == 'Y',
+                    'is_out_valid': (a.IS_OUTVALID or '').upper() == 'Y',
+                    'transaksi_in': a.TRANSAKSI_IN or '',
+                    'transaksi_out': a.TRANSAKSI_OUT or '',
+                    'pendukung_in': a.PENDUKUNG_IN or '',
+                    'pendukung_out': a.PENDUKUNG_OUT or '',
+                    'update_in_by': a.UPDATE_IN_BY or '',
+                    'update_in_date': a.UPDATE_IN_DATE.strftime('%d/%m/%Y %H:%M') if a.UPDATE_IN_DATE else '',
+                    'update_out_by': a.UPDATE_OUT_BY or '',
+                    'update_out_date': a.UPDATE_OUT_DATE.strftime('%d/%m/%Y %H:%M') if a.UPDATE_OUT_DATE else '',
+                }
+            })
+        
+        # Kalau tidak ada di ABSENSI, coba cari di TIME_RECORDER
+        tr = (
+            TimeRecorder.query
+            .filter(TimeRecorder.KET_INJECT == nip)
+            .filter(TimeRecorder.MESIN == '999')
+            .filter(db.func.date(TimeRecorder.WAKTU) == tgl_date.date())
+            .order_by(TimeRecorder.WAKTU.asc())
+            .all()
+        )
+        
+        if tr:
+            pegawai = Pegawai.query.filter(Pegawai.NIP == nip).first()
+            jam_in = ''
+            jam_out = ''
+            for t in tr:
+                if t.STATUS == 'IN':
+                    jam_in = t.WAKTU.strftime('%H:%M') if t.WAKTU else ''
+                elif t.STATUS == 'OUT':
+                    jam_out = t.WAKTU.strftime('%H:%M') if t.WAKTU else ''
+            
+            return jsonify({
+                'success': True,
+                'data': {
+                    'finger_id': nip,
+                    'nip': nip,
+                    'nama': pegawai.NAMA if pegawai else '',
+                    'tgl_kerja': tgl,
+                    'jam_in': jam_in,
+                    'jam_out': jam_out,
+                    'jam_baku_in': '',
+                    'jam_baku_out': '',
+                    'ket_in': '',
+                    'ket_out': '',
+                    'awal_tlm': 0,
+                    'total_tlm': 0,
+                    'total_psw': 0,
+                    'tingkat_tlm': '',
+                    'tingkat_psw': '',
+                    'persen_pot_tlm': 0,
+                    'persen_pot_psw': 0,
+                    'is_in_valid': True,
+                    'is_out_valid': True,
+                    'transaksi_in': 'MANUAL',
+                    'transaksi_out': 'MANUAL',
+                    'pendukung_in': 'Y',
+                    'pendukung_out': 'Y',
+                    'update_in_by': '',
+                    'update_in_date': '',
+                    'update_out_by': '',
+                    'update_out_date': '',
+                }
+            })
+        
+        return jsonify({'success': True, 'data': None, 'message': 'Data tidak ditemukan'})
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': None})
+
+
+def api_absensi_non_finger_koreksi():
+    """API: Koreksi/Simulasi perhitungan TLM & PSW"""
+    try:
+        data = request.get_json()
+        tgl = data.get('tgl', '')
+        jam_in = data.get('jam_in', '')
+        jam_out = data.get('jam_out', '')
+        shift = data.get('shift', '1')
+        
+        if not tgl or not jam_in or not jam_out:
+            return jsonify({'error': 'Data tidak lengkap'})
+        
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d')
+        
+        # Ambil jam baku
+        hari = tgl_date.weekday()
+        shift_filter = '2' if hari == 4 else '1'  # Jumat = shift 2
+        
+        jam_kerja = (
+            MfJamKerja.query
+            .filter(MfJamKerja.TGL_MULAI_BERLAKU <= tgl_date)
+            .filter(MfJamKerja.SHIFT == shift_filter)
+            .filter(MfJamKerja.SHIFT_KERJA == shift)
+            .order_by(MfJamKerja.TGL_MULAI_BERLAKU.desc())
+            .first()
+        )
+        
+        if not jam_kerja:
+            return jsonify({'error': 'Jam kerja tidak ditemukan'})
+        
+        baku_in = jam_kerja.STD_JAM_IN
+        baku_out = jam_kerja.STD_JAM_OUT
+        
+        # Parse jam
+        tgl_base = datetime.combine(tgl_date, datetime.min.time())
+        
+        if hasattr(baku_in, 'time'):
+            baku_in_dt = datetime.combine(tgl_date, baku_in.time()) if baku_in.time() else tgl_base
+        else:
+            baku_in_str = str(baku_in)[:8] if len(str(baku_in)) > 8 else str(baku_in)
+            baku_in_dt = datetime.strptime(f"{tgl} {baku_in_str}", '%Y-%m-%d %H:%M:%S') if ':' in baku_in_str else tgl_base
+        
+        if hasattr(baku_out, 'time'):
+            baku_out_dt = datetime.combine(tgl_date, baku_out.time()) if baku_out.time() else tgl_base
+        else:
+            baku_out_str = str(baku_out)[:8] if len(str(baku_out)) > 8 else str(baku_out)
+            baku_out_dt = datetime.strptime(f"{tgl} {baku_out_str}", '%Y-%m-%d %H:%M:%S') if ':' in baku_out_str else tgl_base
+        
+        tgl_in = datetime.strptime(f"{tgl} {jam_in}", '%Y-%m-%d %H:%M')
+        tgl_out = datetime.strptime(f"{tgl} {jam_out}", '%Y-%m-%d %H:%M')
+        
+        # Hitung TLM
+        diff_in = tgl_in - baku_in_dt
+        awal_tlm = diff_in.total_seconds() / 60
+        if tgl_in < baku_in_dt:
+            awal_tlm = awal_tlm * -1
+        
+        # Hitung PSW
+        diff_out = tgl_out - baku_out_dt
+        total_psw = diff_out.total_seconds() / 60
+        if tgl_out < baku_out_dt:
+            total_psw = total_psw * -1
+        
+        # Hitung Total TLM
+        if awal_tlm > 0 and awal_tlm <= 30:
+            total_tlm = awal_tlm - total_psw
+        else:
+            total_tlm = awal_tlm
+        
+        # Cek libur
+        kalender = MfKalender.query.filter(
+            db.func.date(MfKalender.TGL_KERJA) == tgl_date.date()
+        ).first()
+        
+        is_libur = False
+        if kalender:
+            is_libur = kalender.IS_LIBUR == 'Y'
+        elif tgl_date.weekday() >= 5:
+            is_libur = True
+        
+        # Tentukan tingkat & potongan
+        tingkat_tlm = ''
+        persen_pot_tlm = 0
+        tingkat_psw = ''
+        persen_pot_psw = 0
+        
+        if not is_libur:
+            # Cari di MFPot
+            potongan = MfPot.query.filter(
+                MfPot.KATEGORI.in_(['TLM', 'PSW']),
+                MfPot.TGL_MULAI <= tgl_date
+            ).all()
+            
+            for pot in potongan:
+                if pot.KATEGORI == 'TLM' and pot.RANGE_AWAL is not None and pot.RANGE_AKHIR is not None:
+                    if pot.RANGE_AWAL <= total_tlm <= pot.RANGE_AKHIR:
+                        tingkat_tlm = pot.TINGKAT or ''
+                        persen_pot_tlm = pot.PERSEN_POT or 0
+                        break
+                elif pot.KATEGORI == 'PSW' and pot.RANGE_AWAL is not None and pot.RANGE_AKHIR is not None:
+                    if pot.RANGE_AWAL <= total_psw <= pot.RANGE_AKHIR:
+                        tingkat_psw = pot.TINGKAT or ''
+                        persen_pot_psw = pot.PERSEN_POT or 0
+                        break
+            
+            # Default jika tidak ada di MFPot
+            if not tingkat_tlm and total_tlm > 0:
+                if total_tlm <= 30:
+                    tingkat_tlm = 'TLM-1'
+                    persen_pot_tlm = 0.5
+                elif total_tlm <= 60:
+                    tingkat_tlm = 'TLM-2'
+                    persen_pot_tlm = 1
+                elif total_tlm <= 90:
+                    tingkat_tlm = 'TLM-3'
+                    persen_pot_tlm = 1.25
+                elif total_tlm > 90:
+                    tingkat_tlm = 'TLM-4'
+                    persen_pot_tlm = 1.5
+            
+            if not tingkat_psw and total_psw < 0:
+                if total_psw >= -30:
+                    tingkat_psw = 'PSW-1'
+                    persen_pot_psw = 0.5
+                elif total_psw >= -60:
+                    tingkat_psw = 'PSW-2'
+                    persen_pot_psw = 1
+                elif total_psw >= -90:
+                    tingkat_psw = 'PSW-3'
+                    persen_pot_psw = 1.25
+                elif total_psw < -90:
+                    tingkat_psw = 'PSW-4'
+                    persen_pot_psw = 1.5
+        
+        return jsonify({
+            'success': True,
+            'data': {
+                'jam_baku_in': baku_in_dt.strftime('%H:%M') if baku_in_dt else '',
+                'jam_baku_out': baku_out_dt.strftime('%H:%M') if baku_out_dt else '',
+                'awal_tlm': round(awal_tlm, 2),
+                'total_tlm': round(total_tlm, 2),
+                'total_psw': round(total_psw, 2),
+                'tingkat_tlm': tingkat_tlm,
+                'tingkat_psw': tingkat_psw,
+                'persen_pot_tlm': persen_pot_tlm,
+                'persen_pot_psw': persen_pot_psw,
+                'is_in_valid': True,
+                'is_out_valid': True,
+                'is_libur': is_libur,
+            }
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+
+def api_absensi_non_finger_save():
+    """API: Simpan absensi non finger (single record)"""
+    try:
+        data = request.get_json()
+        nip = data.get('finger_id', '')  # ✅ Parameter bernama finger_id tapi isinya NIP
+        tgl = data.get('tgl', '')
+        jam_in = data.get('jam_in', '')
+        jam_out = data.get('jam_out', '')
+        shift = data.get('shift', '1')
+        ket_in = data.get('ket_in', '')
+        ket_out = data.get('ket_out', '')
+        mode = data.get('mode', 0)  # 0=IN+OUT, 1=IN only, 2=OUT only
+        
+        if not nip or not tgl:
+            return jsonify({'error': 'NIP dan Tanggal harus diisi'})
+        
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d')
+        
+        # Hitung shift
+        tgl_cek_in = tgl_date
+        tgl_cek_out = tgl_date
+        if shift == '2':
+            tgl_cek_out = tgl_date + timedelta(days=1)
+        
+        # ✅ Delete existing manual record untuk NIP ini (via KET_INJECT)
+        TimeRecorder.query.filter(
+            TimeRecorder.KET_INJECT == nip,
+            TimeRecorder.MESIN == '999',
+            db.func.date(TimeRecorder.WAKTU) == tgl_date.date()
+        ).delete()
+        
+        # Insert IN
+        if (mode in [0, 1]) and jam_in:
+            tgl_jam_in = datetime.strptime(f"{tgl_cek_in.strftime('%Y-%m-%d')} {jam_in}", '%Y-%m-%d %H:%M')
+            tr_in = TimeRecorder(
+                FINGER_ID=0,  # Placeholder karena kolom ini NOT NULL
+                WAKTU=tgl_jam_in,
+                STATUS='IN',
+                MESIN='999',
+                KET='MANUAL',
+                TRANSAKSI='MANUAL',
+                KET_INJECT=nip,  # ✅ Simpan NIP di sini
+                UPDATE_IN_BY='admin',
+                UPDATE_DATE=datetime.now()
+            )
+            db.session.add(tr_in)
+        
+        # Insert OUT
+        if (mode in [0, 2]) and jam_out:
+            tgl_jam_out = datetime.strptime(f"{tgl_cek_out.strftime('%Y-%m-%d')} {jam_out}", '%Y-%m-%d %H:%M')
+            tr_out = TimeRecorder(
+                FINGER_ID=0,
+                WAKTU=tgl_jam_out,
+                STATUS='OUT',
+                MESIN='999',
+                KET='MANUAL',
+                TRANSAKSI='MANUAL',
+                KET_INJECT=nip,  # ✅ Simpan NIP di sini
+                UPDATE_IN_BY='admin',
+                UPDATE_DATE=datetime.now()
+            )
+            db.session.add(tr_out)
+        
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': 'Data berhasil disimpan'})
+        
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+
+def api_absensi_non_finger_delete():
+    """API: Delete absensi non finger"""
+    try:
+        data = request.get_json()
+        nip = data.get('finger_id', '')  # ✅ NIP
+        tgl = data.get('tgl', '')
+        
+        if not nip or not tgl:
+            return jsonify({'error': 'Data tidak lengkap'})
+        
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d')
+        
+        # ✅ Delete by NIP di KET_INJECT
+        result = TimeRecorder.query.filter(
+            TimeRecorder.KET_INJECT == nip,
+            TimeRecorder.MESIN == '999',
+            db.func.date(TimeRecorder.WAKTU) == tgl_date.date(),
+            TimeRecorder.TRANSAKSI == 'MANUAL'
+        ).delete()
+        
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': f'{result} data berhasil dihapus'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)})
+
 
 def data_absensi_normalisasi_finger():
     """
@@ -895,6 +1294,89 @@ def api_trace_absensi():
 def cari_absensi_non_finger():
     """Render halaman Cari Absensi Non Finger."""
     return render_template('pages/dashboard_1/Cari Absensi Non Finger.html')
+
+def api_cari_absensi_non_finger():
+    """
+    API Cari Absensi Non Finger - mencari data TimeRecorder 
+    MESIN='999' (data inject manual saja)
+    """
+    try:
+        tgl_awal_str = request.args.get('tgl_awal', '')
+        tgl_akhir_str = request.args.get('tgl_akhir', '')
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+        
+        # ✅ HANYA data inject manual (MESIN='999')
+        query = (
+            db.session.query(TimeRecorder, Pegawai, MfUnitKerja)
+            .outerjoin(Pegawai, TimeRecorder.KET_INJECT == Pegawai.NIP)
+            .outerjoin(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+            .filter(TimeRecorder.MESIN == '999')  # ✅ Hanya data manual
+            .filter(TimeRecorder.STATUS.in_(['IN', 'OUT']))
+        )
+        
+        # Filter periode
+        if tgl_awal_str and tgl_akhir_str:
+            tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+            tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d') + timedelta(days=1)
+            query = query.filter(
+                TimeRecorder.WAKTU >= tgl_awal,
+                TimeRecorder.WAKTU < tgl_akhir
+            )
+        
+        # Field mapping untuk filter tambahan
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama': Pegawai.NAMA,
+            'UnitKerjaName': MfUnitKerja.NAMA_UNIT_KERJA,
+            'Status': TimeRecorder.STATUS,
+        }
+        
+        if filter_field1 and filter_value1:
+            field = field_mapping.get(filter_field1)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value1}%'))
+        
+        if filter_field2 and filter_value2:
+            field = field_mapping.get(filter_field2)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value2}%'))
+        
+        # Order
+        query = query.order_by(TimeRecorder.WAKTU.desc())
+        results = query.all()
+        
+        # Format data
+        data = []
+        for i, (tr, peg, unit) in enumerate(results, 1):
+            data.append({
+                'no': i,
+                'nama': peg.NAMA if peg else '-',
+                'nip': peg.NIP if peg else (tr.KET_INJECT or str(tr.FINGER_ID)),
+                'finger_id': tr.FINGER_ID or '',
+                'tanggal': tr.WAKTU.strftime('%d %b %Y') if tr.WAKTU else '',
+                'jam': tr.WAKTU.strftime('%H:%M:%S') if tr.WAKTU else '',
+                'waktu_raw': tr.WAKTU.strftime('%Y-%m-%d %H:%M:%S') if tr.WAKTU else '',
+                'status': tr.STATUS or '',
+                'transaksi': tr.TRANSAKSI or tr.KET or '',
+                'mesin': tr.MESIN or '',
+                'unit_kerja': unit.NAMA_UNIT_KERJA if unit else '-',
+                'update_by': tr.UPDATE_IN_BY or '',
+                'update_date': tr.UPDATE_DATE.strftime('%d/%m/%Y %H:%M') if tr.UPDATE_DATE else '',
+            })
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'total': len(data)
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
 
 
 def cari_absensi_normalisasi_finger():

@@ -1,7 +1,7 @@
 <!-- pages/dashboard_1/Cari Absensi Non Finger.html -->
 {% extends "layout/baseDashboard1.html" %}
 
-{% block title %}- Data Absensi Non Finger{% endblock %}
+{% block title %}- Cari Absensi Non Finger{% endblock %}
 
 {% block content %}
 <div class="nxl-content">
@@ -11,7 +11,7 @@
                 <h5 class="m-b-10">Data Absensi</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Data Absensi Non Finger.html">Absensi Non Finger</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_data_absensi_non_finger') }}">Absensi Non Finger</a></li>
                 <li class="breadcrumb-item">Cari Absensi Non Finger</li>
             </ul>
         </div>
@@ -22,72 +22,95 @@
             <div class="card mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden; border: none;">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Transaksi</h6>
-                    <a href="Master File Master Unit Kerja.html" class="btn-close-custom">
+                    <a href="{{ url_for('main.view_data_absensi_non_finger') }}" class="btn-close-custom">
                         <i class="bi bi-x-lg"></i>
                     </a>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
-                        <div
-                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-                            <label class="filter-label-wide">Periode</label>
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                        <!-- Periode -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
+                            <div class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                    <input type="date" id="tglAwal" class="form-control-sm border w-100 px-2">
+                                </div>
+                                <span class="mx-2 fw-bold text-muted small">s/d</span>
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                    <input type="date" id="tglAkhir" class="form-control-sm border w-100 px-2">
+                                </div>
                             </div>
                         </div>
 
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                        <!-- Filter -->
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2 mb-3">
                             <label class="filter-label-wide">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Nama Unit Kerja</option>
-                                <option>Unit Kerja ID</option>
+                            <select id="filterField1" class="form-select-sm border custom-select" style="width: 150px;">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Nama">Nama</option>
+                                <option value="NIP">NIP</option>
+                                <option value="UnitKerjaName">Unit Kerja</option>
+                                <option value="Status">Status</option>
+                                <option value="FingerID">Finger ID</option>
                             </select>
 
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                            </div>
+                            <input type="text" id="filterValue1" class="form-control-sm border" style="width: 180px;" placeholder="Nilai filter...">
 
                             <span class="mx-md-2 fw-bold text-dan">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Nama Unit Kerja</option>
-                                <option>Unit Kerja ID</option>
+                            <select id="filterField2" class="form-select-sm border custom-select" style="width: 150px;">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Nama">Nama</option>
+                                <option value="NIP">NIP</option>
+                                <option value="UnitKerjaName">Unit Kerja</option>
+                                <option value="Status">Status</option>
+                                <option value="FingerID">Finger ID</option>
                             </select>
 
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                            </div>
+                            <input type="text" id="filterValue2" class="form-control-sm border" style="width: 180px;" placeholder="Nilai filter...">
 
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button id="btnRefresh" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
-                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
-                            ㅤ
-                        </p>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped text-center align-middle">
-                                <thead style="background:#EB6831;">
+
+                        <!-- Loading -->
+                        <div id="loadingIndicator" class="text-center mt-3" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Memuat data...</p>
+                        </div>
+
+                        <!-- Info total -->
+                        <div id="infoTotal" class="mt-2" style="display: none; font-size: 12px; color: #666;">
+                            Ditemukan: <strong id="totalRecords">0</strong> records
+                        </div>
+
+                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">ㅤ</p>
+
+                        <!-- Table -->
+                        <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                            <table class="table table-bordered table-striped text-center align-middle" id="tableCari">
+                                <thead style="background:#EB6831; position: sticky; top: 0; z-index: 1;">
                                     <tr>
-                                        <th style="color:white; vertical-align: middle;">No</th>
-                                        <th style="color:white; vertical-align: middle;">Nama</th>
-                                        <th style="color:white; vertical-align: middle;">Tanggal</th>
-                                        <th style="color:white; vertical-align: middle;">Jam</th>
-                                        <th style="color:white; vertical-align: middle;">Status</th>
+                                        <th style="color:white; width:40px;">No</th>
+                                        <th style="color:white; min-width:180px;">Nama</th>
+                                        <th style="color:white; width:100px;">Tanggal</th>
+                                        <th style="color:white; width:80px;">Jam</th>
+                                        <th style="color:white; width:60px;">Status</th>
+                                        <th style="color:white; width:60px;">Mesin</th>
+                                        <th style="color:white; min-width:150px;">Update By</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tableBody">
                                     <tr>
-                                        <td colspan="8" style="vertical-align: middle; padding: 20px;">No
-                                            records to display.</td>
+                                        <td colspan="7" style="vertical-align: middle; padding: 40px; color: #999;">
+                                            <i class="bi bi-calendar3" style="font-size: 2rem;"></i><br>
+                                            Silahkan pilih periode dan klik <strong>Refresh</strong>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -98,8 +121,137 @@
         </div>
     </div>
 </div>
+
+<style>
+    .filter-label-wide { min-width: 80px; font-weight: 600; font-size: 13px; }
+    .btn-refresh-custom { background-color: #EB6831; color: white; border: none; padding: 6px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; }
+    .btn-refresh-custom:hover { background-color: #d95c28; }
+    .btn-refresh-custom:disabled { background-color: #ccc; cursor: not-allowed; }
+    .custom-select { border-radius: 6px; padding: 4px 8px; font-size: 13px; }
+    .text-dan { color: #EB6831; }
+    .table td { font-size: 12px; vertical-align: middle; padding: 6px 8px; }
+    .table th { font-size: 11px; padding: 8px 6px; }
+    .badge-in { background-color: #28a745; }
+    .badge-out { background-color: #ffc107; color: #333; }
+</style>
 {% endblock %}
 
 {% block script %}
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const weekAgo = new Date(today);
+        weekAgo.setDate(today.getDate() - 7);
+        
+        document.getElementById('tglAwal').value = formatDate(weekAgo);
+        document.getElementById('tglAkhir').value = formatDate(today);
+        
+        document.getElementById('btnRefresh').addEventListener('click', fetchData);
+        document.getElementById('filterValue1').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') fetchData();
+        });
+        document.getElementById('filterValue2').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') fetchData();
+        });
+    });
+    
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
+    function fetchData() {
+        const tglAwal = document.getElementById('tglAwal').value;
+        const tglAkhir = document.getElementById('tglAkhir').value;
+        const filterField1 = document.getElementById('filterField1').value;
+        const filterValue1 = document.getElementById('filterValue1').value.trim();
+        const filterField2 = document.getElementById('filterField2').value;
+        const filterValue2 = document.getElementById('filterValue2').value.trim();
+        
+        const btnRefresh = document.getElementById('btnRefresh');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const infoTotal = document.getElementById('infoTotal');
+        const tableBody = document.getElementById('tableBody');
+        
+        btnRefresh.disabled = true;
+        btnRefresh.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Loading...';
+        loadingIndicator.style.display = 'block';
+        
+        const params = new URLSearchParams();
+        if (tglAwal) params.append('tgl_awal', tglAwal);
+        if (tglAkhir) params.append('tgl_akhir', tglAkhir);
+        if (filterField1) params.append('filter_field1', filterField1);
+        if (filterValue1) params.append('filter_value1', filterValue1);
+        if (filterField2) params.append('filter_field2', filterField2);
+        if (filterValue2) params.append('filter_value2', filterValue2);
+        
+        fetch(`/api/cari-absensi-non-finger?${params.toString()}`)
+            .then(res => res.json())
+            .then(result => {
+                loadingIndicator.style.display = 'none';
+                btnRefresh.disabled = false;
+                btnRefresh.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
+                
+                if (result.error) {
+                    tableBody.innerHTML = `<tr><td colspan="7" class="text-danger">Error: ${result.error}</td></tr>`;
+                    infoTotal.style.display = 'none';
+                    return;
+                }
+                
+                if (!result.data || result.data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="7" style="padding: 30px; color: #999;">Tidak ada data ditemukan.</td></tr>';
+                    infoTotal.style.display = 'none';
+                    return;
+                }
+                
+                document.getElementById('totalRecords').textContent = result.total;
+                infoTotal.style.display = 'block';
+                
+                let html = '';
+                result.data.forEach(row => {
+                    const statusBadge = row.status === 'IN' 
+                        ? '<span class="badge badge-in">IN</span>' 
+                        : '<span class="badge badge-out">OUT</span>';
+                    
+                    html += `
+                        <tr>
+                            <td>${row.no}</td>
+                            <td class="text-start">
+                                <strong>${escapeHtml(row.nama)}</strong><br>
+                                <small class="text-muted">${escapeHtml(row.nip)}</small><br>
+                                <small class="text-muted">${escapeHtml(row.unit_kerja)}</small>
+                            </td>
+                            <td>${row.tanggal}</td>
+                            <td>${row.jam}</td>
+                            <td>${statusBadge}</td>
+                            <td>${escapeHtml(row.mesin)}</td>
+                            <td class="text-start">
+                                <small>${escapeHtml(row.update_by)}</small><br>
+                                <small class="text-muted">${row.update_date}</small>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableBody.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                loadingIndicator.style.display = 'none';
+                btnRefresh.disabled = false;
+                btnRefresh.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-danger">Gagal mengambil data.</td></tr>';
+                infoTotal.style.display = 'none';
+            });
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
 {% endblock %}
