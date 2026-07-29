@@ -262,107 +262,17 @@
                                                     <i class="bi bi-caret-down-fill small text-muted"></i>
                                                 </button>
 
-                                                <ul class="dropdown-menu w-100 py-1 shadow-sm custom-dropdown-scroll"
-                                                    aria-labelledby="dropdownUnitKerja">
-                                                    <li class="dropdown-item-custom bg-light border-bottom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                id="checkAllUnit">
-                                                            <label
-                                                                class="form-check-label small fw-bold text-secondary w-100"
-                                                                for="checkAllUnit">Check All</label>
-                                                        </div>
-                                                    </li>
+                                                <ul class="dropdown-menu ...">
+                                                    <li class="dropdown-item-custom bg-light border-bottom">...</li>
+                                                    {% for unit in unit_kerja_list %}
                                                     <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="SURABAYA" id="unitSurabaya">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitSurabaya">SURABAYA</label>
+                                                        <div class="form-check ...">
+                                                            <input class="form-check-input check-unit-item" type="checkbox" 
+                                                                value="{{ unit.UNIT_KERJA_ID }}" id="unit{{ unit.UNIT_KERJA_ID }}">
+                                                            <label ...>{{ unit.NAMA_UNIT_KERJA }}</label>
                                                         </div>
                                                     </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="JEMBER" id="unitJember">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitJember">JEMBER</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="TRENGGALEK" id="unitTrenggalek">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitTrenggalek">TRENGGALEK</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="BANYUWANGI" id="unitBanyuwangi">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitBanyuwangi">BANYUWANGI</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="BOJONEGORO" id="unitBojonegoro">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitBojonegoro">BOJONEGORO</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="MALANG" id="unitMalang">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitMalang">MALANG</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="KN WIDURA" id="unitWidura">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitWidura">KN WIDURA</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="ABK PPNPN" id="unitAbkPpnpn">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitAbkPpnpn">ABK PPNPN</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="RESCUER PPNPN"
-                                                                id="unitRescuerPpnpn">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitRescuerPpnpn">RESCUER PPNPN</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="PPPK" id="unitPppk">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitPppk">PPPK</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="PPPK Paruh Waktu"
-                                                                id="unitPppkParuh">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitPppkParuh">PPPK Paruh Waktu</label>
-                                                        </div>
-                                                    </li>
+                                                    {% endfor %}
                                                 </ul>
                                             </div>
                                         </div>
@@ -371,15 +281,13 @@
                                     <div class="row align-items-center mb-4 ps-3">
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Bendahara</label>
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control-sm custom-input-field w-100 px-2"
-                                                placeholder="">
+                                            <input type="text" id="bendahara" class="form-control-sm custom-input-field w-100 px-2" placeholder="">
                                         </div>
                                     </div>
                                     <div class="row align-items-center mb-4 ps-3">
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">PPPK</label>
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control-sm custom-input-field w-100 px-2"
-                                                placeholder="">
+                                            <input type="text" id="pppk" class="form-control-sm custom-input-field w-100 px-2" placeholder="">
                                         </div>
                                     </div>
                                     <!-- Input Periode -->
@@ -387,8 +295,7 @@
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
                                         <div class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
                                             <div style="max-width: 200px; width: 100%;">
-                                                <input type="date"
-                                                    class="form-control-sm custom-input-field w-100 px-2">
+                                                <input type="month" id="bulan" class="form-control-sm custom-input-field w-100 px-2">
                                             </div>
                                         </div>
                                     </div>
@@ -396,8 +303,7 @@
                                         <label class="col-md-2 form-label-custom mb-1 mb-md-0">Pembuat
                                             Daftar</label>
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control-sm custom-input-field w-100 px-2"
-                                                placeholder="">
+                                            <input type="text" id="pembuat" class="form-control-sm custom-input-field w-100 px-2" placeholder="">
                                         </div>
                                     </div>
                                     <!-- Tombol Send -->
@@ -408,152 +314,63 @@
                                     </div>
                                 </div>
 
-                                <!-- TAB 2: Normalisasi -->
+                                <!-- TAB 2: Detail Jam Lembur Umum -->
                                 <div class="tab-pane fade" id="normalisasi-pane" role="tabpanel"
                                     aria-labelledby="normalisasi-tab">
-                                    <div class="tab-pane fade show active" id="finger-pane" role="tabpanel"
-                                        aria-labelledby="finger-tab">
-                                        <!-- Input Unit Kerja (Multi-select Checkbox Putih) -->
-                                        <div class="row align-items-center mb-4 mt-3 ps-3">
-                                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Unit
-                                                Kerja</label>
-                                            <div class="col-md-6">
-                                                <div class="dropdown custom-multi-select">
-                                                    <button
-                                                        class="btn btn-sm w-100 text-start d-flex justify-content-between align-items-center dropdown-toggle-custom"
-                                                        type="button" id="dropdownUnitKerja" data-bs-toggle="dropdown"
-                                                        data-bs-auto-close="outside" aria-expanded="false">
-                                                        <span id="dropdownLabelUnit">Pilih Unit Kerja</span>
-                                                        <i class="bi bi-caret-down-fill small text-muted"></i>
-                                                    </button>
+                                    <!-- Input Unit Kerja (Multi-select Checkbox Putih) -->
+                                    <div class="row align-items-center mb-4 mt-3 ps-3">
+                                        <label class="col-md-2 form-label-custom mb-1 mb-md-0">Unit
+                                            Kerja</label>
+                                        <div class="col-md-6">
+                                            <div class="dropdown custom-multi-select">
+                                                <button
+                                                    class="btn btn-sm w-100 text-start d-flex justify-content-between align-items-center dropdown-toggle-custom"
+                                                    type="button" id="dropdownUnitKerja2" data-bs-toggle="dropdown"
+                                                    data-bs-auto-close="outside" aria-expanded="false">
+                                                    <span id="dropdownLabelUnit2">Pilih Unit Kerja</span>
+                                                    <i class="bi bi-caret-down-fill small text-muted"></i>
+                                                </button>
 
-                                                    <ul class="dropdown-menu w-100 py-1 shadow-sm custom-dropdown-scroll"
-                                                        aria-labelledby="dropdownUnitKerja">
-                                                        <li class="dropdown-item-custom bg-light border-bottom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    id="checkAllUnit">
-                                                                <label
-                                                                    class="form-check-label small fw-bold text-secondary w-100"
-                                                                    for="checkAllUnit">Check All</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="SURABAYA" id="unitSurabaya">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitSurabaya">SURABAYA</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="JEMBER" id="unitJember">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitJember">JEMBER</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="TRENGGALEK"
-                                                                    id="unitTrenggalek">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitTrenggalek">TRENGGALEK</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="BANYUWANGI"
-                                                                    id="unitBanyuwangi">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitBanyuwangi">BANYUWANGI</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="BOJONEGORO"
-                                                                    id="unitBojonegoro">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitBojonegoro">BOJONEGORO</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="MALANG" id="unitMalang">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitMalang">MALANG</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="KN WIDURA" id="unitWidura">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitWidura">KN WIDURA</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="ABK PPNPN" id="unitAbkPpnpn">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitAbkPpnpn">ABK PPNPN</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="RESCUER PPNPN"
-                                                                    id="unitRescuerPpnpn">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitRescuerPpnpn">RESCUER PPNPN</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="PPPK" id="unitPppk">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitPppk">PPPK</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="dropdown-item-custom">
-                                                            <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                                <input class="form-check-input check-unit-item"
-                                                                    type="checkbox" value="PPPK Paruh Waktu"
-                                                                    id="unitPppkParuh">
-                                                                <label class="form-check-label small w-100"
-                                                                    for="unitPppkParuh">PPPK Paruh Waktu</label>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Input Periode -->
-                                        <div class="row align-items-center mb-4 ps-3">
-                                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
-                                            <div
-                                                class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
-                                                <div style="max-width: 200px; width: 100%;">
-                                                    <input type="date"
-                                                        class="form-control-sm custom-input-field w-100 px-2">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Tombol Send -->
-                                        <div class="row">
-                                            <div class="col-12 d-flex justify-content-center mt-2">
-                                                <button type="submit" class="btn btn-pill-run shadow-sm">Send</button>
+                                                <ul class="dropdown-menu w-100 py-1 shadow-sm custom-dropdown-scroll"
+                                                    aria-labelledby="dropdownUnitKerja2">
+                                                    <li class="dropdown-item-custom bg-light border-bottom">
+                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="checkAllUnit2">
+                                                            <label
+                                                                class="form-check-label small fw-bold text-secondary w-100"
+                                                                for="checkAllUnit2">Check All</label>
+                                                        </div>
+                                                    </li>
+                                                    {% for unit in unit_kerja_list %}
+                                                    <li class="dropdown-item-custom">
+                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
+                                                            <input class="form-check-input check-unit-item-2"
+                                                                type="checkbox" value="{{ unit.UNIT_KERJA_ID }}" id="unit2_{{ unit.UNIT_KERJA_ID }}">
+                                                            <label class="form-check-label small w-100"
+                                                                for="unit2_{{ unit.UNIT_KERJA_ID }}">{{ unit.NAMA_UNIT_KERJA }}</label>
+                                                        </div>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
-
+                                    <!-- Input Periode -->
+                                    <div class="row align-items-center mb-4 ps-3">
+                                        <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
+                                        <div class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
+                                            <div style="max-width: 200px; width: 100%;">
+                                                <input type="month" id="bulan2" class="form-control-sm custom-input-field w-100 px-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Tombol Send -->
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center mt-2">
+                                            <button type="submit" class="btn btn-pill-run shadow-sm">Send</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -569,40 +386,182 @@
 {% block script %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const checkAll = document.getElementById("checkAllUnit");
-        const items = document.querySelectorAll(".check-unit-item");
-        const label = document.getElementById("dropdownLabelUnit");
+        // Unit Kerja Dropdown (Tab 1)
+        const checkAllTab1 = document.querySelector('#finger-pane #checkAllUnit');
+        const itemsTab1 = document.querySelectorAll('#finger-pane .check-unit-item');
+        const labelTab1 = document.querySelector('#finger-pane #dropdownLabelUnit');
 
-        // Fungsi memperbarui teks tombol berdasarkan nama unit yang dicentang
-        function updateLabel() {
-            const checkedItems = document.querySelectorAll(".check-unit-item:checked");
-
+        function updateLabelTab1() {
+            const checkedItems = document.querySelectorAll('#finger-pane .check-unit-item:checked');
             if (checkedItems.length === 0) {
-                label.innerText = "Pilih Unit Kerja";
-            } else if (checkedItems.length === items.length) {
-                label.innerText = "Semua Unit Terpilih";
+                labelTab1.innerText = "Pilih Unit Kerja";
+            } else if (checkedItems.length === itemsTab1.length) {
+                labelTab1.innerText = "Semua Unit Terpilih";
             } else {
-                // Mengambil nilai text/value dari item yang dicentang lalu digabung dengan koma
-                const selectedNames = Array.from(checkedItems).map(item => item.value);
-                label.innerText = selectedNames.join(", ");
+                const selectedNames = Array.from(checkedItems).map(item => {
+                    return item.parentElement.querySelector('label').textContent.trim();
+                });
+                labelTab1.innerText = selectedNames.join(", ");
             }
         }
 
-        if (checkAll) {
-            checkAll.addEventListener("change", function () {
-                items.forEach(item => {
-                    item.checked = checkAll.checked;
-                });
-                updateLabel();
+        if (checkAllTab1) {
+            checkAllTab1.addEventListener("change", function () {
+                itemsTab1.forEach(item => { item.checked = checkAllTab1.checked; });
+                updateLabelTab1();
             });
         }
 
-        items.forEach(item => {
+        itemsTab1.forEach(item => {
             item.addEventListener("change", function () {
-                const checkedCount = document.querySelectorAll(".check-unit-item:checked").length;
-                if (checkAll) checkAll.checked = (checkedCount === items.length);
-                updateLabel();
+                const checkedCount = document.querySelectorAll('#finger-pane .check-unit-item:checked').length;
+                if (checkAllTab1) checkAllTab1.checked = (checkedCount === itemsTab1.length);
+                updateLabelTab1();
             });
+        });
+
+        // Unit Kerja Dropdown (Tab 2)
+        const checkAllTab2 = document.querySelector('#checkAllUnit2');
+        const itemsTab2 = document.querySelectorAll('.check-unit-item-2');
+        const labelTab2 = document.querySelector('#dropdownLabelUnit2');
+
+        function updateLabelTab2() {
+            const checkedItems = document.querySelectorAll('.check-unit-item-2:checked');
+            if (checkedItems.length === 0) {
+                labelTab2.innerText = "Pilih Unit Kerja";
+            } else if (checkedItems.length === itemsTab2.length) {
+                labelTab2.innerText = "Semua Unit Terpilih";
+            } else {
+                const selectedNames = Array.from(checkedItems).map(item => {
+                    return item.parentElement.querySelector('label').textContent.trim();
+                });
+                labelTab2.innerText = selectedNames.join(", ");
+            }
+        }
+
+        if (checkAllTab2) {
+            checkAllTab2.addEventListener("change", function () {
+                itemsTab2.forEach(item => { item.checked = checkAllTab2.checked; });
+                updateLabelTab2();
+            });
+        }
+
+        itemsTab2.forEach(item => {
+            item.addEventListener("change", function () {
+                const checkedCount = document.querySelectorAll('.check-unit-item-2:checked').length;
+                if (checkAllTab2) checkAllTab2.checked = (checkedCount === itemsTab2.length);
+                updateLabelTab2();
+            });
+        });
+
+        // TAB 1 - Send Button (Rekap Daftar Lembur)
+        document.querySelector('#finger-pane .btn-pill-run').addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const unitChecked = document.querySelectorAll('#finger-pane .check-unit-item:checked');
+            const bulan = document.querySelector('#finger-pane input[type="month"]').value;
+            const bendahara = document.getElementById('bendahara')?.value || '';
+            const pppk = document.getElementById('pppk')?.value || '';
+            const pembuat = document.getElementById('pembuat')?.value || '';
+            
+            if (!unitChecked.length || !bulan) {
+                alert('Unit Kerja atau Bulan kosong!');
+                return;
+            }
+            
+            const formData = new FormData();
+            unitChecked.forEach(cb => formData.append('unit_kerja[]', cb.value));
+            formData.append('bulan', bulan);
+            formData.append('bendahara', bendahara);
+            formData.append('pppk', pppk);
+            formData.append('pembuat', pembuat);
+            
+            const btn = this;
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span>Memproses...</span>';
+            
+            try {
+                const res = await fetch('/laporan/cetak-daftar-lembur-umum/export', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!res.ok) {
+                    const err = await res.json();
+                    alert(err.error || 'Gagal membuat laporan');
+                    return;
+                }
+                
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Daftar_Lembur_Umum_${bulan.replace('-', '')}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+                
+            } catch (err) {
+                console.error('Gagal export:', err);
+                alert('Terjadi kesalahan jaringan');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // TAB 2 - Send Button (Detail Jam Lembur)
+        document.querySelector('#normalisasi-pane .btn-pill-run').addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const unitChecked = document.querySelectorAll('.check-unit-item-2:checked');
+            const bulan = document.querySelector('#bulan2').value;
+            
+            if (!unitChecked.length || !bulan) {
+                alert('Unit Kerja atau Bulan kosong!');
+                return;
+            }
+            
+            const formData = new FormData();
+            unitChecked.forEach(cb => formData.append('unit_kerja[]', cb.value));
+            formData.append('bulan', bulan);
+            
+            const btn = this;
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span>Memproses...</span>';
+            
+            try {
+                const res = await fetch('/laporan/cetak-daftar-lembur-umum/detail', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!res.ok) {
+                    const err = await res.json();
+                    alert(err.error || 'Gagal membuat laporan');
+                    return;
+                }
+                
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Detail_Lembur_Umum_${bulan.replace('-', '')}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+                
+            } catch (err) {
+                console.error('Gagal export:', err);
+                alert('Terjadi kesalahan jaringan');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
         });
     });
 </script>

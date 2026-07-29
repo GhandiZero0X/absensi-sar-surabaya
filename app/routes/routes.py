@@ -45,10 +45,12 @@ from app.controllers.dashboard_1MediaInformasiController import (
     update_media_informasi, nonaktifkan_media_informasi
 )
 from app.controllers.dashboard_1LaporanRekapController import (
+    export_detail_jam_lembur_umum,
     export_rekap_absensi_all,
     export_rekap_absensi_individu,
     export_rekap_absensi_log_finger,
     export_rekap_clock_exception,
+    export_rekap_daftar_lembur_umum,
     export_rekap_ketidakhadiran_pegawai,
     export_rekap_pelanggaran_disiplin,
     export_rekap_tunjangan_kinerja,
@@ -466,6 +468,16 @@ def view_media_informasi_detail():
 @login_required
 def view_laporan_cetak_daftar_lembur_umum():
     return laporan_cetak_daftar_lembur_umum()
+
+@main.route('/laporan/cetak-daftar-lembur-umum/export', methods=['POST'])
+@login_required
+def export_laporan_cetak_daftar_lembur_umum():
+    return export_rekap_daftar_lembur_umum()
+
+@main.route('/laporan/cetak-daftar-lembur-umum/detail', methods=['POST'])
+@login_required
+def export_laporan_detail_jam_lembur_umum():
+    return export_detail_jam_lembur_umum()
 
 @main.route('/laporan/rekap-absensi-all')
 @login_required

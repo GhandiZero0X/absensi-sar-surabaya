@@ -18,13 +18,354 @@ from app.models.timeRecorderModel import TimeRecorder
 from app.models.tunjanganModel import MfTunjangan
 from app.models.potModel import MfPot
 from app.models.classModel import MfClass
-
+from app.models.lemburModel import Lembur
 
 def laporan_cetak_daftar_lembur_umum():
-    """
-    Render halaman Laporan Cetak Daftar Lembur Umum.
-    """
-    return render_template('pages/dashboard_1/Laporan Cetak Daftar Lembur Umum.html')
+    """Render halaman Cetak Daftar Lembur Umum."""
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+    return render_template(
+        'pages/dashboard_1/Laporan Cetak Daftar Lembur Umum.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+
+def export_rekap_daftar_lembur_umum():
+    """Export Rekap Daftar Lembur Umum (Tab 1) - matriks + perhitungan uang."""
+    unit_list = request.form.getlist('unit_kerja[]')
+    bulan_str = request.form.get('bulan', '')
+    bendahara = request.form.get('bendahara', '')
+    pppk = request.form.get('pppk', '')
+    pembuat = request.form.get('pembuat', '')
+    
+    if not unit_list or not bulan_str:
+        return {'error': 'Unit atau bulan kosong'}, 400
+    
+    try:
+        unit_ids = [int(u) for u in unit_list]
+    except ValueError:
+        return {'error': 'Unit Kerja ID harus berupa angka'}, 400
+    
+    tahun, bulan = map(int, bulan_str.split('-'))
+    tgl_awal = datetime(tahun, bulan, 1)
+    if bulan == 12:
+        tgl_akhir = datetime(tahun + 1, 1, 1) - timedelta(days=1)
+    else:
+        tgl_akhir = datetime(tahun, bulan + 1, 1) - timedelta(days=1)
+    
+    # Ambil data lembur join pegawai via NIP
+    rows = (
+        db.session.query(Lembur, Pegawai)
+        .join(Pegawai, Lembur.NIP == Pegawai.NIP)
+        .filter(Lembur.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+        .order_by(Pegawai.NAMA, Lembur.TGL_KERJA)
+        .all()
+    )
+    
+    if not rows:
+        return {'error': 'Data tidak ada'}, 400
+    
+    # Ambil pegawai distinct
+    pegawai_list = list(set(p for _, p in rows))
+    pegawai_list.sort(key=lambda x: x.NAMA)
+    
+    # Ambil kalender
+    kalender_rows = (
+        MfKalender.query
+        .filter(MfKalender.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .order_by(MfKalender.TGL_KERJA.asc())
+        .all()
+    )
+    
+    # Ambil tunjangan
+    tunjangan_list = (
+        MfTunjangan.query
+        .filter(MfTunjangan.ACTIVITY == 'Piket siaga')
+        .filter(MfTunjangan.JENIS_TUNJANGAN.in_(['U.Makan', 'U.Lembur']))
+        .filter(MfTunjangan.TGL_MULAI <= tgl_akhir.date())
+        .all()
+    )
+    
+    n_tgl = (tgl_akhir - tgl_awal).days + 1
+    
+    # Build Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Daftar Lembur"
+    ws.sheet_properties.tabColor = "FF7B00"
+    ws.page_setup.orientation = 'landscape'
+    ws.page_setup.paperSize = ws.PAPERSIZE_A4
+    
+    coltgl = 5 + n_tgl - 1
+    col_total = coltgl + 9
+    
+    # Logo
+    try:
+        img = XLImage('static/img/LogoSAR.png')
+        img.width, img.height = 50, 50
+        ws.add_image(img, 'A1')
+    except:
+        pass
+    
+    thin = Side(style='thin')
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+    
+    # Judul
+    ws.merge_cells(start_row=2, start_column=4, end_row=2, end_column=col_total)
+    ws.cell(row=2, column=4, value='DAFTAR LEMBUR UMUM').font = Font(bold=True, size=14)
+    ws.cell(row=2, column=4).alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells(start_row=3, start_column=4, end_row=3, end_column=col_total)
+    ws.cell(row=3, column=4, value=f"Periode {tgl_awal:%d.%m.%Y} s/d {tgl_akhir:%d.%m.%Y}")
+    ws.cell(row=3, column=4).alignment = Alignment(horizontal='center')
+    
+    # Header
+    ws.merge_cells('B5:B7')
+    ws.cell(row=5, column=2, value='No').border = border
+    ws.cell(row=5, column=2).alignment = Alignment(horizontal='center', vertical='center')
+    
+    ws.merge_cells('C5:C7')
+    ws.cell(row=5, column=3, value='Nama').border = border
+    ws.cell(row=5, column=3).alignment = Alignment(horizontal='center', vertical='center')
+    
+    ws.merge_cells('D5:D7')
+    ws.cell(row=5, column=4, value='Gol').border = border
+    ws.cell(row=5, column=4).alignment = Alignment(horizontal='center', vertical='center')
+    
+    # Header: Jumlah Jam Kegiatan Lembur Pada Tanggal
+    ws.merge_cells(start_row=5, start_column=5, end_row=5, end_column=coltgl)
+    ws.cell(row=5, column=5, value='Jumlah Jam Kegiatan Lembur Pada Tanggal').border = border
+    ws.cell(row=5, column=5).alignment = Alignment(horizontal='center')
+    
+    # Isi tanggal
+    for i, d in enumerate(range(n_tgl)):
+        col = 5 + i
+        hari = (tgl_awal + timedelta(days=d))
+        cell = ws.cell(row=6, column=col, value=hari.day)
+        cell.border = border
+        cell.alignment = Alignment(horizontal='center')
+        if hari.weekday() >= 5:
+            cell.font = Font(color='FF0000')
+    
+    # Header: Jumlah Jam, Makan, Uang
+    for col, val in {
+        coltgl+1: 'Jumlah Jam\nHari Kerja', coltgl+2: 'Jumlah Jam\nHari Libur',
+        coltgl+3: 'Jumlah\nMakan Libur', coltgl+4: 'Lembur', coltgl+5: 'Makan Libur',
+        coltgl+6: 'Jumlah Dari\nKolom', coltgl+7: 'Potongan\nPPH', coltgl+8: 'Jumlah\nBersih', coltgl+9: 'Tanda\nTangan'
+    }.items():
+        ws.merge_cells(start_row=5, start_column=col, end_row=7, end_column=col)
+        ws.cell(row=5, column=col, value=val).border = border
+        ws.cell(row=5, column=col).font = Font(bold=True)
+        ws.cell(row=5, column=col).alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+    
+    # Lebar kolom
+    ws.column_dimensions['B'].width = 5
+    ws.column_dimensions['C'].width = 30
+    ws.column_dimensions['D'].width = 5
+    for i in range(5, coltgl + 1):
+        col_letter = chr(64 + i) if i <= 26 else 'A'
+        ws.column_dimensions[col_letter].width = 5
+    for i in range(coltgl + 1, col_total + 1):
+        col_letter = chr(64 + i) if i <= 26 else 'A'
+        ws.column_dimensions[col_letter].width = 12
+    
+    # Isi data
+    row = 8
+    no = 1
+    
+    for peg in pegawai_list:
+        lembur_peg = [(l, p) for l, p in rows if p.NIP == peg.NIP]
+        
+        # Merge 2 baris per pegawai
+        for r in [row, row + 1]:
+            for c in range(2, col_total + 1):
+                ws.cell(row=r, column=c).border = border
+        
+        ws.cell(row=row, column=2, value=no)
+        ws.cell(row=row, column=3, value=peg.NAMA)
+        ws.cell(row=row + 1, column=3, value=peg.NIP)
+        ws.cell(row=row, column=4, value=peg.GOL_ID)
+        
+        # Isi jam lembur per tanggal
+        tot_hk = tot_hl = tot_makan = 0
+        for i, d in enumerate(range(n_tgl)):
+            tgl_iter = tgl_awal + timedelta(days=d)
+            is_libur = tgl_iter.weekday() >= 5
+            
+            jam_lembur = 0
+            for l, _ in lembur_peg:
+                if l.TGL_KERJA and l.TGL_KERJA.date() == tgl_iter.date():
+                    jam_in = l.JAM_BAKU_IN if l.JAM_BAKU_IN else l.JAM_IN
+                    jam_out = l.JAM_BAKU_OUT if l.JAM_BAKU_OUT else l.JAM_OUT
+                    
+                    if jam_in and jam_out:
+                        delta = (jam_out - jam_in).total_seconds() / 3600
+                        if delta > 0:
+                            jam_lembur = delta
+                    break
+            
+            if jam_lembur > 0:
+                col = 5 + i
+                ws.cell(row=row, column=col, value=round(jam_lembur, 1))
+            
+            if is_libur:
+                tot_hl += jam_lembur
+            else:
+                tot_hk += jam_lembur
+            
+            if jam_lembur > 0:
+                tot_makan += 1
+        
+        ws.cell(row=row, column=coltgl + 1, value=round(tot_hk, 1))
+        ws.cell(row=row, column=coltgl + 2, value=round(tot_hl, 1))
+        ws.cell(row=row, column=coltgl + 3, value=tot_makan)
+        
+        # Hitung uang
+        uang_lembur = 0
+        uang_makan = 0
+        for t in tunjangan_list:
+            if t.JENIS_TUNJANGAN == 'U.Lembur':
+                uang_lembur = t.NOMINAL or 0
+            elif t.JENIS_TUNJANGAN == 'U.Makan':
+                uang_makan = t.NOMINAL or 0
+        
+        total_lembur = (tot_hk + tot_hl) * uang_lembur
+        total_makan = tot_makan * uang_makan
+        total_bersih = total_lembur + total_makan
+        
+        ws.cell(row=row, column=coltgl + 4, value=total_lembur).number_format = '#,##0'
+        ws.cell(row=row, column=coltgl + 5, value=total_makan).number_format = '#,##0'
+        ws.cell(row=row, column=coltgl + 6, value=total_bersih).number_format = '#,##0'
+        ws.cell(row=row, column=coltgl + 7, value=0).number_format = '#,##0'
+        ws.cell(row=row, column=coltgl + 8, value=total_bersih).number_format = '#,##0'
+        ws.cell(row=row, column=coltgl + 9, value=no)
+        
+        no += 1
+        row += 2
+    
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return send_file(buf, as_attachment=True,
+        download_name=f"Daftar_Lembur_{tgl_awal:%Y%m}.xlsx",
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+
+def export_detail_jam_lembur_umum():
+    """Export Detail Jam Lembur Umum (Tab 2) - jam in/out per hari."""
+    unit_list = request.form.getlist('unit_kerja[]')
+    bulan_str = request.form.get('bulan', '')
+    
+    if not unit_list or not bulan_str:
+        return {'error': 'Unit atau bulan kosong'}, 400
+    
+    try:
+        unit_ids = [int(u) for u in unit_list]
+    except ValueError:
+        return {'error': 'Unit Kerja ID harus berupa angka'}, 400
+    
+    tahun, bulan = map(int, bulan_str.split('-'))
+    tgl_awal = datetime(tahun, bulan, 1)
+    if bulan == 12:
+        tgl_akhir = datetime(tahun + 1, 1, 1) - timedelta(days=1)
+    else:
+        tgl_akhir = datetime(tahun, bulan + 1, 1) - timedelta(days=1)
+    
+    rows = (
+        db.session.query(Lembur, Pegawai)
+        .join(Pegawai, Lembur.NIP == Pegawai.NIP)
+        .filter(Lembur.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+        .order_by(Pegawai.NAMA, Lembur.TGL_KERJA)
+        .all()
+    )
+    
+    if not rows:
+        return {'error': 'Data tidak ada'}, 400
+    
+    n_tgl = (tgl_akhir - tgl_awal).days + 1
+    pegawai_list = sorted(set(p for _, p in rows), key=lambda x: x.NAMA)
+    
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Detail Lembur"
+    ws.sheet_properties.tabColor = "FF7B00"
+    ws.page_setup.orientation = 'landscape'
+    
+    try:
+        img = XLImage('static/img/LogoSAR.png')
+        img.width, img.height = 50, 50
+        ws.add_image(img, 'A1')
+    except:
+        pass
+    
+    thin = Side(style='thin')
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+    col_total = 5 + n_tgl - 1
+    
+    ws.merge_cells(start_row=2, start_column=4, end_row=2, end_column=col_total)
+    ws.cell(row=2, column=4, value='DAFTAR DETAIL LEMBUR UMUM').font = Font(bold=True, size=12)
+    ws.cell(row=2, column=4).alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells(start_row=3, start_column=4, end_row=3, end_column=col_total)
+    ws.cell(row=3, column=4, value=f"Periode {tgl_awal:%d.%m.%Y} s/d {tgl_akhir:%d.%m.%Y}")
+    ws.cell(row=3, column=4).alignment = Alignment(horizontal='center')
+    
+    # Header
+    for col, val in {2: 'No', 3: 'Nama', 4: 'Gol', 5: 'Jumlah Jam Kegiatan Lembur Pada Tanggal'}.items():
+        if col == 5:
+            ws.merge_cells(start_row=5, start_column=5, end_row=5, end_column=col_total)
+        ws.cell(row=5, column=col, value=val).border = border
+        ws.cell(row=5, column=col).font = Font(bold=True)
+        ws.cell(row=5, column=col).alignment = Alignment(horizontal='center', vertical='center')
+    
+    for i, d in enumerate(range(n_tgl)):
+        col = 5 + i
+        ws.cell(row=6, column=col, value=(tgl_awal + timedelta(days=d)).day).border = border
+        ws.cell(row=6, column=col).alignment = Alignment(horizontal='center')
+    
+    ws.column_dimensions['B'].width = 5
+    ws.column_dimensions['C'].width = 30
+    ws.column_dimensions['D'].width = 5
+    for i in range(5, col_total + 1):
+        col_letter = chr(64 + i) if i <= 26 else 'A'
+        ws.column_dimensions[col_letter].width = 8
+    
+    row = 7
+    no = 1
+    for peg in pegawai_list:
+        for c in range(2, col_total + 1):
+            ws.cell(row=row, column=c).border = border
+        
+        ws.cell(row=row, column=2, value=no)
+        ws.cell(row=row, column=3, value=f"{peg.NAMA}\n{peg.NIP}")
+        ws.cell(row=row, column=3).alignment = Alignment(wrap_text=True)
+        ws.cell(row=row, column=4, value=peg.GOL_ID)
+        
+        lembur_peg = [(l, p) for l, p in rows if p.NIP == peg.NIP]
+        for i, d in enumerate(range(n_tgl)):
+            tgl_iter = tgl_awal + timedelta(days=d)
+            col = 5 + i
+            
+            for l, _ in lembur_peg:
+                if l.TGL_KERJA and l.TGL_KERJA.date() == tgl_iter.date():
+                    jam_in = l.JAM_IN.strftime('%H:%M') if l.JAM_IN else '-'
+                    jam_out = l.JAM_OUT.strftime('%H:%M') if l.JAM_OUT else '-'
+                    ws.cell(row=row, column=col, value=f"{jam_in}-{jam_out}")
+                    break
+        
+        no += 1
+        row += 1
+    
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return send_file(buf, as_attachment=True,
+        download_name=f"Detail_Lembur_{tgl_awal:%Y%m}.xlsx",
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
 def laporan_rekap_absensi_all():
