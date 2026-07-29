@@ -82,6 +82,9 @@ from app.controllers.dashboard_1DataAbsensiController import (
     api_inject_absensi_get_pegawai as data_absensi_api_inject_pegawai,
     api_inject_absensi_acak_jam as data_absensi_api_acak_jam,
     api_inject_absensi_save as data_absensi_api_save,
+    api_cari_absensi_manual as data_absensi_api_cari_manual,
+    api_cari_absensi_manual_delete as data_absensi_api_cari_delete,
+    api_cari_absensi_manual_update as data_absensi_api_cari_update,
 )
 from app.controllers.dashboard_3HomeController import (
     dashboard_kinerja,
@@ -640,6 +643,21 @@ def view_cari_absensi_normalisasi_finger():
 @login_required
 def view_cari_absensi_pegawai_manual():
     return cari_absensi_pegawai_manual()
+
+@main.route('/api/cari-absensi-manual')
+@login_required
+def api_cari_absensi_manual():
+    return data_absensi_api_cari_manual()
+
+@main.route('/api/cari-absensi-manual/delete', methods=['POST'])
+@login_required
+def api_cari_absensi_manual_delete():
+    return data_absensi_api_cari_delete()
+
+@main.route('/api/cari-absensi-manual/update', methods=['POST'])
+@login_required
+def api_cari_absensi_manual_update():
+    return data_absensi_api_cari_update()
 
 @main.route('/data-absensi/cari/pegawai-lembur-manual')
 @login_required

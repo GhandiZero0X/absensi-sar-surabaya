@@ -221,24 +221,32 @@ def api_inject_absensi_save():
             if not jam_in and not jam_out:
                 continue
             
-            # Delete existing manual record for this date
+            # ✅ CARI FINGER_ID DARI PEGAWAI (jika ada)
+            pegawai = Pegawai.query.filter(Pegawai.NIP == nip).first()
+            
+            # ✅ Gunakan NIP sebagai string untuk FINGER_ID (ubah tipe kolom jika perlu)
+            # Atau simpan NIP di REF_INJECT untuk referensi
+            finger_id_str = nip  # Simpan NIP sebagai string
+            
+            # Delete existing manual record for this date (by NIP in REF_INJECT)
             TimeRecorder.query.filter(
-                TimeRecorder.FINGER_ID == nip,
+                TimeRecorder.REF_INJECT == no_surat if no_surat else True,
                 TimeRecorder.MESIN == '999',
-                db.func.date(TimeRecorder.WAKTU) == tgl_date.date()
+                db.func.date(TimeRecorder.WAKTU) == tgl_date.date(),
+                TimeRecorder.KET_INJECT == nip  # ✅ Cari by NIP di KET_INJECT
             ).delete()
             
             # Insert IN
             if jam_in:
                 tgl_jam_in = datetime.strptime(f"{tgl} {jam_in}", '%Y-%m-%d %H:%M')
                 tr_in = TimeRecorder(
-                    FINGER_ID=nip,
+                    FINGER_ID=pegawai.ABSENSI_ID if pegawai else 0,  # Gunakan ABSENSI_ID atau 0
                     WAKTU=tgl_jam_in,
                     STATUS='IN',
                     MESIN='999',
                     KET='MANUAL',
                     TRANSAKSI='MANUAL',
-                    KET_INJECT=ket_in or '',
+                    KET_INJECT=nip,  # ✅ Simpan NIP di sini untuk referensi
                     REF_INJECT=no_surat or '',
                     UPDATE_IN_BY='admin',
                     UPDATE_DATE=datetime.now()
@@ -249,13 +257,13 @@ def api_inject_absensi_save():
             if jam_out:
                 tgl_jam_out = datetime.strptime(f"{tgl} {jam_out}", '%Y-%m-%d %H:%M')
                 tr_out = TimeRecorder(
-                    FINGER_ID=nip,
+                    FINGER_ID=pegawai.ABSENSI_ID if pegawai else 0,
                     WAKTU=tgl_jam_out,
                     STATUS='OUT',
                     MESIN='999',
                     KET='MANUAL',
                     TRANSAKSI='MANUAL',
-                    KET_INJECT=ket_out or '',
+                    KET_INJECT=nip,  # ✅ Simpan NIP di sini
                     REF_INJECT=no_surat or '',
                     UPDATE_IN_BY='admin',
                     UPDATE_DATE=datetime.now()
@@ -677,6 +685,162 @@ def cari_absensi_normalisasi_finger():
 def cari_absensi_pegawai_manual():
     """Render halaman Cari Absensi Pegawai Absen Manual."""
     return render_template('pages/dashboard_1/Cari Absensi Pegawai Absen Manual.html')
+
+def api_cari_absensi_manual():
+    """
+    API Cari Absensi Manual - mencari data TimeRecorder dengan MESIN='999'
+    Join via KET_INJECT (NIP) ke PEGAWAI
+    """
+    try:
+        tgl_awal_str = request.args.get('tgl_awal', '')
+        tgl_akhir_str = request.args.get('tgl_akhir', '')
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+        
+        # ✅ JOIN via KET_INJECT (tempat NIP disimpan)
+        query = (
+            db.session.query(TimeRecorder, Pegawai, MfUnitKerja)
+            .outerjoin(Pegawai, TimeRecorder.KET_INJECT == Pegawai.NIP)
+            .outerjoin(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+            .filter(TimeRecorder.MESIN == '999')
+            .filter(TimeRecorder.STATUS.in_(['IN', 'OUT']))
+        )
+        
+        # Filter periode
+        if tgl_awal_str and tgl_akhir_str:
+            tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+            tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d') + timedelta(days=1)
+            query = query.filter(
+                TimeRecorder.WAKTU >= tgl_awal,
+                TimeRecorder.WAKTU < tgl_akhir
+            )
+        
+        # Field mapping
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama': Pegawai.NAMA,
+            'UnitKerjaName': MfUnitKerja.NAMA_UNIT_KERJA,
+            'Status': TimeRecorder.STATUS,
+            'UpdateBy': TimeRecorder.UPDATE_IN_BY,
+        }
+        
+        if filter_field1 and filter_value1:
+            field = field_mapping.get(filter_field1)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value1}%'))
+        
+        if filter_field2 and filter_value2:
+            field = field_mapping.get(filter_field2)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value2}%'))
+        
+        query = query.order_by(TimeRecorder.WAKTU.desc())
+        results = query.all()
+        
+        data = []
+        for i, (tr, peg, unit) in enumerate(results, 1):
+            data.append({
+                'no': i,
+                'nama': peg.NAMA if peg else '-',
+                'nip': peg.NIP if peg else (tr.KET_INJECT or tr.FINGER_ID),
+                'finger_id': tr.FINGER_ID or '',
+                'tanggal': tr.WAKTU.strftime('%d %b %Y') if tr.WAKTU else '',
+                'jam': tr.WAKTU.strftime('%H:%M:%S') if tr.WAKTU else '',
+                'waktu_raw': tr.WAKTU.strftime('%Y-%m-%d %H:%M:%S') if tr.WAKTU else '',
+                'status': tr.STATUS or '',
+                'transaksi': tr.TRANSAKSI or tr.KET or '',
+                'update_by': tr.UPDATE_IN_BY or '',
+                'update_date': tr.UPDATE_DATE.strftime('%d/%m/%Y %H:%M') if tr.UPDATE_DATE else '',
+                'unit_kerja': unit.NAMA_UNIT_KERJA if unit else '-',
+                'ket_inject': tr.KET_INJECT or '',
+                'ref_inject': tr.REF_INJECT or '',
+            })
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'total': len(data)
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
+
+
+def api_cari_absensi_manual_delete():
+    """API: Delete data absensi manual"""
+    try:
+        data = request.get_json()
+        finger_id = data.get('finger_id', '')
+        waktu = data.get('waktu', '')
+        
+        if not finger_id or not waktu:
+            return jsonify({'error': 'Data tidak lengkap'})
+        
+        # Delete dari TimeRecorder
+        result = TimeRecorder.query.filter(
+            TimeRecorder.FINGER_ID == finger_id,
+            TimeRecorder.WAKTU == datetime.strptime(waktu, '%Y-%m-%d %H:%M:%S'),
+            TimeRecorder.MESIN == '999',
+            TimeRecorder.KET == 'MANUAL'
+        ).delete()
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': f'{result} data berhasil dihapus'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)})
+
+
+def api_cari_absensi_manual_update():
+    """API: Update data absensi manual (jam saja)"""
+    try:
+        data = request.get_json()
+        finger_id = data.get('finger_id', '')
+        waktu_lama = data.get('waktu_lama', '')
+        jam_baru = data.get('jam_baru', '')
+        status = data.get('status', '')
+        
+        if not finger_id or not waktu_lama or not jam_baru:
+            return jsonify({'error': 'Data tidak lengkap'})
+        
+        tgl = datetime.strptime(waktu_lama, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
+        waktu_baru = datetime.strptime(f"{tgl} {jam_baru}", '%Y-%m-%d %H:%M:%S')
+        
+        # Delete old record
+        TimeRecorder.query.filter(
+            TimeRecorder.FINGER_ID == finger_id,
+            TimeRecorder.WAKTU == datetime.strptime(waktu_lama, '%Y-%m-%d %H:%M:%S'),
+            TimeRecorder.MESIN == '999'
+        ).delete()
+        
+        # Insert new record
+        tr = TimeRecorder(
+            FINGER_ID=finger_id,
+            WAKTU=waktu_baru,
+            STATUS=status,
+            MESIN='999',
+            KET='MANUAL',
+            TRANSAKSI='MANUAL',
+            UPDATE_IN_BY='admin',
+            UPDATE_DATE=datetime.now()
+        )
+        db.session.add(tr)
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': 'Data berhasil diupdate'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)})
 
 
 def cari_absensi_pegawai_lembur_manual():
