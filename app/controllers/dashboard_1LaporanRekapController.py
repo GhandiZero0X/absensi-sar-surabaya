@@ -4,6 +4,7 @@ from io import BytesIO
 from sqlalchemy import func
 from datetime import datetime, timedelta
 import pandas as pd
+from collections import defaultdict
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
 from openpyxl.drawing.image import Image as XLImage
@@ -15,7 +16,8 @@ from app.models.dinasLuarModel import DinasLuar
 from app.models.unitKerjaModel import MfUnitKerja
 from app.models.timeRecorderModel import TimeRecorder
 from app.models.tunjanganModel import MfTunjangan
-
+from app.models.potModel import MfPot
+from app.models.classModel import MfClass
 
 
 def laporan_cetak_daftar_lembur_umum():
@@ -1532,9 +1534,292 @@ def export_rekap_uang_makan():
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
 
-
 def laporan_rekap_tunjangan_kinerja():
-    """
-    Render halaman Laporan Rekap Tunjangan Kinerja.
-    """
-    return render_template('pages/dashboard_1/Laporan Rincian Pembayaran Tunjangan.html')
+    """Render halaman Laporan Rincian Pembayaran Tunjangan."""
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+    return render_template(
+        'pages/dashboard_1/Laporan Rincian Pembayaran Tunjangan.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def export_rekap_tunjangan_kinerja():
+    """Export Rincian Pembayaran Tunjangan Kinerja."""
+    unit_list = request.form.getlist('unit_kerja[]')
+    tgl_awal_str = request.form.get('tgl_awal')
+    tgl_akhir_str = request.form.get('tgl_akhir')
+    
+    if not unit_list or not tgl_awal_str or not tgl_akhir_str:
+        return {'error': 'Unit kosong atau format tanggal salah'}, 400
+    
+    try:
+        unit_ids = [int(u) for u in unit_list]
+    except ValueError:
+        return {'error': 'Unit Kerja ID harus berupa angka'}, 400
+    
+    tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+    tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d')
+    
+    # Cek tgl server
+    tgl_server = datetime.now()
+    if tgl_server.date() < tgl_awal.date():
+        return {'error': 'Tgl server lebih kecil dari tanggal awal periode'}, 400
+    if tgl_server.date() < tgl_akhir.date():
+        tgl_akhir = tgl_server
+    
+    # Ambil kalender
+    kalender_rows = (
+        MfKalender.query
+        .filter(MfKalender.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .all()
+    )
+    
+    # Ambil data absensi (join via NIP)
+    absensi_rows = (
+        db.session.query(Absensi, Pegawai)
+        .join(Pegawai, Absensi.NIP == Pegawai.NIP)
+        .join(MfKalender, Absensi.TGL_KERJA == MfKalender.TGL_KERJA)
+        .filter(Absensi.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .filter(MfKalender.IS_LIBUR == 'N')
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+        .all()
+    )
+    
+    # Ambil data pegawai
+    pegawai_list = (
+        Pegawai.query
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+        .filter(Pegawai.TGL_MASUK <= tgl_akhir)
+        .filter(
+            db.or_(
+                Pegawai.IS_KELUAR == 0,
+                db.and_(Pegawai.IS_KELUAR == 1, Pegawai.TGL_KELUAR >= tgl_awal)
+            )
+        )
+        .order_by(Pegawai.NAMA)
+        .all()
+    )
+    
+    if not pegawai_list:
+        return {'error': 'Pegawai tidak ditemukan'}, 400
+    
+    # Ambil MFPot untuk persentase potongan
+    potongan_list = (
+        MfPot.query
+        .filter(MfPot.TGL_MULAI <= tgl_akhir)
+        .all()
+    )
+    
+    # Ambil tunjangan per class
+    class_tunjangan = {}
+    for c in MfClass.query.filter(MfClass.TGL_MULAI <= tgl_akhir.date()).order_by(MfClass.TGL_MULAI.desc()).all():
+        if c.CLASS_ID not in class_tunjangan:
+            class_tunjangan[c.CLASS_ID] = c.TUNJANGAN
+    
+    # DinasLuar > 4 bulan
+    dl_rows = (
+        DinasLuar.query
+        .join(Pegawai, DinasLuar.NIP == Pegawai.NIP)
+        .filter(DinasLuar.TRANSAKSI == 'DinasLuar')
+        .filter(DinasLuar.STATUS_UM == 1)
+        .filter(DinasLuar.TGL_AKHIR_DINAS_LUAR >= DinasLuar.TGL_AWAL_DINAS_LUAR)  # > 4 bulan
+        .filter(DinasLuar.TGL_AWAL_DINAS_LUAR <= tgl_akhir)
+        .filter(DinasLuar.TGL_AKHIR_DINAS_LUAR >= tgl_awal)
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+        .all()
+    )
+    
+    # Build dict absensi
+    absensi_dict = defaultdict(list)
+    for a, p in absensi_rows:
+        tgl_key = a.TGL_KERJA.strftime('%Y-%m-%d') if a.TGL_KERJA else None
+        absensi_dict[p.NIP].append(a)
+    
+    # Build dict DL
+    dl_dict = defaultdict(list)
+    for dl in dl_rows:
+        dl_dict[dl.NIP].append(dl)
+    
+    pot_dict = {}
+    for p in potongan_list:
+        pot_dict[p.KATEGORI] = p.PERSEN_POT or 0
+    
+    pot_ta = pot_dict.get('TA', 0)  # 5%
+    pot_dl = pot_dict.get('DINASLUAR', 0)  # 1%
+    
+    # Hitung per pegawai
+    hasil = []
+    for peg in pegawai_list:
+        abs_list = absensi_dict.get(peg.NIP, [])
+        tunjangan = class_tunjangan.get(peg.CLASS_ID, 0) or 0
+        
+        # ✅ Buat dict lookup per tanggal untuk akses cepat
+        abs_lookup = {}
+        for a in abs_list:
+            tgl_key = a.TGL_KERJA.strftime('%Y-%m-%d') if a.TGL_KERJA else None
+            abs_lookup[tgl_key] = a
+        
+        persen_pot = 0
+        tgl_masuk = peg.TGL_MASUK
+        tgl_hitung = tgl_masuk if tgl_masuk and tgl_masuk > tgl_awal else tgl_awal
+        
+        d = tgl_hitung
+        while d.date() <= tgl_akhir.date():
+            # Cek libur dari kalender_rows
+            is_libur = False
+            tgl_str = d.strftime('%Y-%m-%d')
+            
+            kl = [k for k in kalender_rows if k.TGL_KERJA and k.TGL_KERJA.strftime('%Y-%m-%d') == tgl_str]
+            if kl:
+                is_libur = kl[0].IS_LIBUR == 'Y'
+            elif d.weekday() >= 5:
+                is_libur = True
+            
+            if not is_libur:
+                # ✅ Cari record absensi via lookup dict
+                a = abs_lookup.get(tgl_str)
+                
+                if a:
+                    transaksi = (a.TRANSAKSI_IN or '').strip().lower()
+                    
+                    if transaksi in ('alpa', 'sakit', 'ijin'):
+                        persen_pot += a.PERSEN_POT_TLM or 0
+                    elif transaksi == 'dinasluar':
+                        pass
+                    else:
+                        persen_pot += (a.PERSEN_POT_TLM or 0) + (a.PERSEN_POT_PSW or 0)
+                else:
+                    persen_pot += pot_ta
+                
+                # Cek DL > 4 bulan
+                dl_peg = dl_dict.get(peg.NIP, [])
+                for dl in dl_peg:
+                    if dl.TGL_AWAL_DINAS_LUAR:
+                        limit_dl = dl.TGL_AWAL_DINAS_LUAR + timedelta(days=120)
+                        tgl_akhir_dl = dl.TGL_AKHIR_DINAS_LUAR.date() if dl.TGL_AKHIR_DINAS_LUAR else d.date()
+                        if limit_dl.date() <= d.date() <= tgl_akhir_dl:
+                            persen_pot += pot_dl
+                            break
+            
+            d += timedelta(days=1)
+        
+        # ✅ Hitung nilai potongan (seperti VB.NET: tunjangan * persen_pot / 100)
+        nilai_pot = tunjangan * (persen_pot / 100) if persen_pot > 0 else 0
+        jumlah_dibayarkan = tunjangan - nilai_pot
+        
+        hasil.append({
+            'nama': peg.NAMA,
+            'nip': peg.NIP,
+            'jabatan': f"TMT: {peg.TMT_JABATAN.strftime('%d/%m/%Y') if peg.TMT_JABATAN else '-'}",
+            'class_id': peg.CLASS_ID,
+            'tunjangan': tunjangan,
+            'persen_pot': persen_pot,
+            'nilai_pot': nilai_pot,
+            'jumlah_pot': nilai_pot,
+            'dibayarkan': jumlah_dibayarkan,
+        })
+    
+    if not hasil:
+        return {'error': 'Record tidak ada'}, 400
+    
+    # Nama unit
+    unit_names = ', '.join([u.NAMA_UNIT_KERJA for u in MfUnitKerja.query.filter(MfUnitKerja.UNIT_KERJA_ID.in_(unit_ids)).all()])
+    
+    # Build Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Tunjangan"
+    ws.sheet_properties.tabColor = "FF7B00"
+    ws.page_setup.orientation = 'landscape'
+    ws.page_setup.paperSize = ws.PAPERSIZE_A4
+    
+    try:
+        img = XLImage('static/img/LogoSAR.png')
+        img.width, img.height = 50, 50
+        ws.add_image(img, 'A1')
+    except:
+        pass
+    
+    thin = Side(style='thin')
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+    col_paraf = 12
+    
+    # Judul
+    ws.merge_cells(start_row=2, start_column=4, end_row=2, end_column=col_paraf)
+    ws.cell(row=2, column=4, value='Rincian Pembayaran Tunjangan').font = Font(bold=True, size=12)
+    ws.cell(row=2, column=4).alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells(start_row=3, start_column=4, end_row=3, end_column=col_paraf)
+    ws.cell(row=3, column=4, value=f"Periode {tgl_awal:%d.%m.%Y} s.d {tgl_akhir:%d.%m.%Y}")
+    ws.cell(row=3, column=4).alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells(start_row=4, start_column=4, end_row=4, end_column=col_paraf)
+    ws.cell(row=4, column=4, value=f"Unit : {unit_names}").font = Font(bold=True)
+    ws.cell(row=4, column=4).alignment = Alignment(horizontal='center')
+    
+    # Header
+    headers = {2: 'No', 3: 'Nama', 4: 'NIP', 5: 'Status\nKepeg', 6: 'Jabatan\nTMT', 
+               7: 'Kelas\nJabatan', 8: 'Tunjangan\nKerja', 9: 'Persen\nPot.', 
+               10: 'Nilai\nPot.', 11: 'Jumlah\nPot.', 12: 'Jumlah\ndibayarkan'}
+    
+    for col, val in headers.items():
+        c = ws.cell(row=5, column=col, value=val)
+        c.border = border; c.font = Font(bold=True)
+        c.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+    
+    # Lebar kolom
+    ws.column_dimensions['B'].width = 5
+    ws.column_dimensions['C'].width = 30
+    ws.column_dimensions['D'].width = 20
+    ws.column_dimensions['E'].width = 8
+    ws.column_dimensions['F'].width = 30
+    ws.column_dimensions['G'].width = 8
+    ws.column_dimensions['H'].width = 15
+    ws.column_dimensions['I'].width = 8
+    ws.column_dimensions['J'].width = 12
+    ws.column_dimensions['K'].width = 12
+    ws.column_dimensions['L'].width = 15
+    
+    # Isi data
+    grand_total = 0
+    for i, row_data in enumerate(hasil, 1):
+        for c in range(2, 13):
+            ws.cell(row=5+i, column=c).border = border
+        
+        ws.cell(row=5+i, column=2, value=i).alignment = Alignment(horizontal='center')
+        ws.cell(row=5+i, column=3, value=row_data['nama'])
+        ws.cell(row=5+i, column=4, value=row_data['nip'])
+        ws.cell(row=5+i, column=5, value='PNS')
+        ws.cell(row=5+i, column=6, value=row_data['jabatan'])
+        ws.cell(row=5+i, column=7, value=row_data['class_id'] if row_data['class_id'] else '').alignment = Alignment(horizontal='center')
+        
+        if row_data['tunjangan'] > 0:
+            ws.cell(row=5+i, column=8, value=row_data['tunjangan']).number_format = '#,##0.00'
+        if row_data['persen_pot'] > 0:
+            ws.cell(row=5+i, column=9, value=row_data['persen_pot']).number_format = '0.00'
+        if row_data['nilai_pot'] > 0:
+            ws.cell(row=5+i, column=10, value=row_data['nilai_pot']).number_format = '#,##0.00'
+        if row_data['jumlah_pot'] > 0:
+            ws.cell(row=5+i, column=11, value=row_data['jumlah_pot']).number_format = '#,##0.00'
+        if row_data['dibayarkan'] > 0:
+            ws.cell(row=5+i, column=12, value=row_data['dibayarkan']).number_format = '#,##0.00'
+        
+        grand_total += row_data['dibayarkan']
+    
+    # Baris total
+    last_row = 5 + len(hasil) + 1
+    for c in range(2, 13):
+        ws.cell(row=last_row, column=c).border = border
+    
+    ws.merge_cells(start_row=last_row, start_column=2, end_row=last_row, end_column=11)
+    ws.cell(row=last_row, column=2, value='Total').font = Font(bold=True)
+    ws.cell(row=last_row, column=12, value=grand_total).number_format = '#,##0.00'
+    
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return send_file(buf, as_attachment=True,
+        download_name=f"Rincian_Pembayaran_Tunjangan_{tgl_awal:%Y%m%d}_{tgl_akhir:%Y%m%d}.xlsx",
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

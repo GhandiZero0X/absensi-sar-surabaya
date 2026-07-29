@@ -51,6 +51,7 @@ from app.controllers.dashboard_1LaporanRekapController import (
     export_rekap_clock_exception,
     export_rekap_ketidakhadiran_pegawai,
     export_rekap_pelanggaran_disiplin,
+    export_rekap_tunjangan_kinerja,
     export_rekap_uang_makan,
     laporan_cetak_daftar_lembur_umum,
     laporan_rekap_absensi_all,
@@ -545,6 +546,11 @@ def export_laporan_rekap_uang_makan():
 @login_required
 def view_laporan_rekap_tunjangan_kinerja():
     return laporan_rekap_tunjangan_kinerja()
+
+@main.route('/laporan/rekap-tunjangan-kinerja/export', methods=['POST'])
+@login_required
+def export_laporan_rekap_tunjangan_kinerja():
+    return export_rekap_tunjangan_kinerja()
 
 # Data Absensi :
 @main.route('/data-absensi/non-finger')
