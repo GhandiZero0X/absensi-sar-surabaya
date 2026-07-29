@@ -971,12 +971,246 @@ def export_rekap_ketidakhadiran_pegawai():
 
 
 def laporan_rekap_pelanggaran_disiplin():
-    """
-    Render halaman Laporan Rekap Pelanggaran Disiplin.
-    Catatan: logika dasarnya kemungkinan mirip _get_data_pelanggaran() di
-    dashboard_1HomeController.py, tapi dalam bentuk laporan rekap (bisa filter periode).
-    """
-    return render_template('pages/dashboard_1/Laporan Rekap Pelanggaran Disiplin.html')
+    """Render halaman Laporan Rekap Pelanggaran Disiplin."""
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+    return render_template(
+        'pages/dashboard_1/Laporan Rekap Pelanggaran Disiplin.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def export_rekap_pelanggaran_disiplin():
+    """Export Ranking Pelanggaran Disiplin Absensi."""
+    unit_list = request.form.getlist('unit_kerja[]')
+    tgl_awal_str = request.form.get('tgl_awal')
+    tgl_akhir_str = request.form.get('tgl_akhir')
+    
+    if not unit_list or not tgl_awal_str or not tgl_akhir_str:
+        return {'error': 'Unit kosong atau format tanggal salah'}, 400
+    
+    try:
+        unit_ids = [int(u) for u in unit_list]
+    except ValueError:
+        return {'error': 'Unit Kerja ID harus berupa angka'}, 400
+    
+    tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+    tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d')
+    
+    tgl_server = datetime.now()
+    if tgl_server.date() < tgl_awal.date():
+        return {'error': 'Tgl server lebih kecil dari tanggal awal periode'}, 400
+    if tgl_server.date() < tgl_akhir.date():
+        tgl_akhir = tgl_server
+    
+    # Kalender hari kerja
+    kalender_rows = (
+        MfKalender.query
+        .filter(MfKalender.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .filter(MfKalender.IS_LIBUR == 'N')
+        .all()
+    )
+    default_tgl_kerja = len(kalender_rows)
+    
+    # Ambil data absensi (join via NIP)
+    absensi_rows = (
+        db.session.query(Absensi, Pegawai)
+        .join(Pegawai, Absensi.NIP == Pegawai.NIP)
+        .join(MfKalender, Absensi.TGL_KERJA == MfKalender.TGL_KERJA)
+        .filter(Absensi.TGL_KERJA.between(tgl_awal, tgl_akhir))
+        .filter(MfKalender.IS_LIBUR == 'N')
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+        .filter(Pegawai.IS_VIP == 0)  # Exclude VIP
+        .all()
+    )
+    
+    if not absensi_rows:
+        return {'error': 'Record tidak ada atau kalender belum dibuat'}, 400
+    
+    # Ambil data pegawai
+    pegawai_list = (
+        Pegawai.query
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+        .filter(Pegawai.IS_VIP == 0)
+        .filter(Pegawai.TGL_MASUK <= tgl_akhir)
+        .filter(
+            db.or_(
+                Pegawai.IS_KELUAR == 0,
+                db.and_(Pegawai.IS_KELUAR == 1, Pegawai.TGL_KELUAR >= tgl_awal)
+            )
+        )
+        .order_by(Pegawai.NAMA)
+        .all()
+    )
+    
+    # Build dict absensi per NIP
+    from collections import defaultdict
+    absensi_dict = defaultdict(list)
+    for a, p in absensi_rows:
+        absensi_dict[p.NIP].append(a)
+    
+    # Hitung pelanggaran per pegawai
+    hasil = []
+    for peg in pegawai_list:
+        abs_list = absensi_dict.get(peg.NIP, [])
+        
+        # TLM tanpa keterangan
+        tot_tlm_a = sum(a.AWAL_TLM or 0 for a in abs_list 
+                       if a.TINGKAT_TLM in ('TLM-1','TLM-2','TLM-3','TLM-4') 
+                       and a.PENDUKUNG_IN == 'N' 
+                       and a.TRANSAKSI_IN in ('LogFP','Manual','-','IN NonFP'))
+        
+        # PSW tanpa keterangan
+        tot_psw_a = sum(a.TOTAL_PSW or 0 for a in abs_list 
+                       if a.TINGKAT_PSW in ('PSW-1','PSW-2','PSW-3','PSW-4') 
+                       and a.PENDUKUNG_OUT == 'N' 
+                       and a.TRANSAKSI_OUT in ('LogFP','Manual','-','OUT NonFP'))
+        
+        # Sakit tanpa keterangan
+        sakit_a = sum(1 for a in abs_list 
+                     if a.TRANSAKSI_IN and a.TRANSAKSI_IN.strip().upper() == 'SAKIT' 
+                     and a.PENDUKUNG_IN == 'N')
+        
+        # Alpa tanpa keterangan + tidak masuk tanpa ket
+        tgl_masuk = peg.TGL_MASUK
+        if tgl_masuk and tgl_masuk.date() > tgl_awal.date():
+            xn_tgl_kerja = len([k for k in kalender_rows if k.TGL_KERJA and k.TGL_KERJA > tgl_masuk])
+        else:
+            xn_tgl_kerja = default_tgl_kerja
+        
+        alpa_a = sum(1 for a in abs_list 
+                    if a.TRANSAKSI_IN and a.TRANSAKSI_IN.strip().upper() == 'ALPA' 
+                    and a.PENDUKUNG_IN == 'N')
+        
+        tdk_masuk_tanpa_ket = alpa_a + (xn_tgl_kerja - len(abs_list))
+        if tdk_masuk_tanpa_ket < 0:
+            tdk_masuk_tanpa_ket = 0
+        
+        # Grand total menit
+        grand_tot_menit = abs(tot_psw_a) + tot_tlm_a + (sakit_a * 60 * 8) + (tdk_masuk_tanpa_ket * 60 * 8)
+        
+        if grand_tot_menit > 0:
+            tot_hr = grand_tot_menit // (60 * 8)
+            sisa_menit = grand_tot_menit % (60 * 8)
+            tot_jam = sisa_menit // 60
+            tot_menit = sisa_menit % 60
+            
+            hasil.append({
+                'nip': peg.NIP,
+                'nama': peg.NAMA,
+                'grand_tot_menit': grand_tot_menit,
+                'tot_tlm_a': tot_tlm_a,
+                'tot_psw_a': abs(tot_psw_a),
+                'sakit_a': sakit_a,
+                'tdk_masuk': tdk_masuk_tanpa_ket,
+                'tot_hr': tot_hr,
+                'tot_jam': tot_jam,
+                'tot_menit': tot_menit,
+            })
+    
+    if not hasil:
+        return {'error': 'Tidak ada pegawai yang melanggar disiplin absensi'}, 400
+    
+    # Sort by grand_tot_menit descending
+    hasil.sort(key=lambda x: x['grand_tot_menit'], reverse=True)
+    
+    # Nama unit
+    unit_names = ', '.join([u.NAMA_UNIT_KERJA for u in MfUnitKerja.query.filter(MfUnitKerja.UNIT_KERJA_ID.in_(unit_ids)).all()])
+    
+    # Build Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Pelanggaran"
+    ws.sheet_properties.tabColor = "FF7B00"
+    
+    try:
+        img = XLImage('static/img/LogoSAR.png')
+        img.width, img.height = 50, 50
+        ws.add_image(img, 'A1')
+    except:
+        pass
+    
+    thin = Side(style='thin')
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+    col_paraf = 10
+    
+    # Judul
+    ws.merge_cells(start_row=2, start_column=4, end_row=2, end_column=col_paraf)
+    ws.cell(row=2, column=4, value='Ranking Pelanggaran Disiplin Absensi').font = Font(bold=True, size=12)
+    ws.cell(row=2, column=4).alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells(start_row=3, start_column=4, end_row=3, end_column=col_paraf)
+    ws.cell(row=3, column=4, value=f"Periode {tgl_awal:%d.%m.%Y} s/d {tgl_akhir:%d.%m.%Y}")
+    ws.cell(row=3, column=4).alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells(start_row=4, start_column=4, end_row=4, end_column=col_paraf)
+    ws.cell(row=4, column=4, value=f"Unit : {unit_names}").font = Font(bold=True)
+    ws.cell(row=4, column=4).alignment = Alignment(horizontal='center')
+    
+    # Header
+    ws.merge_cells('B5:B6')
+    ws.cell(row=5, column=2, value='No').border = border
+    ws.cell(row=5, column=2).font = Font(bold=True)
+    ws.cell(row=5, column=2).alignment = Alignment(horizontal='center', vertical='center')
+    
+    ws.merge_cells('C5:C6')
+    ws.cell(row=5, column=3, value='Nama').border = border
+    ws.cell(row=5, column=3).font = Font(bold=True)
+    ws.cell(row=5, column=3).alignment = Alignment(horizontal='center', vertical='center')
+    
+    ws.merge_cells('D5:G5')
+    ws.cell(row=5, column=4, value='Tanpa Keterangan').border = border
+    ws.cell(row=5, column=4).font = Font(bold=True)
+    ws.cell(row=5, column=4).alignment = Alignment(horizontal='center')
+    
+    for col, val in {4: 'TLM\n(menit)', 5: 'PSW\n(menit)', 6: 'Sakit\n(Hr Kerja)', 7: 'Ketidakhadiran\n(Hr Kerja)'}.items():
+        c = ws.cell(row=6, column=col, value=val)
+        c.border = border; c.font = Font(bold=True)
+        c.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+    
+    ws.merge_cells('H5:J5')
+    ws.cell(row=5, column=8, value='Total').border = border
+    ws.cell(row=5, column=8).font = Font(bold=True)
+    ws.cell(row=5, column=8).alignment = Alignment(horizontal='center')
+    
+    for col, val in {8: 'Hr\nKerja', 9: 'Jam', 10: 'Menit'}.items():
+        c = ws.cell(row=6, column=col, value=val)
+        c.border = border; c.font = Font(bold=True)
+        c.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+    
+    # Lebar kolom
+    ws.column_dimensions['B'].width = 5
+    ws.column_dimensions['C'].width = 30
+    for c in ['D','E','F','G','H','I','J']:
+        ws.column_dimensions[c].width = 10
+    
+    # Isi data
+    for i, row_data in enumerate(hasil, 1):
+        for c in range(2, 11):
+            ws.cell(row=6+i, column=c).border = border
+        
+        ws.cell(row=6+i, column=2, value=i).alignment = Alignment(horizontal='center', vertical='top')
+        ws.cell(row=6+i, column=3, value=f"{row_data['nama']}\n{row_data['nip']}").alignment = Alignment(vertical='top', wrap_text=True)
+        ws.cell(row=6+i, column=4, value=row_data['tot_tlm_a'] or None).alignment = Alignment(horizontal='right')
+        ws.cell(row=6+i, column=5, value=row_data['tot_psw_a'] or None).alignment = Alignment(horizontal='right')
+        ws.cell(row=6+i, column=6, value=row_data['sakit_a'] or None).alignment = Alignment(horizontal='right')
+        ws.cell(row=6+i, column=7, value=row_data['tdk_masuk'] or None).alignment = Alignment(horizontal='right')
+        ws.cell(row=6+i, column=8, value=row_data['tot_hr'] or None).alignment = Alignment(horizontal='right')
+        ws.cell(row=6+i, column=9, value=row_data['tot_jam'] or None).alignment = Alignment(horizontal='right')
+        ws.cell(row=6+i, column=10, value=row_data['tot_menit'] or None).alignment = Alignment(horizontal='right')
+    
+    last_row = 6 + len(hasil)
+    ws.cell(row=last_row+2, column=3, value='Keterangan')
+    ws.cell(row=last_row+3, column=3, value='TLM : Terlambat Masuk')
+    ws.cell(row=last_row+4, column=3, value='PSW : Pulang Sebelum Waktu')
+    
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return send_file(buf, as_attachment=True,
+        download_name=f"Rekap_Pelanggaran_Disiplin_{tgl_awal:%Y%m%d}_{tgl_akhir:%Y%m%d}.xlsx",
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
 def laporan_rekap_uang_makan():
