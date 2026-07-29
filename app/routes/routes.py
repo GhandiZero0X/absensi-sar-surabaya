@@ -78,6 +78,7 @@ from app.controllers.dashboard_1DataAbsensiController import (
     cari_absensi_pegawai_manual,
     cari_absensi_pegawai_lembur_manual,
     api_trace_absensi as data_absensi_api_trace_absensi,
+    api_trace_tunjangan as data_absensi_api_trace_tunjangan,
 )
 from app.controllers.dashboard_3HomeController import (
     dashboard_kinerja,
@@ -590,6 +591,11 @@ def view_data_absensi_pegawai_lembur_manual():
 @login_required
 def view_data_absensi_trace_tunjangan():
     return data_absensi_trace_tunjangan()
+
+@main.route('/api/trace-tunjangan')
+@login_required
+def api_trace_tunjangan():
+    return data_absensi_api_trace_tunjangan()
 
 @main.route('/data-absensi/trace')
 @login_required

@@ -1,4 +1,4 @@
-<!-- pages/dashboard_1/Laporan Absensi Trace Tunjangan.html -->
+<!-- pages/dashboard_1/Data Absensi Trace Tunjangan.html -->
 {% extends "layout/baseDashboard1.html" %}
 
 {% block title %}- Data Absensi Detail Tunkin{% endblock %}
@@ -11,8 +11,7 @@
                 <h5 class="m-b-10">Data Absensi</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Data Absensi Trace Tunjangan.html">Detail Tunkin</a></li>
-                <li class="breadcrumb-item"></li>
+                <li class="breadcrumb-item"><a href="/data-absensi/trace-tunjangan">Detail Tunkin</a></li>
             </ul>
         </div>
     </div>
@@ -22,76 +21,108 @@
             <div class="card mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden; border: none;">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0"><i class="bi bi-search me-2"></i>Trace Tunjangan</h6>
-                    <a href="Data Absensi Trace Tunjangan.html" class="btn-close-custom">
-                        <i class="bi bi-x-lg"></i>
-                    </a>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
-                        <div
-                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-                            <label class="filter-label-wide">Periode</label>
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                        <!-- Unit Kerja (Multi-select) -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Unit Kerja</label>
+                            <div class="col-md-6">
+                                <div class="dropdown custom-multi-select">
+                                    <button
+                                        class="btn btn-sm w-100 text-start d-flex justify-content-between align-items-center dropdown-toggle-custom"
+                                        type="button" id="dropdownUnitKerja" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside" aria-expanded="false">
+                                        <span id="dropdownLabelUnit">Semua Unit Kerja</span>
+                                        <i class="bi bi-caret-down-fill small text-muted"></i>
+                                    </button>
+
+                                    <ul class="dropdown-menu w-100 py-1 shadow-sm custom-dropdown-scroll"
+                                        aria-labelledby="dropdownUnitKerja">
+                                        <li class="dropdown-item-custom bg-light border-bottom">
+                                            <div class="form-check m-0 d-flex align-items-center gap-2">
+                                                <input class="form-check-input" type="checkbox" id="checkAllUnit" checked>
+                                                <label class="form-check-label small fw-bold text-secondary w-100" for="checkAllUnit">Check All</label>
+                                            </div>
+                                        </li>
+                                        {% for unit in unit_kerja_list %}
+                                        <li class="dropdown-item-custom">
+                                            <div class="form-check m-0 d-flex align-items-center gap-2">
+                                                <input class="form-check-input check-unit-item" type="checkbox" 
+                                                    value="{{ unit.UNIT_KERJA_ID }}" id="unit{{ unit.UNIT_KERJA_ID }}" checked>
+                                                <label class="form-check-label small w-100" for="unit{{ unit.UNIT_KERJA_ID }}">
+                                                    {{ unit.NAMA_UNIT_KERJA }}
+                                                </label>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <small class="text-muted">*Kosongkan untuk semua unit kerja</small>
                             </div>
                         </div>
 
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
-                            <label class="filter-label-wide">Filter</label>
-
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Nama Unit Kerja</option>
-                                <option>Unit Kerja ID</option>
-                            </select>
-
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                        <!-- Periode -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
+                            <div class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                    <input type="date" id="tglAwal" class="form-control-sm border w-100 px-2" style="outline: none;">
+                                </div>
+                                <span class="mx-2 fw-bold text-muted small">s/d</span>
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                    <input type="date" id="tglAkhir" class="form-control-sm border w-100 px-2" style="outline: none;">
+                                </div>
                             </div>
-
-                            <span class="mx-md-2 fw-bold text-dan">Dan</span>
-
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Nama Unit Kerja</option>
-                                <option>Unit Kerja ID</option>
-                            </select>
-
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                            </div>
-
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
-                                <i class="bi bi-arrow-clockwise"></i> Refresh
-                            </button>
                         </div>
-                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
-                            ㅤ
-                        </p>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped text-center align-middle">
-                                <thead style="background:#EB6831;">
+
+                        <!-- Tombol Refresh -->
+                        <div class="row mb-3">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button id="btnRefresh" class="btn-refresh-custom">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Loading -->
+                        <div id="loadingIndicator" class="text-center mt-3" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Memuat data...</p>
+                        </div>
+
+                        <!-- Info total -->
+                        <div id="infoTotal" class="mt-2" style="display: none; font-size: 12px; color: #666;">
+                            Ditemukan: <strong id="totalRecords">0</strong> records
+                        </div>
+
+                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">ㅤ</p>
+
+                        <!-- Table -->
+                        <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                            <table class="table table-bordered table-striped text-center align-middle" id="tableTrace">
+                                <thead style="background:#EB6831; position: sticky; top: 0; z-index: 1;">
                                     <tr>
-                                        <th style="color:white; vertical-align: middle;">No</th>
-                                        <th style="color:white; vertical-align: middle;">Nama</th>
-                                        <th style="color:white; vertical-align: middle;">Status (KePeg)</th>
-                                        <th style="color:white; vertical-align: middle;">Jabatan TMT</th>
-                                        <th style="color:white; vertical-align: middle;">Kelas Jabatan</th>
-                                        <th style="color:white; vertical-align: middle;">Tunj.Kerja</th>
-                                        <th style="color:white; vertical-align: middle;">Persen Pot,</th>
-                                        <th style="color:white; vertical-align: middle;">Nilai Pot.</th>
-                                        <th style="color:white; vertical-align: middle;">Jumlah Dibayar</th>
+                                        <th style="color:white; min-width: 40px;">No</th>
+                                        <th style="color:white; min-width: 200px;">Nama</th>
+                                        <th style="color:white; min-width: 80px;">Status (KePeg)</th>
+                                        <th style="color:white; min-width: 150px;">Jabatan TMT</th>
+                                        <th style="color:white; min-width: 80px;">Kelas Jabatan</th>
+                                        <th style="color:white; min-width: 100px;">Tunj.Kerja</th>
+                                        <th style="color:white; min-width: 80px;">Persen Pot.</th>
+                                        <th style="color:white; min-width: 100px;">Nilai Pot.</th>
+                                        <th style="color:white; min-width: 100px;">Jumlah Dibayar</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tableBody">
                                     <tr>
-                                        <td colspan="8" style="vertical-align: middle; padding: 20px;">No
-                                            records to display.</td>
+                                        <td colspan="9" style="vertical-align: middle; padding: 40px; color: #999;">
+                                            <i class="bi bi-calendar3" style="font-size: 2rem;"></i><br>
+                                            Silahkan pilih periode dan klik <strong>Refresh</strong>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -102,8 +133,234 @@
         </div>
     </div>
 </div>
+
+<style>
+    .form-label-custom {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #333;
+        min-width: 100px;
+    }
+    
+    .dropdown-toggle-custom {
+        background: #ffffff !important;
+        border: 1px solid #dee2e6 !important;
+        height: 31px !important;
+        font-size: 0.85rem !important;
+        padding: 0 10px !important;
+        border-radius: 4px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        color: #333333 !important;
+    }
+    
+    .custom-dropdown-scroll {
+        max-height: 250px;
+        overflow-y: auto;
+    }
+    
+    .dropdown-item-custom {
+        padding: 6px 15px;
+        list-style: none;
+    }
+    
+    .dropdown-item-custom:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .btn-refresh-custom {
+        background-color: #EB6831;
+        color: white;
+        border: none;
+        padding: 6px 20px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-refresh-custom:hover {
+        background-color: #d95c28;
+    }
+    
+    .btn-refresh-custom:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .table td {
+        font-size: 12px;
+        vertical-align: middle;
+        padding: 6px 8px;
+    }
+    
+    .table th {
+        font-size: 11px;
+        padding: 8px 6px;
+    }
+</style>
 {% endblock %}
 
 {% block script %}
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Default: awal bulan ini sampai hari ini
+        const today = new Date();
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+        
+        document.getElementById('tglAwal').value = formatDate(firstDay);
+        document.getElementById('tglAkhir').value = formatDate(today);
+        
+        // Unit Kerja Dropdown
+        const checkAllUnit = document.getElementById('checkAllUnit');
+        const itemsUnit = document.querySelectorAll('.check-unit-item');
+        const labelUnit = document.getElementById('dropdownLabelUnit');
+        
+        function updateLabelUnit() {
+            const checkedItems = document.querySelectorAll('.check-unit-item:checked');
+            if (checkedItems.length === 0) {
+                labelUnit.innerText = "Semua Unit Kerja";
+            } else if (checkedItems.length === itemsUnit.length) {
+                labelUnit.innerText = "Semua Unit Terpilih";
+            } else {
+                const names = Array.from(checkedItems).map(item => {
+                    return item.parentElement.querySelector('label').textContent.trim();
+                });
+                labelUnit.innerText = names.join(", ");
+            }
+        }
+        
+        if (checkAllUnit) {
+            checkAllUnit.addEventListener("change", function() {
+                itemsUnit.forEach(item => { item.checked = checkAllUnit.checked; });
+                updateLabelUnit();
+            });
+        }
+        
+        itemsUnit.forEach(item => {
+            item.addEventListener("change", function() {
+                const checkedCount = document.querySelectorAll('.check-unit-item:checked').length;
+                if (checkAllUnit) checkAllUnit.checked = (checkedCount === itemsUnit.length);
+                updateLabelUnit();
+            });
+        });
+        
+        // Event listeners
+        document.getElementById('btnRefresh').addEventListener('click', fetchData);
+        document.getElementById('tglAwal').addEventListener('change', fetchData);
+        document.getElementById('tglAkhir').addEventListener('change', fetchData);
+    });
+    
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
+    function formatRupiah(amount) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(amount);
+    }
+    
+    function fetchData() {
+        const tglAwal = document.getElementById('tglAwal').value;
+        const tglAkhir = document.getElementById('tglAkhir').value;
+        
+        if (!tglAwal || !tglAkhir) {
+            alert('Periode tanggal harus diisi!');
+            return;
+        }
+        
+        // Ambil unit kerja yang dipilih
+        const unitChecked = document.querySelectorAll('.check-unit-item:checked');
+        
+        const btnRefresh = document.getElementById('btnRefresh');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const infoTotal = document.getElementById('infoTotal');
+        const tableBody = document.getElementById('tableBody');
+        
+        btnRefresh.disabled = true;
+        btnRefresh.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Loading...';
+        loadingIndicator.style.display = 'block';
+        
+        const params = new URLSearchParams({
+            tgl_awal: tglAwal,
+            tgl_akhir: tglAkhir
+        });
+        
+        // Tambahkan unit kerja jika ada yang dipilih
+        if (unitChecked.length > 0 && unitChecked.length < document.querySelectorAll('.check-unit-item').length) {
+            unitChecked.forEach(cb => params.append('unit_kerja[]', cb.value));
+        }
+        
+        fetch(`/api/trace-tunjangan?${params.toString()}`)
+            .then(res => res.json())
+            .then(result => {
+                loadingIndicator.style.display = 'none';
+                btnRefresh.disabled = false;
+                btnRefresh.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
+                
+                if (result.error) {
+                    tableBody.innerHTML = `<tr><td colspan="9" class="text-danger">Error: ${result.error}</td></tr>`;
+                    infoTotal.style.display = 'none';
+                    return;
+                }
+                
+                if (!result.data || result.data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="9" style="padding: 30px; color: #999;">Tidak ada data ditemukan.</td></tr>';
+                    infoTotal.style.display = 'none';
+                    return;
+                }
+                
+                document.getElementById('totalRecords').textContent = result.total;
+                infoTotal.style.display = 'block';
+                
+                let html = '';
+                result.data.forEach(row => {
+                    html += `
+                        <tr>
+                            <td>${row.no}</td>
+                            <td class="text-start">
+                                <strong>${escapeHtml(row.nama)}</strong><br>
+                                <small class="text-muted">${escapeHtml(row.nip)}</small>
+                            </td>
+                            <td>${escapeHtml(row.status_peg)}</td>
+                            <td>
+                                ${escapeHtml(row.jabatan)}<br>
+                                <small class="text-muted">TMT: ${row.tmt_jabatan}</small>
+                            </td>
+                            <td>${row.class_id}</td>
+                            <td class="text-end">${formatRupiah(row.tunjangan)}</td>
+                            <td class="text-end">${row.persen_pot}%</td>
+                            <td class="text-end">${formatRupiah(row.nilai_pot)}</td>
+                            <td class="text-end fw-bold">${formatRupiah(row.jumlah_dibayar)}</td>
+                        </tr>
+                    `;
+                });
+                
+                tableBody.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                loadingIndicator.style.display = 'none';
+                btnRefresh.disabled = false;
+                btnRefresh.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
+                tableBody.innerHTML = '<tr><td colspan="9" class="text-danger">Gagal mengambil data.</td></tr>';
+                infoTotal.style.display = 'none';
+            });
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
 {% endblock %}
