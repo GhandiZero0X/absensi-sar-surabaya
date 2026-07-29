@@ -1,4 +1,4 @@
-<!-- pages/dashboard_1/Laporan Absensi Pegawai Lembur Manual.html -->
+<!-- pages/dashboard_1/Data Absensi Pegawai Lembur Manual.html -->
 {% extends "layout/baseDashboard1.html" %}
 
 {% block title %}- Data Absensi Lembur Manual{% endblock %}
@@ -11,8 +11,7 @@
                 <h5 class="m-b-10">Data Absensi</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Data Absensi Pegawai Lembur Manual.html">Lembur Manual</a></li>
-                <li class="breadcrumb-item">Edit</li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_data_absensi_pegawai_lembur_manual') }}">Lembur Manual</a></li>
             </ul>
         </div>
     </div>
@@ -20,70 +19,25 @@
     <div class="main-content master-siaga">
         <div class="container-fluid">
             <div class="card mb-4 filter-card">
-                <div class="card-header-custom d-flex justify-content-between align-items-center"
-                    style="border-radius: 10px;">
-                    <h6 class="mb-0">
-                        <i class="ti ti-clock me-2"></i>Lembur Manual
-                    </h6>
-                    <div class="header-actions">
-                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
-                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
-                        </button>
-                        <div class="collapse d-md-flex align-items-center mb-0" id="headerIconsCollapse">
-                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari Absensi Pegawai Lembur Manual.html"
-                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
-                                    <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
-                                </a>
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-header-custom d-flex justify-content-between align-items-center" style="border-radius: 10px;">
+                    <h6 class="mb-0"><i class="ti ti-clock me-2"></i> Lembur Manual</h6>
+                    <a href="{{ url_for('main.view_cari_absensi_pegawai_lembur_manual') }}" class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                        <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                    </a>
                 </div>
 
-                <!-- Custom Style Tambahan untuk Menyamakan dengan Gambar -->
                 <style>
-                    .sub-panel-card {
-                        border: 1px solid #dee2e6;
-                        border-radius: 6px;
-                        overflow: hidden;
-                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-                        background: #fff;
-                    }
-
-                    .sub-panel-header {
-                        background-color: #e66b30;
-                        height: 35px;
-                        width: 100%;
-                    }
-
-                    .input-custom-style {
-                        border: 1px solid #999;
-                        border-radius: 2px;
-                        padding: 2px 5px;
-                        font-size: 0.85rem;
-                    }
-
-                    .table-custom-absensi th {
-                        background-color: #f1f3f5;
-                        color: #333;
-                        font-size: 0.85rem;
-                        font-weight: 600;
-                        text-align: center;
-                        border: 1px solid #dee2e6;
-                    }
-
-                    .table-custom-absensi td {
-                        font-size: 0.85rem;
-                        border: 1px solid #dee2e6;
-                    }
+                    .sub-panel-card { border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); background: #fff; }
+                    .sub-panel-header { background-color: #e66b30; height: 35px; width: 100%; }
+                    .input-custom-style { border: 1px solid #999; border-radius: 2px; padding: 2px 5px; font-size: 0.85rem; }
+                    .table-custom-absensi th { background-color: #f1f3f5; color: #333; font-size: 0.85rem; font-weight: 600; text-align: center; border: 1px solid #dee2e6; }
+                    .table-custom-absensi td { font-size: 0.85rem; border: 1px solid #dee2e6; }
+                    .btn-save { background-color: #e66b30; color: white; border: none; padding: 10px 40px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+                    .btn-save:hover { background-color: #d95c28; }
+                    .btn-save:disabled { background-color: #ccc; cursor: not-allowed; }
                 </style>
 
                 <div class="card-body">
-                    <!-- Bagian Atas: 2 Kolom Panel Filter -->
                     <div class="row g-4 mb-4">
                         <!-- Panel Kiri -->
                         <div class="col-md-6">
@@ -91,35 +45,36 @@
                                 <div class="sub-panel-header mb-3"></div>
                                 <div class="px-3">
                                     <div class="row align-items-center mb-2">
-                                        <label class="col-sm-3 col-form-label col-form-label-sm text-secondary">Unit
-                                            Kerja</label>
+                                        <label class="col-sm-3 col-form-label col-form-label-sm text-secondary">Unit Kerja</label>
                                         <div class="col-sm-9">
-                                            <select class="w-100 input-custom-style">
-                                                <option></option>
+                                            <select id="cmbUnit" class="w-100 input-custom-style">
+                                                <option value="">- Pilih Unit -</option>
+                                                {% for unit in unit_kerja_list %}
+                                                <option value="{{ unit.UNIT_KERJA_ID }}">{{ unit.NAMA_UNIT_KERJA }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label
-                                            class="col-sm-3 col-form-label col-form-label-sm text-secondary">Tanggal</label>
-                                        <div class="col-sm-9 d-flex align-items-center gap-1">
-                                            <input type="text" class="input-custom-style" style="width: 100px;">
-                                            <i class="bi bi-calendar3 text-dark"
-                                                style="font-size: 1.1rem; cursor: pointer;"></i>
+                                    <div class="row align-items-center mb-3">
+                                        <label class="col-sm-3 col-form-label col-form-label-sm text-secondary">Tanggal</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group input-group-sm" style="max-width: 200px;">
+                                                <input type="date" id="tglLembur" class="form-control-sm border w-100 px-2" style="outline: none;">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row align-items-center mb-3">
-                                        <label class="col-sm-3 col-form-label col-form-label-sm text-secondary">No
-                                            Surat</label>
+                                        <label class="col-sm-3 col-form-label col-form-label-sm text-secondary">No Surat</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="w-100 input-custom-style">
+                                            <input type="text" id="noSurat" class="w-100 input-custom-style" placeholder="Nomor surat...">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-3"></div>
                                         <div class="col-sm-9">
-                                            <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 py-0"
-                                                style="font-size: 0.75rem; background-color: blue; border: none;">Refresh</button>
+                                            <button type="button" id="btnInsertByUnit" class="btn btn-sm btn-primary rounded-pill px-3" style="font-size: 0.75rem; background-color: blue; border: none;">
+                                                Insert Peg By Unit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -131,47 +86,35 @@
                             <div class="sub-panel-card h-100 pb-3">
                                 <div class="sub-panel-header mb-3"></div>
                                 <div class="px-3">
-                                    <div class="row mb-2">
-                                        <div class="col-sm-3"></div>
-                                        <div class="col-sm-9">
-                                            <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 py-0"
-                                                style="font-size: 0.75rem; background-color: blue; border: none;">Insert
-                                                Peg By Unit</button>
-                                        </div>
-                                    </div>
                                     <div class="row align-items-center mb-2">
-                                        <label
-                                            class="col-sm-3 col-form-label col-form-label-sm text-secondary">Shift</label>
+                                        <label class="col-sm-3 col-form-label col-form-label-sm text-secondary">Shift</label>
                                         <div class="col-sm-9">
-                                            <select class="w-100 input-custom-style">
-                                                <option></option>
+                                            <select id="cmbShift" class="w-100 input-custom-style">
+                                                <option value="1">Shift 1</option>
+                                                <option value="2">Shift 2</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row align-items-center mb-2">
-                                        <label
-                                            class="col-sm-3 col-form-label col-form-label-sm text-secondary">Keterangan</label>
+                                        <label class="col-sm-3 col-form-label col-form-label-sm text-secondary">Keterangan</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="w-100 input-custom-style">
+                                            <input type="text" id="keterangan" class="w-100 input-custom-style" placeholder="Keterangan...">
                                         </div>
                                     </div>
                                     <div class="row align-items-center">
                                         <div class="col-sm-3">
-                                            <button type="button"
-                                                class="btn btn-sm text-white rounded-pill px-2 py-0 w-100"
-                                                style="font-size: 0.7rem; background-color: #e66b30; border: none;">Acak
-                                                Jam</button>
+                                            <button type="button" id="btnAcakJam" class="btn btn-sm text-white rounded-pill px-2 w-100" style="font-size: 0.7rem; background-color: #e66b30; border: none;">
+                                                Acak Jam
+                                            </button>
                                         </div>
                                         <div class="col-sm-9 d-flex gap-4 ps-3">
-                                            <div class="form-check d-flex align-items-center gap-1 min-height-0">
-                                                <input class="form-check-input mt-0" type="checkbox" id="checkIn"
-                                                    checked>
-                                                <label class="form-check-label small text-dark" for="checkIn">In</label>
+                                            <div class="form-check d-flex align-items-center gap-1">
+                                                <input class="form-check-input mt-0" type="checkbox" id="checkIn" checked>
+                                                <label class="form-check-label small" for="checkIn">In</label>
                                             </div>
-                                            <div class="form-check d-flex align-items-center gap-1 min-height-0">
-                                                <input class="form-check-input mt-0" type="checkbox" id="checkOut">
-                                                <label class="form-check-label small text-dark"
-                                                    for="checkOut">Out</label>
+                                            <div class="form-check d-flex align-items-center gap-1">
+                                                <input class="form-check-input mt-0" type="checkbox" id="checkOut" checked>
+                                                <label class="form-check-label small" for="checkOut">Out</label>
                                             </div>
                                         </div>
                                     </div>
@@ -180,59 +123,59 @@
                         </div>
                     </div>
 
-                    <!-- Bagian Tengah: Tabel Data -->
+                    <!-- Tabel -->
                     <div class="table-responsive mb-4" style="border: 1px solid #dee2e6; border-radius: 4px;">
-                        <table class="table table-sm table-custom-absensi mb-0">
+                        <table class="table table-sm table-custom-absensi mb-0" style="min-width: 1100px;">
                             <thead>
                                 <tr>
-                                    <th rowspan="2" style="width: 40px; vertical-align: middle;"><i
-                                            class="bi bi-check-circle-fill text-dark"></i></th>
-                                    <th rowspan="2" style="width: 50px; vertical-align: middle;">No</th>
-                                    <th rowspan="2" style="vertical-align: middle; text-align: left;" class="ps-3">Nama
-                                    </th>
+                                    <th rowspan="2" style="width:40px;"><input type="checkbox" id="checkAll"></th>
+                                    <th rowspan="2" style="width:50px;">No</th>
+                                    <th rowspan="2" style="text-align:left; min-width:200px;" class="ps-3">Nama</th>
                                     <th colspan="3">In</th>
                                     <th colspan="3">Out</th>
                                 </tr>
                                 <tr>
-                                    <th style="width: 80px;">Jam</th>
-                                    <th>Keterangan</th>
-                                    <th style="width: 80px;">Baku</th>
-                                    <th style="width: 80px;">Jam</th>
-                                    <th>Keterangan</th>
-                                    <th style="width: 80px;">Baku</th>
+                                    <th style="width:100px;">Jam</th>
+                                    <th style="min-width:120px;">Keterangan</th>
+                                    <th style="width:90px;">Baku</th>
+                                    <th style="width:100px;">Jam</th>
+                                    <th style="min-width:120px;">Keterangan</th>
+                                    <th style="width:90px;">Baku</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="9" class="text-start py-3 ps-3 text-secondary bg-white">
-                                        No records to display.
-                                    </td>
-                                </tr>
+                            <tbody id="tableBody">
+                                <tr><td colspan="9" class="text-center py-3">No records to display.</td></tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- Bagian Bawah: Insert Pegawai Panel -->
-                    <div class="sub-panel-card mb-2">
+                    <!-- Insert Pegawai Panel -->
+                    <div class="sub-panel-card mb-3">
                         <div class="sub-panel-header d-flex align-items-center px-3" style="height: 30px;">
                             <span class="text-white fw-semibold" style="font-size: 0.85rem;">Insert Pegawai</span>
                         </div>
                         <div class="p-3">
                             <div class="row align-items-center mb-3">
-                                <label class="col-sm-2 col-form-label col-form-label-sm text-dark fw-normal">Cari
-                                    Pegawai</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="w-100 input-custom-style" style="height: 26px;">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Cari Pegawai</label>
+                                <div class="col-sm-10 position-relative">
+                                    <input type="text" id="searchPegawai" class="w-100 input-custom-style" placeholder="Ketik nama pegawai..." style="height:26px;" autocomplete="off">
+                                    <div id="searchResults" class="list-group position-absolute w-100" style="z-index:1000; display:none; max-height:200px; overflow-y:auto;"></div>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="button" class="btn btn-sm btn-primary rounded-pill px-4 py-0"
-                                    style="font-size: 0.75rem; background-color: blue; border: none;">Insert Pegawai to
-                                    Table</button>
+                                <button type="button" id="btnInsertPegawai" class="btn btn-sm btn-primary rounded-pill px-4" style="font-size:0.75rem; background-color:blue; border:none;">
+                                    Insert Pegawai to Table
+                                </button>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Tombol Simpan -->
+                    <div class="text-center">
+                        <button type="button" id="btnSave" class="btn-save">
+                            <i class="bi bi-save me-2"></i> Simpan
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -241,5 +184,219 @@
 {% endblock %}
 
 {% block script %}
-
+<script>
+    let pegawaiTable = [];
+    
+    // Set default tanggal hari ini
+    document.getElementById('tglLembur').value = new Date().toISOString().split('T')[0];
+    
+    // Insert Peg By Unit
+    document.getElementById('btnInsertByUnit').addEventListener('click', function() {
+        const unitId = document.getElementById('cmbUnit').value;
+        const tgl = document.getElementById('tglLembur').value;
+        
+        if (!unitId || !tgl) { alert('Unit Kerja dan Tanggal harus diisi!'); return; }
+        
+        fetch(`/api/inject-lembur/pegawai?unit_kerja_id=${unitId}&tgl=${tgl}`)
+            .then(res => res.json())
+            .then(result => {
+                if (result.data) {
+                    result.data.forEach(peg => {
+                        if (!pegawaiTable.find(p => p.nip === peg.nip)) {
+                            pegawaiTable.push({...peg, jam_in:'', jam_out:'', ket_in:'', ket_out:'', jam_baku_in:'', jam_baku_out:''});
+                        }
+                    });
+                    renderTable();
+                }
+            });
+    });
+    
+    // Acak Jam
+    document.getElementById('btnAcakJam').addEventListener('click', function() {
+        const tgl = document.getElementById('tglLembur').value;
+        const shift = document.getElementById('cmbShift').value;
+        const acakIn = document.getElementById('checkIn').checked;
+        const acakOut = document.getElementById('checkOut').checked;
+        
+        if (!tgl || pegawaiTable.length === 0) { alert('Isi tanggal dan pegawai!'); return; }
+        
+        fetch('/api/inject-lembur/acak-jam', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({tgl, shift, pegawai: pegawaiTable, acak_in: acakIn, acak_out: acakOut})
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.data) {
+                result.data.forEach((peg, i) => {
+                    if (acakIn) pegawaiTable[i].jam_in = peg.jam_in;
+                    if (acakOut) pegawaiTable[i].jam_out = peg.jam_out;
+                    pegawaiTable[i].jam_baku_in = peg.jam_baku_in;
+                    pegawaiTable[i].jam_baku_out = peg.jam_baku_out;
+                });
+                renderTable();
+            }
+        });
+    });
+    
+    // Simpan
+    document.getElementById('btnSave').addEventListener('click', function() {
+        const tgl = document.getElementById('tglLembur').value;
+        const shift = document.getElementById('cmbShift').value;
+        const noSurat = document.getElementById('noSurat').value;
+        const ketDefault = document.getElementById('keterangan').value;
+        
+        const selected = [];
+        document.querySelectorAll('.check-item:checked').forEach(cb => {
+            const index = parseInt(cb.id.replace('check_', ''));
+            if (pegawaiTable[index]) {
+                const peg = {...pegawaiTable[index]};
+                if (!peg.ket_in) peg.ket_in = ketDefault;
+                if (!peg.ket_out) peg.ket_out = ketDefault;
+                selected.push(peg);
+            }
+        });
+        
+        if (!tgl || selected.length === 0) { 
+            alert('Pilih tanggal dan centang pegawai!'); 
+            return; 
+        }
+        
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+        
+        fetch('/api/inject-lembur/save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                tgl: tgl,
+                keterangan: ketDefault,
+                shift: shift,
+                no_surat: noSurat,
+                pegawai: selected
+            })
+        })
+        .then(res => res.json())
+        .then(result => {
+            alert(result.message || 'Berhasil!');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-save me-2"></i> Simpan';
+        })
+        .catch(err => {
+            alert('Gagal menyimpan!');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-save me-2"></i> Simpan';
+        });
+    });
+    
+    // Render Table
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        if (pegawaiTable.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9" class="text-center py-3">No records to display.</td></tr>';
+            return;
+        }
+        let html = '';
+        pegawaiTable.forEach((peg, i) => {
+            const ketIn = (peg.ket_in || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            const ketOut = (peg.ket_out || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            
+            html += `
+                <tr>
+                    <td class="text-center"><input type="checkbox" class="check-item" id="check_${i}"></td>
+                    <td class="text-center">${i+1}</td>
+                    <td class="ps-3">${peg.nama}<br><small class="text-muted">${peg.nip}</small></td>
+                    <td>
+                        <input type="time" class="form-control form-control-sm jam-input" 
+                            value="${peg.jam_in || ''}" 
+                            data-index="${i}" data-type="jam_in" 
+                            style="width:100px; min-width:100px;">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm ket-input" 
+                            value="${ketIn}" 
+                            data-index="${i}" data-type="ket_in" 
+                            placeholder="Ket In" style="min-width:110px;">
+                    </td>
+                    <td class="text-center"><small>${peg.jam_baku_in || ''}</small></td>
+                    <td>
+                        <input type="time" class="form-control form-control-sm jam-input" 
+                            value="${peg.jam_out || ''}" 
+                            data-index="${i}" data-type="jam_out" 
+                            style="width:100px; min-width:100px;">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm ket-input" 
+                            value="${ketOut}" 
+                            data-index="${i}" data-type="ket_out" 
+                            placeholder="Ket Out" style="min-width:110px;">
+                    </td>
+                    <td class="text-center"><small>${peg.jam_baku_out || ''}</small></td>
+                </tr>`;
+        });
+        tbody.innerHTML = html;
+        
+        tbody.querySelectorAll('.jam-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const index = parseInt(this.dataset.index);
+                const type = this.dataset.type;
+                if (pegawaiTable[index]) pegawaiTable[index][type] = this.value;
+            });
+        });
+        
+        tbody.querySelectorAll('.ket-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const index = parseInt(this.dataset.index);
+                const type = this.dataset.type;
+                if (pegawaiTable[index]) pegawaiTable[index][type] = this.value;
+            });
+        });
+        
+        document.getElementById('checkAll').addEventListener('change', function() {
+            document.querySelectorAll('.check-item').forEach(cb => cb.checked = this.checked);
+        });
+    }
+    
+    // Search Pegawai
+    let searchTimeout;
+    document.getElementById('searchPegawai').addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        const keyword = this.value.trim();
+        if (keyword.length < 2) {
+            document.getElementById('searchResults').style.display = 'none';
+            return;
+        }
+        searchTimeout = setTimeout(() => {
+            fetch(`/api/search_pegawai?keyword=${keyword}`)
+                .then(res => res.json())
+                .then(result => {
+                    const div = document.getElementById('searchResults');
+                    if (result.data?.length > 0) {
+                        div.innerHTML = result.data.map(p => 
+                            `<a href="#" class="list-group-item list-group-item-action py-1 px-2 small" onclick="event.preventDefault();addPegawai('${p.nip}','${p.nama}')">${p.nama} (${p.nip})</a>`
+                        ).join('');
+                        div.style.display = 'block';
+                    } else {
+                        div.style.display = 'none';
+                    }
+                });
+        }, 300);
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#searchPegawai') && !e.target.closest('#searchResults')) {
+            document.getElementById('searchResults').style.display = 'none';
+        }
+    });
+    
+    function addPegawai(nip, nama) {
+        if (!pegawaiTable.find(p => p.nip === nip)) {
+            pegawaiTable.push({nip, nama, gol:'', jam_in:'', jam_out:'', ket_in:'', ket_out:'', jam_baku_in:'', jam_baku_out:''});
+            renderTable();
+        }
+        document.getElementById('searchResults').style.display = 'none';
+        document.getElementById('searchPegawai').value = '';
+    }
+</script>
 {% endblock %}

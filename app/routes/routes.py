@@ -15,12 +15,8 @@ from app.controllers.dashboard_1MasterFileController import (
     toggle_pegawai_vip, save_jam_finger,
 )
 from app.controllers.dashboard_2DataSiagaController import (
-    data_siaga_absensi_kehadiran,
-    data_siaga_cetak_daftar_lembur_siaga,
-    data_siaga_cetak_rekap_siaga,
-    data_siaga_cetak_uang_siaga,
-    data_siaga_jadwal_ulang,
-    data_siaga_membuat_jadwal_piket_siaga,
+    data_siaga_absensi_kehadiran, data_siaga_cetak_daftar_lembur_siaga, data_siaga_cetak_rekap_siaga,
+    data_siaga_cetak_uang_siaga, data_siaga_jadwal_ulang, data_siaga_membuat_jadwal_piket_siaga,
 )
 from app.controllers.dashboard_2MasterDataController import (
     master_data_email_broadcast,
@@ -67,24 +63,16 @@ from app.controllers.dashboard_1LaporanRekapController import (
     search_pegawai_by_name,
 )
 from app.controllers.dashboard_1DataAbsensiController import (
-    data_absensi_non_finger,
-    data_absensi_normalisasi_finger,
-    data_absensi_pegawai_manual,
-    data_absensi_pegawai_lembur_manual,
-    data_absensi_trace_tunjangan,
-    data_absensi_trace,
-    cari_absensi_non_finger,
-    cari_absensi_normalisasi_finger,
-    cari_absensi_pegawai_manual,
-    cari_absensi_pegawai_lembur_manual,
-    api_trace_absensi as data_absensi_api_trace_absensi,
-    api_trace_tunjangan as data_absensi_api_trace_tunjangan,
-    api_inject_absensi_get_pegawai as data_absensi_api_inject_pegawai,
-    api_inject_absensi_acak_jam as data_absensi_api_acak_jam,
-    api_inject_absensi_save as data_absensi_api_save,
-    api_cari_absensi_manual as data_absensi_api_cari_manual,
-    api_cari_absensi_manual_delete as data_absensi_api_cari_delete,
-    api_cari_absensi_manual_update as data_absensi_api_cari_update,
+    data_absensi_non_finger, data_absensi_normalisasi_finger, data_absensi_pegawai_manual,
+    data_absensi_pegawai_lembur_manual, data_absensi_trace_tunjangan, data_absensi_trace, cari_absensi_non_finger,
+    cari_absensi_normalisasi_finger, cari_absensi_pegawai_manual, cari_absensi_pegawai_lembur_manual,
+    api_trace_absensi as data_absensi_api_trace_absensi, api_trace_tunjangan as data_absensi_api_trace_tunjangan,
+    api_inject_absensi_get_pegawai as data_absensi_api_inject_pegawai, api_inject_absensi_acak_jam as data_absensi_api_acak_jam,
+    api_inject_absensi_save as data_absensi_api_save, api_cari_absensi_manual as data_absensi_api_cari_manual,
+    api_cari_absensi_manual_delete as data_absensi_api_cari_delete, api_cari_absensi_manual_update as data_absensi_api_cari_update,
+    api_inject_lembur_get_pegawai as data_absensi_api_inject_lembur_pegawai, api_inject_lembur_acak_jam as data_absensi_api_inject_lembur_acak,
+    api_inject_lembur_save as data_absensi_api_inject_lembur_save, api_cari_lembur_manual as data_absensi_api_cari_lembur,
+    api_cari_lembur_manual_delete as data_absensi_api_cari_lembur_delete, api_cari_lembur_manual_update as data_absensi_api_cari_lembur_update,
 )
 from app.controllers.dashboard_3HomeController import (
     dashboard_kinerja,
@@ -663,6 +651,36 @@ def api_cari_absensi_manual_update():
 @login_required
 def view_cari_absensi_pegawai_lembur_manual():
     return cari_absensi_pegawai_lembur_manual()
+
+@main.route('/api/inject-lembur/pegawai')
+@login_required
+def api_inject_lembur_pegawai():
+    return data_absensi_api_inject_lembur_pegawai()
+
+@main.route('/api/inject-lembur/acak-jam', methods=['POST'])
+@login_required
+def api_inject_lembur_acak_jam():
+    return data_absensi_api_inject_lembur_acak()
+
+@main.route('/api/inject-lembur/save', methods=['POST'])
+@login_required
+def api_inject_lembur_save():
+    return data_absensi_api_inject_lembur_save()
+
+@main.route('/api/cari-lembur-manual')
+@login_required
+def api_cari_lembur_manual():
+    return data_absensi_api_cari_lembur()
+
+@main.route('/api/cari-lembur-manual/delete', methods=['POST'])
+@login_required
+def api_cari_lembur_manual_delete():
+    return data_absensi_api_cari_lembur_delete()
+
+@main.route('/api/cari-lembur-manual/update', methods=['POST'])
+@login_required
+def api_cari_lembur_manual_update():
+    return data_absensi_api_cari_lembur_update()
 
 # ============================
 # ---- Dashboard 2 Routes ----

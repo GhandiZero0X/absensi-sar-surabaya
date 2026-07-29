@@ -5,6 +5,7 @@ from collections import defaultdict
 from sqlalchemy import func, text
 from app import db
 from app.models.absensiModel import Absensi
+from app.models.lemburModel import Lembur
 from app.models.pegawaiModel import Pegawai
 from app.models.unitKerjaModel import MfUnitKerja
 from app.models.kalenderModel import MfKalender
@@ -288,10 +289,229 @@ def api_inject_absensi_save():
 
 
 def data_absensi_pegawai_lembur_manual():
-    """
-    Render halaman Data Absensi Pegawai Lembur Manual.
-    """
-    return render_template('pages/dashboard_1/Data Absensi Pegawai Lembur Manual.html')
+    """Render halaman Lembur Manual"""
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+    return render_template(
+        'pages/dashboard_1/Data Absensi Pegawai Lembur Manual.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def api_inject_lembur_get_pegawai():
+    """API: Ambil daftar pegawai by unit kerja (untuk lembur)"""
+    unit_kerja_id = request.args.get('unit_kerja_id', '')
+    tgl = request.args.get('tgl', '')
+    
+    if not unit_kerja_id or not tgl:
+        return jsonify({'error': 'Unit Kerja dan Tanggal harus diisi', 'data': []})
+    
+    try:
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d').date()
+        
+        subquery = (
+            db.session.query(DinasLuar.NIP)
+            .filter(
+                DinasLuar.TRANSAKSI.in_(['sakit', 'cuti']),
+                DinasLuar.TGL_AWAL_DINAS_LUAR <= tgl_date,
+                DinasLuar.TGL_AKHIR_DINAS_LUAR >= tgl_date
+            )
+        )
+        
+        pegawai_list = (
+            Pegawai.query
+            .filter(Pegawai.UNIT_KERJA_ID == int(unit_kerja_id))
+            .filter(Pegawai.IS_KELUAR == 'N')
+            .filter(~Pegawai.NIP.in_(subquery))
+            .order_by(Pegawai.NAMA)
+            .all()
+        )
+        
+        return jsonify({
+            'success': True,
+            'data': [{'nip': p.NIP, 'nama': p.NAMA, 'gol': p.GOL_ID or ''} for p in pegawai_list]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e), 'data': []})
+
+
+def api_inject_lembur_acak_jam():
+    """API: Acak jam lembur IN/OUT"""
+    try:
+        data = request.get_json()
+        tgl = data.get('tgl', '')
+        shift = data.get('shift', '1')
+        pegawai_list = data.get('pegawai', [])
+        acak_in = data.get('acak_in', True)
+        acak_out = data.get('acak_out', True)
+        
+        if not tgl or not pegawai_list:
+            return jsonify({'error': 'Data tidak lengkap'})
+        
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d')
+        
+        # Ambil jam baku
+        jam_kerja_list = (
+            MfJamKerja.query
+            .filter(MfJamKerja.TGL_MULAI_BERLAKU <= tgl_date)
+            .order_by(MfJamKerja.TGL_MULAI_BERLAKU.desc())
+            .all()
+        )
+        
+        if not jam_kerja_list:
+            return jsonify({'error': 'Jam kerja tidak ditemukan'})
+        
+        jam_kerja = jam_kerja_list[0]
+        
+        # Default jam lembur (pagi buta)
+        baku_in_str = '05:00'
+        baku_out_str = '10:30'
+        
+        if jam_kerja.STD_JAM_IN:
+            if isinstance(jam_kerja.STD_JAM_IN, datetime):
+                baku_in_str = jam_kerja.STD_JAM_IN.strftime('%H:%M')
+            else:
+                baku_in_str = str(jam_kerja.STD_JAM_IN)[:5]
+        
+        if jam_kerja.STD_JAM_OUT:
+            if isinstance(jam_kerja.STD_JAM_OUT, datetime):
+                baku_out_str = jam_kerja.STD_JAM_OUT.strftime('%H:%M')
+            else:
+                baku_out_str = str(jam_kerja.STD_JAM_OUT)[:5]
+        
+        baku_in_parts = baku_in_str.split(':')
+        jam_in_hour = int(baku_in_parts[0])
+        jam_in_min = int(baku_in_parts[1]) if len(baku_in_parts) > 1 else 0
+        
+        baku_out_parts = baku_out_str.split(':')
+        jam_out_hour = int(baku_out_parts[0])
+        jam_out_min = int(baku_out_parts[1]) if len(baku_out_parts) > 1 else 0
+        
+        result = []
+        for i, peg in enumerate(pegawai_list):
+            nama = peg.get('nama', '')
+            no = i + 1
+            
+            # Random menit
+            konstanta = 9
+            batas_max = 61
+            tambahan = (no + konstanta + ((len(nama) + no) * no)) % batas_max
+            if tambahan > batas_max:
+                tambahan = (tambahan % konstanta) + len(nama) + (no % 19)
+            if tambahan < 7:
+                jam_pulang_tambah = tambahan + len(nama)
+            else:
+                jam_pulang_tambah = tambahan - (no % 7)
+            
+            total_menit_in = jam_in_hour * 60 + jam_in_min - tambahan
+            if total_menit_in < 0:
+                total_menit_in = 0
+            jam_in_h = total_menit_in // 60
+            jam_in_m = total_menit_in % 60
+            
+            total_menit_out = jam_out_hour * 60 + jam_out_min + jam_pulang_tambah
+            jam_out_h = total_menit_out // 60
+            jam_out_m = total_menit_out % 60
+            
+            result.append({
+                'nip': peg.get('nip', ''),
+                'nama': nama,
+                'jam_in': f"{jam_in_h:02d}:{jam_in_m:02d}" if acak_in else '',
+                'jam_out': f"{jam_out_h:02d}:{jam_out_m:02d}" if acak_out else '',
+                'jam_baku_in': baku_in_str[:5],
+                'jam_baku_out': baku_out_str[:5],
+            })
+        
+        return jsonify({'success': True, 'data': result})
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+
+def api_inject_lembur_save():
+    """API: Simpan lembur manual ke tabel LEMBUR"""
+    try:
+        data = request.get_json()
+        tgl = data.get('tgl', '')
+        no_surat = data.get('no_surat', '')
+        keterangan = data.get('keterangan', '')
+        shift = data.get('shift', '1')
+        pegawai_list = data.get('pegawai', [])
+        
+        if not tgl or not pegawai_list:
+            return jsonify({'error': 'Tanggal dan pegawai harus diisi'})
+        
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d')
+        saved_count = 0
+        
+        for peg in pegawai_list:
+            nip = peg.get('nip', '')
+            jam_in = peg.get('jam_in', '')
+            jam_out = peg.get('jam_out', '')
+            jam_baku_in = peg.get('jam_baku_in', '')
+            jam_baku_out = peg.get('jam_baku_out', '')
+            ket = peg.get('ket_out', keterangan)
+            
+            if not jam_in and not jam_out:
+                continue
+            
+            # Cek existing di tabel LEMBUR
+            existing = Lembur.query.filter(
+                Lembur.NIP == nip,
+                db.func.date(Lembur.TGL_KERJA) == tgl_date.date()
+            ).first()
+            
+            tgl_jam_in = datetime.strptime(f"{tgl} {jam_in}", '%Y-%m-%d %H:%M') if jam_in else None
+            tgl_jam_out = datetime.strptime(f"{tgl} {jam_out}", '%Y-%m-%d %H:%M') if jam_out else None
+            tgl_jam_baku_in = datetime.strptime(f"{tgl} {jam_baku_in}", '%Y-%m-%d %H:%M') if jam_baku_in else None
+            tgl_jam_baku_out = datetime.strptime(f"{tgl} {jam_baku_out}", '%Y-%m-%d %H:%M') if jam_baku_out else None
+            
+            if existing:
+                # Update
+                if jam_in:
+                    existing.JAM_IN = tgl_jam_in
+                    existing.JAM_BAKU_IN = tgl_jam_baku_in
+                if jam_out:
+                    existing.JAM_OUT = tgl_jam_out
+                    existing.JAM_BAKU_OUT = tgl_jam_baku_out
+                existing.KETERANGAN = ket
+                existing.NO_SURAT = no_surat
+                existing.UPDATE_BY = 'admin'
+                existing.UPDATE_DATE = datetime.now()
+            else:
+                # Insert
+                lembur = Lembur(
+                    NIP=nip,
+                    TGL_KERJA=tgl_date,
+                    JAM_IN=tgl_jam_in,
+                    JAM_OUT=tgl_jam_out,
+                    JAM_BAKU_IN=tgl_jam_baku_in,
+                    JAM_BAKU_OUT=tgl_jam_baku_out,
+                    KETERANGAN=ket,
+                    NO_SURAT=no_surat,
+                    UPDATE_BY='admin',
+                    UPDATE_DATE=datetime.now()
+                )
+                db.session.add(lembur)
+            
+            saved_count += 1
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': f'{saved_count} data lembur berhasil disimpan',
+            'saved': saved_count
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
 
 
 def data_absensi_trace_tunjangan():
@@ -846,3 +1066,147 @@ def api_cari_absensi_manual_update():
 def cari_absensi_pegawai_lembur_manual():
     """Render halaman Cari Absensi Pegawai Lembur Manual."""
     return render_template('pages/dashboard_1/Cari Absensi Pegawai Lembur Manual.html')
+
+def api_cari_lembur_manual():
+    """
+    API Cari Lembur Manual - mencari data dari tabel LEMBUR
+    Join via NIP ke PEGAWAI
+    """
+    try:
+        tgl_awal_str = request.args.get('tgl_awal', '')
+        tgl_akhir_str = request.args.get('tgl_akhir', '')
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+        
+        # Query dari tabel LEMBUR join ke PEGAWAI via NIP
+        query = (
+            db.session.query(Lembur, Pegawai, MfUnitKerja)
+            .join(Pegawai, Lembur.NIP == Pegawai.NIP)
+            .join(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+        )
+        
+        # Filter periode
+        if tgl_awal_str and tgl_akhir_str:
+            tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+            tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d') + timedelta(days=1)
+            query = query.filter(
+                Lembur.TGL_KERJA >= tgl_awal,
+                Lembur.TGL_KERJA < tgl_akhir
+            )
+        
+        # Field mapping untuk filter tambahan
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama': Pegawai.NAMA,
+            'UnitKerjaName': MfUnitKerja.NAMA_UNIT_KERJA,
+            'Keterangan': Lembur.KETERANGAN,
+            'NoSurat': Lembur.NO_SURAT,
+        }
+        
+        if filter_field1 and filter_value1:
+            field = field_mapping.get(filter_field1)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value1}%'))
+        
+        if filter_field2 and filter_value2:
+            field = field_mapping.get(filter_field2)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value2}%'))
+        
+        # Order
+        query = query.order_by(Lembur.TGL_KERJA.desc(), Pegawai.NAMA)
+        results = query.all()
+        
+        # Format data
+        data = []
+        for i, (lembur, peg, unit) in enumerate(results, 1):
+            data.append({
+                'no': i,
+                'id': lembur.id,
+                'nama': peg.NAMA or '',
+                'nip': peg.NIP or '',
+                'tgl_kerja': lembur.TGL_KERJA.strftime('%d %b %Y') if lembur.TGL_KERJA else '',
+                'jam_in': lembur.JAM_IN.strftime('%H:%M') if lembur.JAM_IN else '-',
+                'jam_out': lembur.JAM_OUT.strftime('%H:%M') if lembur.JAM_OUT else '-',
+                'jam_baku_in': lembur.JAM_BAKU_IN.strftime('%H:%M') if lembur.JAM_BAKU_IN else '-',
+                'jam_baku_out': lembur.JAM_BAKU_OUT.strftime('%H:%M') if lembur.JAM_BAKU_OUT else '-',
+                'keterangan': lembur.KETERANGAN or '',
+                'no_surat': lembur.NO_SURAT or '',
+                'unit_kerja': unit.NAMA_UNIT_KERJA if unit else '-',
+                'update_by': lembur.UPDATE_BY or '',
+                'update_date': lembur.UPDATE_DATE.strftime('%d/%m/%Y %H:%M') if lembur.UPDATE_DATE else '',
+            })
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'total': len(data)
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
+
+
+def api_cari_lembur_manual_delete():
+    """API: Delete data lembur manual"""
+    try:
+        data = request.get_json()
+        lembur_id = data.get('id', '')
+        
+        if not lembur_id:
+            return jsonify({'error': 'ID tidak ditemukan'})
+        
+        result = Lembur.query.filter(Lembur.id == int(lembur_id)).delete()
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': f'{result} data berhasil dihapus'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)})
+
+
+def api_cari_lembur_manual_update():
+    """API: Update data lembur manual"""
+    try:
+        data = request.get_json()
+        lembur_id = data.get('id', '')
+        jam_in = data.get('jam_in', '')
+        jam_out = data.get('jam_out', '')
+        keterangan = data.get('keterangan', '')
+        no_surat = data.get('no_surat', '')
+        
+        if not lembur_id:
+            return jsonify({'error': 'ID tidak ditemukan'})
+        
+        lembur = Lembur.query.get(int(lembur_id))
+        if not lembur:
+            return jsonify({'error': 'Data tidak ditemukan'})
+        
+        if jam_in:
+            tgl = lembur.TGL_KERJA.strftime('%Y-%m-%d') if lembur.TGL_KERJA else datetime.now().strftime('%Y-%m-%d')
+            lembur.JAM_IN = datetime.strptime(f"{tgl} {jam_in}", '%Y-%m-%d %H:%M')
+        if jam_out:
+            tgl = lembur.TGL_KERJA.strftime('%Y-%m-%d') if lembur.TGL_KERJA else datetime.now().strftime('%Y-%m-%d')
+            lembur.JAM_OUT = datetime.strptime(f"{tgl} {jam_out}", '%Y-%m-%d %H:%M')
+        if keterangan:
+            lembur.KETERANGAN = keterangan
+        if no_surat:
+            lembur.NO_SURAT = no_surat
+        
+        lembur.UPDATE_BY = 'admin'
+        lembur.UPDATE_DATE = datetime.now()
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': 'Data berhasil diupdate'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)})
