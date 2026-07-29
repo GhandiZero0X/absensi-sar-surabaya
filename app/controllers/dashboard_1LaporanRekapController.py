@@ -854,10 +854,120 @@ def export_rekap_clock_exception():
 
 
 def laporan_rekap_ketidakhadiran_pegawai():
-    """
-    Render halaman Laporan Rekap Ketidakhadiran Pegawai.
-    """
-    return render_template('pages/dashboard_1/Laporan Rekap Ketidakhadiran Pegawai.html')
+    """Render halaman Laporan Rekap Ketidakhadiran Pegawai."""
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+    return render_template(
+        'pages/dashboard_1/Laporan Rekap Ketidakhadiran Pegawai.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def export_rekap_ketidakhadiran_pegawai():
+    """Export Rekap Sprin (DL, Sakit, Ijin, Cuti)."""
+    unit_list = request.form.getlist('unit_kerja[]')
+    jenis_list = request.form.getlist('jenis[]')
+    tgl_awal_str = request.form.get('tgl_awal')
+    tgl_akhir_str = request.form.get('tgl_akhir')
+    
+    if not unit_list or not tgl_awal_str or not tgl_akhir_str:
+        return {'error': 'Unit kosong atau format tanggal salah'}, 400
+    
+    try:
+        unit_ids = [int(u) for u in unit_list]
+    except ValueError:
+        return {'error': 'Unit Kerja ID harus berupa angka'}, 400
+    
+    tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+    tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d')
+    
+    # Query DinasLuar join Pegawai via NIP
+    query = (
+        db.session.query(DinasLuar, Pegawai, MfUnitKerja)
+        .join(Pegawai, DinasLuar.NIP == Pegawai.NIP)
+        .join(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+        .filter(DinasLuar.TGL_AWAL_DINAS_LUAR <= tgl_akhir)
+        .filter(DinasLuar.TGL_AKHIR_DINAS_LUAR >= tgl_awal)
+        .filter(Pegawai.UNIT_KERJA_ID.in_(unit_ids))
+    )
+    
+    if jenis_list:
+        query = query.filter(DinasLuar.TRANSAKSI.in_(jenis_list))
+    
+    rows = query.order_by(DinasLuar.TGL_AWAL_DINAS_LUAR, DinasLuar.TRANSAKSI, Pegawai.NAMA).all()
+    
+    if not rows:
+        return {'error': 'Data tidak ada'}, 400
+    
+    unit_names = ', '.join([u.NAMA_UNIT_KERJA for u in MfUnitKerja.query.filter(MfUnitKerja.UNIT_KERJA_ID.in_(unit_ids)).all()])
+    jenis_names = ', '.join(jenis_list) if jenis_list else 'Semua'
+    
+    # Build Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Rekap Sprin"
+    ws.sheet_properties.tabColor = "FF7B00"
+    
+    try:
+        img = XLImage('static/img/LogoSAR.png')
+        img.width, img.height = 50, 50
+        ws.add_image(img, 'A1')
+    except:
+        pass
+    
+    thin = Side(style='thin')
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+    
+    # Judul
+    ws.merge_cells('D2:F2')
+    ws.cell(row=2, column=4, value=f"Rekap {jenis_names}").font = Font(bold=True, size=12)
+    ws.cell(row=2, column=4).alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells('D3:F3')
+    ws.cell(row=3, column=4, value=f"Periode {tgl_awal:%d.%m.%Y} s/d {tgl_akhir:%d.%m.%Y}")
+    ws.cell(row=3, column=4).alignment = Alignment(horizontal='center')
+    
+    ws.merge_cells('D4:F4')
+    ws.cell(row=4, column=4, value=f"Unit : {unit_names}").font = Font(bold=True)
+    ws.cell(row=4, column=4).alignment = Alignment(horizontal='center')
+    
+    # Header
+    for col, val in {2: 'No', 3: 'Nama', 4: 'Tanggal', 5: 'Penempatan', 6: 'Keterangan'}.items():
+        c = ws.cell(row=5, column=col, value=val)
+        c.border = border; c.font = Font(bold=True)
+        c.alignment = Alignment(horizontal='center', vertical='center')
+    
+    ws.column_dimensions['B'].width = 5
+    ws.column_dimensions['C'].width = 25
+    ws.column_dimensions['D'].width = 14
+    ws.column_dimensions['E'].width = 22
+    ws.column_dimensions['F'].width = 26
+    
+    # Isi data
+    for i, (dl, peg, uk) in enumerate(rows, 1):
+        for c in range(2, 7):
+            ws.cell(row=5+i, column=c).border = border
+        
+        transaksi = dl.TRANSAKSI or ''
+        if transaksi.upper() == 'ALPA':
+            transaksi = 'Ijin'
+        
+        tgl_a = dl.TGL_AWAL_DINAS_LUAR.strftime('%d.%b.%Y') if dl.TGL_AWAL_DINAS_LUAR else ''
+        tgl_b = dl.TGL_AKHIR_DINAS_LUAR.strftime('%d.%b.%Y') if dl.TGL_AKHIR_DINAS_LUAR else ''
+        
+        ws.cell(row=5+i, column=2, value=i).alignment = Alignment(horizontal='center', vertical='top')
+        ws.cell(row=5+i, column=3, value=f"{peg.NIP}\n{peg.NAMA}").alignment = Alignment(vertical='top', wrap_text=True)
+        ws.cell(row=5+i, column=4, value=f"{tgl_a}\n{tgl_b}").alignment = Alignment(vertical='top', wrap_text=True)
+        ws.cell(row=5+i, column=5, value=dl.PENEMPATAN_DINAS_LUAR or '').alignment = Alignment(vertical='top', wrap_text=True)
+        ws.cell(row=5+i, column=6, value=f"({transaksi}) {dl.KETERANGAN_DINAS_LUAR or ''}").alignment = Alignment(vertical='top', wrap_text=True)
+    
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return send_file(buf, as_attachment=True,
+        download_name=f"Rekap_Ketidakhadiran_{tgl_awal:%Y%m%d}_{tgl_akhir:%Y%m%d}.xlsx",
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
 def laporan_rekap_pelanggaran_disiplin():
