@@ -16,8 +16,10 @@ from app.models.jabatanModel import MfJabatan
 from app.models.timeRecorderModel import TimeRecorder
 from app.models.jamKerjaModel import MfJamKerja
 from app.models.dinasLuarModel import DinasLuar
+from app.models.mediaInformasiModel import MediaInformasi
 import random
 
+_NORMALISASI_CACHE = {}
 
 def data_absensi_non_finger():
     """
@@ -430,6 +432,440 @@ def data_absensi_normalisasi_finger():
     Render halaman Data Absensi Normalisasi Absensi Finger.
     """
     return render_template('pages/dashboard_1/Data Absensi Normalisasi Absensi Finger.html')
+
+def api_normalisasi_get_fields():
+    """
+    API: daftar field yang bisa dipakai untuk filter (dropdown "- Pilih Field -").
+    Menggantikan dbMf.daMFFieldCari("EntryPeg") di VB.NET.
+    """
+    fields = [
+        {'field_id': 'NIP', 'field_name': 'NIP'},
+        {'field_id': 'Nama', 'field_name': 'Nama'},
+        {'field_id': 'UnitKerjaName', 'field_name': 'Unit Kerja'},
+    ]
+    return jsonify({'success': True, 'data': fields})
+
+
+def api_normalisasi_import_finger():
+    """
+    TAB 1 - View From Finger.
+    Ambil log mentah TimeRecorder pada rentang tanggal, join ke Pegawai & UnitKerja.
+    """
+    try:
+        tgl_awal_str = request.args.get('tgl_awal', '')
+        tgl_akhir_str = request.args.get('tgl_akhir', '')
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+
+        if not tgl_awal_str or not tgl_akhir_str:
+            return jsonify({'error': 'Tanggal periode kosong', 'data': []})
+
+        tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+        tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d') + timedelta(days=1)
+
+        query = (
+            db.session.query(TimeRecorder, Pegawai, MfUnitKerja)
+            .join(Pegawai, TimeRecorder.FINGER_ID == Pegawai.ABSENSI_ID)
+            .join(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+            .filter(TimeRecorder.WAKTU >= tgl_awal, TimeRecorder.WAKTU < tgl_akhir)
+        )
+
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama': Pegawai.NAMA,
+            'UnitKerjaName': MfUnitKerja.NAMA_UNIT_KERJA,
+        }
+        if filter_field1 and filter_value1:
+            f = field_mapping.get(filter_field1)
+            if f is not None:
+                query = query.filter(f.ilike(f'%{filter_value1}%'))
+        if filter_field2 and filter_value2:
+            f = field_mapping.get(filter_field2)
+            if f is not None:
+                query = query.filter(f.ilike(f'%{filter_value2}%'))
+
+        query = query.order_by(TimeRecorder.FINGER_ID, TimeRecorder.WAKTU)
+        results = query.all()
+
+        data = []
+        cache_rows = []
+        for i, (tr, peg, unit) in enumerate(results, 1):
+            gol_pangkat = f"{peg.GOL_ID or ''} - {peg.PANGKAT or ''}" if peg.PANGKAT else str(peg.GOL_ID or '')
+            row = {
+                'no': i,
+                'nip': peg.NIP,
+                'nama': peg.NAMA,
+                'gol': gol_pangkat,
+                'unit_kerja': unit.NAMA_UNIT_KERJA if unit else '',
+                'waktu': tr.WAKTU.strftime('%Y-%m-%d %H:%M:%S') if tr.WAKTU else '',
+                'status': tr.STATUS or '',
+                'transaksi': tr.TRANSAKSI or '',
+                'finger_id': tr.FINGER_ID,
+            }
+            data.append(row)
+            cache_rows.append(row)
+
+        # simpan ke cache utk dipakai tahap normalisasi
+        _NORMALISASI_CACHE['import'] = cache_rows
+
+        if not data:
+            return jsonify({'success': True, 'data': [], 'message': 'Data Log Finger Print Kosong'})
+
+        return jsonify({'success': True, 'data': data, 'total': len(data)})
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
+
+
+def api_normalisasi_process():
+    """
+    TAB 2 - Normalisasi.
+    Hitung TLM (terlambat) & PSW (pulang sebelum waktunya) per pegawai per hari,
+    berdasarkan data yang sudah diimport (tab 1) dan jam kerja standar (MfJamKerja).
+
+    NOTE: ini versi disederhanakan dari logic VB.NET asli (yang menangani shift 2 / siaga
+    / VIP secara sangat detail). Di sini hanya menangani 1 shift standar per hari.
+    """
+    try:
+        data = request.get_json()
+        default_tdk_check = data.get('default_tdk_check', 180)  # RNQtyIn di VB.NET
+        tgl_awal_str = data.get('tgl_awal', '')
+        tgl_akhir_str = data.get('tgl_akhir', '')
+
+        if not default_tdk_check:
+            return jsonify({'error': 'Nilai default TLM/PSW tdk check in/out kosong'})
+        if not tgl_awal_str or not tgl_akhir_str:
+            return jsonify({'error': 'Tanggal periode kosong'})
+
+        xdefault = float(default_tdk_check) + 1
+        tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+        tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d')
+
+        import_rows = _NORMALISASI_CACHE.get('import', [])
+        if not import_rows:
+            return jsonify({'error': 'Data Log Finger Print Kosong, silakan Impor dulu di tab View From Finger'})
+
+        # Kelompokkan log per (finger_id, tanggal)
+        grouped = defaultdict(list)
+        for r in import_rows:
+            tgl = r['waktu'][:10]
+            grouped[(r['finger_id'], tgl)].append(r)
+
+        # Ambil kalender & jam kerja & MfPot sekali saja
+        kalender_rows = MfKalender.query.filter(
+            MfKalender.TGL_KERJA.between(tgl_awal, tgl_akhir)
+        ).all()
+        kalender_map = {k.TGL_KERJA.strftime('%Y-%m-%d'): k.IS_LIBUR for k in kalender_rows}
+
+        jam_kerja_list = (
+            MfJamKerja.query
+            .filter(MfJamKerja.TGL_MULAI_BERLAKU <= tgl_akhir)
+            .order_by(MfJamKerja.TGL_MULAI_BERLAKU.desc())
+            .all()
+        )
+        potongan_list = MfPot.query.filter(
+            MfPot.KATEGORI.in_(['TLM', 'PSW']),
+            MfPot.TGL_MULAI <= tgl_akhir
+        ).all()
+
+        def get_jam_kerja(tgl_dt):
+            hari_jumat = tgl_dt.weekday() == 4
+            shift_filter = '2' if hari_jumat else '1'
+            for jk in jam_kerja_list:
+                if jk.SHIFT == shift_filter and jk.TGL_MULAI_BERLAKU <= tgl_dt:
+                    return jk
+            return jam_kerja_list[0] if jam_kerja_list else None
+
+        def hitung_potongan(total_tlm, total_psw, tgl_dt):
+            tk_tlm, pot_tlm, tk_psw, pot_psw = '', 0, '', 0
+            for pot in potongan_list:
+                if pot.TGL_MULAI and pot.TGL_MULAI > tgl_dt:
+                    continue
+                if pot.KATEGORI == 'TLM' and pot.RANGE_AWAL is not None and pot.RANGE_AWAL <= total_tlm <= pot.RANGE_AKHIR:
+                    tk_tlm, pot_tlm = pot.TINGKAT or '', pot.PERSEN_POT or 0
+                elif pot.KATEGORI == 'PSW' and pot.RANGE_AWAL is not None and pot.RANGE_AWAL <= total_psw <= pot.RANGE_AKHIR:
+                    tk_psw, pot_psw = pot.TINGKAT or '', pot.PERSEN_POT or 0
+            # fallback default tier kalau tidak ada di MfPot
+            if not tk_tlm and total_tlm > 0:
+                if total_tlm <= 30: tk_tlm, pot_tlm = 'TLM-1', 0.5
+                elif total_tlm <= 60: tk_tlm, pot_tlm = 'TLM-2', 1
+                elif total_tlm <= 90: tk_tlm, pot_tlm = 'TLM-3', 1.25
+                else: tk_tlm, pot_tlm = 'TLM-4', 1.5
+            if not tk_psw and total_psw < 0:
+                if total_psw >= -30: tk_psw, pot_psw = 'PSW-1', 0.5
+                elif total_psw >= -60: tk_psw, pot_psw = 'PSW-2', 1
+                elif total_psw >= -90: tk_psw, pot_psw = 'PSW-3', 1.25
+                else: tk_psw, pot_psw = 'PSW-4', 1.5
+            return tk_tlm, pot_tlm, tk_psw, pot_psw
+
+        result = []
+        no = 0
+        for (finger_id, tgl_str), logs in grouped.items():
+            tgl_dt = datetime.strptime(tgl_str, '%Y-%m-%d')
+            is_libur = kalender_map.get(tgl_str, 'N') == 'Y'
+            if kalender_map.get(tgl_str) is None and tgl_dt.weekday() >= 5:
+                is_libur = True
+
+            jk = get_jam_kerja(tgl_dt)
+            if not jk:
+                continue
+
+            baku_in_time = jk.STD_JAM_IN.time() if jk.STD_JAM_IN else None
+            baku_out_time = jk.STD_JAM_OUT.time() if jk.STD_JAM_OUT else None
+            baku_in = datetime.combine(tgl_dt, baku_in_time) if baku_in_time else tgl_dt
+            baku_out = datetime.combine(tgl_dt, baku_out_time) if baku_out_time else tgl_dt
+
+            logs_in = [l for l in logs if l['status'] == 'IN']
+            logs_out = [l for l in logs if l['status'] == 'OUT']
+
+            no += 1
+            row = {'no': no, 'finger_id': finger_id, 'nip': logs[0]['nip'], 'nama': logs[0]['nama'],
+                   'tgl_kerja': tgl_str, 'hari': tgl_dt.strftime('%A'),
+                   'jam_baku_in': baku_in.strftime('%H:%M'), 'jam_baku_out': baku_out.strftime('%H:%M'),
+                   'is_libur': 'LIBUR' if is_libur else 'TDKLIBUR'}
+
+            # ----- JAM IN -----
+            if logs_in:
+                jam_in_dt = datetime.strptime(logs_in[0]['waktu'], '%Y-%m-%d %H:%M:%S')
+                awal_tlm = (jam_in_dt - baku_in).total_seconds() / 60
+                row['jam_in'] = jam_in_dt.strftime('%H:%M:%S')
+                row['is_valid_in'] = True
+            else:
+                awal_tlm = xdefault
+                row['jam_in'] = '00:00:00'
+                row['is_valid_in'] = False
+
+            # ----- JAM OUT -----
+            if logs_out:
+                jam_out_dt = datetime.strptime(logs_out[-1]['waktu'], '%Y-%m-%d %H:%M:%S')
+                total_psw = (jam_out_dt - baku_out).total_seconds() / 60
+                row['jam_out'] = jam_out_dt.strftime('%H:%M:%S')
+                row['is_valid_out'] = True
+            else:
+                total_psw = -1 * xdefault
+                row['jam_out'] = '00:00:00'
+                row['is_valid_out'] = False
+
+            # ----- TOTAL TLM (dengan aturan penggantian TLM1) -----
+            penggantian_ok = (jk.PENGGANTIAN_TLM1 or 'Y').upper() != 'N'
+            if not is_libur and 0 < awal_tlm <= 30 and penggantian_ok:
+                total_tlm = awal_tlm - total_psw if total_psw > 0 else awal_tlm
+            else:
+                total_tlm = awal_tlm
+
+            tk_tlm, pot_tlm, tk_psw, pot_psw = ('', 0, '', 0) if is_libur else hitung_potongan(total_tlm, total_psw, tgl_dt)
+
+            row.update({
+                'awal_tlm': round(awal_tlm, 2),
+                'total_tlm': round(total_tlm, 2),
+                'tingkat_tlm': tk_tlm,
+                'persen_pot_tlm': pot_tlm,
+                'total_psw': round(total_psw, 2),
+                'tingkat_psw': tk_psw,
+                'persen_pot_psw': pot_psw,
+            })
+            result.append(row)
+
+        result.sort(key=lambda r: (r['finger_id'], r['tgl_kerja']))
+        for i, r in enumerate(result, 1):
+            r['no'] = i
+
+        _NORMALISASI_CACHE['normal'] = result
+
+        return jsonify({'success': True, 'data': result, 'total': len(result)})
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+
+def api_normalisasi_export():
+    """
+    TAB 2 - tombol EXPORT.
+    Simpan hasil normalisasi (di cache) ke tabel ABSENSI (insert atau update).
+    """
+    try:
+        rows = _NORMALISASI_CACHE.get('normal', [])
+        if not rows:
+            return jsonify({'error': 'Tidak ada data hasil normalisasi. Jalankan Normalisasi dulu.'})
+
+        saved = 0
+        for r in rows:
+            tgl_kerja = datetime.strptime(r['tgl_kerja'], '%Y-%m-%d')
+            tgl_jam_in = datetime.strptime(f"{r['tgl_kerja']} {r['jam_in']}", '%Y-%m-%d %H:%M:%S')
+            tgl_jam_out = datetime.strptime(f"{r['tgl_kerja']} {r['jam_out']}", '%Y-%m-%d %H:%M:%S')
+            tgl_jam_baku_in = datetime.strptime(f"{r['tgl_kerja']} {r['jam_baku_in']}", '%Y-%m-%d %H:%M')
+            tgl_jam_baku_out = datetime.strptime(f"{r['tgl_kerja']} {r['jam_baku_out']}", '%Y-%m-%d %H:%M')
+
+            existing = Absensi.query.filter(
+                Absensi.FINGER_ID == r['finger_id'],
+                db.func.date(Absensi.TGL_KERJA) == tgl_kerja.date()
+            ).first()
+
+            if existing:
+                existing.TGL_JAM_IN = tgl_jam_in
+                existing.TGL_JAM_OUT = tgl_jam_out
+                existing.TRANSAKSI_IN = 'LogFP'
+                existing.TRANSAKSI_OUT = 'LogFP'
+                existing.TINGKAT_TLM = r['tingkat_tlm']
+                existing.TOTAL_TLM = r['total_tlm']
+                existing.PERSEN_POT_TLM = r['persen_pot_tlm']
+                existing.TINGKAT_PSW = r['tingkat_psw']
+                existing.TOTAL_PSW = r['total_psw']
+                existing.PERSEN_POT_PSW = r['persen_pot_psw']
+                existing.AWAL_TLM = r['awal_tlm']
+                existing.IS_INVALID = 'Y' if r['is_valid_in'] else 'N'
+                existing.IS_OUTVALID = 'Y' if r['is_valid_out'] else 'N'
+                existing.TGL_JAM_BAKU_IN = tgl_jam_baku_in
+                existing.TGL_JAM_BAKU_OUT = tgl_jam_baku_out
+                existing.UPDATE_IN_DATE = datetime.now()
+                existing.UPDATE_OUT_DATE = datetime.now()
+            else:
+                absensi = Absensi(
+                    FINGER_ID=r['finger_id'],
+                    NIP=r['nip'],
+                    TGL_KERJA=tgl_kerja,
+                    TGL_JAM_IN=tgl_jam_in,
+                    TGL_JAM_OUT=tgl_jam_out,
+                    TRANSAKSI_IN='LogFP',
+                    TRANSAKSI_OUT='LogFP',
+                    TINGKAT_TLM=r['tingkat_tlm'],
+                    TOTAL_TLM=r['total_tlm'],
+                    PERSEN_POT_TLM=r['persen_pot_tlm'],
+                    TINGKAT_PSW=r['tingkat_psw'],
+                    TOTAL_PSW=r['total_psw'],
+                    PERSEN_POT_PSW=r['persen_pot_psw'],
+                    AWAL_TLM=r['awal_tlm'],
+                    IS_INVALID='Y' if r['is_valid_in'] else 'N',
+                    IS_OUTVALID='Y' if r['is_valid_out'] else 'N',
+                    TGL_JAM_BAKU_IN=tgl_jam_baku_in,
+                    TGL_JAM_BAKU_OUT=tgl_jam_baku_out,
+                    UPDATE_IN_DATE=datetime.now(),
+                    UPDATE_OUT_DATE=datetime.now(),
+                )
+                db.session.add(absensi)
+            saved += 1
+
+        db.session.commit()
+        return jsonify({'success': True, 'message': f'Export Sukses ({saved} data)'})
+
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+
+def api_normalisasi_absensi_view():
+    """
+    TAB 3 - View Data Absensi (Hasil Export). Tombol Refresh.
+    """
+    try:
+        tgl_awal_str = request.args.get('tgl_awal', '')
+        tgl_akhir_str = request.args.get('tgl_akhir', '')
+
+        if not tgl_awal_str or not tgl_akhir_str:
+            return jsonify({'error': 'Tanggal periode kosong', 'data': []})
+
+        tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+        tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d') + timedelta(days=1)
+
+        query = (
+            db.session.query(Absensi, Pegawai)
+            .outerjoin(Pegawai, Absensi.NIP == Pegawai.NIP)
+            .filter(Absensi.TGL_KERJA >= tgl_awal, Absensi.TGL_KERJA < tgl_akhir)
+            .order_by(Absensi.FINGER_ID, Absensi.TGL_KERJA)
+        )
+        results = query.all()
+
+        data = []
+        for i, (a, peg) in enumerate(results, 1):
+            data.append({
+                'no': i,
+                'nama': peg.NAMA if peg else '',
+                'finger_id': a.FINGER_ID,
+                'tgl_kerja': a.TGL_KERJA.strftime('%d %b %Y') if a.TGL_KERJA else '',
+                'hari': a.TGL_KERJA.strftime('%A') if a.TGL_KERJA else '',
+                'jam_baku_in': a.TGL_JAM_BAKU_IN.strftime('%H:%M') if a.TGL_JAM_BAKU_IN else '',
+                'jam_baku_out': a.TGL_JAM_BAKU_OUT.strftime('%H:%M') if a.TGL_JAM_BAKU_OUT else '',
+                'jam_in': a.TGL_JAM_IN.strftime('%H:%M') if a.TGL_JAM_IN else '',
+                'jam_out': a.TGL_JAM_OUT.strftime('%H:%M') if a.TGL_JAM_OUT else '',
+                'awal_tlm': a.AWAL_TLM,
+                'total_tlm': a.TOTAL_TLM,
+                'tingkat_tlm': a.TINGKAT_TLM,
+                'persen_pot_tlm': a.PERSEN_POT_TLM,
+                'total_psw': a.TOTAL_PSW,
+                'tingkat_psw': a.TINGKAT_PSW,
+                'persen_pot_psw': a.PERSEN_POT_PSW,
+                'transaksi_in': a.TRANSAKSI_IN,
+                'transaksi_out': a.TRANSAKSI_OUT,
+            })
+
+        return jsonify({'success': True, 'data': data, 'total': len(data)})
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
+
+
+def api_closing_get():
+    """TAB 4 - ambil tanggal closing absensi saat ini."""
+    try:
+        row = MediaInformasi.query.filter(
+            MediaInformasi.TRX == 'closingabsensi'
+        ).order_by(MediaInformasi.PUBLISH_DATE_START.desc()).first()
+
+        return jsonify({
+            'success': True,
+            'data': row.to_dict() if row else None
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+
+def api_closing_save():
+    """TAB 4 - simpan / update tanggal closing absensi."""
+    try:
+        data = request.get_json()
+        tgl_str = data.get('tgl_closing', '')
+        updated_by = data.get('updated_by', 'admin')
+
+        if not tgl_str:
+            return jsonify({'error': 'Tanggal Closing Kosong'})
+
+        tgl_closing = datetime.strptime(tgl_str, '%Y-%m-%d').date()
+
+        row = MediaInformasi.query.filter(
+            MediaInformasi.TRX == 'closingabsensi'
+        ).order_by(MediaInformasi.PUBLISH_DATE_START.desc()).first()
+
+        if row:
+            row.PUBLISH_DATE_START = tgl_closing
+            row.UPDATE_BY = updated_by
+            row.UPDATE_DATE = datetime.now()
+            msg = 'Update Sukses'
+        else:
+            row = MediaInformasi(
+                PUBLISH_DATE_START=tgl_closing,
+                TRX='closingabsensi',
+                UPDATE_BY=updated_by,
+                UPDATE_DATE=datetime.now()
+            )
+            db.session.add(row)
+            msg = 'Insert Sukses'
+
+        db.session.commit()
+        return jsonify({'success': True, 'message': msg})
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)})
 
 
 def data_absensi_pegawai_manual():
@@ -1382,6 +1818,96 @@ def api_cari_absensi_non_finger():
 def cari_absensi_normalisasi_finger():
     """Render halaman Cari Absensi Normalisasi Absensi Finger."""
     return render_template('pages/dashboard_1/Cari Absensi Normalisasi Absensi Finger.html')
+
+def api_cari_absensi_normalisasi_finger():
+    """
+    API Cari Absensi Normalisasi Finger - mencari data TimeRecorder
+    dengan status IN/OUT (semua data, tidak hanya inject manual)
+    """
+    try:
+        tgl_awal_str = request.args.get('tgl_awal', '')
+        tgl_akhir_str = request.args.get('tgl_akhir', '')
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+        
+        # Query dari TimeRecorder join ke Pegawai via NIP (semua mesin)
+        query = (
+            db.session.query(TimeRecorder, Pegawai, MfUnitKerja)
+            .outerjoin(Pegawai, TimeRecorder.KET_INJECT == Pegawai.NIP)
+            .outerjoin(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+            .filter(TimeRecorder.MESIN == '999')
+            .filter(TimeRecorder.STATUS.in_(['IN', 'OUT']))
+        )
+        
+        # Filter periode
+        if tgl_awal_str and tgl_akhir_str:
+            tgl_awal = datetime.strptime(tgl_awal_str, '%Y-%m-%d')
+            tgl_akhir = datetime.strptime(tgl_akhir_str, '%Y-%m-%d') + timedelta(days=1)
+            query = query.filter(
+                TimeRecorder.WAKTU >= tgl_awal,
+                TimeRecorder.WAKTU < tgl_akhir
+            )
+        
+        # Field mapping untuk filter tambahan
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama': Pegawai.NAMA,
+            'UnitKerjaName': MfUnitKerja.NAMA_UNIT_KERJA,
+            'Status': TimeRecorder.STATUS,
+            'FingerID': TimeRecorder.FINGER_ID,
+            'Transaksi': TimeRecorder.TRANSAKSI,
+        }
+        
+        if filter_field1 and filter_value1:
+            field = field_mapping.get(filter_field1)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value1}%'))
+        
+        if filter_field2 and filter_value2:
+            field = field_mapping.get(filter_field2)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value2}%'))
+        
+        # Order
+        query = query.order_by(TimeRecorder.WAKTU.desc())
+        results = query.all()
+        
+        # Format data
+        data = []
+        for i, (tr, peg, unit) in enumerate(results, 1):
+            nama = peg.NAMA if peg else '-'
+            nip = peg.NIP if peg else (tr.KET_INJECT or str(tr.FINGER_ID))
+            
+            data.append({
+                'no': i,
+                'nama': nama,
+                'nip': nip,
+                'finger_id': tr.FINGER_ID or '',
+                'tanggal': tr.WAKTU.strftime('%d %b %Y') if tr.WAKTU else '',
+                'jam': tr.WAKTU.strftime('%H:%M:%S') if tr.WAKTU else '',
+                'waktu_raw': tr.WAKTU.strftime('%Y-%m-%d %H:%M:%S') if tr.WAKTU else '',
+                'status': tr.STATUS or '',
+                'transaksi': tr.TRANSAKSI or tr.KET or '',
+                'mesin': tr.MESIN or '',
+                'unit_kerja': unit.NAMA_UNIT_KERJA if unit else '-',
+                'update_by': tr.UPDATE_IN_BY or '',
+                'update_date': tr.UPDATE_DATE.strftime('%d/%m/%Y %H:%M') if tr.UPDATE_DATE else '',
+                'ket_inject': tr.KET_INJECT or '',
+                'ref_inject': tr.REF_INJECT or '',
+            })
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'total': len(data)
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
 
 
 def cari_absensi_pegawai_manual():

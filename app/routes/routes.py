@@ -79,6 +79,14 @@ from app.controllers.dashboard_1DataAbsensiController import (
     api_absensi_non_finger_delete as data_absensi_api_non_finger_delete,
     api_search_pegawai_non_finger as data_absensi_api_search_pegawai,
     api_cari_absensi_non_finger as data_absensi_api_cari_non_finger,
+    api_normalisasi_get_fields as data_absensi_api_normalisasi_fields,
+    api_normalisasi_import_finger as data_absensi_api_normalisasi_import,
+    api_normalisasi_process as data_absensi_api_normalisasi_process,
+    api_normalisasi_export as data_absensi_api_normalisasi_export,
+    api_normalisasi_absensi_view as data_absensi_api_normalisasi_absensi_view,
+    api_closing_get as data_absensi_api_closing_get,
+    api_closing_save as data_absensi_api_closing_save,
+    api_cari_absensi_normalisasi_finger as data_absensi_api_cari_normalisasi_finger,
 )
 from app.controllers.dashboard_3HomeController import (
     dashboard_kinerja,
@@ -602,6 +610,41 @@ def api_absensi_non_finger_search_pegawai():
 def view_data_absensi_normalisasi_finger():
     return data_absensi_normalisasi_finger()
 
+@main.route('/api/normalisasi/fields', methods=['GET'])
+@login_required
+def api_normalisasi_fields():
+    return data_absensi_api_normalisasi_fields()
+
+@main.route('/api/normalisasi/import-finger', methods=['GET'])
+@login_required
+def api_normalisasi_import_finger():
+    return data_absensi_api_normalisasi_import()
+
+@main.route('/api/normalisasi/process', methods=['POST'])
+@login_required
+def api_normalisasi_process():
+    return data_absensi_api_normalisasi_process()
+
+@main.route('/api/normalisasi/export', methods=['POST'])
+@login_required
+def api_normalisasi_export():
+    return data_absensi_api_normalisasi_export()
+
+@main.route('/api/normalisasi/absensi-view', methods=['GET'])
+@login_required
+def api_normalisasi_absensi_view():
+    return data_absensi_api_normalisasi_absensi_view()
+
+@main.route('/api/normalisasi/closing', methods=['GET'])
+@login_required
+def api_normalisasi_closing_get():
+    return data_absensi_api_closing_get()
+
+@main.route('/api/normalisasi/closing', methods=['POST'])
+@login_required
+def api_normalisasi_closing_save():
+    return data_absensi_api_closing_save()
+
 @main.route('/data-absensi/pegawai-manual')
 @login_required
 def view_data_absensi_pegawai_manual():
@@ -662,6 +705,11 @@ def api_cari_absensi_non_finger():
 @login_required
 def view_cari_absensi_normalisasi_finger():
     return cari_absensi_normalisasi_finger()
+
+@main.route('/api/cari-absensi-normalisasi-finger')
+@login_required
+def api_cari_absensi_normalisasi_finger():
+    return data_absensi_api_cari_normalisasi_finger()
 
 @main.route('/data-absensi/cari/pegawai-manual')
 @login_required
