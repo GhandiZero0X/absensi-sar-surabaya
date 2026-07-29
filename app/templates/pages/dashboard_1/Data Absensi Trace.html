@@ -1,4 +1,4 @@
-<!-- pages/dashboard_1/Laporan Absensi Trace Tunjangan.html -->
+<!-- pages/dashboard_1/Data Absensi Trace.html -->
 {% extends "layout/baseDashboard1.html" %}
 
 {% block title %}- Data Detail Absensi{% endblock %}
@@ -11,8 +11,8 @@
                 <h5 class="m-b-10">Data Absensi</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Data Absensi Trace.html">Detail Absensi</a></li>
-                <li class="breadcrumb-item"></li>
+                <li class="breadcrumb-item"><a href="/data-absensi/trace">Detail Absensi</a></li>
+                <li class="breadcrumb-item">Trace</li>
             </ul>
         </div>
     </div>
@@ -22,81 +22,106 @@
             <div class="card mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden; border: none;">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0"><i class="bi bi-search me-2"></i>Trace Absensi</h6>
-                    <a href="Data Absensi Trace.html" class="btn-close-custom">
-                        <i class="bi bi-x-lg"></i>
-                    </a>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
-                        <div
-                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-                            <label class="filter-label-wide">Periode</label>
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                        <div class="row align-items-center mb-3">
+                        <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
+                            <div class="col-md-9 d-flex align-items-center gap-2 flex-wrap flex-md-nowrap">
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                    <input type="date" id="tglAwal" class="form-control-sm border w-100 px-2" style="outline: none;">
+                                </div>
+                                <span class="mx-2 fw-bold text-muted small">s/d</span>
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                        <input type="date" id="tglAkhir" class="form-control-sm border w-100 px-2" style="outline: none;">
+                                </div>
                             </div>
                         </div>
 
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                        <!-- Filter -->
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
                             <label class="filter-label-wide">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Nama Unit Kerja</option>
-                                <option>Unit Kerja ID</option>
+                            <select id="filterField1" class="form-select-sm border custom-select" style="width: 150px;">
+                                <option value="">- Pilih Field -</option>
+                                <option value="FingerID">Finger ID</option>
+                                <option value="NIP">NIP</option>
+                                <option value="Nama">Nama</option>
+                                <option value="UnitKerjaName">Unit Kerja</option>
+                                <option value="TransaksiIn">Transaksi In</option>
+                                <option value="TransaksiOut">Transaksi Out</option>
+                                <option value="TingkatTLM">Tingkat TLM</option>
+                                <option value="TingkatPSW">Tingkat PSW</option>
                             </select>
 
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                            </div>
+                            <input type="text" id="filterValue1" class="form-control-sm border" style="width: 180px;" placeholder="Nilai filter...">
 
-                            <span class="mx-md-2 fw-bold text-dan">Dan</span>
+                            <span class="mx-md-2 fw-bold">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                                <option>Nama Unit Kerja</option>
-                                <option>Unit Kerja ID</option>
+                            <select id="filterField2" class="form-select-sm border custom-select" style="width: 150px;">
+                                <option value="">- Pilih Field -</option>
+                                <option value="FingerID">Finger ID</option>
+                                <option value="NIP">NIP</option>
+                                <option value="Nama">Nama</option>
+                                <option value="UnitKerjaName">Unit Kerja</option>
+                                <option value="TransaksiIn">Transaksi In</option>
+                                <option value="TransaksiOut">Transaksi Out</option>
+                                <option value="TingkatTLM">Tingkat TLM</option>
+                                <option value="TingkatPSW">Tingkat PSW</option>
                             </select>
 
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                            </div>
+                            <input type="text" id="filterValue2" class="form-control-sm border" style="width: 180px;" placeholder="Nilai filter...">
 
-                            <button class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button id="btnRefresh" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
-                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">
-                            ㅤ
-                        </p>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped text-center align-middle">
-                                <thead style="background:#EB6831;">
+
+                        <!-- Loading indicator -->
+                        <div id="loadingIndicator" class="text-center mt-3" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Memuat data...</p>
+                        </div>
+
+                        <!-- Info total -->
+                        <div id="infoTotal" class="mt-2" style="display: none; font-size: 12px; color: #666;">
+                            Ditemukan: <strong id="totalRecords">0</strong> records
+                        </div>
+
+                        <p class="mb-1 fw-semibold text-dark" style="font-size: 12px;">ㅤ</p>
+
+                        <!-- Table -->
+                        <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                            <table class="table table-bordered table-striped text-center align-middle" id="tableTrace">
+                                <thead style="background:#EB6831; position: sticky; top: 0; z-index: 1;">
                                     <tr>
-                                        <th style="color:white; vertical-align: middle;">No</th>
-                                        <th style="color:white; vertical-align: middle;">Nama</th>
-                                        <th style="color:white; vertical-align: middle;">Baku(IN)</th>
-                                        <th style="color:white; vertical-align: middle;">Baku(OUT)</th>
-                                        <th style="color:white; vertical-align: middle;">IN</th>
-                                        <th style="color:white; vertical-align: middle;">OUT</th>
-                                        <th style="color:white; vertical-align: middle;">Awal TLM</th>
-                                        <th style="color:white; vertical-align: middle;">Total TLM</th>
-                                        <th style="color:white; vertical-align: middle;">TK TLM</th>
-                                        <th style="color:white; vertical-align: middle;">Pot TLM(%)</th>
-                                        <th style="color:white; vertical-align: middle;">Total PSW</th>
-                                        <th style="color:white; vertical-align: middle;">TK PSW</th>
-                                        <th style="color:white; vertical-align: middle;">Pot PSW</th>
-                                        <th style="color:white; vertical-align: middle;">Transak</th>
+                                        <th style="color:white; min-width: 40px;">No</th>
+                                        <th style="color:white; min-width: 200px;">Nama</th>
+                                        <th style="color:white; min-width: 100px;">Tanggal</th>
+                                        <th style="color:white; min-width: 80px;">Hari</th>
+                                        <th style="color:white; min-width: 70px;">Baku(IN)</th>
+                                        <th style="color:white; min-width: 70px;">Baku(OUT)</th>
+                                        <th style="color:white; min-width: 70px;">IN</th>
+                                        <th style="color:white; min-width: 70px;">OUT</th>
+                                        <th style="color:white; min-width: 70px;">Awal TLM</th>
+                                        <th style="color:white; min-width: 70px;">Total TLM</th>
+                                        <th style="color:white; min-width: 70px;">TK TLM</th>
+                                        <th style="color:white; min-width: 70px;">Pot TLM(%)</th>
+                                        <th style="color:white; min-width: 70px;">Total PSW</th>
+                                        <th style="color:white; min-width: 70px;">TK PSW</th>
+                                        <th style="color:white; min-width: 70px;">Pot PSW</th>
+                                        <th style="color:white; min-width: 100px;">Transak</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tableBody">
                                     <tr>
-                                        <td colspan="8" style="vertical-align: middle; padding: 20px;">No
-                                            records to display.</td>
+                                        <td colspan="16" style="vertical-align: middle; padding: 40px; color: #999;">
+                                            <i class="bi bi-calendar3" style="font-size: 2rem;"></i><br>
+                                            Silahkan pilih periode dan klik <strong>Refresh</strong>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -107,8 +132,215 @@
         </div>
     </div>
 </div>
+
+<style>
+    .filter-label-wide {
+        min-width: 80px;
+        font-weight: 600;
+        font-size: 13px;
+    }
+    
+    .btn-refresh-custom {
+        background-color: #EB6831;
+        color: white;
+        border: none;
+        padding: 6px 20px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-refresh-custom:hover {
+        background-color: #d95c28;
+    }
+    
+    .btn-refresh-custom:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .custom-select {
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 13px;
+    }
+    
+    .text-dan {
+        color: #EB6831;
+    }
+    
+    .table td {
+        font-size: 12px;
+        vertical-align: middle;
+        padding: 6px 8px;
+    }
+    
+    .table th {
+        font-size: 11px;
+        padding: 8px 6px;
+    }
+    
+    .invalid-row {
+        background-color: #fff5f5 !important;
+    }
+    
+    .invalid-cell {
+        color: red;
+        font-weight: bold;
+    }
+</style>
 {% endblock %}
 
 {% block script %}
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set default date (today - 7 days to today)
+        const today = new Date();
+        const weekAgo = new Date(today);
+        weekAgo.setDate(today.getDate() - 7);
+        
+        document.getElementById('tglAwal').value = formatDate(weekAgo);
+        document.getElementById('tglAkhir').value = formatDate(today);
+        
+        // Event listeners
+        document.getElementById('btnRefresh').addEventListener('click', fetchData);
+        
+        // Allow Enter key to trigger refresh
+        document.getElementById('filterValue1').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') fetchData();
+        });
+        document.getElementById('filterValue2').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') fetchData();
+        });
+        
+        // Auto refresh when date changes
+        document.getElementById('tglAwal').addEventListener('change', fetchData);
+        document.getElementById('tglAkhir').addEventListener('change', fetchData);
+    });
+    
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
+    function fetchData() {
+        const tglAwal = document.getElementById('tglAwal').value;
+        const tglAkhir = document.getElementById('tglAkhir').value;
+        
+        if (!tglAwal || !tglAkhir) {
+            alert('Periode tanggal harus diisi!');
+            return;
+        }
+        
+        const filterField1 = document.getElementById('filterField1').value;
+        const filterValue1 = document.getElementById('filterValue1').value.trim();
+        const filterField2 = document.getElementById('filterField2').value;
+        const filterValue2 = document.getElementById('filterValue2').value.trim();
+        
+        // Show loading
+        const btnRefresh = document.getElementById('btnRefresh');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const infoTotal = document.getElementById('infoTotal');
+        const tableBody = document.getElementById('tableBody');
+        
+        btnRefresh.disabled = true;
+        btnRefresh.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Loading...';
+        loadingIndicator.style.display = 'block';
+        
+        // Build params
+        const params = new URLSearchParams({
+            tgl_awal: tglAwal,
+            tgl_akhir: tglAkhir,
+            filter_field1: filterField1,
+            filter_value1: filterValue1,
+            filter_field2: filterField2,
+            filter_value2: filterValue2
+        });
+        
+        fetch(`/api/trace-absensi?${params.toString()}`)
+            .then(res => res.json())
+            .then(result => {
+                loadingIndicator.style.display = 'none';
+                btnRefresh.disabled = false;
+                btnRefresh.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
+                
+                if (result.error) {
+                    tableBody.innerHTML = `<tr><td colspan="16" class="text-danger">Error: ${result.error}</td></tr>`;
+                    infoTotal.style.display = 'none';
+                    return;
+                }
+                
+                if (!result.data || result.data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="16" style="padding: 30px; color: #999;">Tidak ada data ditemukan untuk periode tersebut.</td></tr>';
+                    infoTotal.style.display = 'none';
+                    return;
+                }
+                
+                // Show total
+                document.getElementById('totalRecords').textContent = result.total;
+                infoTotal.style.display = 'block';
+                
+                // Build table rows
+                let html = '';
+                result.data.forEach(row => {
+                    const rowClass = row.is_valid_tgl ? '' : 'invalid-row';
+                    const inClass = row.is_valid_in ? '' : 'invalid-cell';
+                    const outClass = row.is_valid_out ? '' : 'invalid-cell';
+                    
+                    html += `
+                        <tr class="${rowClass}">
+                            <td>${row.no}</td>
+                            <td class="text-start">
+                                <strong>${escapeHtml(row.nama)}</strong><br>
+                                <small class="text-muted">${escapeHtml(row.nip)}</small><br>
+                                <small class="text-muted">Finger: ${escapeHtml(row.finger_id)}</small>
+                                ${row.nama_update_in ? `<br><small class="text-primary">Upd In: ${escapeHtml(row.nama_update_in)}</small>` : ''}
+                                ${row.nama_update_out ? `<br><small class="text-success">Upd Out: ${escapeHtml(row.nama_update_out)}</small>` : ''}
+                            </td>
+                            <td>${row.tgl_kerja}</td>
+                            <td>${row.hari}</td>
+                            <td>${row.jam_baku_in}</td>
+                            <td>${row.jam_baku_out}</td>
+                            <td class="${inClass}">${row.jam_in}</td>
+                            <td class="${outClass}">${row.jam_out}</td>
+                            <td>${row.awal_tlm}</td>
+                            <td>${row.total_tlm}</td>
+                            <td>${row.tingkat_tlm}</td>
+                            <td>${row.persen_pot_tlm}${row.persen_pot_tlm !== '' ? '%' : ''}</td>
+                            <td>${row.total_psw}</td>
+                            <td>${row.tingkat_psw}</td>
+                            <td>${row.persen_pot_psw}${row.persen_pot_psw !== '' ? '%' : ''}</td>
+                            <td>
+                                <span class="badge ${row.transaksi_in === 'LogFP' ? 'bg-success' : 'bg-secondary'}">
+                                    ${escapeHtml(row.transaksi_in)}
+                                </span>
+                                ${row.transaksi_out ? `<br><small class="text-muted">${escapeHtml(row.transaksi_out)}</small>` : ''}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableBody.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                loadingIndicator.style.display = 'none';
+                btnRefresh.disabled = false;
+                btnRefresh.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
+                tableBody.innerHTML = '<tr><td colspan="16" class="text-danger">Gagal mengambil data. Silahkan coba lagi.</td></tr>';
+                infoTotal.style.display = 'none';
+            });
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
 {% endblock %}

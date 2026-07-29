@@ -77,6 +77,7 @@ from app.controllers.dashboard_1DataAbsensiController import (
     cari_absensi_normalisasi_finger,
     cari_absensi_pegawai_manual,
     cari_absensi_pegawai_lembur_manual,
+    api_trace_absensi as data_absensi_api_trace_absensi,
 )
 from app.controllers.dashboard_3HomeController import (
     dashboard_kinerja,
@@ -594,6 +595,11 @@ def view_data_absensi_trace_tunjangan():
 @login_required
 def view_data_absensi_trace():
     return data_absensi_trace()
+
+@main.route('/api/trace-absensi')
+@login_required
+def api_trace_absensi():
+    return data_absensi_api_trace_absensi()
 
 # Cari Absensi :
 @main.route('/data-absensi/cari/non-finger')
