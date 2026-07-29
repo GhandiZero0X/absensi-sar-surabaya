@@ -12,6 +12,10 @@ from app.models.potModel import MfPot
 from app.models.classModel import MfClass
 from app.models.dinasLuarModel import DinasLuar
 from app.models.jabatanModel import MfJabatan
+from app.models.timeRecorderModel import TimeRecorder
+from app.models.jamKerjaModel import MfJamKerja
+from app.models.dinasLuarModel import DinasLuar
+import random
 
 
 def data_absensi_non_finger():
@@ -32,7 +36,247 @@ def data_absensi_pegawai_manual():
     """
     Render halaman Data Absensi Pegawai Absensi Manual.
     """
-    return render_template('pages/dashboard_1/Data Absensi Pegawai Absensi Manual.html')
+    unit_kerja_list = MfUnitKerja.query.order_by(
+        MfUnitKerja.URUT_REPORT.asc(),
+        MfUnitKerja.NAMA_UNIT_KERJA.asc()
+    ).all()
+    return render_template(
+        'pages/dashboard_1/Data Absensi Pegawai Absensi Manual.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+# Tambahkan API functions:
+def api_inject_absensi_get_pegawai():
+    """API: Ambil daftar pegawai by unit kerja"""
+    unit_kerja_id = request.args.get('unit_kerja_id', '')
+    tgl = request.args.get('tgl', '')
+    
+    if not unit_kerja_id or not tgl:
+        return jsonify({'error': 'Unit Kerja dan Tanggal harus diisi', 'data': []})
+    
+    try:
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d').date()
+        
+        # Subquery pegawai yang sedang dinas luar/sakit/cuti
+        subquery = (
+            db.session.query(DinasLuar.NIP)
+            .filter(
+                DinasLuar.TRANSAKSI.in_(['sakit', 'cuti']),
+                DinasLuar.TGL_AWAL_DINAS_LUAR <= tgl_date,
+                DinasLuar.TGL_AKHIR_DINAS_LUAR >= tgl_date
+            )
+        )
+        
+        pegawai_list = (
+            Pegawai.query
+            .filter(Pegawai.UNIT_KERJA_ID == int(unit_kerja_id))
+            .filter(Pegawai.IS_KELUAR == 'N')
+            .filter(~Pegawai.NIP.in_(subquery))
+            .order_by(Pegawai.NAMA)
+            .all()
+        )
+        
+        return jsonify({
+            'success': True,
+            'data': [
+                {
+                    'nip': p.NIP,
+                    'nama': p.NAMA,
+                    'gol': p.GOL_ID or ''
+                }
+                for p in pegawai_list
+            ]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e), 'data': []})
+
+
+def api_inject_absensi_acak_jam():
+    """API: Acak jam IN/OUT"""
+    try:
+        data = request.get_json()
+        tgl = data.get('tgl', '')
+        shift = data.get('shift', '1')
+        pegawai_list = data.get('pegawai', [])
+        acak_in = data.get('acak_in', True)
+        acak_out = data.get('acak_out', True)
+        
+        if not tgl or not pegawai_list:
+            return jsonify({'error': 'Data tidak lengkap'})
+        
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d')
+        
+        # Ambil jam baku - PERBAIKAN: ambil semua jam kerja dulu
+        jam_kerja_list = (
+            MfJamKerja.query
+            .filter(MfJamKerja.TGL_MULAI_BERLAKU <= tgl_date)
+            .order_by(MfJamKerja.TGL_MULAI_BERLAKU.desc())
+            .all()
+        )
+        
+        if not jam_kerja_list:
+            return jsonify({'error': 'Jam kerja tidak ditemukan di database'})
+        
+        # Gunakan jam kerja pertama sebagai default
+        jam_kerja = jam_kerja_list[0]
+        
+        # ✅ PERBAIKAN: Ambil jam dari DateTime dengan cara yang aman
+        baku_in_str = '05:00'  # Default
+        baku_out_str = '17:00'  # Default
+        
+        if jam_kerja.STD_JAM_IN:
+            if isinstance(jam_kerja.STD_JAM_IN, datetime):
+                baku_in_str = jam_kerja.STD_JAM_IN.strftime('%H:%M')
+            else:
+                baku_in_str = str(jam_kerja.STD_JAM_IN)[:5]
+        
+        if jam_kerja.STD_JAM_OUT:
+            if isinstance(jam_kerja.STD_JAM_OUT, datetime):
+                baku_out_str = jam_kerja.STD_JAM_OUT.strftime('%H:%M')
+            else:
+                baku_out_str = str(jam_kerja.STD_JAM_OUT)[:5]
+        
+        print(f"DEBUG: Baku IN={baku_in_str}, Baku OUT={baku_out_str}")
+        
+        # Parse jam baku
+        baku_in_parts = baku_in_str.split(':')
+        baku_out_parts = baku_out_str.split(':')
+        
+        jam_in_hour = int(baku_in_parts[0])
+        jam_in_min = int(baku_in_parts[1]) if len(baku_in_parts) > 1 else 0
+        jam_out_hour = int(baku_out_parts[0])
+        jam_out_min = int(baku_out_parts[1]) if len(baku_out_parts) > 1 else 0
+        
+        result = []
+        for i, peg in enumerate(pegawai_list):
+            nama = peg.get('nama', '')
+            no = i + 1
+            
+            # Algoritma random seperti VB.NET
+            konstanta = 9
+            batas_max = 61
+            # Hitung tambahan menit berdasarkan urutan dan nama
+            tambahan = (no + konstanta + ((len(nama) + no) * no)) % batas_max
+            
+            if tambahan > batas_max:
+                tambahan = (tambahan % konstanta) + len(nama) + (no % 19)
+            
+            if tambahan < 7:
+                jam_pulang_tambah = tambahan + len(nama)
+            else:
+                jam_pulang_tambah = tambahan - (no % 7)
+            
+            # Hitung jam IN (mundur dari baku)
+            total_menit_in = jam_in_hour * 60 + jam_in_min - tambahan
+            if total_menit_in < 0:
+                total_menit_in = 0
+            jam_in_h = total_menit_in // 60
+            jam_in_m = total_menit_in % 60
+            
+            # Hitung jam OUT (maju dari baku)
+            total_menit_out = jam_out_hour * 60 + jam_out_min + jam_pulang_tambah
+            jam_out_h = total_menit_out // 60
+            jam_out_m = total_menit_out % 60
+            
+            result.append({
+                'nip': peg.get('nip', ''),
+                'nama': nama,
+                'jam_in': f"{jam_in_h:02d}:{jam_in_m:02d}" if acak_in else '',
+                'jam_out': f"{jam_out_h:02d}:{jam_out_m:02d}" if acak_out else '',
+                'jam_baku_in': baku_in_str[:5],
+                'jam_baku_out': baku_out_str[:5],
+            })
+        
+        return jsonify({'success': True, 'data': result})
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+
+def api_inject_absensi_save():
+    """API: Simpan absensi manual"""
+    try:
+        data = request.get_json()
+        tgl = data.get('tgl', '')
+        no_surat = data.get('no_surat', '')
+        keterangan = data.get('keterangan', '')
+        shift = data.get('shift', '1')
+        pegawai_list = data.get('pegawai', [])
+        
+        if not tgl or not pegawai_list:
+            return jsonify({'error': 'Tanggal dan pegawai harus diisi'})
+        
+        tgl_date = datetime.strptime(tgl, '%Y-%m-%d')
+        saved_count = 0
+        
+        for peg in pegawai_list:
+            nip = peg.get('nip', '')
+            jam_in = peg.get('jam_in', '')
+            jam_out = peg.get('jam_out', '')
+            ket_in = peg.get('ket_in', keterangan)
+            ket_out = peg.get('ket_out', keterangan)
+            
+            if not jam_in and not jam_out:
+                continue
+            
+            # Delete existing manual record for this date
+            TimeRecorder.query.filter(
+                TimeRecorder.FINGER_ID == nip,
+                TimeRecorder.MESIN == '999',
+                db.func.date(TimeRecorder.WAKTU) == tgl_date.date()
+            ).delete()
+            
+            # Insert IN
+            if jam_in:
+                tgl_jam_in = datetime.strptime(f"{tgl} {jam_in}", '%Y-%m-%d %H:%M')
+                tr_in = TimeRecorder(
+                    FINGER_ID=nip,
+                    WAKTU=tgl_jam_in,
+                    STATUS='IN',
+                    MESIN='999',
+                    KET='MANUAL',
+                    TRANSAKSI='MANUAL',
+                    KET_INJECT=ket_in or '',
+                    REF_INJECT=no_surat or '',
+                    UPDATE_IN_BY='admin',
+                    UPDATE_DATE=datetime.now()
+                )
+                db.session.add(tr_in)
+            
+            # Insert OUT
+            if jam_out:
+                tgl_jam_out = datetime.strptime(f"{tgl} {jam_out}", '%Y-%m-%d %H:%M')
+                tr_out = TimeRecorder(
+                    FINGER_ID=nip,
+                    WAKTU=tgl_jam_out,
+                    STATUS='OUT',
+                    MESIN='999',
+                    KET='MANUAL',
+                    TRANSAKSI='MANUAL',
+                    KET_INJECT=ket_out or '',
+                    REF_INJECT=no_surat or '',
+                    UPDATE_IN_BY='admin',
+                    UPDATE_DATE=datetime.now()
+                )
+                db.session.add(tr_out)
+            
+            saved_count += 1
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': f'{saved_count} data berhasil disimpan',
+            'saved': saved_count
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
 
 
 def data_absensi_pegawai_lembur_manual():
