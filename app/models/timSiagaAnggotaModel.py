@@ -1,4 +1,4 @@
-# app/models/mfTimSiagaAnggotaModel.py
+# app/models/timSiagaAnggotaModel.py
 from app import db
 
 

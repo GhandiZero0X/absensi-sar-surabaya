@@ -18,126 +18,120 @@
 
     <div class="main-content master-siaga">
         <div class="container-fluid">
+            <!-- Card Utama: Data Tim -->
             <div class="card mb-4 filter-card">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0">
-                        <i class="bi bi-people me-2"></i> Master Data Siaga
-                    </h6>
-
-                    <div class="header-actions">
-                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
-                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                    <h6 class="mb-0"><i class="bi bi-people me-2"></i> Master Data Siaga</h6>
+                    <div class="header-icons-wrapper d-flex gap-3">
+                        <a href="/siaga/master-data/tim-siaga/cari" class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none" title="Cari">
+                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                        </a>
+                        <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnNew" title="Baru">
+                            <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
                         </button>
-
-                        <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari_Data_Tim_Siaga.html"
-                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
-                                    <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
-                                </a>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnSave" title="Simpan">
+                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                        </button>
+                        <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnDelete" title="Hapus">
+                            <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                        </button>
                     </div>
                 </div>
 
                 <div class="card-body">
+                    <input type="hidden" id="guidTim">
+                    <input type="hidden" id="isNew" value="true">
+                    
                     <div class="row g-3">
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Periode</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                        <!-- Periode -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Periode</label>
+                            <div class="col-md-9">
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                    <input type="month" id="periode" class="form-control-sm border w-100 px-2">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
-                            <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                        <!-- Shift -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Shift</label>
+                            <div class="col-md-9">
+                                <select id="cmbShift" class="form-select-sm border w-100" style="max-width: 200px;">
                                     <option value="">Pilih Shift</option>
-                                    <option>Shift 1</option>
-                                    <option>Shift 2</option>
+                                    <option value="1">Shift 1</option>
+                                    <option value="2">Shift 2</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Fungsional</label>
-                            <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                        <!-- Fungsional -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Fungsional</label>
+                            <div class="col-md-9">
+                                <select id="cmbFungsional" class="form-select-sm border w-100" style="max-width: 200px;">
                                     <option value="">Pilih Fungsional</option>
-                                    <option>Kom</option>
-                                    <option>Medis</option>
+                                    <option value="Kom">Kom</option>
+                                    <option value="Medis">Medis</option>
+                                    <option value="KGR">KGR</option>
+                                    <option value="PW">PW</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">No Urut</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                                </div>
+                        <!-- No Urut -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">No Urut</label>
+                            <div class="col-md-9">
+                                <input type="number" id="noUrut" class="form-control-sm border w-100" style="max-width: 200px;" value="0">
                             </div>
                         </div>
 
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Nama TIM</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                                </div>
+                        <!-- Nama TIM -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Nama TIM</label>
+                            <div class="col-md-9">
+                                <input type="text" id="namaTim" class="form-control-sm border w-100" style="max-width: 300px;" placeholder="Nama TIM...">
                             </div>
                         </div>
 
-                        <div class="col-12 d-md-flex align-items-center mb-2">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Unit Kerja</label>
-                            <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
+                        <!-- Unit Kerja -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Unit Kerja</label>
+                            <div class="col-md-9">
+                                <select id="cmbUnit" class="form-select-sm border w-100" style="max-width: 300px;">
                                     <option value="">Pilih Unit Kerja</option>
-                                    <option>Surabaya</option>
+                                    {% for unit in unit_kerja_list %}
+                                    <option value="{{ unit.UNIT_KERJA_ID }}">{{ unit.NAMA_UNIT_KERJA }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-12 d-md-flex">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-7">
+                        <!-- Update info -->
+                        <div class="row align-items-center mb-3">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-9">
+                                <small id="lblUpdate" class="text-muted"></small>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Anggota -->
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-9">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-sm w-100">
                                         <thead class="table-light">
                                             <tr>
                                                 <th style="width:40%">NIP</th>
                                                 <th>Nama</th>
+                                                <th style="width:50px;">Aksi</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="tbodyAnggota">
                                             <tr>
-                                                <td colspan="2" class="text-center py-4 text-muted">No records to
-                                                    display.</td>
+                                                <td colspan="3" class="text-center py-4 text-muted">No records to display.</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -148,62 +142,61 @@
                 </div>
             </div>
 
+            <!-- Card: Add Anggota -->
             <div class="card mb-4 filter-card">
                 <div class="card-header-customm">
                     <h6 class="mb-0">Add Anggota TIM</h6>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Pegawai</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                                </div>
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Pegawai</label>
+                            <div class="col-md-7 position-relative">
+                                <input type="text" id="searchPegawai" class="form-control-sm border w-100" placeholder="Cari pegawai..." autocomplete="off">
+                                <div id="searchResults" class="list-group position-absolute shadow-sm" style="z-index:1000; display:none; max-height:200px; overflow-y:auto; width:100%;"></div>
                             </div>
                         </div>
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Peg. lintas TIM</label>
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">Peg. lintas TIM</label>
                             <div class="col-md-7">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="lintasTim">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 d-md-flex">
-                            <div class="col-md-3"></div>
+                        <div class="row">
+                            <div class="col-md-2"></div>
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100 py-2"><i class="bi bi-plus-circle me-2"></i> Insert
-                                    Pegawai to table</button>
+                                <button class="btn btn-primary w-100 py-2" id="btnInsertAnggota">
+                                    <i class="bi bi-plus-circle me-2"></i> Insert Pegawai to table
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Card: Save As -->
             <div class="card mb-4 filter-card">
                 <div class="card-header-customm">
                     <h6 class="mb-0">Save As Tim Siaga</h6>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">ke Periode</label>
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0">ke Periode</label>
                             <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                                <div class="input-group input-group-sm" style="max-width: 200px;">
+                                    <input type="month" id="periodeTujuan" class="form-control-sm border w-100 px-2">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 d-md-flex">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-1">
-                                <button class="btn btn-primary w-100 py-2"><i class="bi bi-save me-2"></i> Save</button>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100 py-2" id="btnSaveAs">
+                                    <i class="bi bi-save me-2"></i> Save
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -212,8 +205,184 @@
         </div>
     </div>
 </div>
+
+<style>
+    .form-label-custom { font-size: 0.85rem; font-weight: 600; color: #333; min-width: 120px; }
+    .card-header-customm { background-color: #e66b30; color: white; padding: 8px 15px; border-radius: 10px 10px 0 0; }
+</style>
 {% endblock %}
 
 {% block script %}
-
+<script>
+    let anggotaTable = [];
+    let currentGuid = '';
+    
+    document.getElementById('periode').value = new Date().toISOString().slice(0, 7);
+    
+    // ===================== SEARCH PEGAWAI =====================
+    let searchTimeout;
+    document.getElementById('searchPegawai').addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        const kw = this.value.trim();
+        if (kw.length < 2) { document.getElementById('searchResults').style.display = 'none'; return; }
+        searchTimeout = setTimeout(() => {
+            fetch(`/api/search_pegawai?keyword=${encodeURIComponent(kw)}`)
+                .then(res => res.json())
+                .then(result => {
+                    const div = document.getElementById('searchResults');
+                    if (result.data?.length > 0) {
+                        div.innerHTML = result.data.map(p => 
+                            `<a href="#" class="list-group-item list-group-item-action py-1 px-2 small" onclick="event.preventDefault();addAnggota('${p.nip}','${p.nama}')">${p.nama} (${p.nip})</a>`
+                        ).join('');
+                        div.style.display = 'block';
+                    } else { div.style.display = 'none'; }
+                });
+        }, 300);
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#searchPegawai') && !e.target.closest('#searchResults')) {
+            document.getElementById('searchResults').style.display = 'none';
+        }
+    });
+    
+    function addAnggota(nip, nama) {
+        if (!anggotaTable.find(a => a.nip === nip)) {
+            anggotaTable.push({nip, nama});
+            renderAnggota();
+        }
+        document.getElementById('searchResults').style.display = 'none';
+        document.getElementById('searchPegawai').value = '';
+    }
+    
+    function renderAnggota() {
+        const tbody = document.getElementById('tbodyAnggota');
+        if (anggotaTable.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-muted">No records to display.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = anggotaTable.map((a, i) => `
+            <tr>
+                <td>${a.nip}</td>
+                <td>${a.nama}</td>
+                <td><button class="btn btn-sm btn-outline-danger" onclick="hapusAnggota(${i})"><i class="bi bi-trash"></i></button></td>
+            </tr>
+        `).join('');
+    }
+    
+    function hapusAnggota(index) {
+        anggotaTable.splice(index, 1);
+        renderAnggota();
+    }
+    
+    // ===================== INSERT ANGGOTA =====================
+    document.getElementById('btnInsertAnggota').addEventListener('click', function() {
+        const kw = document.getElementById('searchPegawai').value.trim();
+        if (kw.length < 2) { alert('Ketik nama pegawai dulu!'); return; }
+        // Trigger search and add first result
+    });
+    
+    // ===================== SAVE =====================
+    document.getElementById('btnSave').addEventListener('click', function() {
+        const namaTim = document.getElementById('namaTim').value.trim();
+        const unitKerjaId = document.getElementById('cmbUnit').value;
+        const fungsional = document.getElementById('cmbFungsional').value;
+        const periode = document.getElementById('periode').value;
+        const shift = document.getElementById('cmbShift').value;
+        const noUrut = document.getElementById('noUrut').value;
+        const isNew = document.getElementById('isNew').value === 'true';
+        
+        if (!namaTim) { alert('Nama TIM harus diisi!'); return; }
+        if (!unitKerjaId) { alert('Unit Kerja harus dipilih!'); return; }
+        if (!fungsional) { alert('Fungsional harus dipilih!'); return; }
+        if (!periode) { alert('Periode harus diisi!'); return; }
+        if (anggotaTable.length === 0) { alert('Anggota TIM kosong!'); return; }
+        
+        const data = {
+            guid_tim: currentGuid,
+            nama_tim: namaTim,
+            no_urut: noUrut,
+            unit_kerja_id: unitKerjaId,
+            fungsional: fungsional,
+            shift: shift,
+            periode: periode,
+            anggota: anggotaTable,
+            is_new: isNew
+        };
+        
+        fetch('/api/tim-siaga/save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(result => {
+            alert(result.message || 'Berhasil!');
+            if (result.guid_tim) {
+                currentGuid = result.guid_tim;
+                document.getElementById('guidTim').value = currentGuid;
+                document.getElementById('isNew').value = 'false';
+            }
+        })
+        .catch(err => alert('Gagal menyimpan!'));
+    });
+    
+    // ===================== DELETE =====================
+    document.getElementById('btnDelete').addEventListener('click', function() {
+        if (!currentGuid) { alert('Pilih data yang akan dihapus!'); return; }
+        if (!confirm('Yakin hapus?')) return;
+        
+        fetch('/api/tim-siaga/delete', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({guid_tim: currentGuid})
+        })
+        .then(res => res.json())
+        .then(result => {
+            alert(result.message || 'Berhasil!');
+            clearForm();
+        });
+    });
+    
+    // ===================== NEW =====================
+    document.getElementById('btnNew').addEventListener('click', clearForm);
+    
+    function clearForm() {
+        currentGuid = '';
+        document.getElementById('guidTim').value = '';
+        document.getElementById('isNew').value = 'true';
+        document.getElementById('namaTim').value = '';
+        document.getElementById('noUrut').value = '0';
+        document.getElementById('cmbFungsional').value = '';
+        document.getElementById('cmbShift').value = '';
+        document.getElementById('lblUpdate').textContent = '';
+        anggotaTable = [];
+        renderAnggota();
+    }
+    
+    // ===================== SAVE AS =====================
+    document.getElementById('btnSaveAs').addEventListener('click', function() {
+        const periodeSumber = document.getElementById('periode').value;
+        const periodeTujuan = document.getElementById('periodeTujuan').value;
+        const unitKerjaId = document.getElementById('cmbUnit').value;
+        const shift = document.getElementById('cmbShift').value;
+        
+        if (!periodeSumber || !periodeTujuan) { alert('Periode sumber dan tujuan harus diisi!'); return; }
+        if (!unitKerjaId) { alert('Unit Kerja harus dipilih!'); return; }
+        
+        fetch('/api/tim-siaga/save-as', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                periode_sumber: periodeSumber,
+                periode_tujuan: periodeTujuan,
+                unit_kerja_id: unitKerjaId,
+                shift: shift
+            })
+        })
+        .then(res => res.json())
+        .then(result => alert(result.message || 'Berhasil!'))
+        .catch(err => alert('Gagal!'));
+    });
+</script>
 {% endblock %}

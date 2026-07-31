@@ -24,6 +24,10 @@ from app.controllers.dashboard_2MasterDataController import (
     master_data_nominal_ut_piket,
     master_data_tim_siaga,
     master_data_user_account,
+    api_tim_siaga_save as master_data_api_tim_siaga_save,
+    api_tim_siaga_delete as master_data_api_tim_siaga_delete,
+    api_tim_siaga_get as master_data_api_tim_siaga_get,
+    api_tim_siaga_save_as as master_data_api_tim_siaga_save_as,
 )
 from app.controllers.dashboard_2OtoritasPersetujuanController import (
     otorisasi_persetujuan_kepala_kantor,
@@ -826,6 +830,26 @@ def view_master_data_nominal_ut_piket():
 @login_required
 def view_master_data_tim_siaga():
     return master_data_tim_siaga()
+
+@main.route('/api/tim-siaga/save', methods=['POST'])
+@login_required
+def api_tim_siaga_save():
+    return master_data_api_tim_siaga_save()
+
+@main.route('/api/tim-siaga/delete', methods=['POST'])
+@login_required
+def api_tim_siaga_delete():
+    return master_data_api_tim_siaga_delete()
+
+@main.route('/api/tim-siaga/get')
+@login_required
+def api_tim_siaga_get():
+    return master_data_api_tim_siaga_get()
+
+@main.route('/api/tim-siaga/save-as', methods=['POST'])
+@login_required
+def api_tim_siaga_save_as():
+    return master_data_api_tim_siaga_save_as()
 
 @main.route('/siaga/master-data/user-account')
 @login_required
