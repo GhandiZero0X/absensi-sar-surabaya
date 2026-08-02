@@ -435,6 +435,36 @@ def view_kepegawaian_pegawai_tidak_hadir():
 def view_kepegawaian_mutasi_penempatan_pegawai():
     return kepegawaian_mutasi_penempatan_pegawai()
 
+@main.route('/api/mutasi/save', methods=['POST'])
+@login_required
+def api_mutasi_save():
+    from app.controllers.dashboard_1KepegawaianController import api_mutasi_save
+    return api_mutasi_save()
+
+@main.route('/api/mutasi/get')
+@login_required
+def api_mutasi_get():
+    from app.controllers.dashboard_1KepegawaianController import api_mutasi_get
+    return api_mutasi_get()
+
+@main.route('/api/mutasi/delete', methods=['POST'])
+@login_required
+def api_mutasi_delete():
+    from app.controllers.dashboard_1KepegawaianController import api_mutasi_delete
+    return api_mutasi_delete()
+
+@main.route('/api/mutasi/cari')
+@login_required
+def api_mutasi_cari():
+    from app.controllers.dashboard_1KepegawaianController import api_mutasi_cari
+    return api_mutasi_cari()
+
+@main.route('/api/mutasi/filter-fields')
+@login_required
+def api_mutasi_get_filter_fields():
+    from app.controllers.dashboard_1KepegawaianController import api_mutasi_get_filter_fields
+    return api_mutasi_get_filter_fields()
+
 @main.route('/kepegawaian/update-pendukung')
 @login_required
 def view_kepegawaian_update_pendukung():
