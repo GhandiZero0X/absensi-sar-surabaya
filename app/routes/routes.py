@@ -33,6 +33,14 @@ from app.controllers.dashboard_1KepegawaianController import (
     api_pegawai_delete as master_api_pegawai_delete,
     api_pegawai_cari as master_api_pegawai_cari,
     api_pegawai_get_filter_fields as master_api_pegawai_get_filter_fields,
+    api_dinas_luar_search_pegawai as master_api_dinas_luar_search_pegawai,
+    api_dinas_luar_save as master_api_dinas_luar_save,
+    api_dinas_luar_get as master_api_dinas_luar_get,
+    api_dinas_luar_delete as master_api_dinas_luar_delete,
+    api_sprin_header_save as master_api_sprin_header_save,
+    api_dinas_luar_save_peserta as master_api_dinas_luar_save_peserta,
+    api_dinas_luar_cari as master_api_dinas_luar_cari,
+    api_dinas_luar_get_filter_fields as master_api_dinas_luar_get_filter_fields,
 )
 from app.controllers.dashboard_1MediaInformasiController import (
     media_informasi, media_informasi_detail,
@@ -269,10 +277,51 @@ def api_pegawai_get_filter_fields():
 def view_kepegawaian_dinas_luar_umum():
     return kepegawaian_dinas_luar_umum()
 
+@main.route('/api/sprin-header/save', methods=['POST'])
+@login_required
+def api_sprin_header_save():
+    return master_api_sprin_header_save()
+
+@main.route('/api/dinas-luar/save-peserta', methods=['POST'])
+@login_required
+def api_dinas_luar_save_peserta():
+    return master_api_dinas_luar_save_peserta()
+
+@main.route('/api/dinas-luar/search-pegawai')
+@login_required
+def api_dinas_luar_search_pegawai():
+    return master_api_dinas_luar_search_pegawai()
+
+@main.route('/api/dinas-luar/save', methods=['POST'])
+@login_required
+def api_dinas_luar_save():
+    return master_api_dinas_luar_save()
+
+@main.route('/api/dinas-luar/get')
+@login_required
+def api_dinas_luar_get():
+    return master_api_dinas_luar_get()
+
+@main.route('/api/dinas-luar/delete', methods=['POST'])
+@login_required
+def api_dinas_luar_delete():
+    return master_api_dinas_luar_delete()
+
+
 @main.route('/kepegawaian/cari/dinas-luar-umum')
 @login_required
 def view_kepegawaian_cari_dinas_luar_umum():
     return kepegawaian_cari_dinas_luar_umum()
+
+@main.route('/api/dinas-luar/cari')
+@login_required
+def api_dinas_luar_cari():
+    return master_api_dinas_luar_cari()
+
+@main.route('/api/dinas-luar/filter-fields')
+@login_required
+def api_dinas_luar_get_filter_fields():
+    return master_api_dinas_luar_get_filter_fields()
 
 @main.route('/kepegawaian/dinas-luar-operasi')
 @login_required

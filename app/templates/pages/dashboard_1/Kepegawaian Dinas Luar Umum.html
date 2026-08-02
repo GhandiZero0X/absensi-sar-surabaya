@@ -1,7 +1,7 @@
 <!-- pages/dashboard_1/Kepegawaian Dinas Luar Umum.html -->
 {% extends "layout/baseDashboard1.html" %}
 
-{% block title %}- Kepegawaian Dinas Luar Umum{% endblock %}
+{% block title %}- Dinas Luar Umum{% endblock %}
 
 {% block content %}
 <div class="nxl-content">
@@ -11,129 +11,553 @@
                 <h5 class="m-b-10">Kepegawaian</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url_for('main.view_kepegawaian_dinas_luar_umum') }}">Dinas Luar
-                        Umum</a></li>
-                <li class="breadcrumb-item">Edit</li>
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_kepegawaian_dinas_luar_umum') }}">Dinas Luar Umum</a></li>
             </ul>
         </div>
     </div>
 
     <div class="main-content master-siaga">
         <div class="container-fluid">
-            <style>
-                .sub-panel-card {
-                    border: 1px solid #dee2e6;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-                    background: #fff;
-                }
+            <!-- Alert -->
+            <div id="alertContainer" class="alert alert-dismissable d-none mb-3">
+                <span id="alertMessage"></span>
+            </div>
 
-                .sub-panel-header {
-                    background-color: #e65c00;
-                    color: #fff;
-                    font-weight: 600;
-                    font-size: 0.9rem;
-                    padding: 8px 15px;
-                    width: 100%;
-                }
-
-                .input-custom-style {
-                    border: 1px solid #ccc;
-                    border-radius: 3px;
-                    padding: 3px 8px;
-                    font-size: 0.85rem;
-                    width: 100%;
-                    background-color: #fff;
-                }
-
-                .input-custom-style:focus {
-                    border-color: #e65c00;
-                    outline: none;
-                }
-
-                .form-label-custom {
-                    font-size: 0.85rem;
-                    color: #333;
-                    font-weight: 600;
-                    margin-bottom: 0;
-                }
-            </style>
-
-            <!-- CARD UTAMA: Dinas Luar Umum -->
-            <div class="card-header-custom d-flex justify-content-between align-items-center"
-                style="border-radius: 10px;">
-                <h6 class="mb-0">
-                    <i class="feather-users me-2"></i>Dinas Luar Umum
-                </h6>
-
+            <!-- Header Card -->
+            <div class="card-header-custom d-flex justify-content-between align-items-center mb-3" style="border-radius: 10px;">
+                <h6 class="mb-0"><i class="feather-users me-2"></i>Dinas Luar Umum</h6>
                 <div class="header-actions">
-                    <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
-                        <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                    <a href="{{ url_for('main.view_kepegawaian_cari_dinas_luar_umum') }}"
+                        class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none" title="Cari Data">
+                        <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <form id="formDinasLuar">
+                <!-- ========== CARD HEADER SURAT ========== -->
+                <div class="sub-panel-card mb-3">
+                    <div class="sub-panel-header">Header Surat</div>
+                    <div class="p-3">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label-custom">No. Surat <span class="text-danger">*</span></label>
+                                <input type="text" id="noSurat" class="input-custom-style" placeholder="No. Surat/SPRIN">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label-custom">Tgl Surat <span class="text-danger">*</span></label>
+                                <input type="date" id="tglAwalSurat" class="input-custom-style">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label-custom">s/d</label>
+                                <input type="date" id="tglAkhirSurat" class="input-custom-style">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label-custom">&nbsp;</label>
+                                <button class="btn btn-sm btn-outline-secondary w-100" id="btnLoadSurat" type="button">
+                                    <i class="bi bi-search me-1"></i>Load
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <label class="form-label-custom">Keterangan</label>
+                                <input type="text" id="keterangan" class="input-custom-style" placeholder="Keterangan dinas luar">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label-custom">Penempatan</label>
+                                <input type="text" id="penempatan" class="input-custom-style" placeholder="Tempat penempatan">
+                            </div>
+                        </div>
+                        <!-- ✅ TOMBOL SIMPAN HEADER -->
+                        <div class="text-end mt-3">
+                            <button type="button" id="btnSaveHeader" class="btn btn-orange-figma px-4 py-2">
+                                <i class="bi bi-save me-1"></i>Simpan Header
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== CARD ADD PESERTA ========== -->
+                <div class="sub-panel-card mb-3" id="cardPeserta" style="display:none;">
+                    <div class="sub-panel-header">Add Peserta</div>
+                    <div class="p-3">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label-custom">Pegawai</label>
+                                <div class="position-relative">
+                                    <input type="text" id="searchPegawai" class="input-custom-style" 
+                                           placeholder="Ketik nama pegawai..." autocomplete="off">
+                                    <div id="pegawaiDropdown" class="dropdown-menu w-100" 
+                                         style="display:none; max-height:200px;overflow-y:auto;position:absolute;z-index:1000;"></div>
+                                </div>
+                                <input type="hidden" id="selectedNIP">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label-custom">Uang Makan</label>
+                                <select class="input-custom-style" id="statusUM">
+                                    <option value="0">Tdk Terpotong</option>
+                                    <option value="1">Terpotong</option>
+                                    <option value="2">Tdk Terpotong Penempatan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label-custom">Tgl Awal</label>
+                                <input type="date" id="tglAwalDL" class="input-custom-style">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label-custom">Tgl Akhir</label>
+                                <input type="date" id="tglAkhirDL" class="input-custom-style">
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary btn-sm w-100" id="btnInsertPeserta" type="button">
+                                    <i class="bi bi-plus-circle me-1"></i>Insert
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== CARD TABEL PESERTA ========== -->
+                <div class="sub-panel-card mb-3" id="cardTabelPeserta" style="display:none;">
+                    <div class="sub-panel-header">Daftar Peserta</div>
+                    <div class="p-3">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" id="tablePeserta">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>No</th><th>NIP</th><th>Nama</th>
+                                        <th>Uang Makan</th><th>Tgl Awal</th><th>Tgl Akhir</th><th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                    <tr><td colspan="7" class="text-center py-3 text-muted">Belum ada peserta</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- ✅ TOMBOL SIMPAN PESERTA -->
+                        <div class="text-end mt-3">
+                            <button type="button" id="btnSavePeserta" class="btn btn-orange-figma px-4 py-2">
+                                <i class="bi bi-save me-1"></i>Simpan Peserta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Bawah -->
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <button type="button" id="btnDelete" class="btn btn-outline-danger px-4 py-2">
+                        <i class="bi bi-trash me-1"></i>Hapus
                     </button>
-
-                    <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                        <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                            <a href="{{ url_for('main.view_kepegawaian_cari_dinas_luar_umum') }}"
-                                class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
-                                <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
-                            </a>
-                        </div>
-                    </div>
+                    <button type="button" id="btnNew" class="btn btn-outline-secondary px-4 py-2">
+                        <i class="bi bi-file-earmark-plus me-1"></i>Baru
+                    </button>
                 </div>
-            </div>
-
-            <!-- SUB PANEL CARD: Add Peserta -->
-            <div class="sub-panel-card mb-4">
-                <div class="sub-panel-header">
-                    Add Peserta
-                </div>
-                <div class="p-4">
-                    <!-- Pegawai -->
-                    <div class="row mb-3 align-items-center">
-                        <label class="col-md-2 form-label-custom">Pegawai</label>
-                        <div class="col-md-8">
-                            <input type="text" class="input-custom-style">
-                        </div>
-                    </div>
-
-                    <!-- Uang Makan -->
-                    <div class="row mb-3 align-items-center">
-                        <label class="col-md-2 form-label-custom">Uang Makan</label>
-                        <div class="col-md-8">
-                            <input type="text" class="input-custom-style">
-                        </div>
-                    </div>
-
-                    <!-- Tanggal s/d -->
-                    <div class="row mb-4 align-items-center">
-                        <label class="col-md-2 form-label-custom">Tanggal</label>
-                        <div class="col-md-8 d-flex align-items-center gap-2">
-                            <div class="input-group input-group-sm">
-                                <input type="date" class="form-control input-custom-style">
-                            </div>
-                            <span class="fw-bold px-1 small">s/d</span>
-                            <div class="input-group input-group-sm">
-                                <input type="date" class="form-control input-custom-style">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tombol Insert Pegawai to table -->
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary btn-sm px-3 rounded-pill"
-                            style="font-size: 0.75rem; background-color: #0000ff; border: none;">
-                            Insert Pegawai to table
-                        </button>
-                    </div>
-                </div>
-            </div>
-
+            </form>
         </div>
     </div>
 </div>
+
+<style>
+    *, *::before, *::after { box-sizing: border-box; }
+    
+    /* ✅ FIX: Hapus overflow:hidden agar dropdown tidak terpotong */
+    .sub-panel-card { 
+        border: 1px solid #dee2e6; 
+        border-radius: 8px; 
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+        background: #fff; 
+    }
+    
+    .sub-panel-header { 
+        background-color: #e65c00; 
+        color: #fff; 
+        font-weight: 600; 
+        font-size: 0.9rem; 
+        padding: 8px 15px; 
+        width: 100%; 
+        border-radius: 8px 8px 0 0; 
+    }
+    
+    .input-custom-style { 
+        border: 1px solid #ccc; 
+        border-radius: 3px; 
+        padding: 3px 8px; 
+        font-size: 0.85rem; 
+        width: 100%; 
+        max-width: 100%; 
+        background-color: #fff; 
+        position: relative; 
+        z-index: 1; 
+    }
+    
+    input[type="date"].input-custom-style { 
+        cursor: pointer; 
+        min-height: 31px; 
+    }
+    
+    .input-custom-style:focus { 
+        border-color: #e65c00; 
+        outline: none; 
+        z-index: 2; 
+    }
+    
+    .form-label-custom { 
+        font-size: 0.85rem; 
+        color: #333; 
+        font-weight: 600; 
+        margin-bottom: 4px; 
+    }
+    
+    .btn-orange-figma { 
+        background-color: #e66b30; 
+        color: #fff; 
+        border: none; 
+        border-radius: 5px; 
+        font-weight: 600; 
+    }
+    
+    .btn-orange-figma:hover { 
+        background-color: #cc5a20; 
+        color: #fff; 
+    }
+    
+    .pegawai-item { 
+        cursor: pointer; 
+        padding: 6px 12px; 
+    }
+    
+    .pegawai-item:hover { 
+        background-color: #f0f0f0; 
+    }
+    
+    /* ✅ FIX: Dropdown muncul di atas elemen lain */
+    #pegawaiDropdown {
+        position: absolute !important;
+        z-index: 9999 !important;
+        background: #fff;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    /* ✅ FIX: Pastikan container pegawai tidak memotong dropdown */
+    .position-relative {
+        position: relative;
+        z-index: auto;
+    }
+</style>
 {% endblock %}
 
-{% block scripts %}
+{% block script %}
+<script>
+$(document).ready(function() {
+    let pesertaList = [];
+    let guidSprin = '';
+    let isUpdate = false;
+    
+    // ============================================
+    // Nonaktifkan select2 & daterangepicker
+    // ============================================
+    try { 
+        if ($.fn.select2 && $('#formDinasLuar select').hasClass('select2-hidden-accessible')) {
+            $('#formDinasLuar select').select2('destroy'); 
+        }
+    } catch(e) {}
+    
+    try { 
+        if ($.fn.daterangepicker) {
+            $('#formDinasLuar input[type="date"]').each(function() {
+                if ($(this).data('daterangepicker')) {
+                    $(this).daterangepicker('destroy');
+                }
+            });
+        }
+    } catch(e) {}
+    
+    // Cegah klik di form memicu date picker
+    $('#formDinasLuar').on('click', function(e) {
+        if (!$(e.target).is('input[type="date"]')) {
+            e.stopPropagation();
+        }
+    });
+    
+    // ============================================
+    // ✅ SIMPAN HEADER (hanya header, tanpa peserta)
+    // ============================================
+    $('#btnSaveHeader').click(function() {
+        const noSurat = $('#noSurat').val().trim();
+        const tglAwal = $('#tglAwalSurat').val();
+        const tglAkhir = $('#tglAkhirSurat').val();
+        
+        if (!noSurat) { showAlert('No. Surat tidak boleh kosong', 'warning'); return; }
+        if (!tglAwal || !tglAkhir) { showAlert('Tanggal Surat tidak boleh kosong', 'warning'); return; }
+        
+        const data = {
+            no_surat: noSurat,
+            tgl_awal_surat: tglAwal,
+            tgl_akhir_surat: tglAkhir,
+            keterangan: $('#keterangan').val(),
+            penempatan: $('#penempatan').val(),
+            status_um: '0',
+            peserta: [],
+            guid_sprin: guidSprin,
+            is_update: isUpdate,
+            save_header_only: true  // ✅ Flag: hanya simpan header
+        };
+        
+        const $btn = $(this).prop('disabled', true).html('<i class="bi bi-hourglass-split me-1"></i>Menyimpan...');
+        
+        $.ajax({
+            url: '/api/dinas-luar/save',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(r) {
+                if (r.success) {
+                    guidSprin = r.guid_sprin;
+                    isUpdate = true;
+                    // ✅ Tampilkan card peserta setelah header berhasil disimpan
+                    $('#cardPeserta, #cardTabelPeserta').show();
+                    showAlert('success', 'Header berhasil disimpan! Silakan tambah peserta.');
+                } else {
+                    showAlert('danger', r.error || 'Gagal menyimpan header');
+                }
+            },
+            error: function() { showAlert('danger', 'Gagal menyimpan header'); },
+            complete: function() { $btn.prop('disabled', false).html('<i class="bi bi-save me-1"></i>Simpan Header'); }
+        });
+    });
+    
+    // ============================================
+    // ✅ SIMPAN PESERTA (setelah header ada)
+    // ============================================
+    $('#btnSavePeserta').click(function() {
+        if (!guidSprin) { showAlert('warning', 'Simpan Header dulu sebelum menyimpan peserta!'); return; }
+        if (!pesertaList.length) { showAlert('warning', 'Peserta tidak boleh kosong'); return; }
+        
+        const data = {
+            no_surat: $('#noSurat').val().trim(),
+            tgl_awal_surat: $('#tglAwalSurat').val(),
+            tgl_akhir_surat: $('#tglAkhirSurat').val(),
+            keterangan: $('#keterangan').val(),
+            penempatan: $('#penempatan').val(),
+            status_um: $('#statusUM').val(),
+            peserta: pesertaList,
+            guid_sprin: guidSprin,
+            is_update: true,
+            save_header_only: false  // ✅ Simpan peserta
+        };
+        
+        const $btn = $(this).prop('disabled', true).html('<i class="bi bi-hourglass-split me-1"></i>Menyimpan...');
+        
+        $.ajax({
+            url: '/api/dinas-luar/save',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(r) {
+                if (r.success) {
+                    showAlert('success', r.message);
+                } else {
+                    showAlert('danger', r.error || 'Gagal menyimpan peserta');
+                }
+            },
+            error: function() { showAlert('danger', 'Gagal menyimpan peserta'); },
+            complete: function() { $btn.prop('disabled', false).html('<i class="bi bi-save me-1"></i>Simpan Peserta'); }
+        });
+    });
+    
+    // ============================================
+    // Search pegawai autocomplete
+    // ============================================
+    let searchTimeout;
+    $('#searchPegawai').on('input', function() {
+        const keyword = $(this).val().trim();
+        clearTimeout(searchTimeout);
+        
+        if (keyword.length < 2) { 
+            $('#pegawaiDropdown').hide(); 
+            return; 
+        }
+        
+        searchTimeout = setTimeout(function() {
+            fetch('/api/dinas-luar/search-pegawai?keyword=' + encodeURIComponent(keyword))
+                .then(function(res) { return res.json(); })
+                .then(function(r) {
+                    const $dd = $('#pegawaiDropdown').empty();
+                    if (r.data && r.data.length) {
+                        r.data.forEach(function(p) {
+                            $dd.append(
+                                '<a class="dropdown-item pegawai-item" href="#" data-nip="' + p.nip + '" data-nama="' + p.nama + '">' +
+                                p.nama + ' <small class="text-muted">(' + p.nip + ')</small></a>'
+                            );
+                        });
+                        $dd.show();
+                    } else {
+                        $dd.html('<span class="dropdown-item text-muted">Tidak ditemukan</span>').show();
+                    }
+                })
+                .catch(function() { 
+                    $('#pegawaiDropdown').hide(); 
+                });
+        }, 300);
+    });
+    
+    $('#pegawaiDropdown').on('click', '.pegawai-item', function(e) {
+        e.preventDefault();
+        $('#searchPegawai').val($(this).data('nama'));
+        $('#selectedNIP').val($(this).data('nip'));
+        $('#pegawaiDropdown').hide();
+    });
+    
+    $(document).on('click', function(e) { 
+        if (!$(e.target).closest('#searchPegawai, #pegawaiDropdown').length) {
+            $('#pegawaiDropdown').hide(); 
+        }
+    });
+    
+    // ============================================
+    // Insert peserta ke tabel (lokal, belum simpan ke DB)
+    // ============================================
+    $('#btnInsertPeserta').click(function() {
+        const nip = $('#selectedNIP').val();
+        const nama = $('#searchPegawai').val();
+        const tglAwal = $('#tglAwalDL').val();
+        const tglAkhir = $('#tglAkhirDL').val();
+        const statusUM = $('#statusUM').val();
+        const statusUMText = $('#statusUM option:selected').text();
+        
+        if (!nip) { showAlert('Pilih pegawai terlebih dahulu', 'warning'); return; }
+        if (!tglAwal || !tglAkhir) { showAlert('Isi tanggal awal dan akhir', 'warning'); return; }
+        if (pesertaList.find(function(p) { return p.nip === nip; })) {
+            showAlert('Pegawai sudah ada di daftar', 'warning'); return;
+        }
+        
+        pesertaList.push({ 
+            nip: nip, nama: nama, 
+            tgl_awal: tglAwal, tgl_akhir: tglAkhir, 
+            status_um: statusUM, status_um_text: statusUMText 
+        });
+        renderTable();
+        
+        $('#searchPegawai').val('');
+        $('#selectedNIP').val('');
+        $('#tglAwalDL').val('');
+        $('#tglAkhirDL').val('');
+    });
+    
+    function renderTable() {
+        const $tbody = $('#tableBody').empty();
+        if (!pesertaList.length) { 
+            $tbody.html('<tr><td colspan="7" class="text-center py-3 text-muted">Belum ada peserta</td></tr>'); 
+            return; 
+        }
+        pesertaList.forEach(function(p, i) {
+            $tbody.append(
+                '<tr>' +
+                '<td>' + (i+1) + '</td>' +
+                '<td>' + p.nip + '</td>' +
+                '<td>' + p.nama + '</td>' +
+                '<td>' + p.status_um_text + '</td>' +
+                '<td>' + p.tgl_awal + '</td>' +
+                '<td>' + p.tgl_akhir + '</td>' +
+                '<td><button class="btn btn-sm btn-outline-danger btn-del" data-idx="' + i + '" type="button"><i class="bi bi-x-circle"></i></button></td>' +
+                '</tr>'
+            );
+        });
+        $('.btn-del').click(function() { 
+            pesertaList.splice($(this).data('idx'), 1); 
+            renderTable(); 
+        });
+    }
+    
+    // ============================================
+    // Load surat by No Surat
+    // ============================================
+    $('#btnLoadSurat').click(function() {
+        const noSurat = $('#noSurat').val().trim();
+        if (!noSurat) { showAlert('Masukkan No. Surat', 'warning'); return; }
+        
+        const $btn = $(this).prop('disabled', true).html('<i class="bi bi-hourglass-split me-1"></i>Loading...');
+        
+        $.get('/api/dinas-luar/get', { no_surat: noSurat }, function(r) {
+            if (r.success) {
+                const d = r.data;
+                guidSprin = d.header.guid_sprin;
+                isUpdate = true;
+                $('#tglAwalSurat').val(d.header.tgl_awal_surat);
+                $('#tglAkhirSurat').val(d.header.tgl_akhir_surat);
+                $('#keterangan').val(d.header.keterangan);
+                $('#penempatan').val(d.header.penempatan);
+                pesertaList = d.peserta.map(function(p) { 
+                    return { 
+                        nip: p.nip, nama: p.nama, 
+                        tgl_awal: p.tgl_awal, tgl_akhir: p.tgl_akhir, 
+                        status_um: p.status_um, status_um_text: p.status_um 
+                    }; 
+                });
+                renderTable();
+                // ✅ Tampilkan card peserta
+                $('#cardPeserta, #cardTabelPeserta').show();
+                showAlert('success', 'Data ditemukan');
+            } else { 
+                showAlert('warning', r.error || 'Data tidak ditemukan'); 
+            }
+        }).fail(function() {
+            showAlert('danger', 'Gagal memuat data');
+        }).always(function() {
+            $btn.prop('disabled', false).html('<i class="bi bi-search me-1"></i>Load');
+        });
+    });
+    
+    // ============================================
+    // Delete
+    // ============================================
+    $('#btnDelete').click(function() {
+        if (!guidSprin) { showAlert('warning', 'Load data dulu sebelum hapus'); return; }
+        if (!confirm('Hapus semua data dengan No Surat ini?')) return;
+        $.ajax({
+            url: '/api/dinas-luar/delete',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ guid_sprin: guidSprin }),
+            success: function(r) { 
+                if(r.success) { resetForm(); showAlert('success', r.message); } 
+            },
+            error: function() { showAlert('danger', 'Gagal menghapus'); }
+        });
+    });
+    
+    // ============================================
+    // New / Reset
+    // ============================================
+    $('#btnNew').click(resetForm);
+    
+    function resetForm() {
+        $('#noSurat, #tglAwalSurat, #tglAkhirSurat, #keterangan, #penempatan').val('');
+        pesertaList = []; 
+        guidSprin = ''; 
+        isUpdate = false;
+        $('#cardPeserta, #cardTabelPeserta').hide();
+        renderTable();
+        hideAlert();
+    }
+    
+    // ============================================
+    // Alert helpers
+    // ============================================
+    function showAlert(type, msg) {
+        const a = $('#alertContainer').removeClass('d-none alert-success alert-danger alert-warning').addClass('alert-' + type);
+        $('#alertMessage').text(msg); 
+        a.show();
+    }
+    
+    function hideAlert() {
+        $('#alertContainer').addClass('d-none').hide();
+    }
+});
+</script>
 {% endblock %}

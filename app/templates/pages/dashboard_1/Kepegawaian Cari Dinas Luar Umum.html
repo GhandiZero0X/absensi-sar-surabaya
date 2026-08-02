@@ -1,167 +1,206 @@
 <!-- pages/dashboard_1/Kepegawaian Cari Dinas Luar Umum.html -->
 {% extends "layout/baseDashboard1.html" %}
 
-{% block title %}- Kepegawaian Dinas Luar Umum{% endblock %}
+{% block title %}- Cari Dinas Luar Umum{% endblock %}
 
 {% block content %}
 <div class="nxl-content">
-    <!-- Page Header -->
     <div class="page-header">
         <div class="page-header-left d-flex align-items-center">
             <div class="page-header-title">
                 <h5 class="m-b-10">Kepegawaian</h5>
             </div>
             <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ url_for('main.view_kepegawaian_dinas_luar_umum') }}">Dinas Luar Umum</a></li>
                 <li class="breadcrumb-item">Cari Dinas Luar Umum</li>
             </ul>
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <div class="container-fluid">
             <div class="card mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden; border: none;">
-
-                <!-- Card Header -->
                 <div class="card-header-custom d-flex justify-content-between align-items-center p-3"
                     style="background: #ffffff; border-bottom: 1px solid #eee;">
-                    <h6 class="mb-0"><i class="bi bi-search me-2"></i>Cari Pegawai Dinas Luar Umum</h6>
+                    <h6 class="mb-0"><i class="bi bi-search me-2"></i>Cari Dinas Luar Umum</h6>
                     <a href="{{ url_for('main.view_kepegawaian_dinas_luar_umum') }}" class="btn-close-custom text-dark">
                         <i class="bi bi-x-lg"></i>
                     </a>
                 </div>
 
-                <!-- Card Body -->
                 <div class="card-body p-4">
-
                     <!-- Filter Section -->
                     <div class="filter-section mb-4">
-
-                        <!-- Baris Filter Inputs -->
+                        <!-- Baris Periode -->
                         <div class="row mb-3 align-items-center">
-                            <div
-                                class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
-                                <label class="filter-label-wide fw-bold">Filter</label>
-
-                                <!-- Dropdown 1 -->
-                                <select class="form-select-sm border custom-select w-mobile-100">
-                                    <option value="">- Pilih Field -</option>
-                                    <option value="Gol">Gol</option>
-                                    <option value="Jabatan">Jabatan</option>
-                                    <option value="Jenis Kelamin">Jenis Kelamin</option>
-                                    <option value="Nama Peg">Nama Peg</option>
-                                    <option value="NIP">NIP</option>
-                                    <option value="No Finger">No Finger</option>
-                                    <option value="Unit Kerja">Unit Kerja</option>
-                                </select>
-
-                                <!-- Input Text 1 -->
-                                <div class="input-group-custom w-mobile-100">
-                                    <input type="text" class="form-control-sm border">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                <label class="fw-bold">Periode</label>
+                                <input type="month" id="filterPeriode" class="form-control-sm border" style="width:180px;">
+                                <span class="fw-bold">atau</span>
+                                <input type="number" id="filterTahun" class="form-control-sm border" placeholder="Tahun" style="width:100px;" min="2000" max="2099">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="periodeType" id="periodeBulan" value="bulan" checked>
+                                    <label class="form-check-label small" for="periodeBulan">Bulan</label>
                                 </div>
-
-                                <span class="mx-md-2 fw-bold text-dan">Dan</span>
-
-                                <!-- Dropdown 2 -->
-                                <select class="form-select-sm border custom-select w-mobile-100">
-                                    <option value="">- Pilih Field -</option>
-                                    <option value="Gol">Gol</option>
-                                    <option value="Jabatan">Jabatan</option>
-                                    <option value="Jenis Kelamin">Jenis Kelamin</option>
-                                    <option value="Nama Peg">Nama Peg</option>
-                                    <option value="NIP">NIP</option>
-                                    <option value="No Finger">No Finger</option>
-                                    <option value="Unit Kerja">Unit Kerja</option>
-                                </select>
-
-                                <!-- Input Text 2 -->
-                                <div class="input-group-custom w-mobile-100">
-                                    <input type="text" class="form-control-sm border">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="periodeType" id="periodeTahun" value="tahun">
+                                    <label class="form-check-label small" for="periodeTahun">Tahun</label>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Baris Filter Radio Pegawai -->
-                        <div class="row align-items-center mb-2">
-                            <label class="col-md-2 form-label-custom mb-1 mb-md-0 fw-bold">Pegawai</label>
-                            <div class="col-md-6 d-flex gap-4">
-                                <div class="form-check form-check-inline mb-0 d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="statusPegawai" id="pegawaiAktif"
-                                        value="aktif" checked>
-                                    <label class="form-check-label small pt-1" for="pegawaiAktif">Aktif</label>
+                        <!-- Baris Filter -->
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                <label class="fw-bold">Filter</label>
+                                <select class="form-select-sm border" id="filterField1" style="width:180px;">
+                                    <option value="">- Pilih Field -</option>
+                                </select>
+                                <div class="input-group-custom" style="width:220px;">
+                                    <input type="text" class="form-control-sm border w-100" id="filterValue1" placeholder="Ketik lalu Enter...">
                                 </div>
-                                <div class="form-check form-check-inline mb-0 d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="statusPegawai" id="pegawaiKeluar"
-                                        value="keluar">
-                                    <label class="form-check-label small pt-1" for="pegawaiKeluar">Keluar</label>
+                                <span class="mx-md-2 fw-bold">Dan</span>
+                                <select class="form-select-sm border" id="filterField2" style="width:180px;">
+                                    <option value="">- Pilih Field -</option>
+                                </select>
+                                <div class="input-group-custom" style="width:220px;">
+                                    <input type="text" class="form-control-sm border w-100" id="filterValue2" placeholder="Ketik lalu Enter...">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Baris Filter Radio Status & Tombol Refresh -->
-                        <div class="row align-items-center mb-3">
-                            <label class="col-md-2 form-label-custom mb-1 mb-md-0 fw-bold">Status</label>
-                            <div class="col-md-6 d-flex gap-4">
-                                <div class="form-check form-check-inline mb-0 d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="statusJenis" id="statusPNS"
-                                        value="pns" checked>
-                                    <label class="form-check-label small pt-1" for="statusPNS">PNS</label>
-                                </div>
-                                <div class="form-check form-check-inline mb-0 d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="statusJenis" id="statusNonPNS"
-                                        value="non_pns">
-                                    <label class="form-check-label small pt-1" for="statusNonPNS">NON
-                                        PNS</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 text-md-end mt-2 mt-md-0">
-                                <button class="btn-refresh-custom w-mobile-100">
-                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                        <!-- Tombol Refresh -->
+                        <div class="row">
+                            <div class="col-md-12 text-md-end mt-2">
+                                <button class="btn btn-orange-figma" id="btnRefresh">
+                                    <i class="bi bi-arrow-clockwise me-1"></i> Refresh
                                 </button>
                             </div>
                         </div>
-
                     </div>
 
-                    <!-- Petunjuk / Keterangan -->
-                    <p class="mb-2 fw-semibold text-dark" style="font-size: 12px;">
-                        Untuk sort klik pada header kolom table
-                    </p>
+                    <!-- Total Records -->
+                    <div class="mb-2">
+                        <span class="badge bg-primary" id="totalRecords">0 data</span>
+                    </div>
 
                     <!-- Data Table -->
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped text-center align-middle">
                             <thead style="background:#EB6831;">
                                 <tr>
-                                    <th style="color:white; vertical-align: middle;">No</th>
-                                    <th style="color:white; vertical-align: middle;">NIP</th>
-                                    <th style="color:white; vertical-align: middle;">Nama</th>
-                                    <th style="color:white; vertical-align: middle;">GOL-Pangkat</th>
-                                    <th style="color:white; vertical-align: middle;">Unit Kerja</th>
-                                    <th style="color:white; vertical-align: middle;">Jabatan</th>
-                                    <th style="color:white; vertical-align: middle;">Status Peg</th>
-                                    <th style="color:white; vertical-align: middle;">Keterangan</th>
+                                    <th style="color:white;">No</th>
+                                    <th style="color:white;">No. Surat</th>
+                                    <th style="color:white;">Tgl Surat</th>
+                                    <th style="color:white;">Keterangan</th>
+                                    <th style="color:white;">Penempatan</th>
+                                    <th style="color:white;">Update By</th>
+                                    <th style="color:white;">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tableBody">
                                 <tr>
-                                    <td colspan="8" style="vertical-align: middle; padding: 20px;">No records to
-                                        display.</td>
+                                    <td colspan="7" style="padding: 20px;">
+                                        <i class="bi bi-inbox me-2"></i>Memuat data...
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .btn-orange-figma {
+        background-color: #e66b30;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        padding: 6px 16px;
+    }
+    .btn-orange-figma:hover { background-color: #cc5a20; color: #fff; }
+</style>
 {% endblock %}
 
-{% block scripts %}
+{% block script %}
+<script>
+$(document).ready(function() {
+    loadFilterFields();
+    searchDinasLuar();  // ✅ Auto load semua data
     
+    $('#btnRefresh').click(searchDinasLuar);
+    
+    // ✅ Enter untuk search
+    $('#filterValue1, #filterValue2').on('keydown', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); searchDinasLuar(); }
+    });
+    
+    function loadFilterFields() {
+        $.get('/api/dinas-luar/filter-fields', function(response) {
+            if (response.success) {
+                const options = response.data.map(f => 
+                    `<option value="${f.field_id}">${f.field_name}</option>`
+                ).join('');
+                $('#filterField1, #filterField2').append(options);
+            }
+        });
+    }
+    
+    function searchDinasLuar() {
+        const periodeType = $('input[name="periodeType"]:checked').val();
+        let periode = '';
+        if (periodeType === 'bulan') { periode = $('#filterPeriode').val(); }
+        else { periode = $('#filterTahun').val(); }
+        
+        const params = {
+            filter_field1: $('#filterField1').val(),
+            filter_value1: $('#filterValue1').val(),
+            filter_field2: $('#filterField2').val(),
+            filter_value2: $('#filterValue2').val(),
+            periode: periode,
+            periode_type: periodeType
+        };
+        
+        $('#btnRefresh').prop('disabled', true).html('<i class="bi bi-hourglass-split me-1"></i>Memuat...');
+        $('#tableBody').html('<tr><td colspan="7"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data...</td></tr>');
+        
+        $.get('/api/dinas-luar/cari', params, function(response) {
+            if (response.success) {
+                renderTable(response.data);
+                $('#totalRecords').text(`${response.total} data`);
+            }
+        }).fail(function() {
+            $('#tableBody').html('<tr><td colspan="7" class="text-danger">Gagal memuat data</td></tr>');
+        }).always(function() {
+            $('#btnRefresh').prop('disabled', false).html('<i class="bi bi-arrow-clockwise me-1"></i> Refresh');
+        });
+    }
+    
+    function renderTable(data) {
+        const $tbody = $('#tableBody').empty();
+        if (!data || data.length === 0) {
+            $tbody.html('<tr><td colspan="7" class="text-center py-3 text-muted"><i class="bi bi-inbox me-2"></i>Tidak ada data</td></tr>');
+            return;
+        }
+        data.forEach(function(item) {
+            $tbody.append(`
+                <tr>
+                    <td>${item.no}</td>
+                    <td><a href="/kepegawaian/dinas-luar-umum?no_surat=${encodeURIComponent(item.no_surat)}" class="text-primary fw-bold">${item.no_surat}</a></td>
+                    <td><small>${item.tgl_sprin}</small></td>
+                    <td class="text-start"><small>${item.keterangan}</small></td>
+                    <td class="text-start">${item.penempatan}</td>
+                    <td><small>${item.update_by}</small></td>
+                    <td><a href="/kepegawaian/dinas-luar-umum?no_surat=${encodeURIComponent(item.no_surat)}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></a></td>
+                </tr>
+            `);
+        });
+    }
+});
+</script>
 {% endblock %}
