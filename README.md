@@ -1,258 +1,198 @@
-# Sistem Informasi Manajemen Kepegawaian dan Operasional SAR Surabaya
+# Absensi & Manajemen Operasional — SAR Surabaya
 
-Website untuk pengelelolaan pegawai yang akan digunakan oleh SAR Surabaya yang akan memiliki fitur Utama yaitu Homepage Informasi, Pengelolaan Pegawai (pencatatan absensi kehadiran, kegiatan dinas, izin (sakit dan cuti)), Rekapitulasi Laporan (Rekap absensi, izin, pelanggaran, tunjangan, lembur, dsb), Media Informasi Pengumuman, Pengeloaan Jadwal Petugas Siaga, dan Arsip Data Diri Personal.
+Repository ini berisi aplikasi web berbasis Flask untuk manajemen kepegawaian dan operasional SAR Surabaya. Aplikasi menyediakan fungsionalitas utama seperti pencatatan absensi, pengelolaan data pegawai, jadwal siaga, pengumuman, serta rekapitulasi laporan.
 
-## Background
+---
 
-Sistem ini dikembangkan untuk membantu digitalisasi proses administrasi dan operasional di lingkungan SAR Surabaya, yang sebelumnya masih dilakukan secara manual atau semi-digital.
+## Ringkasan Fitur
 
-## Features
+- Dashboard informasi dan rekapitulasi
+- Manajemen data pegawai (CRUD)
+- Sistem absensi (check-in / check-out / import fingerprint)
+- Pengelolaan jadwal siaga
+- Pengajuan dan pencatatan izin (sakit, cuti)
+- Media informasi / pengumuman internal
+- Arsip data personal pegawai dan histori aktivitas
 
-- 📊 Dashboard informasi
-- 👥 Manajemen data pegawai
-- ⏱️ Sistem absensi (check-in / check-out)
-- 📅 Pengelolaan jadwal petugas siaga
-- 📝 Manajemen izin (sakit, cuti)
-- 📈 Rekapitulasi laporan (absensi, lembur, tunjangan, pelanggaran)
-- 📢 Sistem pengumuman internal
-- 📂 Arsip data personal pegawai
+## Teknologi
 
-## Technology Stack
+- Backend: Python 3.12, Flask
+- Database: MySQL / MariaDB
+- Templating: Jinja2
+- Frontend: HTML, CSS, JavaScript
+- Dependency management: pip (requirements.txt)
 
-- **Backend**: Python
-- **Database**: MySQL
-- **Frontend**: HTML5, CSS3, JavaScript, Jinja2 templating
-- **Framework**: Flask
+## Struktur Proyek (ringkasan)
 
-## Architecture
-
-Flask-based MVC pattern:
-
-- Models: Database layer
-- Routes: Controller logic
-- Templates: View layer
-
-## User Roles
-
-### Admin
-
-- Mengelola data pegawai
-- Melihat laporan
-- Mengatur jadwal
-
-### Employee
-
-- Melakukan absensi
-- Melihat riwayat
-- Mengajukan izin
-
-## Project Structure
+Root repo:
 
 ```
 absensi-sar-surabaya/
-├── app/
-│   ├── __init__.py                 # Application factory
-│   ├── controllers/
-│   │   ├── __init__.py
-│   │   └── homeController.py       # Home User Controller
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── absensiBackupModel.py
-│   │   ├── absensiModel.py
-│   │   ├── absensiTempModel.py
-│   │   ├── bukuHarianHeadModel.py
-│   │   ├── classModel.py
-│   │   ├── configModel.py
-│   │   ├── dinasLuarModel.py
-│   │   ├── drhModel.py
-│   │   ├── emailSendModel.py
-│   │   ├── eselonModel.py
-│   │   ├── fieldCariModel.py
-│   │   ├── formModel.py
-│   │   ├── formNewModel.py
-│   │   ├── golonganModel.py
-│   │   ├── groupJabatanModel.py
-│   │   ├── hakAksesFormModel.py
-│   │   ├── hakAksesTypeSprinModel.py
-│   │   ├── hostNameFpModel.py
-│   │   ├── jabatanKegiatanModel.py
-│   │   ├── jabatanModel.py
-│   │   ├── jadwalKerjaModel.py
-│   │   ├── jamKerjaModel.py
-│   │   ├── joblistModel.py
-│   │   ├── kalenderModel.py
-│   │   ├── klasifikasiSuratModel.py
-│   │   ├── lemburModel.py
-│   │   ├── loadFingerModel.py
-│   │   ├── logActivityBackupModel.py
-│   │   ├── logActivityModel.py
-│   │   ├── logTransaksiBackupModel.py
-│   │   ├── logTransaksiModel.py
-│   │   ├── mediaInformasiModel.py
-│   │   ├── monitoringAppModel.py
-│   │   ├── orgzSiagaModel.py
-│   │   ├── otorisasiHistoryModel.py
-│   │   ├── otorisasiModel.py
-│   │   ├── pegawaiModel.py
-│   │   ├── pegMutasiUnitModel.py
-│   │   ├── perubahanJabatanModel.py
-│   │   ├── potModel.py
-│   │   ├── potonganModel.py
-│   │   ├── priorityTransaksiModel.py
-│   │   ├── saranModel.py
-│   │   ├── satuanModel.py
-│   │   ├── shiftModel.py
-│   │   ├── skpPegawaiHeadModel.py
-│   │   ├── skpPegawaiModel.py
-│   │   ├── sprinHeaderModel.py
-│   │   ├── statusModel.py
-│   │   ├── subGroupJabatanModel.py
-│   │   ├── timeRecorderModel.py
-│   │   ├── timSiagaAnggotaModel.py
-│   │   ├── timSiagaModel.py
-│   │   ├── tunjanganModel.py
-│   │   ├── typeSprinModel.py
-│   │   ├── unitKerjaModel.py
-│   │   ├── unsurKegiatanModel.py
-│   │   └── userAccountModel.py
-│   ├── routes/
-│   │   ├── __init__.py
-│   │   └── routes.py               # all routes
-│   ├── templates/
-│   │   ├── index.html              # home user pages
-│   │   ├── layout/                 # layouts templates
-│   │   │   ├── dashboard_1.html
-│   │   │   ├── dashboard_1.html
-│   │   │   └── dashboard_1.html
-│   │   ├── pages/                  # pages
-│   │   │   ├── dashboard_1/
-│   │   │   │   └── dashboard.html
-│   │   │   ├── dashboard_2/
-│   │   │   │   └── dashboard.html
-│   │   │   └── dashboard_3/
-│   │   │       └── dashboard.html
-│   │   └── partials/
-│   └── static/                     # static style pages
-│       ├── static_dashboard_1/
-│       │   ├── images/
-│       │   ├── css/
-│       │   ├── img/
-│       │   ├── js/
-│       │   ├── lib/
-│       │   └── scss/
-│       ├── static_dashboard_2/
-│       │   ├── images/
-│       │   ├── css/
-│       │   ├── img/
-│       │   ├── js/
-│       │   ├── lib/
-│       │   └── scss/
-│       ├── static_dashboard_3/
-│       │   ├── images/
-│       │   ├── css/
-│       │   ├── img/
-│       │   ├── js/
-│       │   ├── lib/
-│       │   └── scss/
-│       └── static_home/
-│       │   ├── images/
-│       │   ├── css/
-│       │   ├── img/
-│       │   ├── js/
-│       │   ├── lib/
-│       │   └── scss/
-├── testing/
-│   └──test_connection.py           # testing conect
-├── .env                            # env lokal
-├── .env.example                    # contoh env
-├── config.py                       # Configuration
-├── app.py                          # Application entry point
-├── requirements.txt                # Python dependencies
-├── .gitignore                      # Git ignore rules
-└── README.md                       # This file
+├── app/                        # Aplikasi Flask (controllers, models, routes, templates, static)
+│   ├── development/            # Folder khusus untuk artefak pengembangan
+│   │   ├── frontend/           # Halaman static / mockup frontend (HTML/CSS/JS)
+│   │   └── schema_usecase/     # CDM / PDM / gambar struktur DB / file .sql
+│   ├── controllers/            # Controller / handler
+│   ├── models/                 # Model database (ORM/akses DB)
+│   ├── routes/                 # Definisi endpoint
+│   ├── utils/                  # Fungsi utilitas
+│   ├── templates/              # Template Jinja2
+│   └── static/                 # Static assets untuk template
+├── testing/                    # Skrip pengujian
+├── .env.example                # Contoh variabel lingkungan
+├── config.py                   # Konfigurasi aplikasi (DB uri, dsb)
+├── app.py                      # Entry point aplikasi
+├── requirements.txt            # Ketergantungan Python
+└── README.md                   # Dokumen ini
 ```
 
-## Installation & Setup
+---
 
-### Clone repository
+## Development folder (penting)
 
-git clone https://github.com/username/absensi-sar-surabaya.git
+Folder `development/` berfungsi sebagai tempat menyimpan artefak yang berguna untuk pengembangan dan dokumentasi desain database. Susunan yang direkomendasikan:
 
-### Masuk folder
+- development/frontend/
+  - berisi halaman statis (HTML/CSS/JS) yang digunakan sebagai mockup atau referensi tampilan aplikasi.
+  - cocok untuk menyimpan prototype UI, assets, dan dokumentasi frontend.
 
-cd absensi-sar-surabaya
+- development/schema_usecase/
+  - cdm/ -> file gambar/diagram CDM (Conceptual Data Model) dalam format PNG/SVG
+  - pdm/ -> file gambar/diagram PDM (Physical Data Model) dalam format PNG/SVG
+  - images/ -> gambar pendukung (mis. diagram ERD, skema relasi)
+  - sql/ -> file SQL untuk membuat skema (create tables, indices) dan seed data
+  - README.md -> penjelasan singkat tentang isi folder schema_usecase dan instruksi impor
 
-### Install dependency
+Contoh isi folder `development/`:
 
-pip install -r requirements.txt
+```
+development/
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   └── js/
+└── schema_usecase/
+    ├── cdm/
+    │   └── cdm_absensi.png
+    ├── pdm/
+    │   └── pdm_absensi.png
+    ├── images/
+    │   └── erd.png
+    └── sql/
+        ├── schema_basarnas.sql
+        └── seed_sample_data.sql
+```
 
-### Database Setup
+---
 
-- Create database: `basarnas_db`
-- Schema database ada di dalam folder development
-- Configure connection di `config.py`
+## Instalasi & Pengaturan (lokal)
 
-### Run app
+1. Clone repository
 
-python app.py
+   git clone https://github.com/GhandiZero0X/absensi-sar-surabaya.git
+   cd absensi-sar-surabaya
 
-## Database Models
+2. (Opsional) Buat virtual environment dan aktifkan
 
-<!-- ### User Model
-- `id`: Primary key
-- `username`: Unique username
-- `email`: Unique email address
-- `password_hash`: Hashed password
-- `full_name`: Employee's full name
-- `role`: 'admin' or 'employee'
-- `position`: Job position
-- `department`: Department name
-- `phone`: Contact number
-- `is_active`: Account status
-- `created_at`: Registration timestamp
+   python -m venv .venv
+   .\.venv\Scripts\activate
 
-### Attendance Model
-- `id`: Primary key
-- `user_id`: Foreign key to User
-- `date`: Attendance date
-- `check_in_time`: Check-in timestamp
-- `check_out_time`: Check-out timestamp
-- `notes`: Additional notes
-- `status`: 'present', 'absent', 'late', 'leave'
-- `created_at`: Record creation timestamp
-- `updated_at`: Last update timestamp -->
+3. Install dependency
 
-## API Endpoints
+   pip install -r requirements.txt
 
-### Authentication
+4. Buat file lingkungan dari contoh
 
-<!-- - `GET /` - Redirect to login
-- `GET /login` - Login page
-- `POST /login` - Login handler
-- `GET /logout` - Logout handler -->
+   copy .env.example .env
 
-### Admin Routes (require admin role)
+   Buka `.env` dan atur variabel yang diperlukan (contoh di .env.example). Biasanya yang perlu diisi:
+   - DATABASE_HOST
+   - DATABASE_PORT
+   - DATABASE_USER
+   - DATABASE_PASSWORD
+   - DATABASE_NAME
+   - SECRET_KEY
 
-<!-- - `GET /admin/dashboard` - Admin dashboard
-- `GET /admin/employees` - List all employees
-- `GET /admin/employees/add` - Add employee form
-- `POST /admin/employees/add` - Create employee
-- `GET /admin/employees/<id>/edit` - Edit employee form
-- `POST /admin/employees/<id>/edit` - Update employee
-- `POST /admin/employees/<id>/delete` - Delete employee
-- `GET /admin/attendance` - View attendance records -->
+5. Buat database di MySQL / MariaDB
 
-### Employee Routes
+   -- di MySQL:
+   CREATE DATABASE basarnas_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-<!-- - `GET /employee/dashboard` - Employee dashboard
-- `POST /employee/check-in` - Record check-in
-- `POST /employee/check-out` - Record check-out
-- `GET /employee/history` - View attendance history -->
+6. Impor skema dan data awal
 
-## Security Features
+   Jika ada file SQL di development/schema_usecase/sql/schema_basarnas.sql, jalankan:
 
-- Password hashing using Werkzeug
-- Session-based authentication with Flask-Login
-- CSRF protection (Flask default)
-- SQL injection prevention (SQLAlchemy ORM)
-- Secure password storage (never stored in plain text)
+   mysql -u <user> -p basarnas_db < development\schema_usecase\sql\schema_basarnas.sql
+
+   Jika ada seed data, impor juga file seed:
+
+   mysql -u <user> -p basarnas_db < development\schema_usecase\sql\seed_sample_data.sql
+
+7. Konfigurasi koneksi database di `config.py` atau menggunakan variabel lingkungan pada `.env`.
+
+8. Menjalankan aplikasi (development)
+
+   python app.py
+
+   Setelah berjalan, buka http://localhost:5000 (atau port yang dikonfigurasi).
+
+---
+
+## Ringkasan modul penting
+
+- app/controllers/ — logika permintaan dan endpoint level aplikasi
+- app/models/ — kelas-kelas akses dan definisi tabel yang dipakai aplikasi
+- app/routes/routes.py — peta route (banyak route ada di file ini)
+- app/templates/ — template Jinja2 untuk tampilan
+- app/static/ — aset statis (CSS, JS, gambar)
+- config.py — konfigurasi koneksi dan opsi aplikasi
+- app.py — entry point aplikasi (inisialisasi Flask dan run server)
+
+---
+
+## Database & Model
+
+Model dan tabel yang ada di `app/models/` mencakup entitas utama kebutuhan absensi dan pegawai (mis. pegawai, absensi, jadwal, tim siaga, otorisasi, media informasi, dsb). Untuk informasi detail struktur, buka diagram PDM/CDM di `development/schema_usecase/` atau buka file SQL schema.
+
+Jika perlu mengubah struktur DB, lakukan di file SQL PDM lalu jalankan migrasi/impor ulang pada environment development.
+
+---
+
+## Menjalankan Tes
+
+Jika ada skrip pengujian di folder `testing/` atau `tests/`, jalankan langsung skrip tersebut atau menggunakan pytest (jika terpasang):
+
+pytest -q
+
+Atau jalankan tes spesifik:
+
+python testing\test_connection.py
+
+---
+
+## Kontribusi
+
+- Buat branch baru: feature/<nama-fitur>
+- Kerjakan perubahan dan tambahkan unit test bila perlu
+- Pastikan tidak menambahkan kredensial atau secrets ke repo
+- Ajukan Pull Request ke branch `main` dengan deskripsi perubahan
+
+---
+
+## Catatan Operasional
+
+- Pastikan backup database sebelum menjalankan skrip migrasi di lingkungan produksi.
+- Simpan diagram CDM/PDM dan file .sql di `development/schema_usecase/` untuk dokumentasi perubahan skema.
+- Jika sistem absensi memakai perangkat fingerprint atau integrasi hardware lain, simpan konfigurasi/hostnames di tabel `hostNameFpModel` atau dokumentasikan pada `development/schema_usecase/README.md`.
+
+---
+
+## Kontak
+
+Untuk pertanyaan pengembangan atau pengaturan lingkungan, hubungi pemilik repo atau maintainer internal tim SAR Surabaya.
+
+---
+
+Lisensi
+
+Lisensi proyek ditetapkan oleh pemilik repo. Jika belum ada file LICENSE, tambahkan sesuai kebijakan organisasi.
