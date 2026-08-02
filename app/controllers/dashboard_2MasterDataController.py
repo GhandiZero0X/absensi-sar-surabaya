@@ -10,10 +10,107 @@ from app.models.timSiagaAnggotaModel import MfTimSiagaAnggota
 from app.models.logActivityModel import LogActivity
 from app.models.otorisasiModel import Otorisasi
 from app.models.shiftModel import MfShift
+from app.models.emailSendModel import MfEmailSend
 
 def master_data_email_broadcast():
     """Render halaman Master Data Email Broadcast."""
     return render_template('pages/dashboard_2/Master_Data_Email_Broadcast.html')
+
+def api_email_broadcast_get():
+    """
+    API: Get data konfigurasi email (seperti Btnfind_Click di VB.NET)
+    """
+    try:
+        # Ambil record pertama
+        email_config = MfEmailSend.query.first()
+        
+        if not email_config:
+            return jsonify({
+                'success': True,
+                'data': {
+                    'email_send': '',
+                    'pass_send': '',
+                    'smtp_send': '',
+                    'port_send': '',
+                    'update_info': '',
+                }
+            })
+        
+        # Cari nama pegawai yang update
+        update_info = ''
+        if email_config.UPDATE_BY:
+            peg = Pegawai.query.get(email_config.UPDATE_BY)
+            nama_update = peg.NAMA if peg else email_config.UPDATE_BY
+            tgl_update = email_config.UPDATE_DATE.strftime('%d/%m/%Y %H:%M:%S') if email_config.UPDATE_DATE else ''
+            update_info = f'{nama_update} - {tgl_update}'
+        
+        return jsonify({
+            'success': True,
+            'data': {
+                'email_send': email_config.EMAIL_SEND or '',
+                'pass_send': email_config.PASS_SEND or '',
+                'smtp_send': email_config.SMTP_SEND or '',
+                'port_send': email_config.PORT_SENT or '',
+                'update_info': update_info,
+            }
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+
+def api_email_broadcast_save():
+    """
+    API: Simpan/Update konfigurasi email (seperti BtnSave_Click di VB.NET)
+    """
+    try:
+        data = request.get_json()
+        email_send = data.get('email_send', '').strip()
+        pass_send = data.get('pass_send', '').strip()
+        smtp_send = data.get('smtp_send', '').strip()
+        port_send = data.get('port_send', '').strip()
+        
+        # Validasi (seperti VB.NET: Email atau Password Kosong)
+        if not email_send or not pass_send:
+            return jsonify({'error': 'Email atau Password tidak boleh kosong'})
+        
+        # Cari existing config
+        email_config = MfEmailSend.query.first()
+        
+        if email_config:
+            # Update existing (seperti VB.NET: Update MFEmailSend)
+            email_config.EMAIL_SEND = email_send
+            email_config.PASS_SEND = pass_send
+            email_config.SMTP_SEND = smtp_send
+            email_config.PORT_SENT = port_send
+            email_config.UPDATE_BY = 'admin'
+            email_config.UPDATE_DATE = datetime.now()
+        else:
+            # Insert baru
+            new_config = MfEmailSend(
+                EMAIL_SEND=email_send,
+                PASS_SEND=pass_send,
+                SMTP_SEND=smtp_send,
+                PORT_SENT=port_send,
+                UPDATE_BY='admin',
+                UPDATE_DATE=datetime.now()
+            )
+            db.session.add(new_config)
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Update Setting Email Broadcast Sukses'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
 
 def master_data_kgr():
     """Render halaman Master Data KGR."""

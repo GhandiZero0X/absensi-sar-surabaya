@@ -43,6 +43,8 @@ from app.controllers.dashboard_2MasterDataController import (
     api_kgr_save_as as master_data_api_kgr_save_as,
     api_kgr_cari as master_data_api_kgr_cari,
     api_kgr_get_filter_fields as master_data_api_kgr_get_filter_fields,
+    api_email_broadcast_get as master_data_api_email_broadcast_get,
+    api_email_broadcast_save as master_data_api_email_broadcast_save,
 )
 from app.controllers.dashboard_2OtoritasPersetujuanController import (
     otorisasi_persetujuan_kepala_kantor,
@@ -830,6 +832,16 @@ def view_data_siaga_membuat_jadwal_piket_siaga():
 @login_required
 def view_master_data_email_broadcast():
     return master_data_email_broadcast()
+
+@main.route('/api/email-broadcast/get')
+@login_required
+def api_email_broadcast_get():
+    return master_data_api_email_broadcast_get()
+
+@main.route('/api/email-broadcast/save', methods=['POST'])
+@login_required
+def api_email_broadcast_save():
+    return master_data_api_email_broadcast_save()
 
 @main.route('/siaga/master-data/kgr')
 @login_required

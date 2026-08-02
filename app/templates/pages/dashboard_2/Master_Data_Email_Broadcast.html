@@ -11,6 +11,7 @@
                 <h5 class="m-b-10">Master Data</h5>
             </div>
             <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ url_for('main.view_master_data_email_broadcast') }}">Setting Email Broadcast</a></li>
             </ul>
         </div>
@@ -18,10 +19,17 @@
 
     <div class="main-content master-siaga">
         <div class="container-fluid">
+            <!-- Alert -->
+            <div id="alertContainer" class="alert alert-dismissable d-none mb-3">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <span id="alertIcon"></span>
+                <span id="alertMessage"></span>
+            </div>
+
             <div class="card mb-4 filter-card">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0">
-                        <i class="bi bi-people me-2"></i>Master Data Setting Email
+                        <i class="bi bi-envelope me-2"></i>Master Data Setting Email
                     </h6>
 
                     <div class="header-actions">
@@ -29,64 +37,72 @@
                             data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
                             <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
                         </button>
-
-                        <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="" class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
-                                    <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
-                                </a>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Email</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                    <form id="formEmail">
+                        <div class="row g-3">
+                            <!-- Email -->
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    Email <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="email" class="form-control-sm border w-100" id="emailSend" 
+                                           placeholder="contoh: basarnas@gmail.com" required>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Password</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+
+                            <!-- Password -->
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    Password <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="password" class="form-control-sm border w-100" id="passSend" required>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">SMTP</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+
+                            <!-- SMTP -->
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">SMTP</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control-sm border w-100" id="smtpSend" 
+                                           placeholder="contoh: smtp.gmail.com">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Port</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+
+                            <!-- Port -->
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Port</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control-sm border w-100" id="portSend" 
+                                           placeholder="contoh: 587">
                                 </div>
                             </div>
+
+                            <!-- Info Update -->
+                            <div class="col-12 d-md-flex align-items-center" id="divUpdateInfo" style="display:none;">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Last Update</label>
+                                <div class="col-md-7">
+                                    <span id="updateInfo" class="text-muted"></span>
+                                </div>
+                            </div>
+
+                            <!-- Tombol Simpan -->
+                            <div class="col-12 d-flex justify-content-center mt-3">
+                                <button type="button" id="btnSaveForm" class="btn btn-orange-figma px-4">
+                                    <i class="bi bi-save me-1"></i>Simpan
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -95,5 +111,105 @@
 {% endblock %}
 
 {% block script %}
-
+<script>
+$(document).ready(function() {
+    // Load data saat halaman dibuka (seperti Page_LoadComplete di VB.NET)
+    loadEmailConfig();
+    
+    // Event handlers
+    $('#btnRefresh').click(loadEmailConfig);
+    $('#btnSave, #btnSaveForm').click(saveEmailConfig);
+    
+    // Fungsi load data (seperti Btnfind_Click)
+    function loadEmailConfig() {
+        $.get('/api/email-broadcast/get', function(response) {
+            if (response.success) {
+                const data = response.data;
+                $('#emailSend').val(data.email_send);
+                $('#passSend').val(data.pass_send);
+                $('#smtpSend').val(data.smtp_send);
+                $('#portSend').val(data.port_send);
+                
+                if (data.update_info) {
+                    $('#divUpdateInfo').show();
+                    $('#updateInfo').text(data.update_info);
+                } else {
+                    $('#divUpdateInfo').hide();
+                }
+            } else {
+                showAlert('error', response.error || 'Gagal memuat data');
+            }
+        }).fail(function() {
+            showAlert('error', 'Gagal memuat data dari server');
+        });
+    }
+    
+    // Fungsi simpan (seperti BtnSave_Click)
+    function saveEmailConfig() {
+        const email = $('#emailSend').val().trim();
+        const password = $('#passSend').val().trim();
+        
+        // Validasi (Email atau Password Kosong)
+        if (!email) {
+            showAlert('error', 'Email tidak boleh kosong');
+            return;
+        }
+        if (!password) {
+            showAlert('error', 'Password tidak boleh kosong');
+            return;
+        }
+        
+        const data = {
+            email_send: email,
+            pass_send: password,
+            smtp_send: $('#smtpSend').val().trim(),
+            port_send: $('#portSend').val().trim()
+        };
+        
+        const $btn = $('#btnSaveForm');
+        $btn.prop('disabled', true);
+        $btn.html('<i class="bi bi-hourglass-split me-1"></i>Menyimpan...');
+        
+        $.ajax({
+            url: '/api/email-broadcast/save',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response.success) {
+                    showAlert('success', response.message);
+                    loadEmailConfig(); // Refresh data setelah simpan
+                } else {
+                    showAlert('error', response.error);
+                }
+            },
+            error: function(xhr) {
+                const response = xhr.responseJSON || {};
+                showAlert('error', response.error || 'Gagal menyimpan data');
+            },
+            complete: function() {
+                $btn.prop('disabled', false);
+                $btn.html('<i class="bi bi-save me-1"></i>Simpan');
+            }
+        });
+    }
+    
+    // Fungsi alert
+    function showAlert(type, message) {
+        const $alert = $('#alertContainer');
+        $alert.removeClass('d-none alert-success alert-danger bg-green-active bg-red-active')
+              .addClass(type === 'success' ? 'alert-success bg-green-active' : 'alert-danger bg-red-active');
+        
+        $('#alertIcon').html(type === 'success' 
+            ? '<i class="icon fa fa-check me-1"></i>' 
+            : '<i class="icon fa fa-question me-1"></i>');
+        $('#alertMessage').text(message);
+        $alert.show();
+        
+        setTimeout(function() {
+            $alert.addClass('d-none').hide();
+        }, 5000);
+    }
+});
+</script>
 {% endblock %}
