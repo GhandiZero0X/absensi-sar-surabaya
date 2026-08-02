@@ -513,15 +513,35 @@
                             align-items: center;
                             gap: 2px;
                         }
+
+                        .sub-panel-card .form-label-custom {
+                            color: #333 !important;
+                        }
+
+                        .input-group-custom {
+                            max-width: 120px !important;
+                            width: 120px !important;
+                            flex: 0 0 120px !important;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        .input-group-custom input {
+                            width: 100% !important;
+                            max-width: 100% !important;
+                            height: 30px;
+                            font-size: 0.8rem;
+                            padding: 2px 8px;
+                        }
                     </style>
 
                     <!-- CARD UTAMA: Dinas Luar Umum -->
                     <div class="card mb-4 filter-card shadow-sm border-0" style="border-radius: 10px;">
                         <!-- Header Card -->
-                        <div class="card-header-custom d-flex justify-content-between align-items-center p-3 border-bottom"
-                            style="border-radius: 10px 10px 0 0;">
-                            <h6 class="mb-0 fw-bold d-flex align-items-center gap-2 text-dark">
-                                <i class="feather-home"></i> Update Pendukung
+                        <div class="card-header-custom d-flex justify-content-between align-items-center"
+                            style="border-radius: 10px;">
+                            <h6 class="mb-0">
+                                <i class="feather-home me-2"></i>Update Pendukung
                             </h6>
 
                             <div class="header-actions">
@@ -531,11 +551,23 @@
                                 </button>
 
                                 <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                                    <div class="header-icons-wrapper d-flex gap-2 align-items-center">
-                                        <button class="btn btn btn-sm px-2 py-1"
-                                            style="background-color: #3baf66; border: none; color: #ffffff;"><i
-                                                class="bi bi-save-fill"></i>
+                                    <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                        <!-- <a href="Kepegawaian Cari Data Pegawai.html"
+                                            class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                        </a> -->
+
+                                        <!-- <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-file-earmark-plus"
+                                                style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                        </button> -->
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
                                         </button>
+
+                                        <!-- <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                                        </button> -->
                                     </div>
                                 </div>
                             </div>
@@ -586,25 +618,26 @@
 
             <div class="row mb-3 mt-4">
                 <div class="table-responsive border rounded">
-                    <table class="table table-sm table-bordered text-center align-middle mb-0"
-                        style="font-size: 0.78rem;">
-                        <thead class="table-light">
-                            <tr>
-                                <th class="py-1">No.</th>
-                                <th class="py-1">Tanggal</th>
-                                <th class="py-1">Ada Pendukung</th>
-                                <th class="py-1">Status</th>
-                                <th class="py-1">FingerId</th>
-                                <th class="py-1">Nama</th>
-                                <th class="py-1">Keterangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="7" class="py-3 text-muted text-center">No records to display.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <table class="table table-bordered table-striped text-center align-middle">
+                                            <thead style="background:#EB6831;">
+                                                <tr>
+                                                    <th style="color:white; vertical-align: middle;">No</th>
+                                                    <th style="color:white; vertical-align: middle;">Tanggal</th>
+                                                    <th style="color:white; vertical-align: middle;">Ada Pendukung</th>
+                                                    <th style="color:white; vertical-align: middle;">Status
+                                                    </th>
+                                                    <th style="color:white; vertical-align: middle;">FingerId</th>
+                                                    <th style="color:white; vertical-align: middle;">Nama</th>
+                                                    <th style="color:white; vertical-align: middle;">Keterangan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="7" style="vertical-align: middle; padding: 20px;">No
+                                                        records to display.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                 </div>
             </div>
 

@@ -506,15 +506,19 @@
                             font-weight: 600;
                             margin-bottom: 0;
                         }
+
+                        .sub-panel-card .form-label-custom {
+                            color: #333 !important;
+                        }
                     </style>
 
                     <!-- CARD UTAMA: Dinas Luar Umum -->
                     <div class="card mb-4 filter-card shadow-sm border-0" style="border-radius: 10px;">
                         <!-- Header Card -->
-                        <div class="card-header-custom d-flex justify-content-between align-items-center p-3 border-bottom"
-                            style="border-radius: 10px 10px 0 0;">
-                            <h6 class="mb-0 fw-bold d-flex align-items-center gap-2 text-dark">
-                                <i class="feather-repeat"></i> Mutasi Penempatan Pegawai
+                        <div class="card-header-custom d-flex justify-content-between align-items-center"
+                            style="border-radius: 10px;">
+                            <h6 class="mb-0">
+                                <i class="feather-repeat me-2"></i>Mutasi Penempatan Pegawai
                             </h6>
 
                             <div class="header-actions">
@@ -524,14 +528,23 @@
                                 </button>
 
                                 <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                                    <div class="header-icons-wrapper d-flex gap-2 align-items-center">
-                                        <div class="input-group input-group-sm me-2" style="width: 180px;">
-                                            <input type="text" class="form-control" placeholder="">
-                                            <span class="input-group-text bg-white border-start-0"><i
-                                                    class="bi bi-search"></i></span>
-                                        </div>
-                                        <button class="btn btn-danger btn-sm px-2 py-1"><i
-                                                class="bi bi-trash-fill"></i></button>
+                                    <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                        <a href="Kepegawaian Cari Data Pegawai.html"
+                                            class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                        </a>
+
+                                        <!-- <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-file-earmark-plus"
+                                                style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                        </button> -->
+                                        <!-- <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                                        </button> -->
+
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -578,17 +591,17 @@
                                 <label class="col-md-2 form-label-custom pt-1">Peserta</label>
                                 <div class="col-md-8">
                                     <div class="table-responsive border rounded">
-                                        <table class="table table-sm table-bordered text-center align-middle mb-0"
-                                            style="font-size: 0.78rem;">
-                                            <thead class="table-light">
+                                        <table class="table table-bordered table-striped text-center align-middle">
+                                            <thead style="background:#EB6831;">
                                                 <tr>
-                                                    <th class="py-1">No.</th>
-                                                    <th class="py-1">Nama</th>
+                                                    <th style="color:white; vertical-align: middle;">No</th>
+                                                    <th style="color:white; vertical-align: middle;">Nama</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td colspan="5" class="py-3 text-muted">No records to display.</td>
+                                                    <td colspan="2" style="vertical-align: middle; padding: 20px;">No
+                                                        records to display.</td>
                                                 </tr>
                                             </tbody>
                                         </table>
