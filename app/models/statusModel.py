@@ -1,4 +1,4 @@
-# app/models/mfStatusModel.py
+# app/models/statusModel.py
 from app import db
 
 
