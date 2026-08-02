@@ -1,7 +1,7 @@
 <!-- pages/dashboard_1/Kepegawaian Update Pendukung.html -->
 {% extends "layout/baseDashboard1.html" %}
 
-{% block title %}- Kepegawaian Update Pendukung{% endblock %}
+{% block title %}- Update Pendukung{% endblock %}
 
 {% block content %}
 <div class="nxl-content">
@@ -11,189 +11,72 @@
                 <h5 class="m-b-10">Kepegawaian</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Kepegawaian Update Pendukung.html">Update Pendukung</a>
-                </li>
-                <li class="breadcrumb-item">Edit</li>
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_kepegawaian_update_pendukung') }}">Update Pendukung</a></li>
             </ul>
         </div>
     </div>
 
     <div class="main-content master-siaga">
         <div class="container-fluid">
-
-            <!-- Custom Style Khusus Halaman Ini -->
-            <style>
-                .sub-panel-card {
-                    border: 1px solid #dee2e6;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-                    background: #fff;
-                }
-
-                .sub-panel-header {
-                    background-color: #e65c00;
-                    color: #fff;
-                    font-weight: 600;
-                    font-size: 0.9rem;
-                    padding: 8px 15px;
-                    width: 100%;
-                }
-
-                .input-custom-style {
-                    border: 1px solid #ccc;
-                    border-radius: 3px;
-                    padding: 3px 8px;
-                    font-size: 0.85rem;
-                    width: 100%;
-                    background-color: #fff;
-                }
-
-                .input-custom-style:focus {
-                    border-color: #e65c00;
-                    outline: none;
-                }
-
-                .form-label-custom {
-                    font-size: 0.85rem;
-                    color: #333;
-                    font-weight: 600;
-                    margin-bottom: 0;
-                }
-
-                .btn-refresh-custom {
-                    white-space: nowrap;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 2px;
-                }
-            </style>
-
-            <!-- CARD UTAMA: Dinas Luar Umum -->
-            <div class="card mb-4 filter-card shadow-sm border-0" style="border-radius: 10px;">
-                <!-- Header Card -->
-                <div class="card-header-custom d-flex justify-content-between align-items-center p-3 border-bottom"
-                    style="border-radius: 10px 10px 0 0;">
-                    <h6 class="mb-0 fw-bold d-flex align-items-center gap-2 text-dark">
-                        <i class="feather-home"></i> Update Pendukung
-                    </h6>
-
-                    <div class="header-actions">
-                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
-                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Body Card Utama -->
-                <div class="card-body p-4">
-                    <div class="filter-section mb-4">
-
-                        <!-- Baris Filter Inputs -->
-                        <div class="row mb-3 align-items-center">
-                            <div
-                                class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap flex-md-nowrap gap-2">
-                                <label class="filter-label-wide fw-bold">Periode</label>
-
-                                <!-- Input Text 1 -->
-                                <div class="input-group-custom w-mobile-100">
-                                    <input type="text" class="form-control-sm border">
-                                    <span class="icon-append"><i class="bi bi-calendar"></i></span>
-                                </div>
-
-                                <label class="filter-label-wide fw-bold">Tingkatan</label>
-
-                                <!-- Input Text 1 -->
-                                <div class="input-group-custom w-mobile-100">
-                                    <input type="text" class="form-control-sm border">
-                                </div>
-
-                                <label class="filter-label-wide fw-bold">Field</label>
-
-                                <!-- Input Text 1 -->
-                                <div class="input-group-custom w-mobile-100">
-                                    <input type="text" class="form-control-sm border">
-                                </div>
-
-                                <label class="filter-label-wide fw-bold">Text</label>
-
-                                <!-- Input Text 1 -->
-                                <div class="input-group-custom w-mobile-100">
-                                    <input type="text" class="form-control-sm border">
-                                </div>
-
-                                <div class="ms-auto w-mobile-100">
-                                    <button class="btn btn-primary btn-sm text-nowrap ms-auto">
-                                        Refresh
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3 mt-4">
-                                <div class="table-responsive border rounded">
-                                    <table class="table table-sm table-bordered text-center align-middle mb-0"
-                                        style="font-size: 0.78rem;">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th class="py-1">No.</th>
-                                                <th class="py-1">Tanggal</th>
-                                                <th class="py-1">Ada Pendukung</th>
-                                                <th class="py-1">Status</th>
-                                                <th class="py-1">FingerId</th>
-                                                <th class="py-1">Nama</th>
-                                                <th class="py-1">Keterangan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="7" class="py-3 text-muted text-center">No records to
-                                                    display.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-
-                    <!-- Tombol SAVE -->
-                    <div class="text-center mt-2">
-                        <button type="button" class="btn btn-primary btn-sm px-4 rounded-pill fw-bold"
-                            style="background-color: #0000ff; border: none; font-size: 0.8rem;">SAVE</button>
-                    </div>
-                </div>
+            <div id="alertContainer" class="alert alert-dismissable d-none mb-3">
+                <span id="alertMessage"></span>
             </div>
 
-            <!-- SUB PANEL CARD: Add Peserta -->
-            <div class="sub-panel-card mb-4">
-                <div class="sub-panel-header">
-                    Item Kegiatan
+            <div class="card mb-4 shadow-sm border-0" style="border-radius: 10px;">
+                <div class="card-header-custom d-flex justify-content-between align-items-center p-3 border-bottom">
+                    <h6 class="mb-0"><i class="feather-home me-2"></i>Update Pendukung</h6>
                 </div>
-                <div class="p-4">
-
-                    <!-- Uang Makan -->
-                    <div class="row mb-3 align-items-center">
-                        <label class="col-md-2 form-label-custom">ID Kegiatan</label>
-                        <div class="col-md-8">
-                            <input type="text" class="input-custom-style">
+                <div class="card-body p-4">
+                    <!-- Filter -->
+                    <div class="row mb-3 align-items-end">
+                        <div class="col-md-2">
+                            <label class="form-label-custom">Periode <span class="text-danger">*</span></label>
+                            <input type="month" id="periode" class="form-control form-control-sm input-custom-style">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label-custom">Tingkatan</label>
+                            <select id="tingkatan" class="form-select form-select-sm input-custom-style">
+                                <option value="">Semua</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label-custom">Field</label>
+                            <select id="filterField" class="form-select form-select-sm input-custom-style">
+                                <option value="">- Pilih -</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label-custom">Cari</label>
+                            <input type="text" id="filterValue" class="form-control form-control-sm input-custom-style" placeholder="Ketik...">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-orange-figma btn-sm w-100" id="btnRefresh">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                            </button>
                         </div>
                     </div>
 
-                    <div class="row mb-3 align-items-center">
-                        <label class="col-md-2 form-label-custom">Deskripsi Kegiatan</label>
-                        <div class="col-md-8">
-                            <input type="text" class="input-custom-style">
-                        </div>
+                    <!-- Tabel -->
+                    <div class="table-responsive border rounded" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table table-sm table-bordered text-center align-middle mb-0" style="font-size: 0.78rem;">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th>No</th><th>Tanggal</th><th>Pendukung</th>
+                                    <th>Status</th><th>NIP</th><th>Nama</th><th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr><td colspan="7" class="py-3 text-muted">Silakan pilih periode dan klik Refresh</td></tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <!-- Tombol Insert Pegawai to table -->
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary btn-sm px-3 rounded-pill"
-                            style="font-size: 0.75rem; background-color: #0000ff; border: none;">
-                            Insert Item
+                    <!-- Save -->
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary btn-sm px-4 rounded-pill fw-bold text-white" id="btnSave"
+                            style="background-color: #0000ff; border: none; font-size: 0.8rem;">
+                            <i class="bi bi-save me-1"></i>SAVE
                         </button>
                     </div>
                 </div>
@@ -201,8 +84,163 @@
         </div>
     </div>
 </div>
+
+<style>
+    .input-custom-style { border: 1px solid #ccc; border-radius: 3px; padding: 3px 8px; font-size: 0.85rem; width: 100%; background-color: #fff; }
+    .form-label-custom { font-size: 0.85rem; color: #333; font-weight: 600; margin-bottom: 4px; }
+    .btn-orange-figma { background-color: #e66b30; color: #fff; border: none; border-radius: 5px; font-weight: 600; padding: 6px 12px; }
+    .btn-orange-figma:hover { background-color: #cc5a20; color: #fff; }
+    .sticky-top { position: sticky; top: 0; z-index: 10; }
+</style>
 {% endblock %}
 
-{% block scripts %}
+{% block script %}
+<script>
+$(document).ready(function() {
+    // Load filter fields & tingkatan
+    $.get('/api/update-pendukung/filter-fields', function(r) {
+        if (r.success) {
+            r.data.forEach(function(f) {
+                $('#filterField').append(`<option value="${f.field_id}">${f.field_name}</option>`);
+            });
+        }
+    });
     
+    $.get('/api/update-pendukung/tingkatan', function(r) {
+        if (r.success) {
+            r.data.forEach(function(t) {
+                $('#tingkatan').append(`<option value="${t}">${t}</option>`);
+            });
+        }
+    });
+
+    // Set default periode ke bulan ini
+    const now = new Date();
+    $('#periode').val(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`);
+
+    // Refresh
+    $('#btnRefresh').click(function() {
+        const periode = $('#periode').val();
+        if (!periode) { 
+            showAlert('warning', 'Pilih periode terlebih dahulu!'); 
+            return; 
+        }
+
+        const params = {
+            periode: periode,
+            filter_field: $('#filterField').val(),
+            filter_value: $('#filterValue').val().trim(),
+            tingkatan: $('#tingkatan').val()
+        };
+
+        const $btn = $(this).prop('disabled', true).html('<i class="bi bi-hourglass-split me-1"></i>Loading...');
+        $('#tableBody').html('<tr><td colspan="7"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data...</td></tr>');
+
+        $.get('/api/update-pendukung/search', params, function(r) {
+            console.log('🔍 Search response:', r);
+            const $tbody = $('#tableBody').empty();
+            
+            if (r.success && r.data.length) {
+                r.data.forEach(function(d, i) {
+                    const checked = d.pendukung ? 'checked' : '';
+                    $tbody.append(`
+                        <tr>
+                            <td>${d.no}</td>
+                            <td>${d.tgl_kerja}</td>
+                            <td><input type="checkbox" class="cb-pendukung" ${checked}></td>
+                            <td>${d.tingkat}</td>
+                            <td>${d.nip}</td>
+                            <td class="text-start">${d.nama}</td>
+                            <td><input type="text" class="form-control form-control-sm txt-ket" value="${d.keterangan || ''}" style="width:100%;"></td>
+                        </tr>
+                    `);
+                    // Simpan data tersembunyi
+                    $tbody.find('tr:last').append(`
+                        <input type="hidden" class="hd-transaksi" value="${d.transaksi}">
+                        <input type="hidden" class="hd-transac" value="${d.transac}">
+                        <input type="hidden" class="hd-transaksi-id" value="${d.transaksi_id_from}">
+                    `);
+                });
+                showAlert('info', `Ditemukan ${r.total} data`);
+            } else {
+                $tbody.html('<tr><td colspan="7" class="py-3 text-muted">Tidak ada data</td></tr>');
+            }
+        }).fail(function(xhr) {
+            console.error('❌ Search error:', xhr.responseText);
+            $('#tableBody').html('<tr><td colspan="7" class="text-danger">Gagal memuat data</td></tr>');
+        }).always(function() {
+            $btn.prop('disabled', false).html('<i class="bi bi-arrow-clockwise me-1"></i>Refresh');
+        });
+    });
+
+    // Save
+    $('#btnSave').click(function() {
+        const items = [];
+        $('#tableBody tr').each(function() {
+            const $row = $(this);
+            const tgl = $row.find('td:eq(1)').text().trim();
+            const nip = $row.find('td:eq(4)').text().trim();
+            
+            if (!tgl || !nip) return;
+            if (tgl.includes('Silakan') || tgl.includes('Tidak ada')) return;
+            
+            items.push({
+                tgl_kerja: tgl,
+                nip: nip,
+                pendukung: $row.find('.cb-pendukung').is(':checked'),
+                keterangan: $row.find('.txt-ket').val() || '',
+                transaksi: $row.find('.hd-transaksi').val() || '',
+                transac: $row.find('.hd-transac').val() || '',
+                transaksi_id_from: $row.find('.hd-transaksi-id').val() || ''
+            });
+        });
+
+        if (!items.length) { 
+            showAlert('warning', 'Tidak ada data untuk disimpan! Lakukan Refresh dulu.'); 
+            return; 
+        }
+        
+        if (!confirm(`Simpan perubahan untuk ${items.length} data?`)) return;
+
+        const $btn = $(this).prop('disabled', true).html('<i class="bi bi-hourglass-split me-1"></i>Menyimpan...');
+
+        $.ajax({
+            url: '/api/update-pendukung/save',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ items: items }),
+            success: function(r) {
+                if (r.success) {
+                    showAlert('success', r.message);
+                } else {
+                    showAlert('danger', r.error || 'Gagal menyimpan');
+                }
+            },
+            error: function(xhr) {
+                console.error('❌ Save error:', xhr.responseText);
+                showAlert('danger', 'Gagal menyimpan data!');
+            },
+            complete: function() {
+                $btn.prop('disabled', false).html('<i class="bi bi-save me-1"></i>SAVE');
+            }
+        });
+    });
+
+    // Enter key untuk refresh
+    $('#filterValue').on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#btnRefresh').click();
+        }
+    });
+
+    function showAlert(type, msg) {
+        $('#alertContainer').removeClass('d-none alert-success alert-danger alert-warning alert-info')
+            .addClass('alert-' + type).show();
+        $('#alertMessage').text(msg);
+    }
+
+    console.log('✅ Update Pendukung - Halaman siap');
+});
+</script>
 {% endblock %}

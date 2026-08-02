@@ -1695,3 +1695,287 @@ def kepegawaian_update_pendukung():
     Render halaman Kepegawaian Update Pendukung.
     """
     return render_template('pages/dashboard_1/Kepegawaian Update Pendukung.html')
+
+def api_update_pendukung_search():
+    """
+    API: Cari data untuk Update Pendukung
+    Mirip dengan BtnRefresh_Click di VB.NET
+    """
+    try:
+        periode = request.args.get('periode', '')  # Format: YYYY-MM
+        filter_field = request.args.get('filter_field', '')
+        filter_value = request.args.get('filter_value', '')
+        tingkatan = request.args.get('tingkatan', '')
+        
+        if not periode or len(periode) < 7:
+            return jsonify({'success': False, 'error': 'Periode tidak boleh kosong'})
+        
+        tahun = int(periode[:4])
+        bulan = int(periode[5:7])
+        
+        # Query 1: Absensi dengan TLM (keterlambatan) - BUKAN DinasLuar/Cuti/Sakit/Alpa
+        q1 = db.session.query(
+            Absensi.TRANSAKSI_IN.label('Transac'),
+            Absensi.TGL_KERJA.label('TglKerja'),
+            Absensi.PENDUKUNG_IN.label('pendukung'),
+            Absensi.TINGKAT_TLM.label('tingkat'),
+            Pegawai.NIP.label('FingerID'),
+            Pegawai.NAMA.label('Nama'),
+            Absensi.KET_IN.label('ket'),
+            db.literal('IN').label('Transaksi'),
+            MfGolongan.URUT_GOL.label('Urutan'),
+            Absensi.TRAKSAKSI_ID_FROM.label('TransaksiIDFrom')
+        ).join(
+            Pegawai, Absensi.NIP == Pegawai.NIP
+        ).outerjoin(
+            MfGolongan, Pegawai.GOL_ID == MfGolongan.GOL_ID
+        ).filter(
+            db.extract('year', Absensi.TGL_KERJA) == tahun,
+            db.extract('month', Absensi.TGL_KERJA) == bulan,
+            ~Absensi.TRANSAKSI_IN.in_(['DinasLuar', 'Cuti', 'sakit', 'Alpa']),
+            Absensi.TINGKAT_TLM != '',
+            Absensi.TINGKAT_TLM.isnot(None)
+        )
+        
+        # Query 2: Absensi Alpa/Sakit
+        q2 = db.session.query(
+            Absensi.TRANSAKSI_IN.label('Transac'),
+            Absensi.TGL_KERJA.label('TglKerja'),
+            Absensi.PENDUKUNG_IN.label('pendukung'),
+            db.case(
+                (Absensi.TRANSAKSI_IN == 'Alpa', 'Ijin'),
+                else_=Absensi.TRANSAKSI_IN
+            ).label('tingkat'),
+            Pegawai.NIP.label('FingerID'),
+            Pegawai.NAMA.label('Nama'),
+            Absensi.KET_IN.label('ket'),
+            db.literal('IN').label('Transaksi'),
+            MfGolongan.URUT_GOL.label('Urutan'),
+            Absensi.TRAKSAKSI_ID_FROM.label('TransaksiIDFrom')
+        ).join(
+            Pegawai, Absensi.NIP == Pegawai.NIP
+        ).outerjoin(
+            MfGolongan, Pegawai.GOL_ID == MfGolongan.GOL_ID
+        ).filter(
+            db.extract('year', Absensi.TGL_KERJA) == tahun,
+            db.extract('month', Absensi.TGL_KERJA) == bulan,
+            Absensi.TRANSAKSI_IN.in_(['Alpa', 'sakit']),
+            Absensi.TINGKAT_TLM != '',
+            Absensi.TINGKAT_TLM.isnot(None)
+        )
+        
+        # Query 3: Absensi dengan PSW (pulang sebelum waktunya)
+        q3 = db.session.query(
+            Absensi.TRANSAKSI_OUT.label('Transac'),
+            Absensi.TGL_KERJA.label('TglKerja'),
+            Absensi.PENDUKUNG_OUT.label('pendukung'),
+            Absensi.TINGKAT_PSW.label('tingkat'),
+            Pegawai.NIP.label('FingerID'),
+            Pegawai.NAMA.label('Nama'),
+            Absensi.KET_OUT.label('ket'),
+            db.literal('OUT').label('Transaksi'),
+            MfGolongan.URUT_GOL.label('Urutan'),
+            Absensi.TRAKSAKSI_ID_FROM.label('TransaksiIDFrom')
+        ).join(
+            Pegawai, Absensi.NIP == Pegawai.NIP
+        ).outerjoin(
+            MfGolongan, Pegawai.GOL_ID == MfGolongan.GOL_ID
+        ).filter(
+            db.extract('year', Absensi.TGL_KERJA) == tahun,
+            db.extract('month', Absensi.TGL_KERJA) == bulan,
+            ~Absensi.TRANSAKSI_IN.in_(['DinasLuar', 'Cuti', 'sakit', 'Alpa']),
+            Absensi.TINGKAT_PSW != '',
+            Absensi.TINGKAT_PSW.isnot(None)
+        )
+        
+        # Filter tambahan
+        if filter_field and filter_value:
+            if filter_field == 'NIP':
+                q1 = q1.filter(Pegawai.NIP.ilike(f'%{filter_value}%'))
+                q2 = q2.filter(Pegawai.NIP.ilike(f'%{filter_value}%'))
+                q3 = q3.filter(Pegawai.NIP.ilike(f'%{filter_value}%'))
+            elif filter_field == 'Nama':
+                q1 = q1.filter(Pegawai.NAMA.ilike(f'%{filter_value}%'))
+                q2 = q2.filter(Pegawai.NAMA.ilike(f'%{filter_value}%'))
+                q3 = q3.filter(Pegawai.NAMA.ilike(f'%{filter_value}%'))
+        
+        if tingkatan:
+            q1 = q1.filter(Absensi.TINGKAT_TLM == tingkatan)
+            q3 = q3.filter(Absensi.TINGKAT_PSW == tingkatan)
+        
+        # Union all queries - lalu convert ke list biasa (hindari subquery)
+        results_q1 = q1.all()
+        results_q2 = q2.all()
+        results_q3 = q3.all()
+        
+        # Gabungkan semua hasil
+        all_results = list(results_q1) + list(results_q2) + list(results_q3)
+        
+        # Format dan urutkan
+        formatted = []
+        for row in all_results:
+            formatted.append({
+                'tgl_kerja': row.TglKerja,
+                'pendukung': row.pendukung,
+                'tingkat': row.tingkat,
+                'nip': row.FingerID,
+                'nama': row.Nama,
+                'keterangan': row.ket,
+                'transaksi': row.Transaksi,
+                'transac': row.Transac,
+                'transaksi_id_from': row.TransaksiIDFrom,
+                'urutan': row.Urutan or 999,
+            })
+        
+        # Urutkan: by TglKerja, Urutan, Nama
+        formatted.sort(key=lambda x: (x['tgl_kerja'] or '', x['urutan'], x['nama'] or ''))
+        
+        # Format final
+        data = []
+        for i, item in enumerate(formatted, 1):
+            data.append({
+                'no': i,
+                'tgl_kerja': item['tgl_kerja'].strftime('%d-%b-%Y') if item['tgl_kerja'] else '-',
+                'pendukung': item['pendukung'] == 'Y' if item['pendukung'] else False,
+                'tingkat': item['tingkat'] or '',
+                'nip': item['nip'] or '',
+                'nama': item['nama'] or '',
+                'keterangan': item['keterangan'] or '',
+                'transaksi': item['transaksi'] or '',
+                'transac': item['transac'] or '',
+                'transaksi_id_from': item['transaksi_id_from'] or '',
+            })
+        
+        # Batasi 1000 data
+        data = data[:1000]
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'total': len(data)
+        })
+        
+    except Exception as e:
+        import traceback
+        print("❌ ERROR in api_update_pendukung_search:")
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e), 'data': []})
+
+
+def api_update_pendukung_save():
+    """
+    API: Simpan Update Pendukung
+    Mirip dengan BtnSave_Click di VB.NET
+    """
+    try:
+        data = request.get_json()
+        print("📥 Data Update Pendukung:", len(data.get('items', [])), 'items')
+        
+        items = data.get('items', [])
+        
+        if not items:
+            return jsonify({'success': False, 'error': 'Data tidak boleh kosong'})
+        
+        saved_count = 0
+        
+        for item in items:
+            tgl_kerja = item.get('tgl_kerja', '')
+            nip = item.get('nip', '')
+            pendukung = 'Y' if item.get('pendukung', False) else 'N'
+            keterangan = item.get('keterangan', '') or ''
+            transaksi = item.get('transaksi', '')  # 'IN' atau 'OUT'
+            transac = item.get('transac', '')  # DinasLuar, Cuti, sakit, Alpa, dll
+            transaksi_id_from = item.get('transaksi_id_from', '')
+            
+            if not tgl_kerja or not nip:
+                continue
+            
+            try:
+                tgl_kerja_date = datetime.strptime(tgl_kerja, '%d-%b-%Y')
+            except:
+                continue
+            
+            # Cari absensi by NIP dan TGL_KERJA
+            absensi = Absensi.query.filter(
+                Absensi.NIP == nip,
+                db.func.date(Absensi.TGL_KERJA) == tgl_kerja_date.date()
+            ).first()
+            
+            if not absensi:
+                continue
+            
+            # Jika transaksi adalah DinasLuar/Cuti/Sakit/Alpa
+            if transac.upper() in ['DINASLUAR', 'CUTI', 'SAKIT', 'ALPA']:
+                # Update Absensi (IN dan OUT)
+                absensi.PENDUKUNG_IN = pendukung
+                absensi.KET_IN = keterangan[:850] if keterangan else None
+                absensi.UPDATE_IN_BY = 'admin'
+                absensi.UPDATE_IN_DATE = datetime.now()
+                absensi.PENDUKUNG_OUT = pendukung
+                absensi.KET_OUT = keterangan[:850] if keterangan else None
+                absensi.UPDATE_OUT_BY = 'admin'
+                absensi.UPDATE_OUT_DATE = datetime.now()
+                
+                # Update DinasLuar jika ada
+                if transaksi_id_from:
+                    dinas = DinasLuar.query.filter(
+                        DinasLuar.NIP == nip,
+                        DinasLuar.TRANSAKSI == transac,
+                        DinasLuar.DINAS_TRANSAKSI_ID == transaksi_id_from
+                    ).first()
+                    
+                    if dinas:
+                        dinas.KETERANGAN_DINAS_LUAR = keterangan[:450] if keterangan else None
+                        dinas.PENDUKUNG = pendukung
+                        dinas.UPDATE_BY = 'admin'
+                        dinas.UPDATE_DATE = datetime.now()
+            else:
+                # Update Absensi IN atau OUT saja
+                if transaksi == 'IN':
+                    absensi.PENDUKUNG_IN = pendukung
+                    absensi.KET_IN = keterangan[:850] if keterangan else None
+                    absensi.UPDATE_IN_BY = 'admin'
+                    absensi.UPDATE_IN_DATE = datetime.now()
+                elif transaksi == 'OUT':
+                    absensi.PENDUKUNG_OUT = pendukung
+                    absensi.KET_OUT = keterangan[:850] if keterangan else None
+                    absensi.UPDATE_OUT_BY = 'admin'
+                    absensi.UPDATE_OUT_DATE = datetime.now()
+            
+            saved_count += 1
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': f'{saved_count} data berhasil diupdate'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        print("❌ ERROR in api_update_pendukung_save:")
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
+
+def api_update_pendukung_get_tingkatan():
+    """API: Get list Tingkatan dari MfPot"""
+    try:
+        tingkatan_list = db.session.query(MfPot.TINGKAT).distinct().order_by(MfPot.TINGKAT).all()
+        data = [t[0] for t in tingkatan_list if t[0]]
+        return jsonify({'success': True, 'data': data})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e), 'data': []})
+
+
+def api_update_pendukung_get_filter_fields():
+    """API: Get list field untuk filter"""
+    try:
+        fields = [
+            {'field_id': 'NIP', 'field_name': 'NIP'},
+            {'field_id': 'Nama', 'field_name': 'Nama Pegawai'},
+        ]
+        return jsonify({'success': True, 'data': fields})
+    except Exception as e:
+        return jsonify({'error': str(e), 'data': []})
