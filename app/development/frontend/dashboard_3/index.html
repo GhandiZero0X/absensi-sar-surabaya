@@ -294,18 +294,18 @@
                         </div>
                     </div>
 
-                    <div class="card shadow-sm border-0">
+                    <div class="card shadow-sm border-0 mb-4">
                         <div class="card-header p-0" style="background-color: #EB6831; border-top-left-radius: 12px; border-top-right-radius: 12px; min-height: 50px; display: flex; align-items: center;">
                             <ul class="nav nav-tabs border-0 ps-2" id="skpTab" role="tablist">
-                                
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active custom-tab-btn px-3 py-1 fw-bold" 
+                                    <button class="nav-link active custom-tab-btn px-4 py-2 fw-bold text-dark" 
+                                            style="background-color: #f8f9fa; border: none; border-top-left-radius: 8px; border-top-right-radius: 8px;"
                                             id="history-tab" data-bs-toggle="tab" data-bs-target="#history-content" 
                                             type="button" role="tab">Resume</button>
                                 </li>
-
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link custom-tab-btn px-3 py-1 fw-bold" 
+                                    <button class="nav-link custom-tab-btn px-4 py-2 text-white" 
+                                            style="background-color: transparent; border: none;"
                                             id="pengajuan-tab" data-bs-toggle="tab" data-bs-target="#pengajuan-content" 
                                             type="button" role="tab">Absensi Periode Bulan</button>
                                 </li>
@@ -314,37 +314,109 @@
 
                         <div class="card-body">
                             <div class="tab-content" id="skpTabContent">
+                                
+                                <!-- TAB RESUME (ACTIVE) -->
                                 <div class="tab-pane fade show active" id="history-content" role="tabpanel">
-                                    <div class="p-4">
-                                        <img src="assets/images/qr.png"
-                                            alt="QR Code"
-                                            width="100"
-                                            height="100"
-                                            class="img-fluid">
+                                    
+                                    <!-- 1. QR Code Section -->
+                                    <div class="card border rounded-3 mb-3 shadow-sm">
+                                        <div class="card-body py-2">
+                                            <img src="assets/images/qr.png"
+                                                alt="QR Code"
+                                                width="100"
+                                                height="100"
+                                                class="img-fluid">
+                                        </div>
+                                    </div>
+
+                                    <!-- 2. Grafik Tahun 2026 -->
+                                    <div class="card border rounded-3 mb-3 shadow-sm">
+                                        <div class="card-body">
+                                            <h4 class="text-center mb-4">Tahun 2026</h4>
+                                            <div id="chartResume" class="d-flex justify-content-center"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 3. Tabel Detail Personal -->
+                                    <div class="card border rounded-3 shadow-sm mb-4" style="overflow: hidden;">
+                                        <!-- Bagian Header -->
+                                        <div class="card-header px-4 py-3" style="background-color: #EB6831; border-bottom: none;">
+                                            <h6 class="mb-0 fw-bold" style="color: #ffffff;">Detail Personal</h6>
+                                        </div>
+                                        
+                                        <!-- Bagian Body & Tabel -->
+                                        <div class="card-body p-4">
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless align-middle mb-0" style="color: #374151;">
+                                                    <!-- Header Tabel -->
+                                                    <thead style="border-bottom: 1px solid #E5E7EB; font-size: 12px; letter-spacing: 0.5px;" class="text-uppercase text-dark">
+                                                        <tr>
+                                                            <th class="py-3 px-3 fw-bold">No</th>
+                                                            <th class="py-3 px-3 fw-bold">Nama</th>
+                                                            <th class="py-3 px-3 fw-bold">Jabatan</th>
+                                                            <th class="py-3 px-3 fw-bold">Progress</th>
+                                                        </tr>
+                                                    </thead>
+                                                    
+                                                    <!-- Isi Tabel -->
+                                                    <tbody>
+                                                        <tr style="border-bottom: 1px solid #F3F4F6;">
+                                                            <td class="py-4 px-3">1</td>
+                                                            <td class="py-4 px-3">NANANG SIGIT PH, S.IP, M.M.</td>
+                                                            <td class="py-4 px-3">Kepala Kantor Pencarian dan Pertolongan</td>
+                                                            <td class="py-4 px-3">Belum membuat</td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid #F3F4F6;">
+                                                            <td class="py-4 px-3">2</td>
+                                                            <td class="py-4 px-3">I MADE OKA ASTAWA S.H., M.Si.</td>
+                                                            <td class="py-4 px-3">Kepala Kantor Pencarian dan Pertolongan Tipe B</td>
+                                                            <td class="py-4 px-3">Belum membuat</td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid #F3F4F6;">
+                                                            <td class="py-4 px-3">3</td>
+                                                            <td class="py-4 px-3">MUHAMMAD ZAENAL ARIFIN, S.Pd., M.Si.</td>
+                                                            <td class="py-4 px-3">Kepala Subbagian Umum</td>
+                                                            <td class="py-4 px-3">Belum membuat</td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid #F3F4F6;">
+                                                            <td class="py-4 px-3">4</td>
+                                                            <td class="py-4 px-3">DIDIT ARIE RISTANDY, SE</td>
+                                                            <td class="py-4 px-3">Kepala Seksi Operasi dan Siaga Pencarian dan Pertolongan</td>
+                                                            <td class="py-4 px-3">Belum membuat</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="py-4 px-3">5</td>
+                                                            <td class="py-4 px-3">WAHYU TRI AGUNG PRI HARTANTO, S.Sos.</td>
+                                                            <td class="py-4 px-3">Kepala Seksi Sumber Daya Pencarian dan Pertolongan</td>
+                                                            <td class="py-4 px-3">Belum membuat</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
+                                <!-- TAB ABSENSI PERIODE BULAN -->
                                 <div class="tab-pane fade" id="pengajuan-content" role="tabpanel">
-                                        <h6 class="mb-0 d-inline-flex align-items-center me-3">
-                                            <i class="ti ti-speakerphone me-2"></i>
-                                            Absensi Periode
-                                        </h6>
+                                    <h6 class="mb-0 d-inline-flex align-items-center me-3">
+                                        <i class="ti ti-speakerphone me-2"></i>
+                                        Absensi Periode
+                                    </h6>
 
-                                        <input
-                                            type="month"
-                                            class="form-control form-control-sm d-inline-block align-middle"
-                                            value="2026-02"
-                                            style="width:170px; height:38px; font-size:14px;">
+                                    <input type="month"
+                                        class="form-control form-control-sm d-inline-block align-middle"
+                                        value="2026-02"
+                                        style="width:170px; height:38px; font-size:14px;">
 
-                                        <button class="btn-refresh-custom mt-2 mt-md-0 w-mobile-100" style="border: none;">
-                                            <i class="bi bi-download me-2"></i>Cetak Absensi
-                                        </button>                            
+                                    <button class="btn btn-primary btn-sm mt-2 mt-md-0 d-inline-flex align-items-center" style="height:38px; border-radius: 6px;">
+                                        <i class="bi bi-download me-2"></i> Cetak Absensi
+                                    </button>                            
 
-                                        <div class="card border rounded-3 shadow-sm mt-4">
-                                            <div class="card-body">
-                                                <h2 class="text-center mb-3">Absensi</h2>
-                                                <div id="chartAbsensi"></div>
-                                            </div>
+                                    <div class="card border rounded-3 shadow-sm mt-4">
+                                        <div class="card-body">
+                                            <h2 class="text-center mb-3">Absensi</h2>
+                                            <div id="chartAbsensi"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -364,66 +436,33 @@
     <script src="assets/js/dashboard-init.min.js"></script>
     <script src="assets/js/theme-customizer-init.min.js"></script>
     <script>
-        var options = {
+        //chart 2
+        var optionsAbsensi = {
             chart: {
                 type: 'bar',
                 height: 420,
-                toolbar: {
-                    show: false
-                }
+                toolbar: { show: false }
             },
-
             series: [
-                {
-                    name: 'Cuti',
-                    data: [0,3,5,2,1,5,0,0,6,4,3,5,5,0,0]
-                },
-                {
-                    name: 'Ijin',
-                    data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-                },
-                {
-                    name: 'Dinas Luar',
-                    data: [0,25,20,25,17,14,0,0,43,9,9,9,9,0,0]
-                },
-                {
-                    name: 'Sakit',
-                    data: [0,4,1,1,0,0,0,0,1,0,0,0,0,0,0]
-                },
-                {
-                    name: 'TA',
-                    data: [0,18,18,17,11,18,0,0,16,45,27,22,24,0,0]
-                }
+                { name: 'Cuti', data: [0,3,5,2,1,5,0,0,6,4,3,5,5,0,0] },
+                { name: 'Ijin', data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] },
+                { name: 'Dinas Luar', data: [0,25,20,25,17,14,0,0,43,9,9,9,9,0,0] },
+                { name: 'Sakit', data: [0,4,1,1,0,0,0,0,1,0,0,0,0,0,0] },
+                { name: 'TA', data: [0,18,18,17,11,18,0,0,16,45,27,22,24,0,0] }
             ],
-
-            colors: [
-                "#BDBDBD", // Cuti
-                "#E6A23C", // Ijin
-                "#1E22D8", // Dinas Luar
-                "#5C8D89", // Sakit
-                "#E74C3C"  // TA
-            ],
-
+            colors: ["#BDBDBD", "#E6A23C", "#1E22D8", "#5C8D89", "#E74C3C"],
             plotOptions: {
                 bar: {
                     horizontal: false,
                     columnWidth: "55%"
                 }
             },
-
-            dataLabels: {
-                enabled: false
-            },
-
-            stroke: {
-                show: false
-            },
-
+            dataLabels: { enabled: false },
+            stroke: { show: false },
             legend: {
                 position: "bottom",
                 horizontalAlign: "center"
             },
-
             xaxis: {
                 categories: [
                     "1 Feb","2 Feb","3 Feb","4 Feb","5 Feb",
@@ -432,36 +471,74 @@
                 ],
                 title: {
                     text: "Tanggal",
-                    style: {
-                        fontSize: "18px",
-                        fontWeight: 600
-                    }
+                    style: { fontSize: "16px", fontWeight: 500, color: '#333' }
                 }
             },
-
             yaxis: {
                 min: 0,
                 max: 50,
                 tickAmount: 5
             },
-
-            grid: {
-                borderColor: "#e5e5e5"
-            },
-
+            grid: { borderColor: "#e5e5e5" },
             tooltip: {
                 shared: true,
                 intersect: false
             }
         };
 
-        var chart = new ApexCharts(
-            document.querySelector("#chartAbsensi"),
-            options
-        );
+        var chartAbsensi = new ApexCharts(document.querySelector("#chartAbsensi"), optionsAbsensi);
+        chartAbsensi.render();
 
-        chart.render();
+        //chart 1
+        var optionsResume = {
+            chart: {
+                type: 'donut',
+                height: 350
+            },
+            series: [187, 0, 0, 0, 0], // Data dummy menyesuaikan gambar
+            labels: ['Belum membuat', 'Belum disetujui', 'Sudah Diajukan', 'Ditolak', 'Sudah disetujui'],
+            colors: ['#cccccc', '#1a56db', '#f59e0b', '#dc2626', '#0d9488'], // Menyesuaikan warna legenda
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '65%' // Ketebalan donut chart
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val, opts) {
+                    // Menampilkan format angka aktual "XXX Orang"
+                    return opts.w.config.series[opts.seriesIndex] + " Orang";
+                },
+                style: {
+                    fontSize: '12px',
+                    colors: ['#333']
+                },
+                background: {
+                    enabled: true,
+                    foreColor: '#fff',
+                    borderWidth: 0
+                }
+            },
+            legend: {
+                position: 'bottom',
+                horizontalAlign: 'center',
+                markers: {
+                    radius: 0 // Agar bullet berbentuk kotak (optional, hapus untuk bulat)
+                }
+            },
+            stroke: {
+                show: true,
+                colors: ['#fff'],
+                width: 2
+            }
+        };
+
+        var chartResume = new ApexCharts(document.querySelector("#chartResume"), optionsResume);
+        chartResume.render();
     </script>
+
 </body>
 
 </html>
