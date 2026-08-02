@@ -28,6 +28,9 @@ from app.controllers.dashboard_1KepegawaianController import (
     kepegawaian_pegawai_sakit,
     kepegawaian_pegawai_tidak_hadir,
     kepegawaian_update_pendukung,
+    api_pegawai_get as master_api_pegawai_get,
+    api_pegawai_save as master_api_pegawai_save,
+    api_pegawai_delete as master_api_pegawai_delete,
 )
 from app.controllers.dashboard_1MediaInformasiController import (
     media_informasi, media_informasi_detail,
@@ -228,6 +231,21 @@ def view_dashboard_trt():
 @login_required
 def view_kepegawaian_data_pegawai():
     return kepegawaian_data_pegawai()
+
+@main.route('/api/pegawai/get')
+@login_required
+def api_pegawai_get():
+    return master_api_pegawai_get()
+
+@main.route('/api/pegawai/save', methods=['POST'])
+@login_required
+def api_pegawai_save():
+    return master_api_pegawai_save()
+
+@main.route('/api/pegawai/delete', methods=['POST'])
+@login_required
+def api_pegawai_delete():
+    return master_api_pegawai_delete()
 
 @main.route('/kepegawaian/cari/data-pegawai')
 @login_required

@@ -4,659 +4,541 @@
 {% block title %}- Kepegawaian Data Pegawai{% endblock %}
 
 {% block content %}
-<div class="nxl-content">
-    <div class="page-header">
-        <div class="page-header-left d-flex align-items-center">
-            <div class="page-header-title">
-                <h5 class="m-b-10">Kepegawaian</h5>
+        <div class="nxl-content">
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Kepegawaian</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="Kepegawaian Data Pegawai.html">Data Pegawai</a></li>
+                        <li class="breadcrumb-item">Edit</li>
+                    </ul>
+                </div>
             </div>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url_for('main.view_kepegawaian_data_pegawai') }}">Data Pegawai</a></li>
-            </ul>
-        </div>
-    </div>
 
-    <div class="main-content master-siaga">
-        <div class="container-fluid">
-            <div class="card mb-4 filter-card">
-                <div class="card-header-custom d-flex justify-content-between align-items-center"
-                    style="border-radius: 10px;">
-                    <h6 class="mb-0">
-                        <i class="feather-users me-2"></i>Data Pegawai
-                    </h6>
+            <div class="main-content master-siaga">
+                <div class="container-fluid">
 
-                    <div class="header-actions">
-                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
-                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
-                        </button>
+                    <!-- Alert feedback (sukses / error) dari hasil save/delete -->
+                    <div id="formAlert" class="alert d-none" role="alert"></div>
 
-                        <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="{{ url_for('main.view_kepegawaian_cari_data_pegawai') }}"
-                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
-                                    <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
-                                </a>
+                    <div class="card mb-4 filter-card">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center"
+                            style="border-radius: 10px;">
+                            <h6 class="mb-0">
+                                <i class="feather-users me-2"></i>Data Pegawai
+                            </h6>
 
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
+                            <div class="header-actions">
+                                <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
+                                    <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
                                 </button>
+
+                                <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
+                                    <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                        <a href="Kepegawaian Cari Data Pegawai.html" class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Custom Style -->
-                <style>
-                    .sub-panel-card {
-                        border: 1px solid #dee2e6;
-                        border-radius: 8px;
-                        overflow: hidden;
-                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-                        background: #fff;
-                    }
+                        <!-- Custom Style -->
+                        <style>
+                            .sub-panel-card {
+                                border: 1px solid #dee2e6;
+                                border-radius: 8px;
+                                overflow: hidden;
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                                background: #fff;
+                            }
 
-                    .sub-panel-header {
-                        background-color: #e66b30;
-                        color: #fff;
-                        font-weight: 600;
-                        font-size: 0.9rem;
-                        padding: 6px 15px;
-                        width: 100%;
-                    }
+                            .sub-panel-header {
+                                background-color: #e66b30;
+                                color: #fff;
+                                font-weight: 600;
+                                font-size: 0.9rem;
+                                padding: 6px 15px;
+                                width: 100%;
+                            }
 
-                    .input-custom-style {
-                        border: 1px solid #ccc;
-                        border-radius: 3px;
-                        padding: 3px 8px;
-                        font-size: 0.85rem;
-                        width: 100%;
-                        background-color: #fff;
-                        position: relative;
-                        z-index: 1;
-                    }
+                            .input-custom-style {
+                                border: 1px solid #ccc;
+                                border-radius: 3px;
+                                padding: 3px 8px;
+                                font-size: 0.85rem;
+                                width: 100%;
+                                background-color: #fff;
+                                position: relative;
+                                z-index: 1;
+                            }
 
-                    input[type="date"].input-custom-style {
-                        cursor: pointer;
-                        min-height: 31px;
-                    }
+                            input[type="date"].input-custom-style {
+                                cursor: pointer;
+                                min-height: 31px;
+                            }
 
-                    .input-custom-style:focus {
-                        border-color: #e66b30;
-                        outline: none;
-                    }
+                            .input-custom-style:focus {
+                                border-color: #e66b30;
+                                outline: none;
+                            }
 
-                    .form-label-custom {
-                        font-size: 0.85rem;
-                        color: #333;
-                        font-weight: 500;
-                        margin-bottom: 0;
-                    }
+                            .form-label-custom {
+                                font-size: 0.85rem;
+                                color: #333;
+                                font-weight: 500;
+                                margin-bottom: 0;
+                            }
 
-                    .dropdown-toggle-custom {
-                        border: 1px solid #ccc;
-                        background-color: #fff;
-                        font-size: 0.85rem;
-                        padding: 3px 8px;
-                        border-radius: 3px;
-                    }
+                            /* Field kondisional (Tgl/Alasan Keluar) - default disembunyikan */
+                            .field-keluar {
+                                display: none;
+                            }
+                        </style>
 
-                    .custom-dropdown-scroll {
-                        max-height: 200px;
-                        overflow-y: auto;
-                    }
+                        <div class="card-body">
+                            <form id="formDataPegawai">
+                            <div class="row g-4">
+                                <!-- Card 1: Main Info (Atas Kiri) -->
+                                <div class="col-md-6">
+                                    <div class="sub-panel-card h-100 pb-3">
+                                        <div class="sub-panel-header mb-3">&nbsp;</div>
+                                        <div class="px-3">
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">NIP</label>
+                                                <div class="col-sm-8">
+                                                    <!-- NIP = primary key. Boleh diisi untuk record baru,
+                                                         tapi dikunci begitu record existing ter-load,
+                                                         supaya nggak ke-save sebagai NIP lain. -->
+                                                    <input type="text" data-field="nip" id="fieldNip"
+                                                        class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Nama</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" data-field="nama" class="input-custom-style">
+                                                </div>
+                                            </div>
 
-                    .dropdown-item-custom {
-                        padding: 4px 12px;
-                    }
-                </style>
+                                            <!-- Unit Kerja: diubah dari multi-select checkbox menjadi
+                                                 single select, karena kolom di tabel PEGAWAI
+                                                 (UNIT_KERJA_ID) cuma menyimpan satu nilai.
+                                                 Kalau memang butuh multi-unit per pegawai, itu perlu
+                                                 tabel pivot terpisah + endpoint API baru, bukan cuma
+                                                 ubah UI. -->
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Unit Kerja</label>
+                                                <div class="col-sm-8">
+                                                    <select data-field="unit_kerja_id" class="input-custom-style" required>
+                                                        <option value="" disabled selected>Pilih Unit Kerja</option>
+                                                        {% for unit in unit_kerja_list %}
+                                                        <!-- ASUMSI: kolom PK = UNIT_KERJA_ID, label = NAMA_UNIT_KERJA -->
+                                                        <option value="{{ unit.UNIT_KERJA_ID }}">{{ unit.NAMA_UNIT_KERJA }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                <div class="card-body">
-                    <div class="row g-4">
-                        <!-- Card 1: Main Info (Atas Kiri) -->
-                        <div class="col-md-6">
-                            <div class="sub-panel-card h-100 pb-3">
-                                <div class="sub-panel-header mb-3">&nbsp;</div>
-                                <div class="px-3">
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">NIP</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Finger ID</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Nama</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="input-custom-style">
-                                        </div>
-                                    </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Tanggal Masuk</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" data-field="tgl_masuk" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Status</label>
+                                                <div class="col-sm-8">
+                                                    <!-- TODO: konfirmasi mapping status_peg ke tabel master.
+                                                         Sementara diasumsikan 1 = PNS, 2 = NON PNS
+                                                         (nilai default di controller 'STATUS_PEG': 2). -->
+                                                    <select data-field="status_peg" class="input-custom-style" required>
+                                                        <option value="" disabled selected>Pilih Status</option>
+                                                        <option value="1">PNS</option>
+                                                        <option value="2">NON PNS</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Is Keluar</label>
+                                                <div class="col-sm-8">
+                                                    <select data-field="is_keluar" id="fieldIsKeluar" class="input-custom-style">
+                                                        <option value="" disabled selected>Pilih Status Keluar</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                    <!-- Multi-Select Unit Kerja -->
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Unit Kerja</label>
-                                        <div class="col-sm-8">
-                                            <div class="dropdown custom-multi-select">
-                                                <button
-                                                    class="btn btn-sm w-100 text-start d-flex justify-content-between align-items-center dropdown-toggle-custom"
-                                                    type="button" id="dropdownUnitKerja" data-bs-toggle="dropdown"
-                                                    data-bs-auto-close="outside" aria-expanded="false">
-                                                    <span id="dropdownLabelUnit">Pilih Unit Kerja</span>
-                                                    <i class="bi bi-caret-down-fill small text-muted"></i>
-                                                </button>
-                                                <ul class="dropdown-menu w-100 py-1 shadow-sm custom-dropdown-scroll"
-                                                    aria-labelledby="dropdownUnitKerja">
-                                                    <li class="dropdown-item-custom bg-light border-bottom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                id="checkAllUnit">
-                                                            <label
-                                                                class="form-check-label small fw-bold text-secondary w-100"
-                                                                for="checkAllUnit">Check All</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="SURABAYA" id="unitSurabaya">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitSurabaya">SURABAYA</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="JEMBER" id="unitJember">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitJember">JEMBER</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="TRENGGALEK" id="unitTrenggalek">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitTrenggalek">TRENGGALEK</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="BANYUWANGI" id="unitBanyuwangi">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitBanyuwangi">BANYUWANGI</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="BOJONEGORO" id="unitBojonegoro">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitBojonegoro">BOJONEGORO</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="MALANG" id="unitMalang">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitMalang">MALANG</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="KN WIDURA" id="unitWidura">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitWidura">KN WIDURA</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="ABK PPNPN" id="unitAbkPpnpn">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitAbkPpnpn">ABK PPNPN</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="RESCUER PPNPN"
-                                                                id="unitRescuerPpnpn">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitRescuerPpnpn">RESCUER PPNPN</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="PPPK" id="unitPppk">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitPppk">PPPK</label>
-                                                        </div>
-                                                    </li>
-                                                    <li class="dropdown-item-custom">
-                                                        <div class="form-check m-0 d-flex align-items-center gap-2">
-                                                            <input class="form-check-input check-unit-item"
-                                                                type="checkbox" value="PPPK Paruh Waktu"
-                                                                id="unitPppkParuh">
-                                                            <label class="form-check-label small w-100"
-                                                                for="unitPppkParuh">PPPK Paruh Waktu</label>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                            <!-- Field ini baru: sudah ditangani controller
+                                                 (TGL_KELUAR, ALASAN_KELUAR) tapi belum ada di HTML asli.
+                                                 Hanya tampil kalau Is Keluar = Y (lihat JS toggleFieldKeluar). -->
+                                            <div class="row align-items-center mb-2 field-keluar" id="rowTglKeluar">
+                                                <label class="col-sm-4 form-label-custom">Tanggal Keluar</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" data-field="tgl_keluar" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2 field-keluar" id="rowAlasanKeluar">
+                                                <label class="col-sm-4 form-label-custom">Alasan Keluar</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" data-field="alasan_keluar" class="input-custom-style">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Tanggal Masuk</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" id="tglMasuk" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Status</label>
-                                        <div class="col-sm-8">
-                                            <select class="input-custom-style">
-                                                <option value="" disabled selected>Pilih Status</option>
-                                                <option value="PNS">PNS</option>
-                                                <option value="NON PNS">NON PNS</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Is Keluar</label>
-                                        <div class="col-sm-8">
-                                            <select class="input-custom-style">
-                                                <option value="" disabled selected>Pilih Status Keluar</option>
-                                                <option value="Y">Y</option>
-                                                <option value="N">N</option>
-                                            </select>
+                                <!-- Card 2: Karir Terkini (Atas Kanan) -->
+                                <div class="col-md-6">
+                                    <div class="sub-panel-card h-100 pb-3">
+                                        <div class="sub-panel-header mb-3">Karir Terkini</div>
+                                        <div class="px-3">
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Gol / Pangkat</label>
+                                                <div class="col-sm-8">
+                                                    <select data-field="gol_id" class="input-custom-style" required>
+                                                        <option value="" disabled selected>Pilih Gol / Pangkat</option>
+                                                        {% for gol in golongan_list %}
+                                                        <!-- MF_GOL tidak punya kolom gabungan siap pakai:
+                                                             NAMA_GOL = kode golongan (mis. "III/a")
+                                                             PANGKAT_GOL = nama pangkat (mis. "Penata Muda")
+                                                             Digabung di sini biar formatnya sama seperti
+                                                             opsi hardcoded di HTML lama ("III/a - Penata Muda"). -->
+                                                        <option value="{{ gol.GOL_ID }}">{{ gol.NAMA_GOL }}{% if gol.PANGKAT_GOL %} - {{ gol.PANGKAT_GOL }}{% endif %}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Eselon</label>
+                                                <div class="col-sm-8">
+                                                    <select data-field="eselon" class="input-custom-style">
+                                                        <option value="" disabled selected>Pilih Eselon</option>
+                                                        {% for esl in eselon_list %}
+                                                        <!-- MF_ESELON cuma punya 2 kolom: ESELON (PK, string,
+                                                             ini juga nilai yang langsung disimpan di
+                                                             PEGAWAI.ESELON) dan URUT_ESELON (urutan sort saja,
+                                                             bukan label). Nggak ada kolom nama terpisah,
+                                                             jadi value dan teks tampilan sama-sama esl.ESELON. -->
+                                                        <option value="{{ esl.ESELON }}">{{ esl.ESELON }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">TMT Class</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" data-field="tmt_class" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Class</label>
+                                                <div class="col-sm-8">
+                                                    <select data-field="class_id" class="input-custom-style" required>
+                                                        <option value="" disabled selected>Pilih Class</option>
+                                                        {% for cls in class_list %}
+                                                        <!-- ASUMSI: label = NAMA_CLASS (sesuaikan jika kolomnya beda) -->
+                                                        <option value="{{ cls.CLASS_ID }}">{{ cls.NAMA_CLASS if cls.NAMA_CLASS is defined else cls.CLASS_ID }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">TMT Pangkat</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" data-field="tmt_pangkat" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">TMT Jabatan</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" data-field="tmt_jabatan" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Jabatan</label>
+                                                <div class="col-sm-8">
+                                                    <select data-field="jabatan_id" class="input-custom-style" required>
+                                                        <option value="" disabled selected>Pilih Jabatan</option>
+                                                        {% for jab in jabatan_list %}
+                                                        <!-- ASUMSI: PK = JABATAN_ID -->
+                                                        <option value="{{ jab.JABATAN_ID }}">{{ jab.NAMA_JABATAN }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Card 2: Karir Terkini (Atas Kanan) -->
-                        <div class="col-md-6">
-                            <div class="sub-panel-card h-100 pb-3">
-                                <div class="sub-panel-header mb-3">Karir Terkini</div>
-                                <div class="px-3">
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Gol / Pangkat</label>
-                                        <div class="col-sm-8">
-                                            <select class="input-custom-style">
-                                                <option value="" disabled selected>Pilih Gol / Pangkat</option>
-                                                <option value="I/a - Juru Muda">I/a - Juru Muda</option>
-                                                <option value="I/b - Juru Muda Tk.I">I/b - Juru Muda Tk.I
-                                                </option>
-                                                <option value="I/c - Juru">I/c - Juru</option>
-                                                <option value="I/d - Juru Tk.I">I/d - Juru Tk.I</option>
-                                                <option value="II/a - Pengatur Muda">II/a - Pengatur Muda
-                                                </option>
-                                                <option value="II/b - Pengatur Muda Tk.I">II/b - Pengatur Muda
-                                                    Tk.I</option>
-                                                <option value="II/c - Pengatur">II/c - Pengatur</option>
-                                                <option value="II/d - Pengatur Tk.I">II/d - Pengatur Tk.I
-                                                </option>
-                                                <option value="III/a - Penata Muda">III/a - Penata Muda</option>
-                                                <option value="III/b - Penata Muda Tk.I">III/b - Penata Muda
-                                                    Tk.I</option>
-                                                <option value="III/c - Penata">III/c - Penata</option>
-                                                <option value="III/d - Penata Tk.I">III/d - Penata Tk.I</option>
-                                                <option value="IV/a - Pembina">IV/a - Pembina</option>
-                                                <option value="IV/b - Pembina Tk.I">IV/b - Pembina Tk.I</option>
-                                                <option value="IV/c - Pembina Utama Muda">IV/c - Pembina Utama
-                                                    Muda</option>
-                                                <option value="IV/d - Pembina Utama Madya">IV/d - Pembina Utama
-                                                    Madya</option>
-                                                <option value="IV/e - Pembina Utama">IV/e - Pembina Utama
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Eselon</label>
-                                        <div class="col-sm-8">
-                                            <select class="input-custom-style">
-                                                <option value="" disabled selected>Pilih Eselon</option>
-                                                <option value="-">-</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">TMT Class</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" id="tmtClass" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Class</label>
-                                        <div class="col-sm-8">
-                                            <select class="input-custom-style">
-                                                <option value="" disabled selected>Pilih Class</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                                <option value="13">13</option>
-                                                <option value="14">14</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">TMT Pangkat</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" id="tmtPangkat" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">TMT Jabatan</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" id="tmtJabatan" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Jabatan</label>
-                                        <div class="col-sm-8">
-                                            <select class="input-custom-style">
-                                                <option value="" disabled selected>Pilih Jabatan</option>
-                                                <option value="Kepala Kantor Pencarian dan Pertolongan">Kepala
-                                                    Kantor Pencarian dan Pertolongan</option>
-                                                <option value="Kepala Kantor Pencarian dan Pertolongan Tipe A">
-                                                    Kepala Kantor Pencarian dan Pertolongan Tipe A</option>
-                                                <option value="Kepala Kantor Pencarian dan Pertolongan Tipe B">
-                                                    Kepala Kantor Pencarian dan Pertolongan Tipe B</option>
-                                                <option value="Kepala Subbagian Umum">Kepala Subbagian Umum
-                                                </option>
-                                                <option
-                                                    value="Kepala Seksi Operasi dan Siaga Pencarian dan Pertolongan">
-                                                    Kepala Seksi Operasi dan Siaga Pencarian dan Pertolongan
-                                                </option>
-                                                <option value="Kepala Seksi Sumber Daya Pencarian dan Pertolongan">
-                                                    Kepala Seksi Sumber Daya Pencarian dan Pertolongan</option>
-                                                <option value="Kepala Urusan Umum">Kepala Urusan Umum</option>
-                                                <option value="Kepala Sub Seksi Operasi dan Latihan">Kepala Sub
-                                                    Seksi Operasi dan Latihan</option>
-                                                <option value="Kepala Sub Seksi Sumber Daya">Kepala Sub Seksi
-                                                    Sumber Daya</option>
-                                                <option value="PKPP">PKPP</option>
-                                                <option value="PKPP Ahli Madya">PKPP Ahli Madya</option>
-                                                <option value="PKPP Ahli Muda">PKPP Ahli Muda</option>
-                                                <option value="PKPP Ahli Pertama">PKPP Ahli Pertama</option>
-                                                <option value="Analis Pengelolaan Keuangan APBN Ahli Muda">
-                                                    Analis Pengelolaan Keuangan APBN Ahli Muda</option>
-                                                <option value="Analis BMN">Analis BMN</option>
-                                                <option value="Analis Keuangan">Analis Keuangan</option>
-                                                <option value="Analis Pencarian dan Pertolongan">Analis
-                                                    Pencarian dan Pertolongan</option>
-                                                <option value="Pengadministrasi Kepegawaian">Pengadministrasi
-                                                    Kepegawaian</option>
-                                                <option value="Pengadministrasi Umum">Pengadministrasi Umum
-                                                </option>
-                                                <option value="BENDAHARA">BENDAHARA</option>
-                                                <option value="Pranata Humas">Pranata Humas</option>
-                                                <option value="Pranata Humas Tingkat Terampil Jenjang Pelaksana">
-                                                    Pranata Humas Tingkat Terampil Jenjang Pelaksana</option>
-                                                <option value="Pranata Humas Tingkat Terampil Jenjang Pelaksana Pemula">
-                                                    Pranata Humas Tingkat Terampil Jenjang Pelaksana Pemula
-                                                </option>
-                                                <option value="Pranata Sumber Daya Manusia Aparatur Terampil">
-                                                    Pranata Sumber Daya Manusia Aparatur Terampil</option>
-                                                <option value="Verifikator">Verifikator</option>
-                                                <option value="Penyusun Rencana Kegiatan dan Anggaran">Penyusun
-                                                    Rencana Kegiatan dan Anggaran</option>
-                                                <option value="Penata Laporan Keuangan dan SAI">Penata Laporan
-                                                    Keuangan dan SAI</option>
-                                                <option value="Pengelola Urusan Dalam dan Logistik">Pengelola
-                                                    Urusan Dalam dan Logistik</option>
-                                                <option value="Pengelola Peralatan dan Logistik">Pengelola
-                                                    Peralatan dan Logistik</option>
-                                                <option value="Pengelola Kendaraan">Pengelola Kendaraan</option>
-                                                <option value="Pengemudi">Pengemudi</option>
-                                                <option value="Calon Analis Kepegawaian Pelaksana">Calon Analis
-                                                    Kepegawaian Pelaksana</option>
-                                                <option value="Calon Analis Kepegawaian Pelaksana Lanjutan">
-                                                    Calon Analis Kepegawaian Pelaksana Lanjutan</option>
-                                                <option value="Calon Arsiparis Pelaksana">Calon Arsiparis
-                                                    Pelaksana</option>
-                                                <option value="Calon Arsiparis Pertama">Calon Arsiparis Pertama
-                                                </option>
-                                                <option value="Calon Pranata Komputer Pelaksana">Calon Pranata
-                                                    Komputer Pelaksana</option>
-                                                <option value="Perawat Terampil">Perawat Terampil</option>
-                                                <option value="Perawat Pelaksana">Perawat Pelaksana</option>
-                                                <option value="Perawat Ahli Pertama">Perawat Ahli Pertama
-                                                </option>
-                                                <option value="Operator Komunikasi">Operator Komunikasi</option>
-                                                <option value="Teknisi Alat Elektro dan Alat Komunikasi">Teknisi
-                                                    Alat Elektro dan Alat Komunikasi</option>
-                                                <option value="Rescuer Penyelia">Rescuer Penyelia</option>
-                                                <option value="Rescuer Mahir">Rescuer Mahir</option>
-                                                <option value="Rescuer Terampil">Rescuer Terampil</option>
-                                                <option value="Rescuer Pemula">Rescuer Pemula</option>
-                                                <option value="Instruktur Pencarian dan Pertolongan">Instruktur
-                                                    Pencarian dan Pertolongan</option>
-                                                <option value="Nahkoda (Kelas II)">Nahkoda (Kelas II)</option>
-                                                <option value="MUALIM I (KELAS II)">MUALIM I (KELAS II)</option>
-                                                <option value="MUALIM (KELAS IV)">MUALIM (KELAS IV)</option>
-                                                <option value="MUALIM II (KELAS II)">MUALIM II (KELAS II)
-                                                </option>
-                                                <option value="Markonis">Markonis</option>
-                                                <option value="BOSUN / SERANG (KELAS II)">BOSUN / SERANG (KELAS
-                                                    II)</option>
-                                                <option value="JURU MUDI (KELAS II)">JURU MUDI (KELAS II)
-                                                </option>
-                                                <option value="KELASI / JENANG KAPAL">KELASI / JENANG KAPAL
-                                                </option>
-                                                <option value="Juru Masak">Juru Masak</option>
-                                                <option value="KKM (Kelas II)">KKM (Kelas II)</option>
-                                                <option value="KKM (KELAS IV)">KKM (KELAS IV)</option>
-                                                <option value="MASINIS I (KELAS II)">MASINIS I (KELAS II)
-                                                </option>
-                                                <option value="MASINIS (KELAS IV)">MASINIS (KELAS IV)</option>
-                                                <option value="MASINIS II (KELAS II)">MASINIS II (KELAS II)
-                                                </option>
-                                                <option value="TEKNISI LISTRIK KAPAL">TEKNISI LISTRIK KAPAL
-                                                </option>
-                                                <option value="Mandor Kamar Mesin / Kerani">Mandor Kamar Mesin /
-                                                    Kerani</option>
-                                                <option value="Operator Layanan Operasional">Operator Layanan
-                                                    Operasional</option>
-                                                <option value="Pengelola Layanan Operasional">Pengelola Layanan
-                                                    Operasional</option>
-                                                <option value="CALON RESCUER KETERAMPILAN">CALON RESCUER
-                                                    KETERAMPILAN</option>
-                                            </select>
+                                <!-- Card 3: Data Personil (Bawah Kiri) -->
+                                <div class="col-md-6">
+                                    <div class="sub-panel-card h-100 pb-3">
+                                        <div class="sub-panel-header mb-3">Data Personil</div>
+                                        <div class="px-3">
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Tanggal Lahir</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" data-field="tgl_lahir" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Jenis Kelamin</label>
+                                                <div class="col-sm-8">
+                                                    <select data-field="jenis_kel" class="input-custom-style">
+                                                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                                        <option value="Laki-laki">Laki-laki</option>
+                                                        <option value="Perempuan">Perempuan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">No. Telp</label>
+                                                <div class="col-sm-8">
+                                                    <input type="tel" pattern="[0-9]*" inputmode="numeric"
+                                                        data-field="no_telp" class="input-custom-style"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">e-Mail</label>
+                                                <div class="col-sm-8">
+                                                    <input type="email" data-field="email" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Alamat</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" data-field="alamat" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Kelurahan</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" data-field="kelurahan" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Kecamatan</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" data-field="kecamatan" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Kota</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" data-field="kota" class="input-custom-style">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Card 3: Data Personil (Bawah Kiri) -->
-                        <div class="col-md-6">
-                            <div class="sub-panel-card h-100 pb-3">
-                                <div class="sub-panel-header mb-3">Data Personil</div>
-                                <div class="px-3">
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Tanggal Lahir</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" id="tglLahir" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Jenis Kelamin</label>
-                                        <div class="col-sm-8">
-                                            <select class="input-custom-style">
-                                                <option value="" disabled selected>Pilih Jenis Kelamin</option>
-                                                <option value="Laki-laki">Laki-laki</option>
-                                                <option value="Perempuan">Perempuan</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">No. Telp</label>
-                                        <div class="col-sm-8">
-                                            <input type="tel" pattern="[0-9]*" inputmode="numeric"
-                                                class="input-custom-style"
-                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">e-Mail</label>
-                                        <div class="col-sm-8">
-                                            <input type="email" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Alamat</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Kelurahan</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Kecamatan</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Kota</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="input-custom-style">
+                                <!-- Card 4: Data Recruitment (Bawah Kanan) -->
+                                <div class="col-md-6">
+                                    <div class="sub-panel-card h-100 pb-3">
+                                        <div class="sub-panel-header mb-3">Data Recruitment</div>
+                                        <div class="px-3">
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">Gol / Pangkat</label>
+                                                <div class="col-sm-8">
+                                                    <!-- GOL_RECRUIT di model disimpan sebagai TEXT
+                                                         (data.get('gol_recruit', '')), BUKAN FK integer
+                                                         seperti gol_id di atas. Makanya value di sini
+                                                         pakai label-nya langsung, bukan GOL_ID. -->
+                                                    <select data-field="gol_recruit" class="input-custom-style">
+                                                        <option value="" disabled selected>Pilih Gol / Pangkat</option>
+                                                        {% for gol in golongan_list %}
+                                                        {% set label = gol.NAMA_GOL ~ (' - ' ~ gol.PANGKAT_GOL if gol.PANGKAT_GOL else '') %}
+                                                        <!-- GOL_RECRUIT kolomnya TEXT (bukan FK), jadi value
+                                                             yang dikirim harus string label ini juga, sama
+                                                             persis format-nya dengan yang muncul di layar. -->
+                                                        <option value="{{ label }}">{{ label }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">TMT CPNS</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" data-field="tmt_cpns" class="input-custom-style">
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center mb-2">
+                                                <label class="col-sm-4 form-label-custom">TMT PNS</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" data-field="tmt_pns" class="input-custom-style">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Card 4: Data Recruitment (Bawah Kanan) -->
-                        <div class="col-md-6">
-                            <div class="sub-panel-card h-100 pb-3">
-                                <div class="sub-panel-header mb-3">Data Recruitment</div>
-                                <div class="px-3">
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">Gol / Pangkat</label>
-                                        <div class="col-sm-8">
-                                            <select class="input-custom-style">
-                                                <option value="" disabled selected>Pilih Gol / Pangkat</option>
-                                                <option value="I/a - Juru Muda">I/a - Juru Muda</option>
-                                                <option value="I/b - Juru Muda Tk.I">I/b - Juru Muda Tk.I
-                                                </option>
-                                                <option value="I/c - Juru">I/c - Juru</option>
-                                                <option value="I/d - Juru Tk.I">I/d - Juru Tk.I</option>
-                                                <option value="II/a - Pengatur Muda">II/a - Pengatur Muda
-                                                </option>
-                                                <option value="II/b - Pengatur Muda Tk.I">II/b - Pengatur Muda
-                                                    Tk.I</option>
-                                                <option value="II/c - Pengatur">II/c - Pengatur</option>
-                                                <option value="II/d - Pengatur Tk.I">II/d - Pengatur Tk.I
-                                                </option>
-                                                <option value="III/a - Penata Muda">III/a - Penata Muda</option>
-                                                <option value="III/b - Penata Muda Tk.I">III/b - Penata Muda
-                                                    Tk.I</option>
-                                                <option value="III/c - Penata">III/c - Penata</option>
-                                                <option value="III/d - Penata Tk.I">III/d - Penata Tk.I</option>
-                                                <option value="IV/a - Pembina">IV/a - Pembina</option>
-                                                <option value="IV/b - Pembina Tk.I">IV/b - Pembina Tk.I</option>
-                                                <option value="IV/c - Pembina Utama Muda">IV/c - Pembina Utama
-                                                    Muda</option>
-                                                <option value="IV/d - Pembina Utama Madya">IV/d - Pembina Utama
-                                                    Madya</option>
-                                                <option value="IV/e - Pembina Utama">IV/e - Pembina Utama
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">TMT CPNS</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" id="tmtCpns" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-2">
-                                        <label class="col-sm-4 form-label-custom">TMT PNS</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" id="tmtPns" class="input-custom-style">
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
 
+                            <!-- Tombol aksi -->
+                            <div class="d-flex gap-2 justify-content-end mt-4">
+                                <button type="button" id="btnDelete" class="btn btn-outline-danger btn-sm d-none">
+                                    <i class="bi bi-trash me-1"></i>Hapus
+                                </button>
+                                <button type="submit" id="btnSave" class="btn btn-sm text-white" style="background-color:#e66b30;">
+                                    <i class="bi bi-save me-1"></i>Simpan
+                                </button>
+                            </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 {% endblock %}
 
-{% block scripts %}
+{% block script %}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const checkAll = document.getElementById("checkAllUnit");
-        const items = document.querySelectorAll(".check-unit-item");
-        const label = document.getElementById("dropdownLabelUnit");
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("[Kepegawaian] Script mulai...");
 
-        // Fungsi memperbarui teks tombol berdasarkan nama unit yang dicentang
-        function updateLabel() {
-            const checkedItems = document.querySelectorAll(".check-unit-item:checked");
+    const form = document.getElementById("formDataPegawai");
+    const alertBox = document.getElementById("formAlert");
+    const nipField = document.getElementById("fieldNip");
+    const isKeluarField = document.getElementById("fieldIsKeluar");
+    const btnDelete = document.getElementById("btnDelete");
 
-            if (checkedItems.length === 0) {
-                label.innerText = "Pilih Unit Kerja";
-            } else if (checkedItems.length === items.length) {
-                label.innerText = "Semua Unit Terpilih";
-            } else {
-                // Mengambil nilai text/value dari item yang dicentang lalu digabung dengan koma
-                const selectedNames = Array.from(checkedItems).map(item => item.value);
-                label.innerText = selectedNames.join(", ");
-            }
-        }
+    // Guard: hanya cek elemen penting yang ADA di HTML
+    if (!form || !alertBox || !nipField || !isKeluarField) {
+        console.error("[Kepegawaian] Elemen penting tidak ditemukan!");
+        return;
+    }
+    console.log("[Kepegawaian] Elemen OK, pasang handler...");
 
-        if (checkAll) {
-            checkAll.addEventListener("change", function () {
-                items.forEach(item => {
-                    item.checked = checkAll.checked;
-                });
-                updateLabel();
-            });
-        }
+    // Helper alert
+    function showAlert(message, type) {
+        alertBox.textContent = message;
+        alertBox.className = "alert alert-" + type;
+        alertBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
 
-        items.forEach(item => {
-            item.addEventListener("change", function () {
-                const checkedCount = document.querySelectorAll(".check-unit-item:checked").length;
-                if (checkAll) checkAll.checked = (checkedCount === items.length);
-                updateLabel();
-            });
+    // Kumpulkan data form
+    function collectFormData() {
+        const payload = {};
+        document.querySelectorAll("[data-field]").forEach(function (el) {
+            payload[el.dataset.field] = el.value;
         });
+        return payload;
+    }
+
+    // Isi form dari data
+    function populateForm(data) {
+        document.querySelectorAll("[data-field]").forEach(function (el) {
+            const key = el.dataset.field;
+            if (data[key] !== undefined && data[key] !== null) {
+                el.value = data[key];
+            } else {
+                el.value = "";
+            }
+        });
+        toggleFieldKeluar();
+    }
+
+    // Toggle field keluar
+    function toggleFieldKeluar() {
+        const show = isKeluarField.value === "Y";
+        document.querySelectorAll(".field-keluar").forEach(function (row) {
+            row.style.display = show ? "" : "none";
+        });
+    }
+    isKeluarField.addEventListener("change", toggleFieldKeluar);
+    toggleFieldKeluar();
+
+    // ✅ FITUR: Ketik NIP lalu Enter/Tab → auto-load jika sudah ada
+    nipField.addEventListener("blur", function () {
+        const nip = nipField.value.trim();
+        if (nip && nip.length >= 18) {
+            fetch("/api/pegawai/get?nip=" + encodeURIComponent(nip))
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        populateForm(result.data);
+                        nipField.readOnly = true;
+                        if (btnDelete) btnDelete.classList.remove("d-none");
+                        showAlert("Data ditemukan. Silakan edit lalu Simpan.", "success");
+                    } else {
+                        // Tidak ada → record baru, form tetap bisa diisi
+                        nipField.readOnly = false;
+                        if (btnDelete) btnDelete.classList.add("d-none");
+                        console.log("Record baru untuk NIP:", nip);
+                    }
+                })
+                .catch(() => showAlert("Gagal menghubungi server.", "danger"));
+        }
     });
+
+    // ✅ SIMPAN (Insert/Update)
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        console.log("[Kepegawaian] Submit ditekan!");
+
+        const payload = collectFormData();
+        console.log("📤 Data dikirim:", payload);
+
+        if (!payload.nip) {
+            showAlert("NIP tidak boleh kosong.", "warning");
+            return;
+        }
+        if (!payload.nama) {
+            showAlert("Nama tidak boleh kosong.", "warning");
+            return;
+        }
+
+        fetch("/api/pegawai/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result.error) {
+                    showAlert(result.error, "danger");
+                } else {
+                    showAlert(result.message, "success");
+                    nipField.readOnly = true;
+                    if (btnDelete) btnDelete.classList.remove("d-none");
+                }
+            })
+            .catch(() => showAlert("Gagal menghubungi server.", "danger"));
+    });
+
+    // ✅ HAPUS
+    if (btnDelete) {
+        btnDelete.addEventListener("click", function () {
+            const nip = nipField.value.trim();
+            if (!nip) return;
+            if (!confirm("Hapus pegawai " + nip + "?")) return;
+
+            fetch("/api/pegawai/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nip: nip })
+            })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.error) {
+                        showAlert(result.error, "danger");
+                    } else {
+                        showAlert(result.message, "success");
+                        form.reset();
+                        nipField.readOnly = false;
+                        btnDelete.classList.add("d-none");
+                    }
+                })
+                .catch(() => showAlert("Gagal menghubungi server.", "danger"));
+        });
+    }
+
+    console.log("[Kepegawaian] Handler terpasang. Siap input/edit!");
+});
 </script>
 {% endblock %}
