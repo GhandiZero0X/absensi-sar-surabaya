@@ -1,0 +1,150 @@
+<!-- pages/dashboard_1/Kepegawaian Dinas Luar Umum.html -->
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- Kepegawaian Dinas Luar Umum{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Kepegawaian</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_kepegawaian_dinas_luar_umum') }}">Dinas Luar
+                        Umum</a></li>
+                <li class="breadcrumb-item">Edit</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+            <style>
+                .sub-panel-card {
+                    border: 1px solid #dee2e6;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                    background: #fff;
+                }
+
+                .sub-panel-header {
+                    background-color: #e65c00;
+                    color: #fff;
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    padding: 8px 15px;
+                    width: 100%;
+                }
+
+                .input-custom-style {
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    padding: 3px 8px;
+                    font-size: 0.85rem;
+                    width: 100%;
+                    background-color: #fff;
+                }
+
+                .input-custom-style:focus {
+                    border-color: #e65c00;
+                    outline: none;
+                }
+
+                .form-label-custom {
+                    font-size: 0.85rem;
+                    color: #333;
+                    font-weight: 600;
+                    margin-bottom: 0;
+                }
+            </style>
+
+            <!-- CARD UTAMA: Dinas Luar Umum -->
+            <div class="card-header-custom d-flex justify-content-between align-items-center"
+                style="border-radius: 10px;">
+                <h6 class="mb-0">
+                    <i class="feather-users me-2"></i>Dinas Luar Umum
+                </h6>
+
+                <div class="header-actions">
+                    <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
+                        <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                    </button>
+
+                    <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
+                        <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                            <a href="{{ url_for('main.view_kepegawaian_cari_dinas_luar_umum') }}"
+                                class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                            </a>
+
+                            <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
+                            </button>
+                            <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                            </button>
+
+                            <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB PANEL CARD: Add Peserta -->
+            <div class="sub-panel-card mb-4">
+                <div class="sub-panel-header">
+                    Add Peserta
+                </div>
+                <div class="p-4">
+                    <!-- Pegawai -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-md-2 form-label-custom">Pegawai</label>
+                        <div class="col-md-8">
+                            <input type="text" class="input-custom-style">
+                        </div>
+                    </div>
+
+                    <!-- Uang Makan -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-md-2 form-label-custom">Uang Makan</label>
+                        <div class="col-md-8">
+                            <input type="text" class="input-custom-style">
+                        </div>
+                    </div>
+
+                    <!-- Tanggal s/d -->
+                    <div class="row mb-4 align-items-center">
+                        <label class="col-md-2 form-label-custom">Tanggal</label>
+                        <div class="col-md-8 d-flex align-items-center gap-2">
+                            <div class="input-group input-group-sm">
+                                <input type="date" class="form-control input-custom-style">
+                            </div>
+                            <span class="fw-bold px-1 small">s/d</span>
+                            <div class="input-group input-group-sm">
+                                <input type="date" class="form-control input-custom-style">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Insert Pegawai to table -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary btn-sm px-3 rounded-pill"
+                            style="font-size: 0.75rem; background-color: #0000ff; border: none;">
+                            Insert Pegawai to table
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

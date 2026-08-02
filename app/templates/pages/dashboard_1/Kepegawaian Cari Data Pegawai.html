@@ -1,0 +1,166 @@
+<!-- pages/dashboard_1/Kepegawaian Cari Data Pegawai.html -->
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- Kepegawaian Data Pegawai{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Kepegawaian</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_kepegawaian_data_pegawai') }}">Data Pegawai</a></li>
+                <li class="breadcrumb-item">Cari Pegawai</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="card mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden; border: none;">
+
+                <!-- Card Header -->
+                <div class="card-header-custom d-flex justify-content-between align-items-center p-3"
+                    style="background: #ffffff; border-bottom: 1px solid #eee;">
+                    <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Pegawai</h6>
+                    <a href="{{ url_for('main.view_kepegawaian_data_pegawai') }}" class="btn-close-custom text-dark">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body p-4">
+
+                    <!-- Filter Section -->
+                    <div class="filter-section mb-4">
+
+                        <!-- Baris Filter Inputs -->
+                        <div class="row mb-3 align-items-center">
+                            <div
+                                class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                                <label class="filter-label-wide fw-bold">Filter</label>
+
+                                <!-- Dropdown 1 -->
+                                <select class="form-select-sm border custom-select w-mobile-100">
+                                    <option value="">- Pilih Field -</option>
+                                    <option value="Gol">Gol</option>
+                                    <option value="Jabatan">Jabatan</option>
+                                    <option value="Jenis Kelamin">Jenis Kelamin</option>
+                                    <option value="Nama Peg">Nama Peg</option>
+                                    <option value="NIP">NIP</option>
+                                    <option value="No Finger">No Finger</option>
+                                    <option value="Unit Kerja">Unit Kerja</option>
+                                </select>
+
+                                <!-- Input Text 1 -->
+                                <div class="input-group-custom w-mobile-100">
+                                    <input type="text" class="form-control-sm border">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+
+                                <span class="mx-md-2 fw-bold text-dan">Dan</span>
+
+                                <!-- Dropdown 2 -->
+                                <select class="form-select-sm border custom-select w-mobile-100">
+                                    <option value="">- Pilih Field -</option>
+                                    <option value="Gol">Gol</option>
+                                    <option value="Jabatan">Jabatan</option>
+                                    <option value="Jenis Kelamin">Jenis Kelamin</option>
+                                    <option value="Nama Peg">Nama Peg</option>
+                                    <option value="NIP">NIP</option>
+                                    <option value="No Finger">No Finger</option>
+                                    <option value="Unit Kerja">Unit Kerja</option>
+                                </select>
+
+                                <!-- Input Text 2 -->
+                                <div class="input-group-custom w-mobile-100">
+                                    <input type="text" class="form-control-sm border">
+                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Baris Filter Radio Pegawai -->
+                        <div class="row align-items-center mb-2">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0 fw-bold">Pegawai</label>
+                            <div class="col-md-6 d-flex gap-4">
+                                <div class="form-check form-check-inline mb-0 d-flex align-items-center gap-2">
+                                    <input class="form-check-input" type="radio" name="statusPegawai" id="pegawaiAktif"
+                                        value="aktif" checked>
+                                    <label class="form-check-label small pt-1" for="pegawaiAktif">Aktif</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0 d-flex align-items-center gap-2">
+                                    <input class="form-check-input" type="radio" name="statusPegawai" id="pegawaiKeluar"
+                                        value="keluar">
+                                    <label class="form-check-label small pt-1" for="pegawaiKeluar">Keluar</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Baris Filter Radio Status & Tombol Refresh -->
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-2 form-label-custom mb-1 mb-md-0 fw-bold">Status</label>
+                            <div class="col-md-6 d-flex gap-4">
+                                <div class="form-check form-check-inline mb-0 d-flex align-items-center gap-2">
+                                    <input class="form-check-input" type="radio" name="statusJenis" id="statusPNS"
+                                        value="pns" checked>
+                                    <label class="form-check-label small pt-1" for="statusPNS">PNS</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-0 d-flex align-items-center gap-2">
+                                    <input class="form-check-input" type="radio" name="statusJenis" id="statusNonPNS"
+                                        value="non_pns">
+                                    <label class="form-check-label small pt-1" for="statusNonPNS">NON
+                                        PNS</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                                <button class="btn-refresh-custom w-mobile-100">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Petunjuk / Keterangan -->
+                    <p class="mb-2 fw-semibold text-dark" style="font-size: 12px;">
+                        Untuk sort klik pada header kolom table
+                    </p>
+
+                    <!-- Data Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped text-center align-middle">
+                            <thead style="background:#EB6831;">
+                                <tr>
+                                    <th style="color:white; vertical-align: middle;">No</th>
+                                    <th style="color:white; vertical-align: middle;">NIP</th>
+                                    <th style="color:white; vertical-align: middle;">Nama</th>
+                                    <th style="color:white; vertical-align: middle;">GOL-Pangkat</th>
+                                    <th style="color:white; vertical-align: middle;">Unit Kerja</th>
+                                    <th style="color:white; vertical-align: middle;">Jabatan</th>
+                                    <th style="color:white; vertical-align: middle;">Status Peg</th>
+                                    <th style="color:white; vertical-align: middle;">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="8" style="vertical-align: middle; padding: 20px;">No records to
+                                        display.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    
+{% endblock %}

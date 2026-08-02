@@ -1,0 +1,252 @@
+<!-- pages/dashboard_1/Kepegawaian Dinas Luar Operasi.html -->
+{% extends "layout/baseDashboard1.html" %}
+
+{% block title %}- Kepegawaian Dinas Luar Operasi{% endblock %}
+
+{% block content %}
+<div class="nxl-content">
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Kepegawaian</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_kepegawaian_dinas_luar_operasi') }}">Dinas Luar Operasi</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content master-siaga">
+        <div class="container-fluid">
+
+            <!-- Custom Style Khusus Halaman Ini -->
+            <style>
+                .sub-panel-card {
+                    border: 1px solid #dee2e6;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                    background: #fff;
+                }
+
+                .sub-panel-header {
+                    background-color: #e65c00;
+                    color: #fff;
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    padding: 8px 15px;
+                    width: 100%;
+                }
+
+                .input-custom-style {
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    padding: 3px 8px;
+                    font-size: 0.85rem;
+                    width: 100%;
+                    background-color: #fff;
+                }
+
+                .input-custom-style:focus {
+                    border-color: #e65c00;
+                    outline: none;
+                }
+
+                .form-label-custom {
+                    font-size: 0.85rem;
+                    color: #333;
+                    font-weight: 600;
+                    margin-bottom: 0;
+                }
+            </style>
+
+            <!-- CARD UTAMA: Dinas Luar Umum -->
+            <div class="card mb-4 filter-card shadow-sm border-0" style="border-radius: 10px;">
+                <!-- Header Card -->
+                <div class="card-header-custom d-flex justify-content-between align-items-center p-3 border-bottom"
+                    style="border-radius: 10px 10px 0 0;">
+                    <h6 class="mb-0">
+                    <i class="feather-users me-2"></i>Dinas Luar Umum
+                    </h6>
+
+                    <div class="header-actions">
+                        <button class="btn p-0 border-0 bg-transparent shadow-none d-md-none" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#headerIconsCollapse">
+                            <i class="bi bi-three-dots-vertical" style="font-size: 1.5rem; color: #333;"></i>
+                        </button>
+
+                        <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
+                            <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                <a href="{{ url_for('main.view_kepegawaian_cari_dinas_luar_umum') }}"
+                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                    <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                </a>
+
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                                </button>
+
+                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                    <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body Card Utama -->
+                <div class="card-body p-4">
+                    <!-- No. Sprin -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-md-2 form-label-custom">No. Sprin</label>
+                        <div class="col-md-8">
+                            <input type="text" class="input-custom-style">
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-md-flex align-items-center">
+                        <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jenis</label>
+                        <div class="col-md-7 d-flex gap-5">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="jenisOperasi" name="jenis_operasi">
+                                <label class="form-check-label fw-bold" for="jenisOperasi">Operasi</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="jenisNonOperasi"
+                                    name="jenis_nonoperasi">
+                                <label class="form-check-label fw-bold" for="jenisNonOperasi">Non Operasi</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tanggal s/d -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-md-2 form-label-custom">Tanggal</label>
+                        <div class="col-md-8 d-flex align-items-center gap-2">
+                            <div class="input-group input-group-sm">
+                                <input type="date" class="form-control input-custom-style">
+                            </div>
+                            <span class="fw-bold px-1 small">s/d</span>
+                            <div class="input-group input-group-sm">
+                                <input type="date" class="form-control input-custom-style">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Penempatan -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-md-2 form-label-custom">Penempatan</label>
+                        <div class="col-md-8">
+                            <input type="text" class="input-custom-style">
+                        </div>
+                    </div>
+
+                    <!-- Keterangan -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-md-2 form-label-custom">Keterangan</label>
+                        <div class="col-md-8">
+                            <input type="text" class="input-custom-style">
+                        </div>
+                    </div>
+
+                    <!-- Peserta (Tabel) -->
+                    <div class="row mb-3">
+                        <label class="col-md-2 form-label-custom pt-1">Peserta</label>
+                        <div class="col-md-8">
+                            <div class="table-responsive border rounded">
+                                <table class="table table-sm table-bordered text-center align-middle mb-0"
+                                    style="font-size: 0.78rem;">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="py-1">No.</th>
+                                            <th class="py-1">Nama</th>
+                                            <th class="py-1">Status UM</th>
+                                            <th class="py-1">Tanggal Berangkat</th>
+                                            <th class="py-1">Tanggal Pulang</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5" class="py-3 text-muted">No records to display.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upload File -->
+                    <div class="row mb-4 align-items-center">
+                        <label class="col-md-2 form-label-custom">Upload File</label>
+                        <div class="col-md-8 d-flex gap-2">
+                            <input type="text" class="input-custom-style" style="max-width: 250px;">
+                            <button type="button" class="btn btn-sm text-white px-3"
+                                style="background-color: #e65c00; border: none; font-size: 0.78rem;">Select</button>
+                        </div>
+                    </div>
+
+                    <!-- Tombol SAVE -->
+                    <div class="text-center mt-2">
+                        <button type="button" class="btn btn-primary btn-sm px-4 rounded-pill fw-bold"
+                            style="background-color: #0000ff; border: none; font-size: 0.8rem;">SAVE</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB PANEL CARD: Add Peserta -->
+            <div class="sub-panel-card mb-4">
+                <div class="sub-panel-header">
+                    Add Peserta
+                </div>
+                <div class="p-4">
+                    <!-- Pegawai -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-md-2 form-label-custom">Pegawai</label>
+                        <div class="col-md-8">
+                            <input type="text" class="input-custom-style">
+                        </div>
+                    </div>
+
+                    <!-- Uang Makan -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-md-2 form-label-custom">Uang Makan</label>
+                        <div class="col-md-8">
+                            <input type="text" class="input-custom-style">
+                        </div>
+                    </div>
+
+                    <!-- Tanggal s/d -->
+                    <div class="row mb-4 align-items-center">
+                        <label class="col-md-2 form-label-custom">Tanggal</label>
+                        <div class="col-md-8 d-flex align-items-center gap-2">
+                            <div class="input-group input-group-sm">
+                                <input type="date" class="form-control input-custom-style">
+                            </div>
+                            <span class="fw-bold px-1 small">s/d</span>
+                            <div class="input-group input-group-sm">
+                                <input type="date" class="form-control input-custom-style">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Insert Pegawai to table -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary btn-sm px-3 rounded-pill"
+                            style="font-size: 0.75rem; background-color: #0000ff; border: none;">
+                            Insert Pegawai to table
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

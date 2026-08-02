@@ -2,6 +2,8 @@
 
 from flask import Blueprint, jsonify
 from app.utils.decorators import login_required
+from app.controllers.homeController import get_pelanggaran_disiplin, get_piket_siaga, home, search_buku_telp
+from app.controllers.loginController import login, logout
 from app.controllers.dashboard_1HomeController import (
     dashboard_kgb, dashboard_pangkat, dashboard_pelanggaran, dashboard_pensiun, dashboard_trt)
 from app.controllers.dashboard_1MasterFileController import (
@@ -14,49 +16,19 @@ from app.controllers.dashboard_1MasterFileController import (
     cari_user_account, create_kalender, save_jabatan, save_jam_kerja, save_joblist, save_potongan, save_tunkin_class, save_uang_makan, save_unit_kerja, save_user_account,
     toggle_pegawai_vip, save_jam_finger,
 )
-from app.controllers.dashboard_2DataSiagaController import (
-    data_siaga_absensi_kehadiran, data_siaga_cetak_daftar_lembur_siaga, data_siaga_cetak_rekap_siaga,
-    data_siaga_cetak_uang_siaga, data_siaga_jadwal_ulang, data_siaga_membuat_jadwal_piket_siaga,
-    api_absensi_kehadiran_get as data_siaga_api_absensi_kehadiran_get,
-    api_absensi_kehadiran_update as data_siaga_api_absensi_kehadiran_update,
+from app.controllers.dashboard_1KepegawaianController import (
+    kepegawaian_cari_data_pegawai,
+    kepegawaian_cari_dinas_luar_umum,
+    kepegawaian_data_pegawai,
+    kepegawaian_dinas_luar_operasi,
+    kepegawaian_dinas_luar_pelatihan,
+    kepegawaian_dinas_luar_umum,
+    kepegawaian_mutasi_penempatan_pegawai,
+    kepegawaian_pegawai_cuti,
+    kepegawaian_pegawai_sakit,
+    kepegawaian_pegawai_tidak_hadir,
+    kepegawaian_update_pendukung,
 )
-from app.controllers.dashboard_2MasterDataController import (
-    master_data_email_broadcast,
-    master_data_kgr,
-    master_data_nominal_ut_piket,
-    master_data_tim_siaga,
-    master_data_user_account,
-    api_tim_siaga_save as master_data_api_tim_siaga_save,
-    api_tim_siaga_delete as master_data_api_tim_siaga_delete,
-    api_tim_siaga_get as master_data_api_tim_siaga_get,
-    api_tim_siaga_save_as as master_data_api_tim_siaga_save_as,
-    api_search_pegawai_tim as master_data_api_search_pegawai_tim,
-    cari_data_kgr as master_data_cari_kgr,
-    cari_data_piket_siaga as master_data_cari_piket_siaga,
-    cari_data_piket_tim_siaga as master_data_cari_piket_tim_siaga,
-    cari_data_tim_siaga as master_data_cari_tim_siaga,
-    api_cari_tim_siaga as master_data_api_cari_tim_siaga,
-    api_cari_tim_siaga_get as master_data_api_cari_tim_siaga_get,
-    api_kgr_search_pegawai as master_data_api_kgr_search_pegawai,
-    api_kgr_get_shift as master_data_api_kgr_get_shift,
-    api_kgr_save as master_data_api_kgr_save,
-    api_kgr_delete as master_data_api_kgr_delete,
-    api_kgr_get as master_data_api_kgr_get,
-    api_kgr_save_as as master_data_api_kgr_save_as,
-    api_kgr_cari as master_data_api_kgr_cari,
-    api_kgr_get_filter_fields as master_data_api_kgr_get_filter_fields,
-    api_email_broadcast_get as master_data_api_email_broadcast_get,
-    api_email_broadcast_save as master_data_api_email_broadcast_save,
-)
-from app.controllers.dashboard_2OtoritasPersetujuanController import (
-    otorisasi_persetujuan_kepala_kantor,
-    otorisasi_persetujuan_kepala_seksi_operasi,
-)
-from app.controllers.dashboard_2HomeController import (
-    dashboard_tim_siaga,
-)
-from app.controllers.homeController import get_pelanggaran_disiplin, get_piket_siaga, home, search_buku_telp
-from app.controllers.loginController import login, logout
 from app.controllers.dashboard_1MediaInformasiController import (
     media_informasi, media_informasi_detail,
     save_media_informasi, save_media_informasi_slide,
@@ -111,6 +83,47 @@ from app.controllers.dashboard_1DataAbsensiController import (
     api_closing_save as data_absensi_api_closing_save,
     api_cari_absensi_normalisasi_finger as data_absensi_api_cari_normalisasi_finger,
 )
+from app.controllers.dashboard_2DataSiagaController import (
+    data_siaga_absensi_kehadiran, data_siaga_cetak_daftar_lembur_siaga, data_siaga_cetak_rekap_siaga,
+    data_siaga_cetak_uang_siaga, data_siaga_jadwal_ulang, data_siaga_membuat_jadwal_piket_siaga,
+    api_absensi_kehadiran_get as data_siaga_api_absensi_kehadiran_get,
+    api_absensi_kehadiran_update as data_siaga_api_absensi_kehadiran_update,
+)
+from app.controllers.dashboard_2MasterDataController import (
+    master_data_email_broadcast,
+    master_data_kgr,
+    master_data_nominal_ut_piket,
+    master_data_tim_siaga,
+    master_data_user_account,
+    api_tim_siaga_save as master_data_api_tim_siaga_save,
+    api_tim_siaga_delete as master_data_api_tim_siaga_delete,
+    api_tim_siaga_get as master_data_api_tim_siaga_get,
+    api_tim_siaga_save_as as master_data_api_tim_siaga_save_as,
+    api_search_pegawai_tim as master_data_api_search_pegawai_tim,
+    cari_data_kgr as master_data_cari_kgr,
+    cari_data_piket_siaga as master_data_cari_piket_siaga,
+    cari_data_piket_tim_siaga as master_data_cari_piket_tim_siaga,
+    cari_data_tim_siaga as master_data_cari_tim_siaga,
+    api_cari_tim_siaga as master_data_api_cari_tim_siaga,
+    api_cari_tim_siaga_get as master_data_api_cari_tim_siaga_get,
+    api_kgr_search_pegawai as master_data_api_kgr_search_pegawai,
+    api_kgr_get_shift as master_data_api_kgr_get_shift,
+    api_kgr_save as master_data_api_kgr_save,
+    api_kgr_delete as master_data_api_kgr_delete,
+    api_kgr_get as master_data_api_kgr_get,
+    api_kgr_save_as as master_data_api_kgr_save_as,
+    api_kgr_cari as master_data_api_kgr_cari,
+    api_kgr_get_filter_fields as master_data_api_kgr_get_filter_fields,
+    api_email_broadcast_get as master_data_api_email_broadcast_get,
+    api_email_broadcast_save as master_data_api_email_broadcast_save,
+)
+from app.controllers.dashboard_2OtoritasPersetujuanController import (
+    otorisasi_persetujuan_kepala_kantor,
+    otorisasi_persetujuan_kepala_seksi_operasi,
+)
+from app.controllers.dashboard_2HomeController import (
+    dashboard_tim_siaga,
+)
 from app.controllers.dashboard_3HomeController import (
     dashboard_kinerja,
 )
@@ -145,7 +158,6 @@ from app.controllers.dashboard_3PengajuanController import (
     pengajuan_skp,
     pengajuan_absensi,
 )
-
 from app.models.pegawaiModel import Pegawai
 
 main = Blueprint('main', __name__)
@@ -210,6 +222,62 @@ def view_dashboard_kgb():
 @login_required
 def view_dashboard_trt():
     return dashboard_trt()
+
+# Kepegawaian :
+@main.route('/kepegawaian/data-pegawai')
+@login_required
+def view_kepegawaian_data_pegawai():
+    return kepegawaian_data_pegawai()
+
+@main.route('/kepegawaian/cari/data-pegawai')
+@login_required
+def view_kepegawaian_cari_data_pegawai():
+    return kepegawaian_cari_data_pegawai()
+
+@main.route('/kepegawaian/dinas-luar-umum')
+@login_required
+def view_kepegawaian_dinas_luar_umum():
+    return kepegawaian_dinas_luar_umum()
+
+@main.route('/kepegawaian/cari/dinas-luar-umum')
+@login_required
+def view_kepegawaian_cari_dinas_luar_umum():
+    return kepegawaian_cari_dinas_luar_umum()
+
+@main.route('/kepegawaian/dinas-luar-operasi')
+@login_required
+def view_kepegawaian_dinas_luar_operasi():
+    return kepegawaian_dinas_luar_operasi()
+
+@main.route('/kepegawaian/dinas-luar-pelatihan')
+@login_required
+def view_kepegawaian_dinas_luar_pelatihan():
+    return kepegawaian_dinas_luar_pelatihan()
+
+@main.route('/kepegawaian/pegawai-cuti')
+@login_required
+def view_kepegawaian_pegawai_cuti():
+    return kepegawaian_pegawai_cuti()
+
+@main.route('/kepegawaian/pegawai-sakit')
+@login_required
+def view_kepegawaian_pegawai_sakit():
+    return kepegawaian_pegawai_sakit()
+
+@main.route('/kepegawaian/pegawai-tidak-hadir')
+@login_required
+def view_kepegawaian_pegawai_tidak_hadir():
+    return kepegawaian_pegawai_tidak_hadir()
+
+@main.route('/kepegawaian/mutasi-penempatan')
+@login_required
+def view_kepegawaian_mutasi_penempatan_pegawai():
+    return kepegawaian_mutasi_penempatan_pegawai()
+
+@main.route('/kepegawaian/update-pendukung')
+@login_required
+def view_kepegawaian_update_pendukung():
+    return kepegawaian_update_pendukung()
 
 # Master File :
 @main.route('/master/butir-kegiatan')
