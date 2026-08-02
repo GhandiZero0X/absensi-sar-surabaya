@@ -502,7 +502,7 @@
 
                         .form-label-custom {
                             font-size: 0.85rem;
-                            color: #333;
+                            color: #333 !important;
                             font-weight: 600;
                             margin-bottom: 0;
                         }
@@ -511,10 +511,10 @@
                     <!-- CARD UTAMA: Dinas Luar Umum -->
                     <div class="card mb-4 filter-card shadow-sm border-0" style="border-radius: 10px;">
                         <!-- Header Card -->
-                        <div class="card-header-custom d-flex justify-content-between align-items-center p-3 border-bottom"
-                            style="border-radius: 10px 10px 0 0;">
-                            <h6 class="mb-0 fw-bold d-flex align-items-center gap-2 text-dark">
-                                <i class="feather-user-minus"></i> Pegawai Tidak Hadir
+                        <div class="card-header-custom d-flex justify-content-between align-items-center"
+                            style="border-radius: 10px;">
+                            <h6 class="mb-0">
+                                <i class="feather-user-minus me-2"></i>Pegawai Tidak Hadir
                             </h6>
 
                             <div class="header-actions">
@@ -524,26 +524,22 @@
                                 </button>
 
                                 <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                                    <div class="header-icons-wrapper d-flex gap-2 align-items-center">
-                                        <div class="input-group input-group-sm me-2" style="width: 180px;">
-                                            <input type="text" class="form-control" placeholder="">
-                                            <span class="input-group-text bg-white border-start-0"><i
-                                                    class="bi bi-search"></i></span>
-                                        </div>
+                                    <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                        <a href="Kepegawaian Cari Data Pegawai.html"
+                                            class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                        </a>
 
-                                        <button class="btn btn-danger btn-sm px-2 py-1"
-                                            style=" border: none; color: #000;"><i
-                                                class="bi bi-trash-fill"></i>
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-file-earmark-plus"
+                                                style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                        </button>
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
                                         </button>
 
-                                        <button class="btn btn btn-sm px-2 py-1"
-                                            style="background-color: #3baf66; border: none; color: #ffffff;"><i
-                                                class="bi bi-save-fill"></i>
-                                        </button>
-
-                                        <button class="btn btn-warning btn-sm px-2 py-1"
-                                            style=" border: none; color: #000;"><i
-                                                class="bi bi-file-earmark-plus-fill"></i>
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
                                         </button>
                                     </div>
                                 </div>
