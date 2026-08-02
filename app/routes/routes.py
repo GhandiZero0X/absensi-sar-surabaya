@@ -360,6 +360,24 @@ def api_dinas_luar_operasi_save_peserta():
 def view_kepegawaian_dinas_luar_pelatihan():
     return kepegawaian_dinas_luar_pelatihan()
 
+@main.route('/api/dinas-luar-pelatihan/save-peserta', methods=['POST'])
+@login_required
+def api_dinas_luar_pelatihan_save_peserta():
+    from app.controllers.dashboard_1KepegawaianController import api_dinas_luar_pelatihan_save_peserta
+    return api_dinas_luar_pelatihan_save_peserta()
+
+@main.route('/api/dinas-luar-pelatihan/get')
+@login_required
+def api_dinas_luar_pelatihan_get():
+    from app.controllers.dashboard_1KepegawaianController import api_dinas_luar_pelatihan_get
+    return api_dinas_luar_pelatihan_get()
+
+@main.route('/api/dinas-luar-pelatihan/delete', methods=['POST'])
+@login_required
+def api_dinas_luar_pelatihan_delete():
+    from app.controllers.dashboard_1KepegawaianController import api_dinas_luar_pelatihan_delete
+    return api_dinas_luar_pelatihan_delete()
+
 @main.route('/kepegawaian/pegawai-cuti')
 @login_required
 def view_kepegawaian_pegawai_cuti():
