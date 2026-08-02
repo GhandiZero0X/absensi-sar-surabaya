@@ -383,6 +383,43 @@ def api_dinas_luar_pelatihan_delete():
 def view_kepegawaian_pegawai_cuti():
     return kepegawaian_pegawai_cuti()
 
+@main.route('/api/cuti/save', methods=['POST'])
+@login_required
+def api_cuti_save():
+    from app.controllers.dashboard_1KepegawaianController import api_cuti_save
+    return api_cuti_save()
+
+@main.route('/api/cuti/get')
+@login_required
+def api_cuti_get():
+    from app.controllers.dashboard_1KepegawaianController import api_cuti_get
+    return api_cuti_get()
+
+@main.route('/api/cuti/delete', methods=['POST'])
+@login_required
+def api_cuti_delete():
+    from app.controllers.dashboard_1KepegawaianController import api_cuti_delete
+    return api_cuti_delete()
+
+@main.route('/api/cuti/cari')
+@login_required
+def api_cuti_cari():
+    from app.controllers.dashboard_1KepegawaianController import api_cuti_cari
+    return api_cuti_cari()
+
+@main.route('/api/cuti/jenis')
+@login_required
+def api_cuti_get_jenis():
+    from app.controllers.dashboard_1KepegawaianController import api_cuti_get_jenis
+    return api_cuti_get_jenis()
+
+@main.route('/api/cuti/filter-fields')
+@login_required
+def api_cuti_get_filter_fields():
+    from app.controllers.dashboard_1KepegawaianController import api_cuti_get_filter_fields
+    return api_cuti_get_filter_fields()
+
+
 @main.route('/kepegawaian/pegawai-sakit')
 @login_required
 def view_kepegawaian_pegawai_sakit():

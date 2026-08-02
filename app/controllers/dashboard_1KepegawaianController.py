@@ -9,6 +9,7 @@ from datetime import timedelta
 from sqlalchemy import or_
 from app import db
 from app.models.pegawaiModel import Pegawai
+from app.models.potModel import MfPot
 from app.models.sprinHeaderModel import SprinHeader
 from app.models.unitKerjaModel import MfUnitKerja
 from app.models.jabatanModel import MfJabatan
@@ -1327,6 +1328,352 @@ def kepegawaian_pegawai_cuti():
     Render halaman Kepegawaian Pegawai Cuti.
     """
     return render_template('pages/dashboard_1/Kepegawaian Pegawai Cuti.html')
+
+def api_cuti_save():
+    """
+    API: Simpan Data Cuti Pegawai
+    Mirip dengan LBSave_Click di VB.NET
+    """
+    try:
+        data = request.get_json()
+        print("📥 Data Cuti:", data)
+        
+        nip = data.get('nip', '').strip()
+        tgl_awal = data.get('tgl_awal', '')
+        tgl_akhir = data.get('tgl_akhir', '')
+        keterangan = data.get('keterangan', '')
+        jenis_cuti = data.get('jenis_cuti', '')
+        transaksi_id_existing = data.get('transaksi_id', '')
+        
+        if not nip:
+            return jsonify({'success': False, 'error': 'Pegawai tidak boleh kosong'})
+        if not tgl_awal or not tgl_akhir:
+            return jsonify({'success': False, 'error': 'Tanggal tidak boleh kosong'})
+        if not jenis_cuti:
+            return jsonify({'success': False, 'error': 'Jenis Cuti tidak boleh kosong'})
+        
+        # Generate atau gunakan TransaksiID existing
+        if transaksi_id_existing:
+            transaksi_id = transaksi_id_existing
+        else:
+            transaksi_id = f"CUTI_{nip}_{tgl_awal}_{tgl_akhir}"
+        
+        # Delete existing data dulu
+        DinasLuar.query.filter(
+            DinasLuar.DINAS_TRANSAKSI_ID == transaksi_id
+        ).delete()
+        
+        Absensi.query.filter(
+            Absensi.TRAKSAKSI_ID_FROM == transaksi_id
+        ).delete()
+        db.session.flush()
+        
+        # ✅ Cari atau buat GUID_SPRIN khusus untuk Cuti
+        guid_sprin_cuti = "CUTI_DUMMY_HEADER"
+        existing_header = SprinHeader.query.get(guid_sprin_cuti)
+        if not existing_header:
+            # Buat dummy header untuk Cuti
+            dummy_header = SprinHeader(
+                GUID_SPRIN=guid_sprin_cuti,
+                TYPE_SPRIN_ID='CUTI',  # Type khusus
+                NO_SPRIN='CUTI-HEADER',
+                TGL_SPRIN=datetime.now(),
+                TGL_AWAL_SPRIN=datetime.now(),
+                TGL_AKHIR_SPRIN='2099-12-31',
+                PERIHAL_SPRIN='Header Dummy untuk Transaksi Cuti',
+                PENEMPATAN='-',
+                UPDATE_BY='admin',
+                UPDATE_DATE=datetime.now()
+            )
+            db.session.add(dummy_header)
+            db.session.flush()
+        
+        # Cek kalender
+        tgl_awal_date = datetime.strptime(tgl_awal, '%Y-%m-%d')
+        tgl_akhir_date = datetime.strptime(tgl_akhir, '%Y-%m-%d')
+        
+        kalender_count = MfKalender.query.filter(
+            MfKalender.TGL_KERJA >= tgl_awal_date,
+            MfKalender.TGL_KERJA <= tgl_akhir_date
+        ).count()
+        
+        expected_days = (tgl_akhir_date - tgl_awal_date).days + 1
+        if kalender_count < expected_days:
+            return jsonify({
+                'success': False, 
+                'error': 'Master Kalender ada yang belum tercreate sesuai range tanggal'
+            })
+        
+        # ✅ Simpan ke DINAS_LUAR dengan GUID_SPRIN dummy
+        new_dl = DinasLuar(
+            DINAS_TRANSAKSI_ID=transaksi_id,
+            GUID_SPRIN=guid_sprin_cuti,  # ✅ Pakai GUID dummy
+            NIP=nip,
+            TGL_AWAL_DINAS_LUAR=tgl_awal_date,
+            TGL_AKHIR_DINAS_LUAR=tgl_akhir_date,
+            KETERANGAN_DINAS_LUAR=keterangan,
+            PENEMPATAN_DINAS_LUAR=jenis_cuti,
+            TRANSAKSI='Cuti',
+            PENDUKUNG='Y',
+            NO_SURAT='-',
+            JENIS='CUTI',
+            NAMA_FILE='-',
+            TGL_AWAL_SURAT=tgl_awal_date,
+            TGL_AKHIR_SURAT=tgl_akhir_date,
+            TIPE='0',
+            STATUS_UM=0,
+            UPDATE_BY='admin',
+            UPDATE_DATE=datetime.now()
+        )
+        db.session.add(new_dl)
+        
+        # Ambil data potongan
+        potongan = MfPot.query.filter(
+            MfPot.KATEGORI == 'CUTI',
+            MfPot.TINGKAT == jenis_cuti,
+            MfPot.TGL_MULAI <= tgl_akhir_date
+        ).order_by(MfPot.TGL_MULAI.desc()).first()
+        
+        persen_pot = potongan.PERSEN_POT if potongan else 0
+        
+        # Loop insert absensi per hari
+        current_date = tgl_awal_date
+        while current_date <= tgl_akhir_date:
+            kalender = MfKalender.query.filter(
+                MfKalender.TGL_KERJA == current_date
+            ).first()
+            
+            is_libur = False
+            if kalender:
+                is_libur = kalender.IS_LIBUR == 'Y'
+            else:
+                if current_date.weekday() >= 5:
+                    is_libur = True
+            
+            if not is_libur:
+                Absensi.query.filter(
+                    Absensi.NIP == nip,
+                    Absensi.TGL_KERJA == current_date
+                ).delete()
+                
+                new_absensi = Absensi(
+                    NIP=nip,
+                    FINGER_ID=0,
+                    POTONGAN_ID=1,
+                    ABSENSI_BACKUP_ID=0,
+                    ABSENSI_TEMP_ID=0,
+                    TGL_KERJA=current_date,
+                    TGL_JAM_IN=current_date,
+                    TGL_JAM_OUT=current_date,
+                    KET_IN=keterangan[:100] if keterangan else 'Cuti',
+                    KET_OUT=keterangan[:100] if keterangan else 'Cuti',
+                    TRANSAKSI_IN='Cuti',
+                    TRANSAKSI_OUT='Cuti',
+                    UPDATE_IN_BY='admin',
+                    UPDATE_OUT_BY='admin',
+                    TINGKAT_TLM=jenis_cuti,
+                    TOTAL_TLM=0,
+                    TOTAL_PSW=0,
+                    TINGKAT_PSW=jenis_cuti,
+                    IS_INVALID='Y',
+                    IS_OUTVALID='Y',
+                    AWAL_TLM=0,
+                    PERSEN_POT_TLM=persen_pot,
+                    PERSEN_POT_PSW=0,
+                    TGL_JAM_BAKU_IN=current_date,
+                    TGL_JAM_BAKU_OUT=current_date,
+                    TRAKSAKSI_ID_FROM=transaksi_id,
+                    PENDUKUNG_IN='Y',
+                    PENDUKUNG_OUT='Y',
+                    STATUS_UM=0
+                )
+                db.session.add(new_absensi)
+            
+            current_date += timedelta(days=1)
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': f'Data Cuti berhasil disimpan',
+            'transaksi_id': transaksi_id
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        print("❌ ERROR in api_cuti_save:")
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
+
+def api_cuti_get():
+    """API: Get data Cuti by TransaksiID"""
+    try:
+        transaksi_id = request.args.get('transaksi_id', '')
+        if not transaksi_id:
+            return jsonify({'success': False, 'error': 'Transaksi ID tidak boleh kosong'})
+        
+        dinas = DinasLuar.query.filter(
+            DinasLuar.DINAS_TRANSAKSI_ID == transaksi_id,
+            DinasLuar.TRANSAKSI == 'Cuti'
+        ).first()
+        
+        if not dinas:
+            return jsonify({'success': False, 'error': 'Data tidak ditemukan'})
+        
+        # Ambil data pegawai
+        pegawai = Pegawai.query.filter(Pegawai.NIP == dinas.NIP).first()
+        
+        # Ambil nama potongan
+        potongan = MfPot.query.filter(
+            MfPot.TINGKAT == dinas.PENEMPATAN_DINAS_LUAR,
+            MfPot.KATEGORI == 'CUTI'
+        ).first()
+        
+        result = {
+            'transaksi_id': dinas.DINAS_TRANSAKSI_ID,
+            'nip': dinas.NIP,
+            'nama': pegawai.NAMA if pegawai else '-',
+            'tgl_awal': dinas.TGL_AWAL_DINAS_LUAR.strftime('%Y-%m-%d') if dinas.TGL_AWAL_DINAS_LUAR else '',
+            'tgl_akhir': dinas.TGL_AKHIR_DINAS_LUAR.strftime('%Y-%m-%d') if dinas.TGL_AKHIR_DINAS_LUAR else '',
+            'keterangan': dinas.KETERANGAN_DINAS_LUAR or '',
+            'jenis_cuti': dinas.PENEMPATAN_DINAS_LUAR or '',
+            'jenis_cuti_nama': potongan.NAMA_POT if potongan else dinas.PENEMPATAN_DINAS_LUAR,
+            'update_by': dinas.UPDATE_BY or '',
+            'update_date': dinas.UPDATE_DATE.strftime('%d-%b-%Y %H:%M') if dinas.UPDATE_DATE else ''
+        }
+        
+        return jsonify({'success': True, 'data': result})
+        
+    except Exception as e:
+        import traceback
+        print("❌ ERROR in api_cuti_get:")
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
+
+def api_cuti_delete():
+    """API: Delete data Cuti"""
+    try:
+        data = request.get_json()
+        transaksi_id = data.get('transaksi_id', '')
+        
+        if not transaksi_id:
+            return jsonify({'success': False, 'error': 'Transaksi ID tidak boleh kosong'})
+        
+        # Delete dari ABSENSI dulu (pakai nama kolom yang benar)
+        Absensi.query.filter(
+            Absensi.TRAKSAKSI_ID_FROM == transaksi_id  # ✅ TRAKSAKSI
+        ).delete()
+        
+        # Delete dari DINAS_LUAR
+        DinasLuar.query.filter(
+            DinasLuar.DINAS_TRANSAKSI_ID == transaksi_id,
+            DinasLuar.TRANSAKSI == 'Cuti'
+        ).delete()
+        
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': 'Data Cuti berhasil dihapus'})
+        
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
+
+def api_cuti_cari():
+    """API: Cari data Cuti"""
+    try:
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+        
+        # Base query
+        query = db.session.query(
+            DinasLuar, Pegawai, MfPot
+        ).outerjoin(
+            Pegawai, DinasLuar.NIP == Pegawai.NIP
+        ).outerjoin(
+            MfPot, db.and_(
+                DinasLuar.PENEMPATAN_DINAS_LUAR == MfPot.TINGKAT,
+                MfPot.KATEGORI == 'CUTI'
+            )
+        ).filter(
+            DinasLuar.TRANSAKSI == 'Cuti'
+        )
+        
+        # Filter
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama': Pegawai.NAMA,
+            'KeteranganCuti': DinasLuar.KETERANGAN_DINAS_LUAR,
+            'JenisCuti': MfPot.NAMA_POT,
+        }
+        
+        if filter_field1 and filter_value1:
+            field = field_mapping.get(filter_field1)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value1}%'))
+        
+        if filter_field2 and filter_value2:
+            field = field_mapping.get(filter_field2)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value2}%'))
+        
+        results = query.order_by(DinasLuar.UPDATE_DATE.desc()).limit(500).all()
+        
+        data = []
+        for i, (dl, peg, pot) in enumerate(results, 1):
+            data.append({
+                'no': i,
+                'transaksi_id': dl.DINAS_TRANSAKSI_ID,
+                'nip': dl.NIP,
+                'nama': peg.NAMA if peg else '-',
+                'tgl_awal': dl.TGL_AWAL_DINAS_LUAR.strftime('%d-%b-%Y') if dl.TGL_AWAL_DINAS_LUAR else '-',
+                'tgl_akhir': dl.TGL_AKHIR_DINAS_LUAR.strftime('%d-%b-%Y') if dl.TGL_AKHIR_DINAS_LUAR else '-',
+                'keterangan': dl.KETERANGAN_DINAS_LUAR or '-',
+                'jenis_cuti': pot.NAMA_POT if pot else dl.PENEMPATAN_DINAS_LUAR,
+                'update_by': f"{dl.UPDATE_BY} - {dl.UPDATE_DATE.strftime('%d-%b-%Y')}" if dl.UPDATE_DATE else '-'
+            })
+        
+        return jsonify({'success': True, 'data': data, 'total': len(data)})
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e), 'data': []})
+
+
+def api_cuti_get_jenis():
+    """API: Get list Jenis Cuti dari MfPot"""
+    try:
+        potongan_list = MfPot.query.filter(
+            MfPot.KATEGORI == 'CUTI'
+        ).order_by(MfPot.TINGKAT).all()
+        
+        data = [{'tingkat': p.TINGKAT, 'nama': p.NAMA_POT, 'persen': p.PERSEN_POT} for p in potongan_list]
+        
+        return jsonify({'success': True, 'data': data})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e), 'data': []})
+
+
+def api_cuti_get_filter_fields():
+    """API: Get list field untuk filter dropdown Cuti"""
+    try:
+        fields = [
+            {'field_id': 'NIP', 'field_name': 'NIP'},
+            {'field_id': 'Nama', 'field_name': 'Nama Pegawai'},
+            {'field_id': 'KeteranganCuti', 'field_name': 'Keterangan'},
+            {'field_id': 'JenisCuti', 'field_name': 'Jenis Cuti'},
+        ]
+        return jsonify({'success': True, 'data': fields})
+    except Exception as e:
+        return jsonify({'error': str(e), 'data': []})
 
 
 def kepegawaian_pegawai_sakit():
