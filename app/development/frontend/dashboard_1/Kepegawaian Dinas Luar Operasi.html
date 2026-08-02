@@ -506,15 +506,19 @@
                             font-weight: 600;
                             margin-bottom: 0;
                         }
+
+                        .sub-panel-card .form-label-custom {
+                            color: #333 !important;
+                        }
                     </style>
 
                     <!-- CARD UTAMA: Dinas Luar Umum -->
                     <div class="card mb-4 filter-card shadow-sm border-0" style="border-radius: 10px;">
                         <!-- Header Card -->
-                        <div class="card-header-custom d-flex justify-content-between align-items-center p-3 border-bottom"
-                            style="border-radius: 10px 10px 0 0;">
-                            <h6 class="mb-0 fw-bold d-flex align-items-center gap-2 text-dark">
-                                <i class="feather-activity"></i> Dinas Luar Operasi
+                        <div class="card-header-custom d-flex justify-content-between align-items-center"
+                            style="border-radius: 10px;">
+                            <h6 class="mb-0">
+                                <i class="feather-users me-2"></i>Data Pegawai
                             </h6>
 
                             <div class="header-actions">
@@ -524,17 +528,23 @@
                                 </button>
 
                                 <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
-                                    <div class="header-icons-wrapper d-flex gap-2 align-items-center">
-                                        <div class="input-group input-group-sm me-2" style="width: 180px;">
-                                            <input type="text" class="form-control" placeholder="">
-                                            <span class="input-group-text bg-white border-start-0"><i
-                                                    class="bi bi-search"></i></span>
-                                        </div>
-                                        <button class="btn btn-danger btn-sm px-2 py-1"><i
-                                                class="bi bi-trash-fill"></i></button>
-                                        <button class="btn btn-warning btn-sm px-2 py-1"
-                                            style="background-color: #e2e000; border: none; color: #000;"><i
-                                                class="bi bi-file-earmark-plus"></i></button>
+                                    <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
+                                        <a href="Kepegawaian Cari Data Pegawai.html"
+                                            class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                            <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
+                                        </a>
+
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-file-earmark-plus"
+                                                style="color: #0d6efd; font-size: 1.2rem;"></i>
+                                        </button>
+                                        <!-- <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
+                                        </button> -->
+
+                                        <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                            <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -554,12 +564,15 @@
                                 <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Jenis</label>
                                 <div class="col-md-7 d-flex gap-5">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="jenisOperasi" name="jenis_operasi">
+                                        <input class="form-check-input" type="checkbox" id="jenisOperasi"
+                                            name="jenis_operasi">
                                         <label class="form-check-label fw-bold" for="jenisOperasi">Operasi</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="jenisNonOperasi" name="jenis_nonoperasi">
-                                        <label class="form-check-label fw-bold" for="jenisNonOperasi">Non Operasi</label>
+                                        <input class="form-check-input" type="checkbox" id="jenisNonOperasi"
+                                            name="jenis_nonoperasi">
+                                        <label class="form-check-label fw-bold" for="jenisNonOperasi">Non
+                                            Operasi</label>
                                     </div>
                                 </div>
                             </div>
@@ -599,20 +612,21 @@
                                 <label class="col-md-2 form-label-custom pt-1">Peserta</label>
                                 <div class="col-md-8">
                                     <div class="table-responsive border rounded">
-                                        <table class="table table-sm table-bordered text-center align-middle mb-0"
-                                            style="font-size: 0.78rem;">
-                                            <thead class="table-light">
+                                        <table class="table table-bordered table-striped text-center align-middle">
+                                            <thead style="background:#EB6831;">
                                                 <tr>
-                                                    <th class="py-1">No.</th>
-                                                    <th class="py-1">Nama</th>
-                                                    <th class="py-1">Status UM</th>
-                                                    <th class="py-1">Tanggal Berangkat</th>
-                                                    <th class="py-1">Tanggal Pulang</th>
+                                                    <th style="color:white; vertical-align: middle;">No</th>
+                                                    <th style="color:white; vertical-align: middle;">Nama</th>
+                                                    <th style="color:white; vertical-align: middle;">Status UM</th>
+                                                    <th style="color:white; vertical-align: middle;">Tanggal Berangkat
+                                                    </th>
+                                                    <th style="color:white; vertical-align: middle;">Tanggal Pulang</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td colspan="5" class="py-3 text-muted">No records to display.</td>
+                                                    <td colspan="5" style="vertical-align: middle; padding: 20px;">No
+                                                        records to display.</td>
                                                 </tr>
                                             </tbody>
                                         </table>
