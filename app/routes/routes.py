@@ -28,6 +28,13 @@ from app.controllers.dashboard_2MasterDataController import (
     api_tim_siaga_delete as master_data_api_tim_siaga_delete,
     api_tim_siaga_get as master_data_api_tim_siaga_get,
     api_tim_siaga_save_as as master_data_api_tim_siaga_save_as,
+    api_search_pegawai_tim as master_data_api_search_pegawai_tim,
+    cari_data_kgr as master_data_cari_kgr,
+    cari_data_piket_siaga as master_data_cari_piket_siaga,
+    cari_data_piket_tim_siaga as master_data_cari_piket_tim_siaga,
+    cari_data_tim_siaga as master_data_cari_tim_siaga,
+    api_cari_tim_siaga as master_data_api_cari_tim_siaga,
+    api_cari_tim_siaga_get as master_data_api_cari_tim_siaga_get,
 )
 from app.controllers.dashboard_2OtoritasPersetujuanController import (
     otorisasi_persetujuan_kepala_kantor,
@@ -831,6 +838,11 @@ def view_master_data_nominal_ut_piket():
 def view_master_data_tim_siaga():
     return master_data_tim_siaga()
 
+@main.route('/api/tim-siaga/search-pegawai')
+@login_required
+def api_tim_siaga_search_pegawai():
+    return master_data_api_search_pegawai_tim()
+
 @main.route('/api/tim-siaga/save', methods=['POST'])
 @login_required
 def api_tim_siaga_save():
@@ -855,6 +867,38 @@ def api_tim_siaga_save_as():
 @login_required
 def view_master_data_user_account():
     return master_data_user_account()
+
+# Cari Data:
+@main.route('/siaga/master-data/kgr/cari')
+@login_required
+def view_cari_data_kgr():
+    return master_data_cari_kgr()
+
+@main.route('/siaga/master-data/piket-siaga/cari')
+@login_required
+def view_cari_data_piket_siaga():
+    return master_data_cari_piket_siaga()
+
+@main.route('/siaga/master-data/piket-tim-siaga/cari')
+@login_required
+def view_cari_data_piket_tim_siaga():
+    return master_data_cari_piket_tim_siaga()
+
+@main.route('/siaga/master-data/tim-siaga/cari')
+@login_required
+def view_cari_data_tim_siaga():
+    return master_data_cari_tim_siaga()
+
+# API Cari Tim Siaga:
+@main.route('/api/cari-tim-siaga')
+@login_required
+def api_cari_tim_siaga():
+    return master_data_api_cari_tim_siaga()
+
+@main.route('/api/cari-tim-siaga/get')
+@login_required
+def api_cari_tim_siaga_get():
+    return master_data_api_cari_tim_siaga_get()
 
 # Otorisasi Persetujuan:
 @main.route('/siaga/otorisasi/kepala-kantor')

@@ -1,7 +1,7 @@
 <!-- pages/dashboard_2/Cari_Data_Tim_Siaga.html -->
 {% extends "layout/baseDashboard2.html" %}
 
-{% block title %}- Tim Siaga{% endblock %}
+{% block title %}- Cari Tim Siaga{% endblock %}
 
 {% block content %}
 <div class="nxl-content">
@@ -11,7 +11,7 @@
                 <h5 class="m-b-10">Master Data</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Master_Data_Tim_Siaga.html">Tim Siaga</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_master_data_tim_siaga') }}">Tim Siaga</a></li>
                 <li class="breadcrumb-item">Cari Data Tim Siaga</li>
             </ul>
         </div>
@@ -21,102 +21,233 @@
         <div class="container-fluid">
             <div class="card mb-4 filter-card">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0"><i class="bi bi-search"></i> Cari Data TIM Siaga</h6>
-                    <a href="Master_Data_Tim_Siaga.html" class="btn-close-custom">
+                    <h6 class="mb-0"><i class="bi bi-search me-2"></i> Cari Data TIM Siaga</h6>
+                    <a href="{{ url_for('main.view_master_data_tim_siaga') }}" class="btn-close-custom">
                         <i class="bi bi-x-lg"></i>
                     </a>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
-                        <div
-                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                        <!-- Periode -->
+                        <div class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
                             <label class="filter-label-wide">Periode</label>
                             <div class="col-md-2">
-                                <input type="month" class="form-control" style="height:38px;">
+                                <input type="month" id="periode" class="form-control form-control-sm" style="height:31px;">
                             </div>
                         </div>
 
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                        <!-- Filter -->
+                        <div class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
                             <label class="filter-label-wide">Filter</label>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select id="filterField1" class="form-select-sm border custom-select" style="width: 150px;">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Nama">Nama Pegawai</option>
+                                <option value="NIP">NIP</option>
+                                <option value="NamaTim">Nama TIM</option>
+                                <option value="Fungsional">Fungsional</option>
+                                <option value="Shift">Shift</option>
                             </select>
 
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                            </div>
+                            <input type="text" id="filterValue1" class="form-control-sm border" style="width: 180px;" placeholder="Nilai filter...">
 
                             <span class="mx-md-2 fw-bold text-dan">Dan</span>
 
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
+                            <select id="filterField2" class="form-select-sm border custom-select" style="width: 150px;">
+                                <option value="">- Pilih Field -</option>
+                                <option value="Nama">Nama Pegawai</option>
+                                <option value="NIP">NIP</option>
+                                <option value="NamaTim">Nama TIM</option>
+                                <option value="Fungsional">Fungsional</option>
+                                <option value="Shift">Shift</option>
                             </select>
 
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
-                            </div>
+                            <input type="text" id="filterValue2" class="form-control-sm border" style="width: 180px;" placeholder="Nilai filter...">
 
-                            <button id="btn-refresh" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
+                            <button id="btnRefresh" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="tab-pane fade show active" id="table-content" role="tabpanel" style="display: none;">
-                    <div class="table-toolbar">
-                        <span class="divider-vertical">|</span>
-                        <a href="#" class="icon-download"><i class="bi bi-file-earmark-excel-fill"></i></a>
-                        <a href="#" class="icon-download"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                <!-- Loading -->
+                <div id="loadingIndicator" class="text-center my-3" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
                     </div>
+                    <p class="mt-2">Memuat data...</p>
+                </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered align-middle text-center">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Periode</th>
-                                    <th>Shift</th>
-                                    <th>No Urut TIM</th>
-                                    <th>TIM</th>
-                                    <th>Unit</th>
-                                    <th>Nama</th>
-                                    <th>Fungsional</th>
-                                    <th>Edit</th>
-                                    <th>UpdateBy</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="10" class="py-4 text-start">No records to display.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <!-- Info total -->
+                <div id="infoTotal" class="px-3 mb-2" style="display: none; font-size: 12px; color: #666;">
+                    Ditemukan: <strong id="totalRecords">0</strong> records
+                </div>
+
+                <!-- Tabel -->
+                <div class="table-responsive px-3 pb-3">
+                    <table class="table table-bordered table-striped align-middle text-center" id="tableCari">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:40px;">No</th>
+                                <th>Periode</th>
+                                <th>Shift</th>
+                                <th>No Urut TIM</th>
+                                <th>TIM</th>
+                                <th>Unit</th>
+                                <th>Nama</th>
+                                <th>Fungsional</th>
+                                <th style="width:60px;">Edit</th>
+                                <th>Update By</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr>
+                                <td colspan="10" class="py-4 text-center text-muted">
+                                    Silahkan pilih periode dan klik <strong>Refresh</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .filter-label-wide { min-width: 80px; font-weight: 600; font-size: 13px; }
+    .btn-refresh-custom { background-color: #EB6831; color: white; border: none; padding: 6px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; }
+    .btn-refresh-custom:hover { background-color: #d95c28; }
+    .btn-refresh-custom:disabled { background-color: #ccc; cursor: not-allowed; }
+    .custom-select { border-radius: 6px; padding: 4px 8px; font-size: 13px; }
+    .text-dan { color: #EB6831; }
+    .table td { font-size: 12px; vertical-align: middle; padding: 6px 8px; }
+    .table th { font-size: 11px; padding: 8px 6px; }
+</style>
 {% endblock %}
 
 {% block script %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const refreshBtn = document.getElementById('btn-refresh');
-        const tableContent = document.getElementById('table-content');
-
-        refreshBtn.addEventListener('click', function () {
-            // Menampilkan tabel saat tombol diklik
-            tableContent.style.display = 'block';
-
-            // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
-            console.log("Memuat data...");
+        const btnRefresh = document.getElementById('btnRefresh');
+        const tableBody = document.getElementById('tableBody');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const infoTotal = document.getElementById('infoTotal');
+        const totalRecords = document.getElementById('totalRecords');
+        
+        // Set default periode (bulan ini)
+        const today = new Date();
+        document.getElementById('periode').value = today.toISOString().slice(0, 7);
+        
+        // Event listeners
+        btnRefresh.addEventListener('click', fetchData);
+        document.getElementById('filterValue1').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') fetchData();
         });
+        document.getElementById('filterValue2').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') fetchData();
+        });
+        
+        function fetchData() {
+            const periode = document.getElementById('periode').value;
+            const filterField1 = document.getElementById('filterField1').value;
+            const filterValue1 = document.getElementById('filterValue1').value.trim();
+            const filterField2 = document.getElementById('filterField2').value;
+            const filterValue2 = document.getElementById('filterValue2').value.trim();
+            
+            // Show loading
+            btnRefresh.disabled = true;
+            btnRefresh.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Loading...';
+            loadingIndicator.style.display = 'block';
+            
+            // Build params
+            const params = new URLSearchParams();
+            if (periode) params.append('periode', periode);
+            if (filterField1) params.append('filter_field1', filterField1);
+            if (filterValue1) params.append('filter_value1', filterValue1);
+            if (filterField2) params.append('filter_field2', filterField2);
+            if (filterValue2) params.append('filter_value2', filterValue2);
+            
+            fetch(`/api/cari-tim-siaga?${params.toString()}`)
+                .then(res => res.json())
+                .then(result => {
+                    // Hide loading
+                    loadingIndicator.style.display = 'none';
+                    btnRefresh.disabled = false;
+                    btnRefresh.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
+                    
+                    if (result.error) {
+                        tableBody.innerHTML = `<tr><td colspan="10" class="text-danger py-3">Error: ${result.error}</td></tr>`;
+                        infoTotal.style.display = 'none';
+                        return;
+                    }
+                    
+                    if (!result.data || result.data.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="10" class="py-4 text-muted">Tidak ada data ditemukan.</td></tr>';
+                        infoTotal.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Show total
+                    totalRecords.textContent = result.total;
+                    infoTotal.style.display = 'block';
+                    
+                    // Build table rows
+                    let html = '';
+                    let no = 0;
+                    result.data.forEach(row => {
+                        // Tampilkan setiap anggota sebagai baris terpisah
+                        row.anggota.forEach((ang, idx) => {
+                            no++;
+                            html += `
+                                <tr>
+                                    <td>${no}</td>
+                                    <td>${row.periode}</td>
+                                    <td>${row.shift}</td>
+                                    <td>${row.no_urut}</td>
+                                    <td class="text-start"><strong>${escapeHtml(row.nama_tim)}</strong></td>
+                                    <td>${escapeHtml(row.unit_kerja)}</td>
+                                    <td class="text-start">${escapeHtml(ang.nama)}<br><small class="text-muted">${escapeHtml(ang.nip)}</small></td>
+                                    <td>${escapeHtml(ang.fungsional)}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="editData('${row.guid_tim}')" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-start">
+                                        <small>${escapeHtml(row.update_by)}</small><br>
+                                        <small class="text-muted">${row.update_date}</small>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    });
+                    
+                    tableBody.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    loadingIndicator.style.display = 'none';
+                    btnRefresh.disabled = false;
+                    btnRefresh.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
+                    tableBody.innerHTML = '<tr><td colspan="10" class="text-danger py-3">Gagal mengambil data. Silahkan coba lagi.</td></tr>';
+                    infoTotal.style.display = 'none';
+                });
+        }
+        
+        function editData(guidTim) {
+            // Redirect ke halaman utama dengan parameter GUID untuk edit
+            window.location.href = `/siaga/master-data/tim-siaga?guid=${guidTim}`;
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
     });
 </script>
 {% endblock %}

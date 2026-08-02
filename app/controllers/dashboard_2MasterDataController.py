@@ -28,6 +28,29 @@ def master_data_tim_siaga():
         unit_kerja_list=unit_kerja_list
     )
 
+def api_search_pegawai_tim():
+    """
+    API pencarian pegawai KHUSUS untuk form Tim Siaga.
+    """
+    keyword = request.args.get('keyword', '').strip()
+    if len(keyword) < 2:
+        return jsonify({'data': []})
+
+    pegawai_list = (
+        Pegawai.query
+        .filter(Pegawai.NAMA.ilike(f'%{keyword}%'))
+        .order_by(Pegawai.NAMA.asc())
+        .limit(15)
+        .all()
+    )
+
+    return jsonify({
+        'data': [
+            {'nip': p.NIP, 'nama': p.NAMA}
+            for p in pegawai_list
+        ]
+    })
+
 def api_tim_siaga_save():
     """API: Simpan/Update Tim Siaga"""
     try:
@@ -54,6 +77,7 @@ def api_tim_siaga_save():
         if is_new:
             guid_tim = str(uuid.uuid4())
             
+            # ✅ INSERT HEADER DULU
             tim = MfTimSiaga(
                 GUID_TIM=guid_tim,
                 NO_URUT_TIM=int(no_urut) if no_urut else 0,
@@ -68,7 +92,10 @@ def api_tim_siaga_save():
                 UPDATE_DATE=datetime.now()
             )
             db.session.add(tim)
+            # ✅ FLUSH: pastikan header tersimpan dulu sebelum insert anggota
+            db.session.flush()
             
+            # ✅ BARU INSERT ANGGOTA
             for i, anggota in enumerate(anggota_list, 1):
                 ag = MfTimSiagaAnggota(
                     GUID_TIM=guid_tim,
@@ -85,6 +112,7 @@ def api_tim_siaga_save():
                 )
                 db.session.add(ag)
         else:
+            # Update existing
             tim = MfTimSiaga.query.get(guid_tim)
             if not tim:
                 return jsonify({'error': 'Data tidak ditemukan'})
@@ -99,8 +127,15 @@ def api_tim_siaga_save():
             tim.UPDATE_BY = 'admin'
             tim.UPDATE_DATE = datetime.now()
             
-            MfTimSiagaAnggota.query.filter(MfTimSiagaAnggota.GUID_TIM == guid_tim).delete()
+            # ✅ FLUSH dulu
+            db.session.flush()
             
+            # Hapus anggota lama
+            MfTimSiagaAnggota.query.filter(MfTimSiagaAnggota.GUID_TIM == guid_tim).delete()
+            # ✅ FLUSH lagi
+            db.session.flush()
+            
+            # Insert anggota baru
             for i, anggota in enumerate(anggota_list, 1):
                 ag = MfTimSiagaAnggota(
                     GUID_TIM=guid_tim,
@@ -117,6 +152,7 @@ def api_tim_siaga_save():
                 )
                 db.session.add(ag)
         
+        # ✅ COMMIT di akhir
         db.session.commit()
         
         return jsonify({
@@ -293,3 +329,181 @@ def api_tim_siaga_save_as():
 def master_data_user_account():
     """Render halaman Master Data User Account."""
     return render_template('pages/dashboard_2/Master_Data_User_Account.html')
+
+# View tampilan Cari
+def cari_data_kgr():
+    """Render halaman Cari Data KGR."""
+    unit_kerja_list = MfUnitKerja.query.order_by(MfUnitKerja.NAMA_UNIT_KERJA.asc()).all()
+    return render_template(
+        'pages/dashboard_2/Cari_Data_KGR.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+
+def cari_data_piket_siaga():
+    """Render halaman Cari Data Piket Siaga."""
+    unit_kerja_list = MfUnitKerja.query.order_by(MfUnitKerja.NAMA_UNIT_KERJA.asc()).all()
+    return render_template(
+        'pages/dashboard_2/Cari_Data_Piket_Siaga.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+
+def cari_data_piket_tim_siaga():
+    """Render halaman Cari Data Piket Tim Siaga."""
+    unit_kerja_list = MfUnitKerja.query.order_by(MfUnitKerja.NAMA_UNIT_KERJA.asc()).all()
+    return render_template(
+        'pages/dashboard_2/Cari_Data_Piket_Tim_Siaga.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def api_cari_tim_siaga():
+    """
+    API Cari Tim Siaga - mencari data dari tabel MF_TIM_SIAGA & MF_TIM_SIAGA_ANGGOTA
+    """
+    try:
+        tgl_awal_str = request.args.get('tgl_awal', '')
+        tgl_akhir_str = request.args.get('tgl_akhir', '')
+        periode = request.args.get('periode', '')
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+        
+        # Query dari MF_TIM_SIAGA join ke anggota & pegawai
+        query = (
+            db.session.query(MfTimSiaga, Pegawai, MfUnitKerja, MfTimSiagaAnggota)
+            .join(MfTimSiagaAnggota, MfTimSiaga.GUID_TIM == MfTimSiagaAnggota.GUID_TIM)
+            .join(Pegawai, MfTimSiagaAnggota.NIP == Pegawai.NIP)
+            .join(MfUnitKerja, MfTimSiaga.ID_UNIT_KERJA == MfUnitKerja.UNIT_KERJA_ID)
+        )
+        
+        # Filter periode (bulan+tahun)
+        if periode:
+            tahun = periode[:4]
+            bulan = periode[5:7]
+            query = query.filter(
+                MfTimSiaga.BULAN_PERIODE == bulan,
+                MfTimSiaga.TAHUN_PERIODE == tahun
+            )
+        
+        # Field mapping untuk filter tambahan
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama': Pegawai.NAMA,
+            'UnitKerjaName': MfUnitKerja.NAMA_UNIT_KERJA,
+            'NamaTim': MfTimSiaga.NAMA_TIM,
+            'Fungsional': MfTimSiaga.FUNGSIONAL_TIM,
+            'Shift': MfTimSiaga.SHIFT,
+        }
+        
+        if filter_field1 and filter_value1:
+            field = field_mapping.get(filter_field1)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value1}%'))
+        
+        if filter_field2 and filter_value2:
+            field = field_mapping.get(filter_field2)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value2}%'))
+        
+        # Order
+        query = query.order_by(
+            MfTimSiaga.TAHUN_PERIODE.desc(),
+            MfTimSiaga.BULAN_PERIODE.desc(),
+            MfTimSiaga.SHIFT,
+            MfTimSiaga.NO_URUT_TIM,
+            MfTimSiaga.NAMA_TIM,
+            MfTimSiagaAnggota.NO_URUT
+        )
+        
+        results = query.all()
+        
+        # Format data - gabungkan per GUID_TIM
+        tim_dict = {}
+        for tim, peg, unit, anggota in results:
+            guid = tim.GUID_TIM
+            if guid not in tim_dict:
+                tim_dict[guid] = {
+                    'guid_tim': guid,
+                    'nama_tim': tim.NAMA_TIM or '',
+                    'no_urut': tim.NO_URUT_TIM or 0,
+                    'unit_kerja': unit.NAMA_UNIT_KERJA or '',
+                    'unit_kerja_id': tim.ID_UNIT_KERJA or '',
+                    'fungsional': tim.FUNGSIONAL_TIM or '',
+                    'shift': tim.SHIFT or '',
+                    'periode': f"{tim.TAHUN_PERIODE or ''}.{tim.BULAN_PERIODE or ''}",
+                    'is_aktif': tim.IS_AKTIF or 'Y',
+                    'update_by': tim.UPDATE_BY or '',
+                    'update_date': tim.UPDATE_DATE.strftime('%d/%m/%Y %H:%M') if tim.UPDATE_DATE else '',
+                    'anggota': []
+                }
+            tim_dict[guid]['anggota'].append({
+                'nip': anggota.NIP,
+                'nama': peg.NAMA or '',
+                'fungsional': anggota.FUNGSIONAL or '',
+            })
+        
+        data = list(tim_dict.values())
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'total': len(data)
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
+
+
+def api_cari_tim_siaga_get():
+    """API: Get detail Tim Siaga by GUID (untuk edit)"""
+    guid_tim = request.args.get('guid_tim', '')
+    
+    if not guid_tim:
+        return jsonify({'error': 'GUID Tim tidak ditemukan'})
+    
+    tim = MfTimSiaga.query.get(guid_tim)
+    if not tim:
+        return jsonify({'error': 'Data tidak ditemukan'})
+    
+    anggota = (
+        MfTimSiagaAnggota.query
+        .filter(MfTimSiagaAnggota.GUID_TIM == guid_tim)
+        .order_by(MfTimSiagaAnggota.NO_URUT)
+        .all()
+    )
+    
+    anggota_data = []
+    for ag in anggota:
+        peg = Pegawai.query.filter(Pegawai.NIP == ag.NIP).first()
+        anggota_data.append({
+            'nip': ag.NIP,
+            'nama': peg.NAMA if peg else '-',
+            'fungsional': ag.FUNGSIONAL,
+        })
+    
+    return jsonify({
+        'success': True,
+        'data': {
+            'guid_tim': tim.GUID_TIM,
+            'nama_tim': tim.NAMA_TIM,
+            'no_urut': tim.NO_URUT_TIM,
+            'unit_kerja_id': tim.ID_UNIT_KERJA,
+            'fungsional': tim.FUNGSIONAL_TIM,
+            'shift': tim.SHIFT,
+            'periode': f"{tim.TAHUN_PERIODE}-{tim.BULAN_PERIODE}",
+            'anggota': anggota_data,
+        }
+    })
+
+
+def cari_data_tim_siaga():
+    """Render halaman Cari Data Tim Siaga."""
+    unit_kerja_list = MfUnitKerja.query.order_by(MfUnitKerja.NAMA_UNIT_KERJA.asc()).all()
+    return render_template(
+        'pages/dashboard_2/Cari_Data_Tim_Siaga.html',
+        unit_kerja_list=unit_kerja_list
+    )

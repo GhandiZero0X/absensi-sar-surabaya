@@ -23,14 +23,11 @@
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0"><i class="bi bi-people me-2"></i> Master Data Siaga</h6>
                     <div class="header-icons-wrapper d-flex gap-3">
-                        <a href="/siaga/master-data/tim-siaga/cari" class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none" title="Cari">
+                        <a href="{{ url_for('main.view_cari_data_tim_siaga') }}" class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none" title="Cari">
                             <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
                         </a>
                         <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnNew" title="Baru">
                             <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
-                        </button>
-                        <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnSave" title="Simpan">
-                            <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
                         </button>
                         <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnDelete" title="Hapus">
                             <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
@@ -138,6 +135,13 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- ✅ TOMBOL SIMPAN BARU -->
+                        <div class="col-12 d-flex justify-content-center mt-3">
+                            <button type="button" id="btnSave" class="btn btn-orange-figma px-4">
+                                <i class="bi bi-save me-1"></i>Simpan
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -209,6 +213,18 @@
 <style>
     .form-label-custom { font-size: 0.85rem; font-weight: 600; color: #333; min-width: 120px; }
     .card-header-customm { background-color: #e66b30; color: white; padding: 8px 15px; border-radius: 10px 10px 0 0; }
+    .btn-orange-figma {
+        background-color: #E29526;
+        color: white;
+        border: none;
+        font-weight: 600;
+        padding: 8px 30px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    .btn-orange-figma:hover { background-color: #c97e1e; }
+    .btn-orange-figma:disabled { background-color: #ccc; cursor: not-allowed; }
 </style>
 {% endblock %}
 
@@ -221,38 +237,72 @@
     
     // ===================== SEARCH PEGAWAI =====================
     let searchTimeout;
-    document.getElementById('searchPegawai').addEventListener('input', function() {
+    const searchInput = document.getElementById('searchPegawai');
+    const searchResults = document.getElementById('searchResults');
+    
+    searchInput.addEventListener('input', function() {
         clearTimeout(searchTimeout);
         const kw = this.value.trim();
-        if (kw.length < 2) { document.getElementById('searchResults').style.display = 'none'; return; }
+        
+        console.log('🔍 Mencari pegawai:', kw);
+        
+        if (kw.length < 2) { 
+            searchResults.style.display = 'none'; 
+            return; 
+        }
+        
         searchTimeout = setTimeout(() => {
-            fetch(`/api/search_pegawai?keyword=${encodeURIComponent(kw)}`)
+            fetch(`/api/tim-siaga/search-pegawai?keyword=${encodeURIComponent(kw)}`)
                 .then(res => res.json())
                 .then(result => {
-                    const div = document.getElementById('searchResults');
-                    if (result.data?.length > 0) {
-                        div.innerHTML = result.data.map(p => 
-                            `<a href="#" class="list-group-item list-group-item-action py-1 px-2 small" onclick="event.preventDefault();addAnggota('${p.nip}','${p.nama}')">${p.nama} (${p.nip})</a>`
-                        ).join('');
-                        div.style.display = 'block';
-                    } else { div.style.display = 'none'; }
+                    console.log('📋 Hasil search:', result);
+                    
+                    if (result.data && result.data.length > 0) {
+                        let html = '';
+                        result.data.forEach(p => {
+                            html += `
+                                <a href="#" class="list-group-item list-group-item-action py-2 px-3" 
+                                   onclick="event.preventDefault(); addAnggota('${p.nip}', '${p.nama}')"
+                                   style="cursor: pointer;">
+                                    <strong>${p.nama}</strong><br>
+                                    <small class="text-muted">${p.nip}</small>
+                                </a>`;
+                        });
+                        searchResults.innerHTML = html;
+                        searchResults.style.display = 'block';
+                    } else {
+                        searchResults.innerHTML = '<div class="list-group-item py-2 px-3 text-muted small">Tidak ditemukan</div>';
+                        searchResults.style.display = 'block';
+                    }
+                })
+                .catch(err => {
+                    console.error('❌ Error search:', err);
                 });
         }, 300);
     });
     
     document.addEventListener('click', function(e) {
         if (!e.target.closest('#searchPegawai') && !e.target.closest('#searchResults')) {
-            document.getElementById('searchResults').style.display = 'none';
+            searchResults.style.display = 'none';
         }
     });
     
     function addAnggota(nip, nama) {
-        if (!anggotaTable.find(a => a.nip === nip)) {
-            anggotaTable.push({nip, nama});
-            renderAnggota();
+        console.log('✅ Menambahkan anggota:', nip, nama);
+        
+        if (anggotaTable.find(a => a.nip === nip)) {
+            alert('Pegawai sudah ada di tabel!');
+            return;
         }
-        document.getElementById('searchResults').style.display = 'none';
-        document.getElementById('searchPegawai').value = '';
+        
+        anggotaTable.push({nip: nip, nama: nama});
+        renderAnggota();
+        
+        searchResults.style.display = 'none';
+        searchInput.value = '';
+        searchInput.focus();
+        
+        console.log('📋 Anggota table sekarang:', anggotaTable);
     }
     
     function renderAnggota() {
@@ -265,21 +315,54 @@
             <tr>
                 <td>${a.nip}</td>
                 <td>${a.nama}</td>
-                <td><button class="btn btn-sm btn-outline-danger" onclick="hapusAnggota(${i})"><i class="bi bi-trash"></i></button></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger" onclick="hapusAnggota(${i})" title="Hapus">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
             </tr>
         `).join('');
     }
     
     function hapusAnggota(index) {
-        anggotaTable.splice(index, 1);
-        renderAnggota();
+        if (confirm('Hapus anggota ini?')) {
+            anggotaTable.splice(index, 1);
+            renderAnggota();
+        }
     }
     
-    // ===================== INSERT ANGGOTA =====================
+    // ===================== INSERT ANGGOTA VIA TOMBOL =====================
     document.getElementById('btnInsertAnggota').addEventListener('click', function() {
-        const kw = document.getElementById('searchPegawai').value.trim();
-        if (kw.length < 2) { alert('Ketik nama pegawai dulu!'); return; }
-        // Trigger search and add first result
+        const kw = searchInput.value.trim();
+        if (kw.length < 2) { 
+            alert('Ketik minimal 2 huruf nama pegawai, lalu pilih dari dropdown!'); 
+            searchInput.focus();
+            return; 
+        }
+        
+        fetch(`/api/tim-siaga/search-pegawai?keyword=${encodeURIComponent(kw)}`)
+            .then(res => res.json())
+            .then(result => {
+                if (result.data && result.data.length > 0) {
+                    if (result.data.length === 1) {
+                        addAnggota(result.data[0].nip, result.data[0].nama);
+                    } else {
+                        let html = '';
+                        result.data.forEach(p => {
+                            html += `
+                                <a href="#" class="list-group-item list-group-item-action py-2 px-3" 
+                                   onclick="event.preventDefault(); addAnggota('${p.nip}', '${p.nama}')">
+                                    <strong>${p.nama}</strong><br>
+                                    <small class="text-muted">${p.nip}</small>
+                                </a>`;
+                        });
+                        searchResults.innerHTML = html;
+                        searchResults.style.display = 'block';
+                    }
+                } else {
+                    alert('Pegawai tidak ditemukan!');
+                }
+            });
     });
     
     // ===================== SAVE =====================
@@ -292,11 +375,11 @@
         const noUrut = document.getElementById('noUrut').value;
         const isNew = document.getElementById('isNew').value === 'true';
         
-        if (!namaTim) { alert('Nama TIM harus diisi!'); return; }
-        if (!unitKerjaId) { alert('Unit Kerja harus dipilih!'); return; }
-        if (!fungsional) { alert('Fungsional harus dipilih!'); return; }
-        if (!periode) { alert('Periode harus diisi!'); return; }
-        if (anggotaTable.length === 0) { alert('Anggota TIM kosong!'); return; }
+        if (!namaTim) { alert('❌ Nama TIM harus diisi!'); return; }
+        if (!unitKerjaId) { alert('❌ Unit Kerja harus dipilih!'); return; }
+        if (!fungsional) { alert('❌ Fungsional harus dipilih!'); return; }
+        if (!periode) { alert('❌ Periode harus diisi!'); return; }
+        if (anggotaTable.length === 0) { alert('❌ Anggota TIM kosong! Silahkan tambah anggota di card Add Anggota TIM.'); return; }
         
         const data = {
             guid_tim: currentGuid,
@@ -310,6 +393,12 @@
             is_new: isNew
         };
         
+        console.log('💾 Data yang akan disimpan:', data);
+        
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+        
         fetch('/api/tim-siaga/save', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -317,20 +406,32 @@
         })
         .then(res => res.json())
         .then(result => {
-            alert(result.message || 'Berhasil!');
-            if (result.guid_tim) {
-                currentGuid = result.guid_tim;
-                document.getElementById('guidTim').value = currentGuid;
-                document.getElementById('isNew').value = 'false';
+            console.log('📋 Hasil save:', result);
+            if (result.error) {
+                alert('❌ ' + result.error);
+            } else {
+                alert('✅ ' + (result.message || 'Berhasil!'));
+                if (result.guid_tim) {
+                    currentGuid = result.guid_tim;
+                    document.getElementById('guidTim').value = currentGuid;
+                    document.getElementById('isNew').value = 'false';
+                }
             }
         })
-        .catch(err => alert('Gagal menyimpan!'));
+        .catch(err => {
+            console.error('❌ Error:', err);
+            alert('Gagal menyimpan!');
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-save me-1"></i>Simpan';
+        });
     });
     
     // ===================== DELETE =====================
     document.getElementById('btnDelete').addEventListener('click', function() {
-        if (!currentGuid) { alert('Pilih data yang akan dihapus!'); return; }
-        if (!confirm('Yakin hapus?')) return;
+        if (!currentGuid) { alert('❌ Belum ada data yang dipilih! Klik Cari untuk mencari data.'); return; }
+        if (!confirm('Yakin hapus data ini?')) return;
         
         fetch('/api/tim-siaga/delete', {
             method: 'POST',
@@ -339,13 +440,22 @@
         })
         .then(res => res.json())
         .then(result => {
-            alert(result.message || 'Berhasil!');
-            clearForm();
+            if (result.error) {
+                alert('❌ ' + result.error);
+            } else {
+                alert('✅ ' + (result.message || 'Berhasil dihapus!'));
+                clearForm();
+            }
         });
     });
     
     // ===================== NEW =====================
-    document.getElementById('btnNew').addEventListener('click', clearForm);
+    document.getElementById('btnNew').addEventListener('click', function() {
+        if (anggotaTable.length > 0 || document.getElementById('namaTim').value) {
+            if (!confirm('Data yang belum disimpan akan hilang. Lanjutkan?')) return;
+        }
+        clearForm();
+    });
     
     function clearForm() {
         currentGuid = '';
@@ -355,9 +465,11 @@
         document.getElementById('noUrut').value = '0';
         document.getElementById('cmbFungsional').value = '';
         document.getElementById('cmbShift').value = '';
+        document.getElementById('cmbUnit').value = '';
         document.getElementById('lblUpdate').textContent = '';
         anggotaTable = [];
         renderAnggota();
+        console.log('🆕 Form dikosongkan');
     }
     
     // ===================== SAVE AS =====================
@@ -367,8 +479,11 @@
         const unitKerjaId = document.getElementById('cmbUnit').value;
         const shift = document.getElementById('cmbShift').value;
         
-        if (!periodeSumber || !periodeTujuan) { alert('Periode sumber dan tujuan harus diisi!'); return; }
-        if (!unitKerjaId) { alert('Unit Kerja harus dipilih!'); return; }
+        if (!periodeSumber) { alert('❌ Isi periode sumber terlebih dahulu!'); return; }
+        if (!periodeTujuan) { alert('❌ Periode tujuan harus diisi!'); return; }
+        if (!unitKerjaId) { alert('❌ Unit Kerja harus dipilih!'); return; }
+        
+        if (!confirm(`Copy data dari periode ${periodeSumber} ke ${periodeTujuan}?`)) return;
         
         fetch('/api/tim-siaga/save-as', {
             method: 'POST',
@@ -381,7 +496,13 @@
             })
         })
         .then(res => res.json())
-        .then(result => alert(result.message || 'Berhasil!'))
+        .then(result => {
+            if (result.error) {
+                alert('❌ ' + result.error);
+            } else {
+                alert('✅ ' + (result.message || 'Berhasil!'));
+            }
+        })
         .catch(err => alert('Gagal!'));
     });
 </script>
