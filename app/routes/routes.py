@@ -328,6 +328,33 @@ def api_dinas_luar_get_filter_fields():
 def view_kepegawaian_dinas_luar_operasi():
     return kepegawaian_dinas_luar_operasi()
 
+# API: Save Dinas Luar Operasi
+@main.route('/api/dinas-luar-operasi/save', methods=['POST'])
+@login_required
+def api_dinas_luar_operasi_save():
+    from app.controllers.dashboard_1KepegawaianController import api_dinas_luar_operasi_save
+    return api_dinas_luar_operasi_save()
+
+# API: Get Dinas Luar Operasi by No Surat
+@main.route('/api/dinas-luar-operasi/get')
+@login_required
+def api_dinas_luar_operasi_get():
+    from app.controllers.dashboard_1KepegawaianController import api_dinas_luar_operasi_get
+    return api_dinas_luar_operasi_get()
+
+# API: Delete Dinas Luar Operasi
+@main.route('/api/dinas-luar-operasi/delete', methods=['POST'])
+@login_required
+def api_dinas_luar_operasi_delete():
+    from app.controllers.dashboard_1KepegawaianController import api_dinas_luar_operasi_delete
+    return api_dinas_luar_operasi_delete()
+
+@main.route('/api/dinas-luar-operasi/save-peserta', methods=['POST'])
+@login_required
+def api_dinas_luar_operasi_save_peserta():
+    from app.controllers.dashboard_1KepegawaianController import api_dinas_luar_operasi_save_peserta
+    return api_dinas_luar_operasi_save_peserta()
+
 @main.route('/kepegawaian/dinas-luar-pelatihan')
 @login_required
 def view_kepegawaian_dinas_luar_pelatihan():
