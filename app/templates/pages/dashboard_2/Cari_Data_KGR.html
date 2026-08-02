@@ -1,7 +1,7 @@
 <!-- pages/dashboard_2/Cari_Data_KGR.html -->
 {% extends "layout/baseDashboard2.html" %}
 
-{% block title %}- KGR{% endblock %}
+{% block title %}- Cari KGR{% endblock %}
 
 {% block content %}
 <div class="nxl-content">
@@ -11,7 +11,8 @@
                 <h5 class="m-b-10">Master Data</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="Master_Data_KGR.html">KGR</a></li>
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_master_data_kgr') }}">KGR</a></li>
                 <li class="breadcrumb-item">Cari Data KGR</li>
             </ul>
         </div>
@@ -19,78 +20,118 @@
 
     <div class="main-content master-siaga">
         <div class="container-fluid">
+            <!-- Alert -->
+            <div id="alertContainer" class="alert alert-dismissable d-none mb-3">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <span id="alertIcon"></span>
+                <span id="alertMessage"></span>
+            </div>
+
+            <!-- Filter Card -->
             <div class="card mb-4 filter-card">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0"><i class="bi bi-search"></i> Cari Data KGR</h6>
-                    <a href="Master_Data_KGR.html" class="btn-close-custom">
+                    <h6 class="mb-0"><i class="bi bi-search me-2"></i>Cari Data KGR</h6>
+                    <a href="{{ url_for('main.view_master_data_kgr') }}" class="btn-close-custom">
                         <i class="bi bi-x-lg"></i>
                     </a>
                 </div>
 
                 <div class="card-body">
-                    <div class="row">
-                        <div
-                            class="col-md-12 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
-                            <label class="filter-label-wide">Periode</label>
-                            <div class="col-md-2">
-                                <input type="month" class="form-control" style="height:38px;">
+                    <div class="row g-3">
+                        <!-- Periode -->
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Periode</label>
+                            <div class="col-md-7">
+                                <input type="month" class="form-control-sm border w-100" id="filterPeriode" style="height:38px;">
                             </div>
                         </div>
 
-                        <div
-                            class="col-md-12 d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
-                            <label class="filter-label-wide">Filter</label>
-
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                            </select>
-
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                        <!-- Unit Kerja -->
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Unit Kerja</label>
+                            <div class="col-md-7">
+                                <select class="form-select-sm border custom-select w-100" id="filterUnitKerja" style="height:38px;">
+                                    <option value="">Semua Unit Kerja</option>
+                                    {% for uk in unit_kerja_list %}
+                                    <option value="{{ uk.UNIT_KERJA_ID }}">{{ uk.NAMA_UNIT_KERJA }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
+                        </div>
 
-                            <span class="mx-md-2 fw-bold text-dan">Dan</span>
-
-                            <select class="form-select-sm border custom-select w-mobile-100">
-                                <option>- Pilih Field -</option>
-                            </select>
-
-                            <div class="input-group-custom w-mobile-100">
-                                <input type="text" class="form-control-sm border">
-                                <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                        <!-- Shift -->
+                        <div class="col-12 d-md-flex align-items-center">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
+                            <div class="col-md-7">
+                                <select class="form-select-sm border custom-select w-100" id="filterShift" style="height:38px;">
+                                    <option value="">Semua Shift</option>
+                                    <option value="1">Shift 1</option>
+                                    <option value="2">Shift 2</option>
+                                </select>
                             </div>
+                        </div>
 
-                            <button id="btn-refresh" class="btn-refresh-custom ms-md-auto mt-2 mt-md-0 w-mobile-100">
-                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                        <!-- Filter 1 -->
+                        <div class="col-12 d-md-flex align-items-center flex-wrap gap-2">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Filter</label>
+                            
+                            <select class="form-select-sm border custom-select" id="filterField1" style="width:180px; height:38px;">
+                                <option value="">- Pilih Field -</option>
+                            </select>
+                            
+                            <div class="input-group-custom" style="width:250px;">
+                                <input type="text" class="form-control-sm border w-100" id="filterValue1" style="height:38px;">
+                            </div>
+                            
+                            <span class="mx-2 fw-bold">Dan</span>
+                            
+                            <select class="form-select-sm border custom-select" id="filterField2" style="width:180px; height:38px;">
+                                <option value="">- Pilih Field -</option>
+                            </select>
+                            
+                            <div class="input-group-custom" style="width:250px;">
+                                <input type="text" class="form-control-sm border w-100" id="filterValue2" style="height:38px;">
+                            </div>
+                            
+                            <button id="btnRefresh" class="btn btn-orange-figma px-4 ms-md-auto mt-2 mt-md-0">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Refresh
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="tab-pane fade show active" id="table-content" role="tabpanel" style="display: none;">
-                    <div class="table-toolbar">
-                        <span class="divider-vertical">|</span>
-                        <a href="#" class="icon-download"><i class="bi bi-file-earmark-excel-fill"></i></a>
-                        <a href="#" class="icon-download"><i class="bi bi-file-earmark-pdf-fill"></i></a>
-                    </div>
-
+            <!-- Table Card -->
+            <div class="card mb-4 filter-card" id="tableCard" style="display:none;">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0"><i class="bi bi-table me-2"></i>Hasil Pencarian</h6>
+                    <span id="totalRecords" class="badge bg-primary"></span>
+                </div>
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-bordered align-middle text-center">
+                        <table class="table table-bordered table-hover align-middle text-center mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Periode</th>
-                                    <th>No Urut</th>
-                                    <th>Shift</th>
-                                    <th>Unit</th>
-                                    <th>Nama</th>
-                                    <th>Edit</th>
-                                    <th>UpdateBy</th>
+                                    <th style="width:5%;">No</th>
+                                    <th style="width:10%;">Periode</th>
+                                    <th style="width:8%;">No Urut</th>
+                                    <th style="width:8%;">Shift</th>
+                                    <th style="width:15%;">Unit Kerja</th>
+                                    <th style="width:10%;">Fungsional</th>
+                                    <th style="width:10%;">NIP</th>
+                                    <th style="width:20%;">Nama</th>
+                                    <th style="width:8%;">Edit</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tableBody">
                                 <tr>
-                                    <td colspan="10" class="py-4 text-start">No records to display.</td>
+                                    <td colspan="9" class="py-4 text-center text-muted">
+                                        <i class="bi bi-inbox me-2"></i>Klik Refresh untuk menampilkan data
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -104,17 +145,135 @@
 
 {% block script %}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const refreshBtn = document.getElementById('btn-refresh');
-        const tableContent = document.getElementById('table-content');
-
-        refreshBtn.addEventListener('click', function () {
-            // Menampilkan tabel saat tombol diklik
-            tableContent.style.display = 'block';
-
-            // Opsional: Tambahkan efek loading atau simulasi fetch data di sini
-            console.log("Memuat data...");
+$(document).ready(function() {
+    // Load filter fields
+    loadFilterFields();
+    
+    // Event handlers
+    $('#btnRefresh').click(searchKGR);
+    
+    // Fungsi load filter fields
+    function loadFilterFields() {
+        $.get('/api/kgr/get-filter-fields', function(response) {
+            if (response.success) {
+                const $field1 = $('#filterField1');
+                const $field2 = $('#filterField2');
+                
+                response.data.forEach(function(f) {
+                    const option = `<option value="${f.field_id}">${f.field_name}</option>`;
+                    $field1.append(option);
+                    $field2.append(option);
+                });
+            }
         });
-    });
+    }
+    
+    // Fungsi search
+    function searchKGR() {
+        const params = {
+            periode: $('#filterPeriode').val(),
+            unit_kerja_id: $('#filterUnitKerja').val(),
+            shift: $('#filterShift').val(),
+            filter_field1: $('#filterField1').val(),
+            filter_value1: $('#filterValue1').val(),
+            filter_field2: $('#filterField2').val(),
+            filter_value2: $('#filterValue2').val()
+        };
+        
+        // Loading state
+        const $btn = $('#btnRefresh');
+        $btn.prop('disabled', true);
+        $btn.html('<i class="bi bi-hourglass-split me-1"></i>Memuat...');
+        
+        $('#tableBody').html(`
+            <tr>
+                <td colspan="9" class="py-4 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 mb-0">Memuat data...</p>
+                </td>
+            </tr>
+        `);
+        $('#tableCard').show();
+        
+        $.get('/api/kgr/cari', params, function(response) {
+            if (response.success) {
+                renderTable(response.data);
+                $('#totalRecords').text(`Total: ${response.total} data`);
+            } else {
+                showAlert('error', response.error || 'Gagal memuat data');
+            }
+        }).fail(function(xhr) {
+            const response = xhr.responseJSON || {};
+            showAlert('error', response.error || 'Gagal memuat data');
+        }).always(function() {
+            $btn.prop('disabled', false);
+            $btn.html('<i class="bi bi-arrow-clockwise me-1"></i>Refresh');
+        });
+    }
+    
+    // Fungsi render tabel
+    function renderTable(data) {
+        const $tbody = $('#tableBody');
+        $tbody.empty();
+        
+        if (!data || data.length === 0) {
+            $tbody.html(`
+                <tr>
+                    <td colspan="9" class="py-4 text-center text-muted">
+                        <i class="bi bi-inbox me-2"></i>Tidak ada data yang ditemukan
+                    </td>
+                </tr>
+            `);
+            return;
+        }
+        
+        data.forEach(function(item, index) {
+            $tbody.append(`
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.periode || '-'}</td>
+                    <td>${item.no_urut || '-'}</td>
+                    <td>${item.shift || '-'}</td>
+                    <td class="text-start">${item.unit_kerja_name || '-'}</td>
+                    <td>${item.fungsional || '-'}</td>
+                    <td>${item.nip || '-'}</td>
+                    <td class="text-start">${item.nama || '-'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary edit-btn" 
+                                data-guid="${item.guid_tim}" title="Edit">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+        });
+        
+        // Event edit
+        $('.edit-btn').click(function() {
+            const guid = $(this).data('guid');
+            // Redirect ke halaman KGR dengan GUID
+            window.location.href = `/siaga/master-data/kgr?guid=${guid}`;
+        });
+    }
+    
+    // Fungsi alert
+    function showAlert(type, message) {
+        const $alert = $('#alertContainer');
+        $alert.removeClass('d-none alert-success alert-danger')
+              .addClass(type === 'success' ? 'alert-success' : 'alert-danger');
+        
+        $('#alertIcon').html(type === 'success' 
+            ? '<i class="bi bi-check-circle me-1"></i>' 
+            : '<i class="bi bi-exclamation-circle me-1"></i>');
+        $('#alertMessage').text(message);
+        $alert.show();
+        
+        setTimeout(function() {
+            $alert.addClass('d-none').hide();
+        }, 5000);
+    }
+});
 </script>
 {% endblock %}

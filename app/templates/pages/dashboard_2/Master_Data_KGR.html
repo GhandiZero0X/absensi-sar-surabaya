@@ -11,6 +11,7 @@
                 <h5 class="m-b-10">Master Data</h5>
             </div>
             <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ url_for('main.view_master_data_kgr') }}">KGR</a></li>
             </ul>
         </div>
@@ -18,6 +19,14 @@
 
     <div class="main-content master-siaga">
         <div class="container-fluid">
+            <!-- Alert -->
+            <div id="alertContainer" class="alert alert-dismissable d-none mb-3">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <span id="alertIcon"></span>
+                <span id="alertMessage"></span>
+            </div>
+
+            <!-- Form Input KGR -->
             <div class="card mb-4 filter-card">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0">
@@ -32,20 +41,22 @@
 
                         <div class="collapse d-md-flex align-items-center" id="headerIconsCollapse">
                             <div class="header-icons-wrapper d-flex gap-3 p-2 p-md-0 mt-2 mt-md-0">
-                                <a href="Cari_Data_KGR.html"
-                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none">
+                                <!-- Search -->
+                                <a href="{{ url_for('main.view_cari_data_kgr') }}"
+                                    class="btn p-0 border-0 bg-transparent shadow-none text-decoration-none"
+                                    title="Cari Data">
                                     <i class="bi bi-search" style="color: #333; font-size: 1.1rem;"></i>
                                 </a>
 
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                <!-- New -->
+                                <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnNew"
+                                    title="Data Baru">
                                     <i class="bi bi-file-earmark-plus" style="color: #0d6efd; font-size: 1.2rem;"></i>
                                 </button>
 
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
-                                    <i class="bi bi-save" style="color: #198754; font-size: 1.2rem;"></i>
-                                </button>
-
-                                <button class="btn p-0 border-0 bg-transparent shadow-none">
+                                <!-- Delete -->
+                                <button class="btn p-0 border-0 bg-transparent shadow-none" id="btnDelete"
+                                    title="Hapus">
                                     <i class="bi bi-trash" style="color: #dc3545; font-size: 1.2rem;"></i>
                                 </button>
                             </div>
@@ -54,109 +65,151 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Periode</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
+                    <form id="formKGR">
+                        <input type="hidden" id="guidTim" value="">
+                        <input type="hidden" id="isNew" value="true">
+                        
+                        <div class="row g-3">
+                            <!-- Periode -->
+                            <div class="col-12 d-md-flex align-items-center" id="divPeriode">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    Periode <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="month" class="form-control-sm border w-100" id="periode" required>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
-                            <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
-                                    <option value="">Pilih Shift</option>
-                                    <option>Shift 1</option>
-                                    <option>Shift 2</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">No Urut</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            <!-- Shift -->
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Shift</label>
+                                <div class="col-md-7">
+                                    <select class="form-select-sm border custom-select w-100" id="shift">
+                                        <option value="">Pilih Shift</option>
+                                        <option value="1">Shift 1</option>
+                                        <option value="2">Shift 2</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-12 d-md-flex align-items-center mb-2">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Unit Kerja</label>
-                            <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
-                                    <option value="">Pilih Unit Kerja</option>
-                                    <option>Surabaya</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Fungsional</label>
-                            <div class="col-md-7">
-                                <select class="form-select-sm border custom-select w-100">
-                                    <option value="">Pilih Fungsional</option>
-                                    <option>Kom</option>
-                                    <option>Medis</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Pegawai</label>
-                            <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-pencil-fill"></i></span>
+                            <!-- No Urut -->
+                            <div class="col-12 d-md-flex align-items-center" id="divNoUrut">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    No Urut <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="number" class="form-control-sm border w-100" id="noUrut" 
+                                           min="1" required>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-12 d-md-flex align-items-center">
-                            <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">Peg. lintas TIM</label>
-                            <div class="col-md-7">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="lintasTim">
+                            <!-- Unit Kerja -->
+                            <div class="col-12 d-md-flex align-items-center mb-2" id="divUnitKerja">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    Unit Kerja <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7">
+                                    <!-- Di template, loop ini akan berfungsi -->
+                                    <select class="form-select-sm border custom-select w-100" id="unitKerja" required>
+                                        <option value="">Pilih Unit Kerja</option>
+                                        {% for uk in unit_kerja_list %}
+                                        <option value="{{ uk.UNIT_KERJA_ID }}">{{ uk.NAMA_UNIT_KERJA }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
+
+                            <!-- Fungsional -->
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    Fungsional <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7">
+                                    <select class="form-select-sm border custom-select w-100" id="fungsional" required>
+                                        <option value="">Pilih Fungsional</option>
+                                        <option value="KGR">KGR</option>
+                                        <option value="PW">PW</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Pegawai (AutoComplete) -->
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    Pegawai <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7 position-relative">
+                                    <input type="text" class="form-control-sm border w-100" 
+                                           id="searchPegawai" placeholder="Ketik nama pegawai...">
+                                    <input type="hidden" id="nipPegawai" value="">
+                                    <div id="pegawaiDropdown" class="dropdown-menu w-100" 
+                                         style="display:none; max-height: 200px; overflow-y: auto;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Checkbox Pegawai Lintas Tim -->
+                            <div class="col-12 d-md-flex align-items-center">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    Peg. lintas TIM
+                                </label>
+                                <div class="col-md-7">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="lintasTim">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Info Update -->
+                            <div class="col-12 d-md-flex align-items-center" id="divUpdateInfo" style="display:none;">
+                                <div class="col-md-1"></div>
+                                <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                    Last Update
+                                </label>
+                                <div class="col-md-7">
+                                    <span id="updateInfo" class="text-muted"></span>
+                                </div>
+                            </div>
+
+                            <!-- ✅ TOMBOL SIMPAN -->
+                            <div class="col-12 d-flex justify-content-center mt-3">
+                                <button type="button" id="btnSave" class="btn btn-orange-figma px-4">
+                                    <i class="bi bi-save me-1"></i>Simpan
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
 
+            <!-- Save As Section -->
             <div class="card mb-4 filter-card">
-                <div class="card-header-customm">
-                    <h6 class="mb-0">Save As Tim Siaga</h6>
+                <div class="card-header-custom">
+                    <h6 class="mb-0">Save As KGR</h6>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-12 d-md-flex align-items-center">
+                        <div class="col-12 d-md-flex align-items-center" id="divPeriodeSaveAs">
                             <div class="col-md-1"></div>
-                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">ke Periode</label>
+                            <label class="col-md-2 text-md-start pe-md-4 fw-bold mb-1 mb-md-0">
+                                ke Periode <span class="text-danger">*</span>
+                            </label>
                             <div class="col-md-7">
-                                <div class="input-group-custom w-100">
-                                    <input type="text" class="form-control-sm border w-100">
-                                    <span class="icon-append"><i class="bi bi-calendar3"></i></span>
-                                </div>
+                                <input type="month" class="form-control-sm border w-100" id="periodeTujuan">
                             </div>
                         </div>
-                        <div class="col-12 d-md-flex">
+                        <div class="col-12 d-flex justify-content-center mt-3">
                             <div class="col-md-3"></div>
-                            <div class="col-md-1">
-                                <button class="btn btn-primary w-100 py-2"><i class="bi bi-save me-2"></i> Save</button>
-                            </div>
+                            <button type="button" id="btnSaveAs" class="btn btn-orange-figma px-4">
+                                <i class="bi bi-save me-1"></i>Save As
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -164,8 +217,332 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Konfirmasi Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus data KGR ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block script %}
-
+<script>
+$(document).ready(function() {
+    // Variabel global
+    let selectedNIP = '';
+    let selectedNama = '';
+    
+    // Inisialisasi
+    loadShifts();
+    resetForm();
+    
+    // Event handlers
+    $('#btnNew').click(resetForm);
+    $('#btnSave').click(saveKGR);
+    $('#btnDelete').click(confirmDelete);
+    $('#btnSaveAs').click(saveAsKGR);
+    $('#btnConfirmDelete').click(deleteKGR);
+    
+    // Search pegawai (autocomplete)
+    let searchTimeout;
+    $('#searchPegawai').on('input', function() {
+        const keyword = $(this).val().trim();
+        
+        clearTimeout(searchTimeout);
+        
+        if (keyword.length < 2) {
+            $('#pegawaiDropdown').hide();
+            return;
+        }
+        
+        searchTimeout = setTimeout(() => {
+            searchPegawai(keyword);
+        }, 300);
+    });
+    
+    // Klik di luar dropdown
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('#searchPegawai, #pegawaiDropdown').length) {
+            $('#pegawaiDropdown').hide();
+        }
+    });
+    
+    // Fungsi-fungsi
+    function loadShifts() {
+        $.get('/api/kgr/get-shift', function(response) {
+            if (response.success) {
+                const $shift = $('#shift');
+                $shift.find('option:not(:first)').remove();
+                response.data.forEach(function(s) {
+                    $shift.append(`<option value="${s.shift_id}">${s.nama_shift}</option>`);
+                });
+            }
+        });
+    }
+    
+    function searchPegawai(keyword) {
+        $.get('/api/kgr/search-pegawai', { keyword: keyword }, function(response) {
+            const $dropdown = $('#pegawaiDropdown');
+            $dropdown.empty();
+            
+            if (response.data && response.data.length > 0) {
+                response.data.forEach(function(peg) {
+                    $dropdown.append(`
+                        <a class="dropdown-item pegawai-item" href="#"
+                           data-nip="${peg.nip}" data-nama="${peg.nama}">
+                            ${peg.nama} <small class="text-muted">(${peg.nip})</small>
+                        </a>
+                    `);
+                });
+                
+                $dropdown.show();
+                
+                // Event click pada item dropdown
+                $('.pegawai-item').click(function(e) {
+                    e.preventDefault();
+                    selectedNIP = $(this).data('nip');
+                    selectedNama = $(this).data('nama');
+                    $('#searchPegawai').val(selectedNama);
+                    $('#nipPegawai').val(selectedNIP);
+                    $('#pegawaiDropdown').hide();
+                });
+            } else {
+                $dropdown.html('<span class="dropdown-item text-muted">Tidak ditemukan</span>');
+                $dropdown.show();
+            }
+        });
+    }
+    
+    function resetForm() {
+        $('#formKGR')[0].reset();
+        $('#guidTim').val('');
+        $('#isNew').val('true');
+        $('#periode').prop('disabled', false);
+        $('#divUpdateInfo').hide();
+        $('#updateInfo').text('');
+        $('#searchPegawai').val('');
+        $('#nipPegawai').val('');
+        selectedNIP = '';
+        selectedNama = '';
+        hideAlert();
+    }
+    
+    function saveKGR() {
+        // Validasi
+        const periode = $('#periode').val();
+        const noUrut = $('#noUrut').val();
+        const unitKerja = $('#unitKerja').val();
+        const fungsional = $('#fungsional').val();
+        
+        if (!periode) {
+            showAlert('error', 'Periode tidak boleh kosong');
+            $('#divPeriode').addClass('has-error');
+            return;
+        }
+        $('#divPeriode').removeClass('has-error');
+        
+        if (!noUrut || noUrut == '0') {
+            showAlert('error', 'No Urut tidak boleh kosong');
+            $('#divNoUrut').addClass('has-error');
+            return;
+        }
+        $('#divNoUrut').removeClass('has-error');
+        
+        if (!unitKerja) {
+            showAlert('error', 'Unit Kerja tidak boleh kosong');
+            $('#divUnitKerja').addClass('has-error');
+            return;
+        }
+        $('#divUnitKerja').removeClass('has-error');
+        
+        if (!fungsional) {
+            showAlert('error', 'Fungsional tidak boleh kosong');
+            return;
+        }
+        
+        if (!selectedNIP) {
+            showAlert('error', 'Pegawai tidak boleh kosong');
+            return;
+        }
+        
+        const data = {
+            guid_tim: $('#guidTim').val(),
+            periode: periode,
+            shift: $('#shift').val(),
+            no_urut: noUrut,
+            unit_kerja_id: unitKerja,
+            fungsional: fungsional,
+            nip: selectedNIP,
+            check_lintas_tim: $('#lintasTim').is(':checked'),
+            is_new: $('#isNew').val() === 'true'
+        };
+        
+        // Disable button saat proses
+        const $btnSave = $('#btnSave');
+        $btnSave.prop('disabled', true);
+        $btnSave.html('<i class="bi bi-hourglass-split me-1"></i>Menyimpan...');
+        
+        $.ajax({
+            url: '/api/kgr/save',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response.success) {
+                    showAlert('success', response.message);
+                    $('#guidTim').val(response.guid_tim);
+                    $('#isNew').val('false');
+                    $('#periode').prop('disabled', true);
+                } else {
+                    showAlert('error', response.error);
+                }
+            },
+            error: function(xhr) {
+                const response = xhr.responseJSON || {};
+                showAlert('error', response.error || 'Gagal menyimpan data');
+            },
+            complete: function() {
+                // Enable button kembali
+                $btnSave.prop('disabled', false);
+                $btnSave.html('<i class="bi bi-save me-1"></i>Simpan');
+            }
+        });
+    }
+    
+    function confirmDelete() {
+        const guidTim = $('#guidTim').val();
+        if (!guidTim) {
+            showAlert('error', 'Tidak ada data yang dipilih');
+            return;
+        }
+        $('#deleteModal').modal('show');
+    }
+    
+    function deleteKGR() {
+        const data = {
+            guid_tim: $('#guidTim').val()
+        };
+        
+        const $btnDelete = $('#btnConfirmDelete');
+        $btnDelete.prop('disabled', true);
+        $btnDelete.html('<i class="bi bi-hourglass-split me-1"></i>Menghapus...');
+        
+        $.ajax({
+            url: '/api/kgr/delete',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                $('#deleteModal').modal('hide');
+                if (response.success) {
+                    showAlert('success', response.message);
+                    resetForm();
+                } else {
+                    showAlert('error', response.error);
+                }
+            },
+            error: function(xhr) {
+                $('#deleteModal').modal('hide');
+                const response = xhr.responseJSON || {};
+                showAlert('error', response.error || 'Gagal menghapus data');
+            },
+            complete: function() {
+                $btnDelete.prop('disabled', false);
+                $btnDelete.html('Hapus');
+            }
+        });
+    }
+    
+    function saveAsKGR() {
+        const periode = $('#periode').val();
+        const periodeTujuan = $('#periodeTujuan').val();
+        const unitKerja = $('#unitKerja').val();
+        
+        if (!periode) {
+            showAlert('error', 'Periode sumber tidak boleh kosong');
+            $('#divPeriode').addClass('has-error');
+            return;
+        }
+        $('#divPeriode').removeClass('has-error');
+        
+        if (!periodeTujuan) {
+            showAlert('error', 'Periode tujuan tidak boleh kosong');
+            $('#divPeriodeSaveAs').addClass('has-error');
+            return;
+        }
+        $('#divPeriodeSaveAs').removeClass('has-error');
+        
+        if (!unitKerja) {
+            showAlert('error', 'Unit Kerja tidak boleh kosong');
+            return;
+        }
+        
+        const data = {
+            periode_sumber: periode,
+            periode_tujuan: periodeTujuan,
+            unit_kerja_id: unitKerja
+        };
+        
+        const $btnSaveAs = $('#btnSaveAs');
+        $btnSaveAs.prop('disabled', true);
+        $btnSaveAs.html('<i class="bi bi-hourglass-split me-1"></i>Menyalin...');
+        
+        $.ajax({
+            url: '/api/kgr/save-as',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response.success) {
+                    showAlert('success', response.message);
+                } else {
+                    showAlert('error', response.error);
+                }
+            },
+            error: function(xhr) {
+                const response = xhr.responseJSON || {};
+                showAlert('error', response.error || 'Gagal menyalin data');
+            },
+            complete: function() {
+                $btnSaveAs.prop('disabled', false);
+                $btnSaveAs.html('<i class="bi bi-save me-1"></i>Save As');
+            }
+        });
+    }
+    
+    function showAlert(type, message) {
+        const $alert = $('#alertContainer');
+        $alert.removeClass('d-none alert-success alert-danger bg-green-active bg-red-active')
+              .addClass(type === 'success' ? 'alert-success bg-green-active' : 'alert-danger bg-red-active');
+        
+        $('#alertIcon').html(type === 'success' 
+            ? '<i class="icon fa fa-check"></i>' 
+            : '<i class="icon fa fa-question"></i>');
+        $('#alertMessage').text(message);
+        $alert.show();
+        
+        // Auto hide setelah 5 detik
+        setTimeout(function() {
+            hideAlert();
+        }, 5000);
+    }
+    
+    function hideAlert() {
+        $('#alertContainer').addClass('d-none').hide();
+    }
+});
+</script>
 {% endblock %}

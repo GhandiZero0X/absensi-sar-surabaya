@@ -7,6 +7,9 @@ from app.models.pegawaiModel import Pegawai
 from app.models.unitKerjaModel import MfUnitKerja
 from app.models.timSiagaModel import MfTimSiaga
 from app.models.timSiagaAnggotaModel import MfTimSiagaAnggota
+from app.models.logActivityModel import LogActivity
+from app.models.otorisasiModel import Otorisasi
+from app.models.shiftModel import MfShift
 
 def master_data_email_broadcast():
     """Render halaman Master Data Email Broadcast."""
@@ -14,7 +17,478 @@ def master_data_email_broadcast():
 
 def master_data_kgr():
     """Render halaman Master Data KGR."""
-    return render_template('pages/dashboard_2/Master_Data_KGR.html')
+    unit_kerja_list = MfUnitKerja.query.order_by(MfUnitKerja.NAMA_UNIT_KERJA.asc()).all()
+    return render_template(
+        'pages/dashboard_2/Master_Data_KGR.html',
+        unit_kerja_list=unit_kerja_list
+    )
+
+def api_kgr_search_pegawai():
+    """
+    API pencarian pegawai untuk form KGR (seperti AutoComPeg di VB.NET)
+    """
+    keyword = request.args.get('keyword', '').strip()
+    if len(keyword) < 2:
+        return jsonify({'data': []})
+
+    pegawai_list = (
+        Pegawai.query
+        .filter(Pegawai.NAMA.ilike(f'%{keyword}%'))
+        .order_by(Pegawai.NAMA.asc())
+        .limit(15)
+        .all()
+    )
+
+    return jsonify({
+        'data': [
+            {'nip': p.NIP, 'nama': p.NAMA}
+            for p in pegawai_list
+        ]
+    })
+
+def api_kgr_get_shift():
+    """API: Get list shift untuk dropdown"""
+    try:
+        shift_list = MfShift.query.filter(
+            MfShift.IS_AKTIF == 'Y'
+        ).order_by(MfShift.NAMA_SHIFT.asc()).all()
+        
+        return jsonify({
+            'success': True,
+            'data': [
+                {
+                    'shift_id': s.SHIFT_ID,
+                    'nama_shift': s.NAMA_SHIFT
+                }
+                for s in shift_list
+            ]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e), 'data': []})
+
+def api_kgr_save():
+    """
+    API: Simpan/Update KGR
+    Mirip dengan BtnSave_Click di VB.NET (tanpa UserAccount & HakAksesForm)
+    """
+    try:
+        data = request.get_json()
+        guid_tim = data.get('guid_tim', '')
+        periode = data.get('periode', '')
+        shift = data.get('shift', '')
+        no_urut = data.get('no_urut', '0')
+        unit_kerja_id = data.get('unit_kerja_id', '')
+        fungsional = data.get('fungsional', '')
+        nip = data.get('nip', '')
+        check_lintas_tim = data.get('check_lintas_tim', False)
+        is_new = data.get('is_new', True)
+        
+        # Validasi
+        if not periode:
+            return jsonify({'error': 'Periode tidak boleh kosong'})
+        if not no_urut or no_urut == '0':
+            return jsonify({'error': 'No Urut tidak boleh kosong'})
+        if not unit_kerja_id:
+            return jsonify({'error': 'Unit Kerja tidak boleh kosong'})
+        if not nip:
+            return jsonify({'error': 'Pegawai tidak boleh kosong'})
+        
+        tahun = periode[:4]
+        bulan = periode[5:7]
+        
+        # Cek apakah pegawai sudah ada di tim lain (jika bukan lintas tim)
+        if not check_lintas_tim:
+            existing = MfTimSiagaAnggota.query.filter(
+                MfTimSiagaAnggota.NIP == nip,
+                MfTimSiagaAnggota.IS_AKTIF == 'Y',
+                MfTimSiagaAnggota.BULAN_PERIODE == bulan,
+                MfTimSiagaAnggota.TAHUN_PERIODE == tahun,
+                MfTimSiagaAnggota.SHIFT == shift,
+                MfTimSiagaAnggota.GUID_TIM != (guid_tim if not is_new else '')
+            ).first()
+            
+            if existing:
+                peg = Pegawai.query.get(nip)
+                return jsonify({
+                    'error': f'Pegawai {peg.NAMA if peg else nip} sudah terdaftar di tim lain'
+                })
+        
+        try:
+            if is_new:
+                # Cari atau buat header di MF_TIM_SIAGA
+                existing_header = MfTimSiaga.query.filter(
+                    MfTimSiaga.BULAN_PERIODE == bulan,
+                    MfTimSiaga.TAHUN_PERIODE == tahun,
+                    MfTimSiaga.SHIFT == shift,
+                    MfTimSiaga.ID_UNIT_KERJA == str(unit_kerja_id),
+                    MfTimSiaga.FUNGSIONAL_TIM == fungsional,
+                    MfTimSiaga.NO_URUT_TIM == int(no_urut) if no_urut else 0
+                ).first()
+                
+                if existing_header:
+                    guid_tim = existing_header.GUID_TIM
+                else:
+                    guid_tim = str(uuid.uuid4())
+                    tim_header = MfTimSiaga(
+                        GUID_TIM=guid_tim,
+                        NO_URUT_TIM=int(no_urut) if no_urut else 0,
+                        NAMA_TIM=f'KGR-{fungsional}-{no_urut}',
+                        ID_UNIT_KERJA=str(unit_kerja_id),
+                        IS_AKTIF='Y',
+                        BULAN_PERIODE=bulan,
+                        TAHUN_PERIODE=tahun,
+                        FUNGSIONAL_TIM=fungsional,
+                        SHIFT=shift,
+                        UPDATE_BY='admin',
+                        UPDATE_DATE=datetime.now()
+                    )
+                    db.session.add(tim_header)
+                    db.session.flush()
+                
+                # Insert anggota
+                new_anggota = MfTimSiagaAnggota(
+                    GUID_TIM=guid_tim,
+                    NIP=nip,
+                    FUNGSIONAL=fungsional,
+                    IS_AKTIF='Y',
+                    ID_UNIT_KERJA=str(unit_kerja_id),
+                    NO_URUT=int(no_urut) if no_urut else 0,
+                    BULAN_PERIODE=bulan,
+                    TAHUN_PERIODE=tahun,
+                    SHIFT=shift,
+                    UPDATE_BY='admin',
+                    UPDATE_DATE=datetime.now()
+                )
+                db.session.add(new_anggota)
+                
+            else:
+                # Update
+                anggota = MfTimSiagaAnggota.query.filter(
+                    MfTimSiagaAnggota.GUID_TIM == guid_tim
+                ).first()
+                
+                if not anggota:
+                    return jsonify({'error': 'Data tidak ditemukan'})
+                
+                anggota.NIP = nip
+                anggota.ID_UNIT_KERJA = str(unit_kerja_id)
+                anggota.NO_URUT = int(no_urut) if no_urut else 0
+                anggota.FUNGSIONAL = fungsional
+                anggota.SHIFT = shift
+                anggota.UPDATE_BY = 'admin'
+                anggota.UPDATE_DATE = datetime.now()
+            
+            db.session.commit()
+            
+            peg = Pegawai.query.get(nip)
+            nama_pegawai = peg.NAMA if peg else nip
+            
+            return jsonify({
+                'success': True,
+                'message': f'Data KGR No Urut {no_urut}, Unit {unit_kerja_id} - {nama_pegawai} berhasil disimpan',
+                'guid_tim': guid_tim
+            })
+            
+        except Exception as e:
+            db.session.rollback()
+            raise e
+            
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+def api_kgr_delete():
+    """API: Delete KGR"""
+    try:
+        data = request.get_json()
+        guid_tim = data.get('guid_tim', '')
+        
+        if not guid_tim:
+            return jsonify({'error': 'GUID Tim tidak ditemukan'})
+        
+        # Cek apakah sudah ada di LogActivity (seperti VB.NET)
+        log_exists = LogActivity.query.filter(
+            LogActivity.GUIDTim == guid_tim,
+            LogActivity.StatusID.in_(['0', '3']),
+            LogActivity.Activity == 'Piket Siaga'
+        ).first()
+        
+        if log_exists:
+            return jsonify({
+                'error': f'Data TIM {guid_tim} sudah diabsensi kehadiran, tidak bisa dihapus'
+            })
+        
+        # Delete (sesuai VB.NET)
+        MfTimSiagaAnggota.query.filter(
+            MfTimSiagaAnggota.GUID_TIM == guid_tim
+        ).delete()
+        
+        # Delete dari LogActivity
+        LogActivity.query.filter(
+            LogActivity.GUIDTim == guid_tim,
+            LogActivity.Activity == 'Piket Siaga'
+        ).delete()
+        
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': 'Data berhasil dihapus'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)})
+
+def api_kgr_get():
+    """API: Get data KGR by GUID (untuk edit)"""
+    guid_tim = request.args.get('guid_tim', '')
+    
+    if not guid_tim:
+        return jsonify({'error': 'GUID Tim tidak ditemukan'})
+    
+    anggota = MfTimSiagaAnggota.query.filter(
+        MfTimSiagaAnggota.GUID_TIM == guid_tim
+    ).first()
+    
+    if not anggota:
+        return jsonify({'error': 'Data tidak ditemukan'})
+    
+    peg = Pegawai.query.get(anggota.NIP)
+    unit = MfUnitKerja.query.get(anggota.ID_UNIT_KERJA)
+    
+    return jsonify({
+        'success': True,
+        'data': {
+            'guid_tim': anggota.GUID_TIM,
+            'nip': anggota.NIP,
+            'nama_pegawai': peg.NAMA if peg else '',
+            'unit_kerja_id': anggota.ID_UNIT_KERJA,
+            'nama_unit_kerja': unit.NAMA_UNIT_KERJA if unit else '',
+            'no_urut': anggota.NO_URUT,
+            'fungsional': anggota.FUNGSIONAL,
+            'shift': anggota.SHIFT,
+            'periode': f"{anggota.TAHUN_PERIODE}-{anggota.BULAN_PERIODE}",
+        }
+    })
+
+def api_kgr_save_as():
+    """
+    API: Save As KGR (copy ke periode lain)
+    """
+    try:
+        data = request.get_json()
+        periode_sumber = data.get('periode_sumber', '')
+        periode_tujuan = data.get('periode_tujuan', '')
+        unit_kerja_id = data.get('unit_kerja_id', '')
+        
+        if not periode_sumber or not periode_tujuan:
+            return jsonify({'error': 'Periode sumber dan tujuan harus diisi'})
+        if not unit_kerja_id:
+            return jsonify({'error': 'Unit Kerja tidak boleh kosong'})
+        
+        tahun_sumber = periode_sumber[:4]
+        bulan_sumber = periode_sumber[5:7]
+        tahun_tujuan = periode_tujuan[:4]
+        bulan_tujuan = periode_tujuan[5:7]
+        
+        # Cek apakah periode tujuan sudah di-approve
+        log_approved = db.session.query(LogActivity, Otorisasi).filter(
+            LogActivity.GUIDLog == Otorisasi.GUIDOto,
+            db.func.month(LogActivity.ActivityDate) == bulan_tujuan,
+            db.func.year(LogActivity.ActivityDate) == tahun_tujuan,
+            LogActivity.Activity == 'Piket Siaga',
+            LogActivity.IDUnitKerja == str(unit_kerja_id),
+            Otorisasi.LevelOto == '1',
+            Otorisasi.Act >= '0'
+        ).first()
+        
+        if log_approved:
+            return jsonify({
+                'error': f'Jadwal periode {tahun_tujuan}.{bulan_tujuan} unit {unit_kerja_id} sudah di-approve'
+            })
+        
+        # Ambil data sumber
+        anggota_sumber = MfTimSiagaAnggota.query.filter(
+            MfTimSiagaAnggota.IS_AKTIF == 'Y',
+            MfTimSiagaAnggota.BULAN_PERIODE == bulan_sumber,
+            MfTimSiagaAnggota.TAHUN_PERIODE == tahun_sumber,
+            MfTimSiagaAnggota.ID_UNIT_KERJA == str(unit_kerja_id),
+            MfTimSiagaAnggota.FUNGSIONAL.in_(['KGR', 'PW'])
+        ).all()
+        
+        if not anggota_sumber:
+            return jsonify({'error': 'Data sumber tidak ditemukan'})
+        
+        try:
+            for ag in anggota_sumber:
+                # Cari atau buat header MF_TIM_SIAGA untuk periode tujuan
+                existing_header = MfTimSiaga.query.filter(
+                    MfTimSiaga.BULAN_PERIODE == bulan_tujuan,
+                    MfTimSiaga.TAHUN_PERIODE == tahun_tujuan,
+                    MfTimSiaga.SHIFT == ag.SHIFT,
+                    MfTimSiaga.ID_UNIT_KERJA == str(unit_kerja_id),
+                    MfTimSiaga.FUNGSIONAL_TIM == ag.FUNGSIONAL,
+                    MfTimSiaga.NO_URUT_TIM == ag.NO_URUT
+                ).first()
+                
+                if existing_header:
+                    new_guid = existing_header.GUID_TIM
+                else:
+                    new_guid = str(uuid.uuid4())
+                    tim_header = MfTimSiaga(
+                        GUID_TIM=new_guid,
+                        NO_URUT_TIM=ag.NO_URUT,
+                        NAMA_TIM=f'KGR-{ag.FUNGSIONAL}-{ag.NO_URUT}',
+                        ID_UNIT_KERJA=ag.ID_UNIT_KERJA,
+                        IS_AKTIF='Y',
+                        BULAN_PERIODE=bulan_tujuan,
+                        TAHUN_PERIODE=tahun_tujuan,
+                        FUNGSIONAL_TIM=ag.FUNGSIONAL,
+                        SHIFT=ag.SHIFT,
+                        UPDATE_BY='admin',
+                        UPDATE_DATE=datetime.now()
+                    )
+                    db.session.add(tim_header)
+                    db.session.flush()
+                
+                # Delete existing di periode tujuan untuk NIP yang sama
+                MfTimSiagaAnggota.query.filter(
+                    MfTimSiagaAnggota.ID_UNIT_KERJA == str(unit_kerja_id),
+                    MfTimSiagaAnggota.BULAN_PERIODE == bulan_tujuan,
+                    MfTimSiagaAnggota.TAHUN_PERIODE == tahun_tujuan,
+                    MfTimSiagaAnggota.FUNGSIONAL.in_(['KGR', 'PW']),
+                    MfTimSiagaAnggota.NIP == ag.NIP
+                ).delete()
+                
+                # Insert baru
+                new_ag = MfTimSiagaAnggota(
+                    GUID_TIM=new_guid,
+                    NIP=ag.NIP,
+                    FUNGSIONAL=ag.FUNGSIONAL,
+                    IS_AKTIF='Y',
+                    ID_UNIT_KERJA=ag.ID_UNIT_KERJA,
+                    NO_URUT=ag.NO_URUT,
+                    BULAN_PERIODE=bulan_tujuan,
+                    TAHUN_PERIODE=tahun_tujuan,
+                    SHIFT=ag.SHIFT,
+                    UPDATE_BY='admin',
+                    UPDATE_DATE=datetime.now()
+                )
+                db.session.add(new_ag)
+            
+            db.session.commit()
+            
+            return jsonify({
+                'success': True,
+                'message': f'Data KGR berhasil disalin ke periode {tahun_tujuan}.{bulan_tujuan}'
+            })
+            
+        except Exception as e:
+            db.session.rollback()
+            raise e
+        
+    except Exception as e:
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)})
+
+def api_kgr_cari():
+    """
+    API Cari KGR - mirip dengan lbRefesh_Click di VB.NET
+    """
+    try:
+        periode = request.args.get('periode', '')
+        unit_kerja_id = request.args.get('unit_kerja_id', '')
+        shift = request.args.get('shift', '')
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+        
+        # ✅ PERBAIKAN: Hanya query 3 tabel (bukan 4)
+        query = (
+            db.session.query(
+                MfTimSiagaAnggota,
+                Pegawai,
+                MfUnitKerja
+            )
+            .join(Pegawai, MfTimSiagaAnggota.NIP == Pegawai.NIP)
+            .join(MfUnitKerja, MfTimSiagaAnggota.ID_UNIT_KERJA == MfUnitKerja.UNIT_KERJA_ID)
+            .filter(MfTimSiagaAnggota.FUNGSIONAL.in_(['KGR', 'PW']))
+        )
+        
+        # Filter periode
+        if periode:
+            tahun = periode[:4]
+            bulan = periode[5:7]
+            query = query.filter(
+                MfTimSiagaAnggota.BULAN_PERIODE == bulan,
+                MfTimSiagaAnggota.TAHUN_PERIODE == tahun
+            )
+        
+        # Filter unit kerja (jika level > 1)
+        if unit_kerja_id:
+            query = query.filter(
+                MfTimSiagaAnggota.ID_UNIT_KERJA == unit_kerja_id
+            )
+        
+        # Filter shift
+        if shift:
+            query = query.filter(MfTimSiagaAnggota.SHIFT == shift)
+        
+        # Field mapping (seperti di VB.NET)
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama': Pegawai.NAMA,
+            'UnitKerjaName': MfUnitKerja.NAMA_UNIT_KERJA,
+            'Fungsional': MfTimSiagaAnggota.FUNGSIONAL,
+        }
+        
+        if filter_field1 and filter_value1:
+            field = field_mapping.get(filter_field1)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value1}%'))
+        
+        if filter_field2 and filter_value2:
+            field = field_mapping.get(filter_field2)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value2}%'))
+        
+        # Order
+        query = query.order_by(
+            MfTimSiagaAnggota.SHIFT,
+            MfTimSiagaAnggota.NO_URUT
+        )
+        
+        results = query.all()
+        
+        # ✅ PERBAIKAN: Unpack 3 variabel (sesuai query)
+        data = []
+        for anggota, peg, unit in results:
+            data.append({
+                'guid_tim': anggota.GUID_TIM,
+                'nip': anggota.NIP,
+                'nama': peg.NAMA if peg else '',
+                'no_urut': anggota.NO_URUT,
+                'unit_kerja_id': anggota.ID_UNIT_KERJA,
+                'unit_kerja_name': unit.NAMA_UNIT_KERJA if unit else '',
+                'fungsional': anggota.FUNGSIONAL,
+                'shift': anggota.SHIFT,
+                'periode': f"{anggota.TAHUN_PERIODE}.{anggota.BULAN_PERIODE}",
+                'is_aktif': anggota.IS_AKTIF,
+            })
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'total': len(data)
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
 
 def master_data_nominal_ut_piket():
     """Render halaman Master Data Nominal UT Piket."""
@@ -338,6 +812,23 @@ def cari_data_kgr():
         'pages/dashboard_2/Cari_Data_KGR.html',
         unit_kerja_list=unit_kerja_list
     )
+
+def api_kgr_get_filter_fields():
+    """API: Get list field untuk filter dropdown"""
+    try:
+        fields = [
+            {'field_id': 'NIP', 'field_name': 'NIP'},
+            {'field_id': 'Nama', 'field_name': 'Nama'},
+            {'field_id': 'UnitKerjaName', 'field_name': 'Unit Kerja'},
+            {'field_id': 'Fungsional', 'field_name': 'Fungsional'},
+        ]
+        
+        return jsonify({
+            'success': True,
+            'data': fields
+        })
+    except Exception as e:
+        return jsonify({'error': str(e), 'data': []})
 
 
 def cari_data_piket_siaga():

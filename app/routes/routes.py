@@ -35,6 +35,14 @@ from app.controllers.dashboard_2MasterDataController import (
     cari_data_tim_siaga as master_data_cari_tim_siaga,
     api_cari_tim_siaga as master_data_api_cari_tim_siaga,
     api_cari_tim_siaga_get as master_data_api_cari_tim_siaga_get,
+    api_kgr_search_pegawai as master_data_api_kgr_search_pegawai,
+    api_kgr_get_shift as master_data_api_kgr_get_shift,
+    api_kgr_save as master_data_api_kgr_save,
+    api_kgr_delete as master_data_api_kgr_delete,
+    api_kgr_get as master_data_api_kgr_get,
+    api_kgr_save_as as master_data_api_kgr_save_as,
+    api_kgr_cari as master_data_api_kgr_cari,
+    api_kgr_get_filter_fields as master_data_api_kgr_get_filter_fields,
 )
 from app.controllers.dashboard_2OtoritasPersetujuanController import (
     otorisasi_persetujuan_kepala_kantor,
@@ -828,6 +836,41 @@ def view_master_data_email_broadcast():
 def view_master_data_kgr():
     return master_data_kgr()
 
+@main.route('/api/kgr/search-pegawai')
+@login_required
+def api_kgr_search_pegawai():
+    return master_data_api_kgr_search_pegawai()
+
+@main.route('/api/kgr/get-shift')
+@login_required
+def api_kgr_get_shift():
+    return master_data_api_kgr_get_shift()
+
+@main.route('/api/kgr/save', methods=['POST'])
+@login_required
+def api_kgr_save():
+    return master_data_api_kgr_save()
+
+@main.route('/api/kgr/delete', methods=['POST'])
+@login_required
+def api_kgr_delete():
+    return master_data_api_kgr_delete()
+
+@main.route('/api/kgr/get')
+@login_required
+def api_kgr_get():
+    return master_data_api_kgr_get()
+
+@main.route('/api/kgr/save-as', methods=['POST'])
+@login_required
+def api_kgr_save_as():
+    return master_data_api_kgr_save_as()
+
+@main.route('/api/kgr/cari')
+@login_required
+def api_kgr_cari():
+    return master_data_api_kgr_cari()
+
 @main.route('/siaga/master-data/nominal-ut-piket')
 @login_required
 def view_master_data_nominal_ut_piket():
@@ -873,6 +916,11 @@ def view_master_data_user_account():
 @login_required
 def view_cari_data_kgr():
     return master_data_cari_kgr()
+
+@main.route('/api/kgr/get-filter-fields')
+@login_required
+def api_kgr_get_filter_fields():
+    return master_data_api_kgr_get_filter_fields()
 
 @main.route('/siaga/master-data/piket-siaga/cari')
 @login_required
