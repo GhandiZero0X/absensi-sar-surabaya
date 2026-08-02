@@ -14,6 +14,127 @@ def kepegawaian_cari_data_pegawai():
     """Render halaman Kepegawaian Cari Data Pegawai."""
     return render_template('pages/dashboard_1/Kepegawaian Cari Data Pegawai.html')
 
+def api_pegawai_cari():
+    """
+    API: Cari data pegawai dengan filter
+    Mirip dengan BtnRefresh_Click di VB.NET
+    """
+    try:
+        # Get parameter filter
+        filter_field1 = request.args.get('filter_field1', '')
+        filter_value1 = request.args.get('filter_value1', '')
+        filter_field2 = request.args.get('filter_field2', '')
+        filter_value2 = request.args.get('filter_value2', '')
+        status_pegawai = request.args.get('status_pegawai', 'aktif')  # aktif/keluar
+        status_jenis = request.args.get('status_jenis', 'pns')  # pns/non_pns
+        
+        # Base query
+        query = (
+            db.session.query(
+                Pegawai,
+                MfUnitKerja,
+                MfGolongan,
+                MfJabatan
+            )
+            .outerjoin(MfUnitKerja, Pegawai.UNIT_KERJA_ID == MfUnitKerja.UNIT_KERJA_ID)
+            .outerjoin(MfGolongan, Pegawai.GOL_ID == MfGolongan.GOL_ID)
+            .outerjoin(MfJabatan, Pegawai.JABATAN_ID == MfJabatan.JABATAN_ID)
+        )
+        
+        # Filter status pegawai (aktif/keluar)
+        if status_pegawai == 'aktif':
+            query = query.filter(Pegawai.IS_KELUAR == 0)
+        else:
+            query = query.filter(Pegawai.IS_KELUAR == 1)
+        
+        # Filter status jenis (PNS/NON PNS)
+        if status_jenis == 'pns':
+            query = query.filter(Pegawai.STATUS_PEG == 1)
+        else:
+            query = query.filter(Pegawai.STATUS_PEG == 2)
+        
+        # Field mapping untuk filter
+        field_mapping = {
+            'NIP': Pegawai.NIP,
+            'Nama Peg': Pegawai.NAMA,
+            'Gol': MfGolongan.NAMA_GOL,
+            'Jabatan': MfJabatan.NAMA_JABATAN,
+            'Unit Kerja': MfUnitKerja.NAMA_UNIT_KERJA,
+            'Jenis Kelamin': Pegawai.JENIS_KEL,
+        }
+        
+        # Filter 1
+        if filter_field1 and filter_value1:
+            field = field_mapping.get(filter_field1)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value1}%'))
+        
+        # Filter 2
+        if filter_field2 and filter_value2:
+            field = field_mapping.get(filter_field2)
+            if field is not None:
+                query = query.filter(field.ilike(f'%{filter_value2}%'))
+        
+        # Order
+        query = query.order_by(
+            MfJabatan.URUT_JABATAN.asc(),
+            MfGolongan.URUT_GOL.asc(),
+            Pegawai.NIP.asc()
+        )
+        
+        results = query.limit(500).all()
+        
+        # Format data
+        data = []
+        for i, (peg, unit, gol, jab) in enumerate(results, 1):
+            # Keterangan
+            keterangan = ''
+            if peg.IS_KELUAR == 1:
+                tgl = peg.TGL_KELUAR.strftime('%Y.%m.%d') if peg.TGL_KELUAR else ''
+                keterangan = f"Tanggal keluar {tgl} {peg.ALASAN_KELUAR or ''}"
+            
+            data.append({
+                'no': i,
+                'nip': peg.NIP,
+                'nama': peg.NAMA or '',
+                'gol_pangkat': f"{gol.NAMA_GOL or ''} - {gol.PANGKAT_GOL or ''}" if gol else '-',
+                'unit_kerja': unit.NAMA_UNIT_KERJA if unit else '-',
+                'jabatan': jab.NAMA_JABATAN if jab else '-',
+                'status_peg': 'PNS' if peg.STATUS_PEG == 1 else 'NON PNS',
+                'keterangan': keterangan,
+            })
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'total': len(data)
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'data': []})
+
+
+def api_pegawai_get_filter_fields():
+    """API: Get list field untuk filter dropdown"""
+    try:
+        fields = [
+            {'field_id': 'NIP', 'field_name': 'NIP'},
+            {'field_id': 'Nama Peg', 'field_name': 'Nama Peg'},
+            {'field_id': 'Gol', 'field_name': 'Gol'},
+            {'field_id': 'Jabatan', 'field_name': 'Jabatan'},
+            {'field_id': 'Unit Kerja', 'field_name': 'Unit Kerja'},
+            {'field_id': 'Jenis Kelamin', 'field_name': 'Jenis Kelamin'},
+        ]
+        
+        return jsonify({
+            'success': True,
+            'data': fields
+        })
+    except Exception as e:
+        return jsonify({'error': str(e), 'data': []})
+
 
 def kepegawaian_cari_dinas_luar_umum():
     """Render halaman Kepegawaian Cari Dinas Luar Umum."""

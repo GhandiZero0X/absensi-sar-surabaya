@@ -31,6 +31,8 @@ from app.controllers.dashboard_1KepegawaianController import (
     api_pegawai_get as master_api_pegawai_get,
     api_pegawai_save as master_api_pegawai_save,
     api_pegawai_delete as master_api_pegawai_delete,
+    api_pegawai_cari as master_api_pegawai_cari,
+    api_pegawai_get_filter_fields as master_api_pegawai_get_filter_fields,
 )
 from app.controllers.dashboard_1MediaInformasiController import (
     media_informasi, media_informasi_detail,
@@ -251,6 +253,16 @@ def api_pegawai_delete():
 @login_required
 def view_kepegawaian_cari_data_pegawai():
     return kepegawaian_cari_data_pegawai()
+
+@main.route('/api/pegawai/cari')
+@login_required
+def api_pegawai_cari():
+    return master_api_pegawai_cari()
+
+@main.route('/api/pegawai/filter-fields')
+@login_required
+def api_pegawai_get_filter_fields():
+    return master_api_pegawai_get_filter_fields()
 
 @main.route('/kepegawaian/dinas-luar-umum')
 @login_required
