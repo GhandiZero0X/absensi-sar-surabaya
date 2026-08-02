@@ -17,6 +17,8 @@ from app.controllers.dashboard_1MasterFileController import (
 from app.controllers.dashboard_2DataSiagaController import (
     data_siaga_absensi_kehadiran, data_siaga_cetak_daftar_lembur_siaga, data_siaga_cetak_rekap_siaga,
     data_siaga_cetak_uang_siaga, data_siaga_jadwal_ulang, data_siaga_membuat_jadwal_piket_siaga,
+    api_absensi_kehadiran_get as data_siaga_api_absensi_kehadiran_get,
+    api_absensi_kehadiran_update as data_siaga_api_absensi_kehadiran_update,
 )
 from app.controllers.dashboard_2MasterDataController import (
     master_data_email_broadcast,
@@ -801,6 +803,16 @@ def view_dashboard_tim_siaga():
 @login_required
 def view_data_siaga_absensi_kehadiran():
     return data_siaga_absensi_kehadiran()
+
+@main.route('/api/absensi-kehadiran/get')
+@login_required
+def api_absensi_kehadiran_get():
+    return data_siaga_api_absensi_kehadiran_get()
+
+@main.route('/api/absensi-kehadiran/update', methods=['POST'])
+@login_required
+def api_absensi_kehadiran_update():
+    return data_siaga_api_absensi_kehadiran_update()
 
 @main.route('/siaga/cetak-daftar-lembur')
 @login_required
