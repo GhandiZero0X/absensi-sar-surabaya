@@ -1127,6 +1127,47 @@ def view_data_siaga_cetak_uang_siaga():
 def view_data_siaga_jadwal_ulang():
     return data_siaga_jadwal_ulang()
 
+@main.route('/api/rejadwal-siaga/get-jadwal')
+@login_required
+def api_rejadwal_siaga_get_jadwal():
+    from app.controllers.dashboard_2DataSiagaController import api_rejadwal_siaga_get_jadwal
+    return api_rejadwal_siaga_get_jadwal()
+
+@main.route('/api/rejadwal-siaga/delete-personil', methods=['POST'])
+@login_required
+def api_rejadwal_siaga_delete_personil():
+    from app.controllers.dashboard_2DataSiagaController import api_rejadwal_siaga_delete_personil
+    return api_rejadwal_siaga_delete_personil()
+
+@main.route('/api/rejadwal-siaga/cancel-request', methods=['POST'])
+@login_required
+def api_rejadwal_siaga_cancel_request():
+    from app.controllers.dashboard_2DataSiagaController import api_rejadwal_siaga_cancel_request
+    return api_rejadwal_siaga_cancel_request()
+
+@main.route('/api/rejadwal-siaga/rollback', methods=['POST'])
+@login_required
+def api_rejadwal_siaga_rollback():
+    from app.controllers.dashboard_2DataSiagaController import api_rejadwal_siaga_rollback
+    return api_rejadwal_siaga_rollback()
+
+@main.route('/api/rejadwal-siaga/fungsional')
+@login_required
+def api_rejadwal_siaga_get_fungsional():
+    from app.controllers.dashboard_2DataSiagaController import api_rejadwal_siaga_get_fungsional
+    return api_rejadwal_siaga_get_fungsional()
+
+@main.route('/api/rejadwal-siaga/shift')
+@login_required
+def api_rejadwal_siaga_get_shift():
+    from app.controllers.dashboard_2DataSiagaController import api_rejadwal_siaga_get_shift
+    return api_rejadwal_siaga_get_shift()
+
+@main.route('/api/rejadwal-siaga/add-personil', methods=['POST'])
+def api_rejadwal_siaga_add_personil():
+    from app.controllers.dashboard_2DataSiagaController import api_rejadwal_siaga_add_personil
+    return api_rejadwal_siaga_add_personil()
+
 @main.route('/siaga/buat-jadwal-piket')
 @login_required
 def view_data_siaga_membuat_jadwal_piket_siaga():
