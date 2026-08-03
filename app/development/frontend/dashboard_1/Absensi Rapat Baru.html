@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <meta name="author" content="theme_ocean">
+    <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- BEGIN: Apps Title-->
+    <title>Cari Absensi Finger</title>
+    <!-- END:  Apps Title-->
+    <!-- BEGIN: Favicon-->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo-full.png">
+    <!-- END: Favicon-->
+    <!-- BEGIN: Bootstrap CSS-->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <!-- END: Bootstrap CSS-->
+    <!-- BEGIN: Vendors CSS-->
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/daterangepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/jquery-jvectormap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/select2-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendors/css/jquery.time-to.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <!-- END: Vendors CSS-->
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="assets/css/theme.min.css">
+    <!-- END: Custom CSS-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn"t work if you view the page via file: -->
+    <!--[if lt IE 9]>
+			<script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https:oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+    <!-- ================================================================ -->
+    <!-- [Start] Navigation Menu -->
+    <!-- ================================================================ -->
+    <nav class="nxl-navigation">
+        <div class="navbar-wrapper">
+            <div class="m-header">
+                <a href="index.html" class="b-brand">
+                    <!-- ========   change your logo hear   ============ -->
+                    <img src="assets/images/logo-full.png" alt="" width="50" height:auto;>
+                </a>
+                <label style="color: white;">HRIS KanSAR</label>
+            </div>
+            <div class="navbar-content">
+                <ul class="nxl-navbar">
+                    <div class="custom-nav-header">
+                        <div class="header-container">
+                            <div class="nxl-navigation-toggle toggle-btn-action">
+                                <div id="menu-mini-button" class="btn-mini-style" style="cursor: pointer;">
+                                    <i class="feather-menu"></i>
+                                </div>
+                                <div id="menu-expend-button" class="btn-expand-style" style="display: none;">
+                                    <i class="feather-menu"></i>
+                                </div>
+                            </div>
+                            <span class="nav-text-label nxl-mtext">Navigation</span>
+                        </div>
+                        <div class="nav-separator"></div>
+                    </div>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path d="M4 4h6v6h-6zM14 4h6v4h-6zM14 10h6v10h-6zM4 14h6v6h-6z" />
+                                </svg>
+                            </span>
+                            <span class="nxl-mtext">Dashboard</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Dashboard Pelanggaran.html">
+                                    <span class="nxl-micon"><i class="ti ti-layout-dashboard"></i></span>
+                                    <span class="nxl-mtext">Dashboard</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-layers"></i></span>
+                            <span class="nxl-mtext">Master File</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master User.html">
+                                    <span class="nxl-micon"><i class="feather-user"></i></span>
+                                    <span class="nxl-mtext">User Account</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Pegawai VIP.html">
+                                    <span class="nxl-micon"><i class="ti ti-vip"></i></span>
+                                    <span class="nxl-mtext">VIP List</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Kalender.html">
+                                    <span class="nxl-micon"><i class="feather-calendar"></i></span>
+                                    <span class="nxl-mtext">Master Kalender</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Potongan.html">
+                                    <span class="nxl-micon"><i class="feather-tag"></i></span>
+                                    <span class="nxl-mtext">Master Potongan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Unit Kerja.html">
+                                    <span class="nxl-micon"><i class="ti ti-building"></i></span>
+                                    <span class="nxl-mtext">Master Unit Kerja</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Tunkin Class .html">
+                                    <span class="nxl-micon"><i class="ti ti-brand-redhat"></i></span>
+                                    <span class="nxl-mtext">Master Tunkin/Class</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Jam Kerja.html">
+                                    <span class="nxl-micon"><i class="ti ti-clock-edit"></i></span>
+                                    <span class="nxl-mtext">Master Jam Kerja</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Jam Finger.html">
+                                    <span class="nxl-micon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 2a7 7 0 0 0-7 7v3a5 5 0 0 0 10 0v-3a3 3 0 0 0-6 0v3a1 1 0 0 0 2 0v-3a1 1 0 0 1 2 0v3a3 3 0 0 1-6 0v-3a5 5 0 0 1 10 0v3a7 7 0 0 1-14 0v-3a9 9 0 0 1 18 0v3c0 5-4 9-9 9" />
+                                        </svg>
+                                    </span>
+                                    <span class="nxl-mtext">Master Jam Finger</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Butir Kegiatan.html">
+                                    <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                                    <span class="nxl-mtext">Master Butir Kegiatan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master Jabatan.html">
+                                    <span class="nxl-micon"><i class="feather-award"></i></span>
+                                    <span class="nxl-mtext">Master Jabatan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Uang Makan.html">
+                                    <span class="nxl-micon"><i class="ti ti-tools-kitchen-2"></i></span>
+                                    <span class="nxl-mtext">Master Uang Makan</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Master File Master TRT.html">
+                                    <span class="nxl-micon"><i class="ti ti-cash"></i></span>
+                                    <span class="nxl-mtext">Master TRT</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="ti ti-edit"></i></span>
+                            <span class="nxl-mtext">Kepegawaian</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Data Pegawai.html">
+                                    <span class="nxl-micon"><i class="feather-users"></i></span>
+                                    <span class="nxl-mtext">Data Pegawai</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Dinas Luar Umum.html">
+                                    <span class="nxl-micon"><i class="feather-briefcase"></i></span>
+                                    <span class="nxl-mtext">Dinas Luar Umum</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Dinas Luar Operasi.html">
+                                    <span class="nxl-micon"><i class="feather-activity"></i></span>
+                                    <span class="nxl-mtext">Dinas Luar OPS</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Dinas Luar Pelatihan.html">
+                                    <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                                    <span class="nxl-mtext">Dinas Luar SD</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Pegawai Cuti.html">
+                                    <span class="nxl-micon"><i class="feather-user-x"></i></span>
+                                    <span class="nxl-mtext">Pegawai Cuti</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Pegawai Sakit.html">
+                                    <span class="nxl-micon"><i class="feather-heart"></i></span>
+                                    <span class="nxl-mtext">Pegawai Sakit</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Pegawai Tidak Hadir.html">
+                                    <span class="nxl-micon"><i class="feather-user-minus"></i></span>
+                                    <span class="nxl-mtext">Pegawai Tidak Hadir</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Update Pendukung.html">
+                                    <span class="nxl-micon"><i class="feather-upload"></i></span>
+                                    <span class="nxl-mtext">Update Pendukung</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Mutasi Penempatan Pegawai.html">
+                                    <span class="nxl-micon"><i class="feather-repeat"></i></span>
+                                    <span class="nxl-mtext">Pegawai Mutasi</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Kepegawaian Work From Home.html">
+                                    <span class="nxl-micon"><i class="feather-home"></i></span>
+                                    <span class="nxl-mtext">WFH</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-settings"></i></span>
+                            <span class="nxl-mtext">Data Absensi</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Normalisasi Absensi Finger.html">
+                                    <span class="nxl-micon"><i class="ti ti-fingerprint"></i></span>
+                                    <span class="nxl-mtext">Absensi Finger</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Non Finger.html">
+                                    <span class="nxl-micon"><i class="ti ti-user-check"></i></span>
+                                    <span class="nxl-mtext">Absensi Non Finger</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Trace.html">
+                                    <span class="nxl-micon"><i class="ti ti-file-text"></i></span>
+                                    <span class="nxl-mtext">Detail Absensi</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Trace Tunjangan.html">
+                                    <span class="nxl-micon"><i class="ti ti-cash"></i></span>
+                                    <span class="nxl-mtext">Detail Tunkin</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Pegawai Absensi Manual.html">
+                                    <span class="nxl-micon"><i class="ti ti-edit"></i></span>
+                                    <span class="nxl-mtext">Absensi Manual</span>
+                                </a>
+                            </li>
+
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Data Absensi Pegawai Lembur Manual.html">
+                                    <span class="nxl-micon"><i class="ti ti-clock"></i></span>
+                                    <span class="nxl-mtext">Lembur Manual</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-file-text"></i></span>
+                            <span class="nxl-mtext">Laporan</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Report Absensi All.html">
+                                    <i class="ti ti-checkbox me-2"></i>Rekap Absensi All
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Report Absensi Per Personal.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Absensi Person
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Report Absensi Log Finger.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap History Log Finger
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Rekap Exception Clock.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Bulanan Absensi
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan DL, SAKIT, IJIN, CUTI.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap DL, S, I CUTI
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Rekap, U.Makan (by Absensi).html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Uang Makan
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Rekap Pelanggaran Disiplin.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Pelanggaran Disiplin
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Rincian Pembayaran Tunjangan.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Tunjangan Kinerja
+                                </a>
+                            </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Laporan Cetak Daftar Lembar Umum.html">
+                                    <i class="ti ti-checkbox me-2"></i>Recap Daftar Lembur
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-monitor"></i></span>
+                            <span class="nxl-mtext">Media Informasi</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Media Informasi.html">
+                                    <span class="nxl-micon"><i class="ti ti-file-export"></i></span>
+                                    <span class="nxl-mtext">Inp Pengumuman</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="../../frontend/home/index.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-house-fill"></i></span>
+                            <span class="nxl-mtext">Portal</span>
+                        </a>
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="Update Password.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="bi bi-key-fill"></i></span>
+                            <span class="nxl-mtext">Update Password</span>
+                        </a>
+                    </li>
+            </div>
+        </div>
+    </nav>
+    <!-- ================================================================ -->
+    <!-- [End]  Navigation Manu -->
+
+    <!-- [Start] Header -->
+    <header class="nxl-header">
+        <div class="header-wrapper d-flex justify-content-end align-items-center">
+
+            <!-- User Profile -->
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown">
+                    <img src="assets/images/avatar/1.png" class="rounded-circle me-2" width="35" height="35">
+                    <span>Auditor</span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 custom-profile-dropdown">
+                    <div class="card-body p-4 text-center">
+                        <div class="avatar-big mb-3">
+                            <i class="bi bi-person-circle text-orange" style="font-size: 50px;"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1 color-primary">414386 - Auditor</h6>
+                        <p class="text-muted small mb-0">1 - Operator</p>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-start" style="padding-left: 15px;">
+                                <i class="bi bi-display me-2"
+                                    style="color: #EB6831; font-size: 1.1rem; padding-left: 30px;"></i>
+                                <div class="small text-muted">192.168.100.5</div>
+                            </div>
+                            <button class="btn btn-orange-figma px-4">Sign Out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <!-- ================================================================ -->
+    <!-- [Start] Main Content -->
+    <!-- ================================================================ -->
+    <main class="nxl-container">
+        <div class="nxl-content">
+            <!-- Page Header / Breadcrumb -->
+            <div class="page-header mb-4">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10 mb-1 fw-bold">Pengajuan</h5>
+                    </div>
+                    <ul class="breadcrumb mb-0 ms-3">
+                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Absensi</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Absensi Rapat</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content master-siaga">
+                <div class="container-fluid p-0">
+                    <div class="card mb-4 border-0 shadow-sm">
+
+                        <!-- Main Header Card -->
+                        <div class="card-header d-flex justify-content-between align-items-center bg-white p-3 border-bottom"
+                            style="border-radius: 10px 10px 0 0;">
+                            <h6 class="mb-0 fw-bold text-dark d-flex align-items-center">
+                                <i class="bi bi-fingerprint me-2 text-dark fs-5"></i>
+                                Absensi Rapat (Scan Barcode)
+                            </h6>
+                            <div class="d-flex align-items-center gap-3">
+                                <button class="btn p-0 border-0 bg-transparent text-secondary" title="Cari">
+                                    <i class="bi bi-search fs-5"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent text-primary" title="Tambah">
+                                    <i class="bi bi-file-earmark-plus fs-5"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent text-success" title="Download">
+                                    <i class="bi bi-download fs-5"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent text-danger" title="Hapus">
+                                    <i class="bi bi-trash fs-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Custom Style -->
+                        <style>
+                            .panel-header-orange {
+                                background-color: #e66b30;
+                                color: #ffffff;
+                                font-weight: 600;
+                                font-size: 0.9rem;
+                                padding: 8px 16px;
+                                border-radius: 6px 6px 0 0;
+                            }
+
+                            .sub-panel-box {
+                                border: 1px solid #e0e0e0;
+                                border-radius: 8px;
+                                background: #ffffff;
+                                overflow: hidden;
+                            }
+
+                            .scanner-wrapper {
+                                position: relative;
+                                background-color: #1a1a1a;
+                                border-radius: 8px;
+                                overflow: hidden;
+                                height: 220px;
+                            }
+
+                            .badge-camera-active {
+                                position: absolute;
+                                top: 10px;
+                                right: 10px;
+                                background-color: #198754;
+                                color: #fff;
+                                font-size: 0.75rem;
+                                padding: 4px 8px;
+                                border-radius: 4px;
+                                font-weight: 600;
+                            }
+
+                            .btn-orange-submit {
+                                background-color: #e66b30;
+                                color: #ffffff;
+                                font-weight: 600;
+                                border: none;
+                                border-radius: 6px;
+                                padding: 8px 20px;
+                                transition: background-color 0.2s ease;
+                            }
+
+                            .btn-orange-submit:hover {
+                                background-color: #d15920;
+                                color: #ffffff;
+                            }
+
+                            .input-custom-sm {
+                                border: 1px solid #ced4da;
+                                border-radius: 4px;
+                                padding: 5px 10px;
+                                font-size: 0.85rem;
+                                width: 100%;
+                            }
+
+                            .input-custom-sm:focus {
+                                border-color: #e66b30;
+                                outline: none;
+                                box-shadow: 0 0 0 0.2rem rgba(230, 107, 48, 0.2);
+                            }
+
+                            .table-log th {
+                                background-color: #f8f9fa;
+                                font-size: 0.75rem;
+                                font-weight: 700;
+                                color: #495057;
+                                text-transform: uppercase;
+                            }
+
+                            .table-log td {
+                                font-size: 0.85rem;
+                                vertical-align: middle;
+                            }
+                        </style>
+
+                        <div class="card-body p-4">
+                            <div class="row g-4">
+
+                                <!-- Panel Kiri: Input & Scan -->
+                                <div class="col-lg-5">
+                                    <div class="sub-panel-box h-100 pb-3">
+                                        <div class="panel-header-orange">Input & Scan</div>
+                                        <div class="p-3">
+
+                                            <!-- Area Preview Kamera / Scanner -->
+                                            <div
+                                                class="scanner-wrapper d-flex justify-content-center align-items-center mb-3">
+                                                <span class="badge-camera-active">Kamera AKTIF</span>
+                                                <div class="text-center text-white">
+                                                    <small class="d-block text-uppercase fw-bold mb-2"
+                                                        style="letter-spacing: 1px;">SCAN BARCODE</small>
+                                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=AbsensiRapat"
+                                                        alt="QR Scanner Area"
+                                                        class="img-fluid rounded border border-2 border-light">
+                                                    <small class="d-block text-uppercase mt-2"
+                                                        style="letter-spacing: 1px; font-size: 0.7rem;">KAMERA
+                                                        AKTIF</small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Form Controls -->
+                                            <div class="row align-items-center mb-3">
+                                                <label
+                                                    class="col-sm-4 form-label small fw-bold text-secondary mb-0">Nama
+                                                    Rapat</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="input-custom-sm"
+                                                        value="Rapat Bulanan Divisi" placeholder="Masukkan nama rapat">
+                                                </div>
+                                            </div>
+
+                                            <div class="row align-items-center mb-4">
+                                                <label
+                                                    class="col-sm-4 form-label small fw-bold text-secondary mb-0">Tanggal</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="tanggal_rapat"
+                                                        class="input-custom-sm flatpickr-range"
+                                                        placeholder="Pilih Tanggal">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Panel Kanan: Log Kehadiran Terbaru -->
+                                <div class="col-lg-7">
+                                    <div class="sub-panel-box h-100">
+                                        <div class="panel-header-orange">Log Kehadiran Terbaru</div>
+                                        <div class="p-3">
+
+                                            <!-- Filter Section -->
+                                            <div class="row g-2 align-items-center mb-3">
+                                                <div class="col-md-8 d-flex align-items-center gap-2">
+                                                    <label class="small fw-bold text-secondary text-nowrap mb-0">Tanggal
+                                                        Scan</label>
+                                                    <input type="text" id="filter_tanggal_scan"
+                                                        class="input-custom-sm flatpickr-range"
+                                                        placeholder="Pilih Rentang Tanggal">
+                                                </div>
+                                            </div>
+
+                                            <!-- Table Section -->
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-bordered table-log mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="width: 40px;">NO</th>
+                                                            <th class="text-center">WAKTU SCAN</th>
+                                                            <th class="text-center">NIP</th>
+                                                            <th>NAMA PEGAWAI</th>
+                                                            <th>UNIT KERJA</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">1</td>
+                                                            <td class="text-center">14:32:05</td>
+                                                            <td class="text-center">1990011501</td>
+                                                            <td class="fw-medium">Budi Santoso</td>
+                                                            <td>Seksi OPS</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">2</td>
+                                                            <td class="text-center">14:33:10</td>
+                                                            <td class="text-center">1988052002</td>
+                                                            <td class="fw-medium">Sari Wijaya</td>
+                                                            <td>TU</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">3</td>
+                                                            <td class="text-center">14:32:10</td>
+                                                            <td class="text-center">1990011501</td>
+                                                            <td class="fw-medium">Budi Santoso</td>
+                                                            <td>Seksi OPS</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- ================================================================ -->
+
+    <!-- Pastikan library Flatpickr di-load jika belum ada di template -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            flatpickr(".flatpickr-range", {
+                mode: "range",
+                dateFormat: "Y-m-d"
+            });
+        });
+    </script>
+    <!-- BEGIN: Vendors JS -->
+    <script src="assets/vendors/js/vendors.min.js"></script>
+    <!-- vendors.min.js {always must need to be top} -->
+    <script src="assets/vendors/js/daterangepicker.min.js"></script>
+    <script src="assets/vendors/js/apexcharts.min.js"></script>
+    <script src="assets/vendors/js/jquery.time-to.min.js "></script>
+    <script src="assets/vendors/js/circle-progress.min.js"></script>
+    <!-- END: Vendors JS -->
+    <!-- BEGIN: Apps Init  -->
+    <script src="assets/js/common-init.min.js"></script>
+    <script src="assets/js/analytics-init.min.js"></script>
+    <!-- END: Apps Init -->
+</body>
+
+</html>
