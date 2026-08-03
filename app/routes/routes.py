@@ -131,8 +131,18 @@ from app.controllers.dashboard_2MasterDataController import (
     api_email_broadcast_save as master_data_api_email_broadcast_save,
 )
 from app.controllers.dashboard_2OtoritasPersetujuanController import (
+    api_otorisasi_kakansar_approve,
+    api_otorisasi_kakansar_belum,
+    api_otorisasi_kakansar_filter_fields,
+    api_otorisasi_kakansar_sudah,
+    api_otorisasi_kakansar_undo,
     otorisasi_persetujuan_kepala_kantor,
     otorisasi_persetujuan_kepala_seksi_operasi,
+    api_otorisasi_kasiops_belum,
+    api_otorisasi_kasiops_approve,
+    api_otorisasi_kasiops_sudah,
+    api_otorisasi_kasiops_undo,
+    api_otorisasi_kasiops_filter_fields,
 )
 from app.controllers.dashboard_2HomeController import (
     dashboard_tim_siaga,
@@ -1265,6 +1275,68 @@ def view_otorisasi_persetujuan_kepala_kantor():
 @login_required
 def view_otorisasi_persetujuan_kepala_seksi_operasi():
     return otorisasi_persetujuan_kepala_seksi_operasi()
+
+@main.route('/api/otorisasi/kasiops/belum')
+@login_required
+def api_route_otorisasi_kasiops_belum():
+    return api_otorisasi_kasiops_belum()
+
+@main.route('/api/otorisasi/kasiops/approve', methods=['POST'])
+@login_required
+def api_route_otorisasi_kasiops_approve():
+    return api_otorisasi_kasiops_approve()
+
+@main.route('/api/otorisasi/kasiops/sudah')
+@login_required
+def api_route_otorisasi_kasiops_sudah():
+    return api_otorisasi_kasiops_sudah()
+
+@main.route('/api/otorisasi/kasiops/undo', methods=['POST'])
+@login_required
+def api_route_otorisasi_kasiops_undo():
+    return api_otorisasi_kasiops_undo()
+
+@main.route('/api/otorisasi/kasiops/filter-fields')
+@login_required
+def api_route_otorisasi_kasiops_filter_fields():
+    return api_otorisasi_kasiops_filter_fields()
+
+@main.route('/api/otorisasi/kakansar/belum')
+@login_required
+def api_route_otorisasi_kakansar_belum():
+    return api_otorisasi_kakansar_belum()
+
+@main.route('/api/otorisasi/kakansar/approve', methods=['POST'])
+@login_required
+def api_route_otorisasi_kakansar_approve():
+    return api_otorisasi_kakansar_approve()
+
+@main.route('/api/otorisasi/kakansar/sudah')
+@login_required
+def api_route_otorisasi_kakansar_sudah():
+    return api_otorisasi_kakansar_sudah()
+
+@main.route('/api/otorisasi/kakansar/undo', methods=['POST'])
+@login_required
+def api_route_otorisasi_kakansar_undo():
+    return api_otorisasi_kakansar_undo()
+
+@main.route('/api/otorisasi/kakansar/filter-fields')
+@login_required
+def api_route_otorisasi_kakansar_filter_fields():
+    return api_otorisasi_kakansar_filter_fields()
+
+@main.route('/api/otorisasi/export/excel')
+@login_required
+def api_otorisasi_export_excel():
+    from app.controllers.dashboard_2OtoritasPersetujuanController import export_otorisasi_excel
+    return export_otorisasi_excel()
+
+@main.route('/api/otorisasi/export/pdf')
+@login_required
+def api_otorisasi_export_pdf():
+    from app.controllers.dashboard_2OtoritasPersetujuanController import export_otorisasi_pdf
+    return export_otorisasi_pdf()
 
 # ============================
 # ---- Dashboard 3 Routes ----

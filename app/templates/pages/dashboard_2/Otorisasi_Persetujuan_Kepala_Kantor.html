@@ -1,7 +1,7 @@
-<!-- pages/dashboard_2/Otorisasi_Persetujuan_Kepala_Seksi_Operasi.html -->
+<!-- pages/dashboard_2/Otorisasi_Persetujuan_Kepala_Kantor.html -->
 {% extends "layout/baseDashboard2.html" %}
 
-{% block title %}- Kasi Ops{% endblock %}
+{% block title %}- Kepala Kantor{% endblock %}
 
 {% block content %}
 <div class="nxl-content">
@@ -11,7 +11,7 @@
                 <h5 class="m-b-10">Otoritas</h5>
             </div>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url_for('main.view_otorisasi_persetujuan_kepala_seksi_operasi') }}">KasiOPS</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.view_otorisasi_persetujuan_kepala_kantor') }}">Kepala Kantor</a></li>
             </ul>
         </div>
     </div>
@@ -21,7 +21,7 @@
             <div class="card mb-4">
                 <div class="card-header-custom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0">
-                        <i class="bi bi-people me-2"></i>Persetujuan Kepala Seksi Operasi
+                        <i class="bi bi-people me-2"></i>Persetujuan Kepala Kantor
                     </h6>
                 </div>
             </div>
@@ -161,28 +161,28 @@
 $(document).ready(function() {
 
     // ============================================
-    // ✅ EXPORT EXCEL & PDF (KASI OPS)
+    // ✅ EXPORT EXCEL & PDF
     // ============================================
     $('.btn-export-excel').click(function(e) {
         e.preventDefault();
         const tab = $(this).data('tab'); // 'belum' atau 'sudah'
-        const url = '/api/otorisasi/export/excel?tipe=kasiops&status=' + tab;
+        const url = '/api/otorisasi/export/excel?tipe=kakansar&status=' + tab;
         window.open(url, '_blank');
     });
 
     $('.btn-export-pdf').click(function(e) {
         e.preventDefault();
         const tab = $(this).data('tab');
-        const url = '/api/otorisasi/export/pdf?tipe=kasiops&status=' + tab;
+        const url = '/api/otorisasi/export/pdf?tipe=kakansar&status=' + tab;
         window.open(url, '_blank');
     });
 
     // ============================================
-    // TAB BELUM PERSETUJUAN
+    // TAB BELUM PERSETUJUAN (Kakansar - LEVEL_OTO=2)
     // ============================================
     function loadBelum() {
         $('#tableBodyBelum').html('<tr><td colspan="6" class="py-4">Memuat data...</td></tr>');
-        $.get('/api/otorisasi/kasiops/belum', function(r) {
+        $.get('/api/otorisasi/kakansar/belum', function(r) {
             const $tbody = $('#tableBodyBelum').empty();
             if (!r.success || !r.data.length) {
                 $tbody.html('<tr><td colspan="6" class="py-4 text-start">No records to display.</td></tr>');
@@ -223,10 +223,10 @@ $(document).ready(function() {
             showAlert('warning', 'Isi keterangan alasan penolakan terlebih dahulu');
             return;
         }
-        if (!confirm(act === 3 ? 'Approve data ini? Data akan diteruskan ke Kepala Kantor.' : 'Reject data ini?')) return;
+        if (!confirm(act === 3 ? 'Approve data ini?' : 'Reject data ini?')) return;
 
         $.ajax({
-            url: '/api/otorisasi/kasiops/approve',
+            url: '/api/otorisasi/kakansar/approve',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ guid_oto: guidOto, act: String(act), keterangan: keterangan }),
@@ -246,7 +246,7 @@ $(document).ready(function() {
     // TAB SUDAH PERSETUJUAN
     // ============================================
     function loadFilterFields() {
-        $.get('/api/otorisasi/kasiops/filter-fields', function(r) {
+        $.get('/api/otorisasi/kakansar/filter-fields', function(r) {
             if (r.success) {
                 const $f1 = $('#fieldSudah1'), $f2 = $('#fieldSudah2');
                 $f1.empty().append('<option value="">- Pilih Field -</option>');
@@ -269,7 +269,7 @@ $(document).ready(function() {
 
         $('#tableBodySudah').html('<tr><td colspan="7" class="py-4">Memuat data...</td></tr>');
 
-        $.get('/api/otorisasi/kasiops/sudah', params, function(r) {
+        $.get('/api/otorisasi/kakansar/sudah', params, function(r) {
             const $tbody = $('#tableBodySudah').empty();
             if (!r.success || !r.data.length) {
                 $tbody.html('<tr><td colspan="7" class="py-4 text-start">No records to display.</td></tr>');
@@ -278,7 +278,7 @@ $(document).ready(function() {
             r.data.forEach(function(row) {
                 const badgeClass = row.act === 3 ? 'bg-success' : (row.act === 0 ? 'bg-danger' : 'bg-secondary');
                 const btnUndo = row.is_locked
-                    ? '<span class="text-muted small">Terkunci (Kakansar sudah memutuskan)</span>'
+                    ? '<span class="text-muted small">Terkunci</span>'
                     : '<button class="btn btn-sm btn-outline-secondary btn-undo" data-guid="' + row.guid_oto + '" title="Batalkan keputusan"><i class="bi bi-arrow-counterclockwise"></i> Undo</button>';
 
                 $tbody.append(
@@ -303,7 +303,7 @@ $(document).ready(function() {
         if (!confirm('Batalkan keputusan ini? Data akan kembali ke tab Belum Persetujuan.')) return;
 
         $.ajax({
-            url: '/api/otorisasi/kasiops/undo',
+            url: '/api/otorisasi/kakansar/undo',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ guid_oto: guidOto }),
@@ -321,7 +321,7 @@ $(document).ready(function() {
 
     $('#btn-refresh').click(loadSudah);
 
-    // Enter key untuk filter di tab Sudah
+    // Enter key untuk filter
     $('#valueSudah1, #valueSudah2').on('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
