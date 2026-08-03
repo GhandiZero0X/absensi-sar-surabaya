@@ -87,6 +87,12 @@
                                     <span class="nxl-mtext">Absensi</span>
                                 </a>
                             </li>
+                            <li class="nxl-item">
+                                <a class="nxl-link" href="Pengajuan_Cuti.html">
+                                    <span class="nxl-micon"><i class="bi bi-file-earmark-break-fill"></i></span>
+                                    <span class="nxl-mtext">Cuti</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
@@ -258,47 +264,262 @@
     </header>  
     <!-- Header End -->
 
+    
+<!-- [Start] Main Content -->
+    <!-- ================================================================ -->
     <main class="nxl-container">
         <div class="nxl-content">
-            <div class="page-header">
+            <!-- Page Header / Breadcrumb -->
+            <div class="page-header mb-4">
                 <div class="page-header-left d-flex align-items-center">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Pengajuan</h5>
+                        <h5 class="m-b-10 mb-1 fw-bold">Pengajuan</h5>
                     </div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="Pengajuan_Absensi.html">Absensi</a></li>
-                        <li class="breadcrumb-item">Edit</li>
+                    <ul class="breadcrumb mb-0 ms-3">
+                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Absensi</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Absensi Rapat</li>
                     </ul>
                 </div>
-                <div class="page-header-right ms-auto">
-                    <div class="page-header-right-items">
-                        <div class="d-flex d-md-none">
-                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
-                                <i class="feather-arrow-left me-2"></i>
-                                <span>Back</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="d-md-none d-flex align-items-center">
-                        <a href="javascript:void(0)" class="page-header-right-open-toggle">
-                            <i class="feather-align-right fs-20"></i>
-                        </a>
-                    </div>
-                </div>
             </div>
+
             <div class="main-content master-siaga">
-                <div class="container-fluid">
-                    <div class="card mb-4">
-                        <div class="card-header-custom d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0">
-                                <i class="bi bi-people me-2"></i>Pengajuan Absensi
+                <div class="container-fluid p-0">
+                    <div class="card mb-4 border-0 shadow-sm">
+
+                        <!-- Main Header Card -->
+                        <div class="card-header d-flex justify-content-between align-items-center bg-white p-3 border-bottom"
+                            style="border-radius: 10px 10px 0 0;">
+                            <h6 class="mb-0 fw-bold text-dark d-flex align-items-center">
+                                <i class="bi bi-fingerprint me-2 text-dark fs-5"></i>
+                                Absensi Rapat (Scan Barcode)
                             </h6>
+                            <div class="d-flex align-items-center gap-3">
+                                <button class="btn p-0 border-0 bg-transparent text-secondary" title="Cari">
+                                    <i class="bi bi-search fs-5"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent text-primary" title="Tambah">
+                                    <i class="bi bi-file-earmark-plus fs-5"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent text-success" title="Download">
+                                    <i class="bi bi-download fs-5"></i>
+                                </button>
+                                <button class="btn p-0 border-0 bg-transparent text-danger" title="Hapus">
+                                    <i class="bi bi-trash fs-5"></i>
+                                </button>
+                            </div>
                         </div>
+
+                        <!-- Custom Style -->
+                        <style>
+                            .panel-header-orange {
+                                background-color: #e66b30;
+                                color: #ffffff;
+                                font-weight: 600;
+                                font-size: 0.9rem;
+                                padding: 8px 16px;
+                                border-radius: 6px 6px 0 0;
+                            }
+
+                            .sub-panel-box {
+                                border: 1px solid #e0e0e0;
+                                border-radius: 8px;
+                                background: #ffffff;
+                                overflow: hidden;
+                            }
+
+                            .scanner-wrapper {
+                                position: relative;
+                                background-color: #1a1a1a;
+                                border-radius: 8px;
+                                overflow: hidden;
+                                height: 220px;
+                            }
+
+                            .badge-camera-active {
+                                position: absolute;
+                                top: 10px;
+                                right: 10px;
+                                background-color: #198754;
+                                color: #fff;
+                                font-size: 0.75rem;
+                                padding: 4px 8px;
+                                border-radius: 4px;
+                                font-weight: 600;
+                            }
+
+                            .btn-orange-submit {
+                                background-color: #e66b30;
+                                color: #ffffff;
+                                font-weight: 600;
+                                border: none;
+                                border-radius: 6px;
+                                padding: 8px 20px;
+                                transition: background-color 0.2s ease;
+                            }
+
+                            .btn-orange-submit:hover {
+                                background-color: #d15920;
+                                color: #ffffff;
+                            }
+
+                            .input-custom-sm {
+                                border: 1px solid #ced4da;
+                                border-radius: 4px;
+                                padding: 5px 10px;
+                                font-size: 0.85rem;
+                                width: 100%;
+                            }
+
+                            .input-custom-sm:focus {
+                                border-color: #e66b30;
+                                outline: none;
+                                box-shadow: 0 0 0 0.2rem rgba(230, 107, 48, 0.2);
+                            }
+
+                            .table-log th {
+                                background-color: #f8f9fa;
+                                font-size: 0.75rem;
+                                font-weight: 700;
+                                color: #495057;
+                                text-transform: uppercase;
+                            }
+
+                            .table-log td {
+                                font-size: 0.85rem;
+                                vertical-align: middle;
+                            }
+                        </style>
+
+                        <div class="card-body p-4">
+                            <div class="row g-4">
+
+                                <!-- Panel Kiri: Input & Scan -->
+                                <div class="col-lg-5">
+                                    <div class="sub-panel-box h-100 pb-3">
+                                        <div class="panel-header-orange">Input & Scan</div>
+                                        <div class="p-3">
+
+                                            <!-- Area Preview Kamera / Scanner -->
+                                            <div
+                                                class="scanner-wrapper d-flex justify-content-center align-items-center mb-3">
+                                                <span class="badge-camera-active">Kamera AKTIF</span>
+                                                <div class="text-center text-white">
+                                                    <small class="d-block text-uppercase fw-bold mb-2"
+                                                        style="letter-spacing: 1px;">SCAN BARCODE</small>
+                                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=AbsensiRapat"
+                                                        alt="QR Scanner Area"
+                                                        class="img-fluid rounded border border-2 border-light">
+                                                    <small class="d-block text-uppercase mt-2"
+                                                        style="letter-spacing: 1px; font-size: 0.7rem;">KAMERA
+                                                        AKTIF</small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Form Controls -->
+                                            <div class="row align-items-center mb-3">
+                                                <label
+                                                    class="col-sm-4 form-label small fw-bold text-secondary mb-0">Nama
+                                                    Rapat</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="input-custom-sm"
+                                                        value="Rapat Bulanan Divisi" placeholder="Masukkan nama rapat">
+                                                </div>
+                                            </div>
+
+                                            <div class="row align-items-center mb-4">
+                                                <label
+                                                    class="col-sm-4 form-label small fw-bold text-secondary mb-0">Tanggal</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="tanggal_rapat"
+                                                        class="input-custom-sm flatpickr-range"
+                                                        placeholder="Pilih Tanggal">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Panel Kanan: Log Kehadiran Terbaru -->
+                                <div class="col-lg-7">
+                                    <div class="sub-panel-box h-100">
+                                        <div class="panel-header-orange">Log Kehadiran Terbaru</div>
+                                        <div class="p-3">
+
+                                            <!-- Filter Section -->
+                                            <div class="row g-2 align-items-center mb-3">
+                                                <div class="col-md-8 d-flex align-items-center gap-2">
+                                                    <label class="small fw-bold text-secondary text-nowrap mb-0">Tanggal
+                                                        Scan</label>
+                                                    <input type="text" id="filter_tanggal_scan"
+                                                        class="input-custom-sm flatpickr-range"
+                                                        placeholder="Pilih Rentang Tanggal">
+                                                </div>
+                                            </div>
+
+                                            <!-- Table Section -->
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-bordered table-log mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="width: 40px;">NO</th>
+                                                            <th class="text-center">WAKTU SCAN</th>
+                                                            <th class="text-center">NIP</th>
+                                                            <th>NAMA PEGAWAI</th>
+                                                            <th>UNIT KERJA</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">1</td>
+                                                            <td class="text-center">14:32:05</td>
+                                                            <td class="text-center">1990011501</td>
+                                                            <td class="fw-medium">Budi Santoso</td>
+                                                            <td>Seksi OPS</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">2</td>
+                                                            <td class="text-center">14:33:10</td>
+                                                            <td class="text-center">1988052002</td>
+                                                            <td class="fw-medium">Sari Wijaya</td>
+                                                            <td>TU</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">3</td>
+                                                            <td class="text-center">14:32:10</td>
+                                                            <td class="text-center">1990011501</td>
+                                                            <td class="fw-medium">Budi Santoso</td>
+                                                            <td>Seksi OPS</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    <!-- ================================================================ -->
+
+    <!-- Pastikan library Flatpickr di-load jika belum ada di template -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            flatpickr(".flatpickr-range", {
+                mode: "range",
+                dateFormat: "Y-m-d"
+            });
+        });
+    </script>
 
     <script src="assets/vendors/js/vendors.min.js"></script>
     <!-- vendors.min.js {always must need to be top} -->
